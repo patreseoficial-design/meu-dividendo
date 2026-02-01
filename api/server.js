@@ -1,10 +1,10 @@
 import express from 'express';
-import moedas from './moedas.js';
-import top from './top.js';
-import ativo from './ativo.js';
+import moedas from '../scripts/moedas.js';
+import top from '../scripts/top.js';
+import ativo from '../scripts/pesquisa.js';
 
 const app = express();
-app.use(express.static('../')); // serve index.html, script.js e style.css
+app.use(express.static('../')); // serve index.html e assets
 
 app.get('/api/moedas', moedas);
 app.get('/api/top', top);
