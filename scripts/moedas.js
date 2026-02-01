@@ -3,22 +3,26 @@ import fetch from 'node-fetch';
 
 export default async function moedas(req, res) {
   try {
-    // Puxando USD, EUR, CNY em relação ao BRL
-    const r = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=BRL,EUR,CNY');
-    const j = await r.json();
+    // Pega câmbio USD, EUR, CNY em relação ao BRL
+    const response = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=BRL,EUR,CNY');
+    const data = await response.json();
 
-    // Bitcoin separado usando CoinGecko (gratuito e sem token)
-    const rBTC = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl');
-    const jBTC = await rBTC.json();
+    const dolar = data.rates.BRL;      // USD → BRL
+    const euro = data.rates.EUR;       // USD → EUR
+    const yuan = data.rates.CNY;       // USD → CNY
+
+    // Pega preço do Bitcoin em BRL via CoinGecko
+    const btcRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl');
+    const btcData = await btcRes.json();
+    const bitcoin = btcData.bitcoin.brl;
 
     res.json({
-      dolar: parseFloat(j.rates.BRL.toFixed(2)),
-      euro: parseFloat((j.rates.EUR ? 1 / j.rates.EUR * j.rates.BRL : 0).toFixed(2)), 
-      yuan: parseFloat((j.rates.CNY ? 1 / j.rates.CNY * j.rates.BRL : 0).toFixed(2)),
-      bitcoin: parseFloat(jBTC.bitcoin.brl),
+      dolar: parseFloat(dolar.toFixed(2)),
+      euro: parseFloat(euro.toFixed(2)),
+      yuan: parseFloat(yuan.toFixed(2)),
+      bitcoin: parseFloat(bitcoin.toFixed(2)),
       real: 1.00
     });
-
   } catch (e) {
     console.error('Erro ao buscar moedas', e);
     res.json({
