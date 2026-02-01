@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Dividendo</title>
+<style>
+  body { margin:0; font-family:sans-serif; background:#fff; color:#000; }
+  header { background:#111; height:4cm; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 10px; position:sticky; top:0; }
+  header h1 { margin:0; font-size:24px; text-align:center; flex:1; }
+  .menu { cursor:pointer; }
+  .profile { width:40px; height:40px; border-radius:50%; background:#555; }
+  #moedas { display:flex; justify-content:center; gap:10px; padding:10px; margin-top:10px; }
+  #moedas .card { background:#111; color:#fff; padding:10px; border-radius:8px; text-align:center; width:80px; }
+  #search { display:flex; justify-content:center; margin:20px 0; }
+  #search input { width:80%; height:50px; font-size:18px; border:2px solid #000; border-radius:6px; padding:0 10px; }
+  #search button { margin-left:10px; padding:10px 20px; font-size:16px; border-radius:6px; cursor:pointer; }
+  section h3 { margin:20px 0 10px; }
+  .grid { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .grid .card { background:#fff; color:#000; border:1px solid #ccc; padding:10px; border-radius:6px; text-align:center; width:calc(20% - 10px); box-sizing:border-box; }
+  .banner { background:#eee; height:80px; margin:10px 0; text-align:center; line-height:80px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="menu">☰</div>
+  <h1>Meu Dividendo</h1>
+  <div class="profile"></div>
+</header>
+
+<section id="moedas">
+  <div class="card"><span>Dólar</span><strong id="dolar-value"></strong></div>
+  <div class="card"><span>Euro</span><strong id="euro-value"></strong></div>
+  <div class="card"><span>Yuans</span><strong id="yuans-value"></strong></div>
+  <div class="card"><span>Bitcoin</span><strong id="bitcoin-value"></strong></div>
+  <div class="card"><span>Real</span><strong id="real-value">R$ 1,00</strong></div>
+</section>
+
+<section id="search">
+  <input type="text" id="searchInput" placeholder="Pesquisar ação ou FII...">
+  <button onclick="buscarAtivo()">Pesquisar</button>
+</section>
+
+<section id="top">
+  <h3>Maiores Altas - Ações</h3>
+  <div id="acoesAltas" class="grid"></div>
+
+  <h3>Maiores Baixas - Ações</h3>
+  <div id="acoesBaixas" class="grid"></div>
+
+  <div class="banner">Propaganda</div>
+
+  <h3>Maiores Altas - FIIs</h3>
+  <div id="fiisAltas" class="grid"></div>
+
+  <h3>Maiores Baixas - FIIs</h3>
+  <div id="fiisBaixas" class="grid"></div>
+</section>
+
+<section id="resultado" style="margin-top:20px;"></section>
+
+<script>
+async function carregarMoedas(){
+  try{
+    const res = await fetch('/api/moedas');
+    const m = await res.json();
+    document.getElementById('dolar-value').innerText='US$ '+m.dolar.toFixed(2);
+    document.getElementById('euro-value').innerText='€ '+m.euro.toFixed(2);
+    document.getElementById('yuans-value').innerText='¥ '+m.yuan.toFixed(2);
+    document.getElementById('bitcoin-value').innerText='₿ '+m.bitcoin.toLocaleString('pt-BR');
+  }catch(e){ console.error('Erro moedas',e) }
+}
+
+async function carregarTop(){
+  const res = await fetch('/api/top');
+  const data = await res.json();
+  const map=[['acoes_altas','acoesAltas'],['acoes_baixas','acoesBaixas'],['fiis_altas','fiisAltas'],['fiis_baixas','fiisBaixas']];
+  map.forEach(([api,id])=>{
+    const el=document.getElementById(id);
+    el.innerHTML='';
+    el.className='grid';
+    if(data[api]) data[api].forEach(i=>{
+      el.innerHTML+=`
+        <div class="card">
+          <strong>${i.symbol || i.codigo}</strong>
+          <span>R$ ${i.regularMarketPrice?.toFixed(2) || i.preco} (${i.regularMarketChangePercent?.toFixed(2) || i.variacao}%)</span>
+        </div>
+      `;
+    });
+  });
+}
+
+async function buscarAtivo(){
+  const symbol = document.getElementById('searchInput').value.toUpperCase();
+  if(!symbol) return;
+  const res = await fetch('/api/ativo/'+symbol);
+  if(res.status!==200){ document.getElementById('resultado').innerHTML='<p>Ativo não encontrado</p>'; return; }
+  const data = await res.json();
+  const r = document.getElementById('resultado');
+  r.innerHTML=`
+    <h3>${data.symbol}</h3>
+    <p>Preço: R$ ${data.regularMarketPrice?.toFixed(2)}</p>
+    <p>Variação: ${data.regularMarketChangePercent?.toFixed(2)}%</p>
+    <p>Tipo: ${data.type}</p>
+    <p>Dividend Yield: ${data.dividendYield || '-'}</p>
+    <p>Último Dividendo: ${data.lastDividendValue || '-'}</p>
+  `;
+}
+
+carregarMoedas();
+carregarTop();
+</script>
+</body>
+</html>
