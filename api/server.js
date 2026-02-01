@@ -4,7 +4,7 @@ import top from './top.js';
 import ativo from './ativo.js';
 
 const app = express();
-app.use(express.static('../')); // serve index.html e scripts
+app.use(express.static('../')); // serve index.html, script.js e style.css
 
 app.get('/api/moedas', moedas);
 app.get('/api/top', top);
