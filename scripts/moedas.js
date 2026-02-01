@@ -1,13 +1,12 @@
-// scripts/moedas.js ou api/moedas.js
+// scripts/moedas.js
 import fetch from 'node-fetch';
 
 export default async function moedas(req, res) {
   try {
-    // Puxa valores reais de moedas
+    // Puxando valores das moedas do AwesomeAPI
     const r = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL');
     const j = await r.json();
 
-    // Envia pro frontend
     res.json({
       dolar: parseFloat(j.USDBRL.bid),
       euro: parseFloat(j.EURBRL.bid),
@@ -17,7 +16,7 @@ export default async function moedas(req, res) {
     });
   } catch (e) {
     console.error('Erro ao buscar moedas', e);
-    // fallback caso dê erro
+    // Em caso de erro, envia valores padrão
     res.json({
       dolar: 0,
       euro: 0,
