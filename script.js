@@ -1,51 +1,61 @@
+// Carregar moedas
 async function carregarMoedas() {
   try {
-    const moedas = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL');
-    const m = await moedas.json();
-
-    const map = [
-      ['USDBRL','dolar-value','US$'],
-      ['EURBRL','euro-value','€'],
-      ['CNYBRL','yuans-value','¥'],
-      ['BTCBRL','bitcoin-value','₿']
-    ];
-
-    map.forEach(([key,id,simb])=>{
-      const el = document.getElementById(id);
-      if(el) el.innerText = `${simb} ${Number(m[key].bid).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-    });
-    document.getElementById('real-value').innerText = 'R$ 1,00';
-  } catch(e){ console.error('Erro moedas',e); }
+    const res = await fetch('/api/moedas');
+    const m = await res.json();
+    document.getElementById('dolar-value').innerText = 'US$ ' + m.dolar.toFixed(2);
+    document.getElementById('euro-value').innerText = '€ ' + m.euro.toFixed(2);
+    document.getElementById('yuans-value').innerText = '¥ ' + m.yuan.toFixed(2);
+    document.getElementById('bitcoin-value').innerText = '₿ ' + m.bitcoin.toLocaleString('pt-BR');
+  } catch (e) { console.error('Erro moedas', e); }
 }
 
+// Carregar tops (ações e FIIs)
 async function carregarTop() {
-  const res = await fetch('/api/top');
-  const data = await res.json();
+  try {
+    const res = await fetch('/api/top');
+    const data = await res.json();
+    const map = [
+      ['acoes_altas', 'acoesAltas'],
+      ['acoes_baixas', 'acoesBaixas'],
+      ['fiis_altas', 'fiisAltas'],
+      ['fiis_baixas', 'fiisBaixas']
+    ];
 
-  const map = [
-    ['acoes_altas','acoesAltas'],
-    ['acoes_baixas','acoesBaixas'],
-    ['fiis_altas','fiisAltas'],
-    ['fiis_baixas','fiisBaixas']
-  ];
-
-  map.forEach(([api,id])=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.innerHTML = '';
-    // Cards 5 por linha
-    data[api].forEach((i,idx)=>{
-      el.innerHTML += `<div class="card">
-        <strong>${i.codigo}</strong><br>
-        R$ ${i.preco}<br>
-        ${i.variacao}%</div>`;
-      if((idx+1)%5===0) el.innerHTML += '<br>';
+    map.forEach(([api, id]) => {
+      const el = document.getElementById(id);
+      el.innerHTML = '';
+      if (data[api]) data[api].forEach(i => {
+        el.innerHTML += `
+          <div class="card">
+            <strong>${i.symbol || i.codigo}</strong>
+            <span>R$ ${i.regularMarketPrice?.toFixed(2) || i.preco} (${i.regularMarketChangePercent?.toFixed(2) || i.variacao}%)</span>
+          </div>
+        `;
+      });
     });
-  });
+  } catch (e) { console.error('Erro tops', e); }
+}
 
-  // Propaganda entre ações e FIIs
-  const prop = document.getElementById('propaganda');
-  if(prop) prop.innerHTML = '<div style="text-align:center;padding:10px;background:#000;color:#fff;margin:10px 0;">📢 Sua propaganda aqui</div>';
+// Buscar ativo pela barra de pesquisa
+async function buscarAtivo() {
+  const symbol = document.getElementById('searchInput').value.toUpperCase();
+  if (!symbol) return;
+  const res = await fetch('/api/ativo/' + symbol);
+  if (res.status !== 200) {
+    document.getElementById('resultado').innerHTML = '<p>Ativo não encontrado</p>';
+    return;
+  }
+  const data = await res.json();
+  const r = document.getElementById('resultado');
+  r.innerHTML = `
+    <h3>${data.symbol}</h3>
+    <p>Preço: R$ ${data.regularMarketPrice?.toFixed(2)}</p>
+    <p>Variação: ${data.regularMarketChangePercent?.toFixed(2)}%</p>
+    <p>Tipo: ${data.type}</p>
+    <p>Dividend Yield: ${data.dividendYield || '-'}</p>
+    <p>Último Dividendo: ${data.lastDividendValue || '-'}</p>
+  `;
 }
 
 carregarMoedas();
