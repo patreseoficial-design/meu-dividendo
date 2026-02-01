@@ -6,40 +6,165 @@
 <title>Meu Dividendo</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  /* Header estilo Netflix */
-  body { margin:0; font-family:sans-serif; background:#fff; color:#000; }
-  header { background:#111; height:4cm; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 10px; position:sticky; top:0; z-index:1000; }
-  header h1 { margin:0; font-size:28px; text-align:center; flex:1; letter-spacing:1px; }
-  .menu { cursor:pointer; font-size:28px; }
-  .profile { width:40px; height:40px; border-radius:50%; background:#555; }
-  
-  /* Cards de moedas */
-  #moedas { display:flex; justify-content:center; gap:10px; padding:10px; margin-top:10px; }
-  #moedas .card { background:#111; color:#fff; padding:10px; border-radius:8px; text-align:center; width:80px; flex-shrink:0; }
-  #moedas .card span { display:block; font-size:12px; }
-  #moedas .card strong { display:block; font-size:16px; margin-top:5px; }
+  /* Body e header estilo Netflix */
+  body {
+    margin:0;
+    font-family:sans-serif;
+    background:#fff;
+    color:#000;
+  }
+  header {
+    background:#111;
+    height:4cm;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+  }
+  header h1 {
+    margin:0;
+    font-size:28px;
+    text-align:center;
+    flex:1;
+    letter-spacing:1px;
+  }
+  .menu {
+    cursor:pointer;
+    font-size:28px;
+  }
+  .profile {
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#555;
+  }
 
-  /* Barra de pesquisa */
-  #search { display:flex; justify-content:center; margin:20px 0; }
-  #search input { width:80%; max-width:500px; height:50px; font-size:18px; border:2px solid #000; border-radius:6px; padding:0 10px; }
-  #search button { margin-left:10px; padding:10px 20px; font-size:16px; border-radius:6px; cursor:pointer; }
+  /* Seção de moedas */
+  #moedas {
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    padding:10px;
+    margin-top:10px;
+  }
+  #moedas .card {
+    background:#111;
+    color:#fff;
+    padding:10px;
+    border-radius:8px;
+    text-align:center;
+    width:80px;
+    flex-shrink:0;
+  }
+  #moedas .card span {
+    display:block;
+    font-size:12px;
+  }
+  #moedas .card strong {
+    display:block;
+    font-size:16px;
+    margin-top:5px;
+  }
+
+  /* Centraliza a barra de pesquisa vertical e horizontalmente */
+  #search-wrapper {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:200px; /* ajuste se quiser mais ou menos altura */
+  }
+  #search {
+    display:flex;
+    width:80%;
+    max-width:500px;
+  }
+  #search input {
+    width:100%;
+    height:50px;
+    font-size:18px;
+    border:2px solid #000;
+    border-radius:6px 0 0 6px;
+    padding:0 15px;
+  }
+  #search button {
+    padding:10px 20px;
+    font-size:16px;
+    border-radius:0 6px 6px 0;
+    cursor:pointer;
+    border:none;
+    background:#111;
+    color:#fff;
+  }
 
   /* Tops e grids */
-  section h3 { margin:20px 0 10px; text-align:center; }
-  .grid { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
-  .grid .card { background:#fff; color:#000; border:1px solid #ccc; padding:10px; border-radius:6px; text-align:center; width:calc(18% - 10px); box-sizing:border-box; }
-  .grid .card span { display:block; margin-top:5px; font-size:14px; }
+  section h3 {
+    margin:20px 0 10px;
+    text-align:center;
+  }
+  .grid {
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+  }
+  .grid .card {
+    background:#fff;
+    color:#000;
+    border:1px solid #ccc;
+    padding:10px;
+    border-radius:6px;
+    text-align:center;
+    width:calc(18% - 10px);
+    box-sizing:border-box;
+  }
+  .grid .card span {
+    display:block;
+    margin-top:5px;
+    font-size:14px;
+  }
 
   /* Banner de propaganda */
-  .banner { background:#eee; height:80px; margin:10px 0; text-align:center; line-height:80px; font-weight:bold; }
+  .banner {
+    background:#eee;
+    height:80px;
+    margin:10px 0;
+    text-align:center;
+    line-height:80px;
+    font-weight:bold;
+  }
 
   /* Resultado da pesquisa */
-  #resultado { margin-top:20px; max-width:600px; margin-left:auto; margin-right:auto; padding:10px; border:1px solid #ccc; border-radius:6px; }
+  #resultado {
+    margin-top:20px;
+    max-width:600px;
+    margin-left:auto;
+    margin-right:auto;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+  }
 
   /* Carousel simples para notícias */
-  #carousel { display:flex; overflow-x:auto; gap:10px; padding:10px; margin-top:20px; }
-  #carousel .banner-news { flex:0 0 auto; width:150px; height:150px; background:#eee; border-radius:8px; text-align:center; line-height:150px; }
-
+  #carousel {
+    display:flex;
+    overflow-x:auto;
+    gap:10px;
+    padding:10px;
+    margin-top:20px;
+  }
+  #carousel .banner-news {
+    flex:0 0 auto;
+    width:150px;
+    height:150px;
+    background:#eee;
+    border-radius:8px;
+    text-align:center;
+    line-height:150px;
+  }
 </style>
 </head>
 <body>
@@ -59,10 +184,12 @@
   <div class="card"><span>Real</span><strong id="real-value">R$ 1,00</strong></div>
 </section>
 
-<!-- Barra de pesquisa -->
-<section id="search">
-  <input type="text" id="searchInput" placeholder="Pesquisar ação ou FII...">
-  <button onclick="buscarAtivo()">Pesquisar</button>
+<!-- Barra de pesquisa centralizada -->
+<section id="search-wrapper">
+  <div id="search">
+    <input type="text" id="searchInput" placeholder="Pesquisar ação ou FII...">
+    <button onclick="buscarAtivo()">Pesquisar</button>
+  </div>
 </section>
 
 <!-- Tops -->
