@@ -1,25 +1,33 @@
-// api/server.js
+// server.js (NA RAIZ DO PROJETO)
 import express from 'express';
 import path from 'path';
-import moedas from '../scripts/moedas.js';
-import top from '../scripts/top.js';
-import ativo from '../scripts/ativo.js';
+import { fileURLToPath } from 'url';
+
+import moedas from './scripts/moedas.js';
+import top from './scripts/top.js';
+import ativo from './scripts/ativo.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve arquivos estáticos da raiz do projeto (index.html, style.css, script.js, logo.png)
-app.use(express.static(path.resolve('../')));
+// Corrige __dirname no ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Servir arquivos estáticos (index.html, css, js, imagens)
+app.use(express.static(__dirname));
 
 // Rotas da API
 app.get('/api/moedas', moedas);
 app.get('/api/top', top);
 app.get('/api/ativo/:symbol', ativo);
 
-// Fallback para qualquer rota não reconhecida (opcional)
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve('../index.html'));
+// Health check (teste rápido)
+app.get('/api/status', (req, res) => {
+  res.json({ ok: true });
 });
 
-// Inicia servidor
-app.listen(PORT, () => console.log(`Servidor rodando em http://localhost:${PORT}`));
+// Start
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
