@@ -6,27 +6,40 @@
 <title>Meu Dividendo</title>
 <link rel="stylesheet" href="style.css">
 <style>
+  /* Header estilo Netflix */
   body { margin:0; font-family:sans-serif; background:#fff; color:#000; }
-  header {
-    background:#111; height:4cm; color:#fff;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:0 10px; position:sticky; top:0; z-index:1000;
-  }
-  header h1 { margin:0; font-size:28px; text-align:center; flex:1; }
+  header { background:#111; height:4cm; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 10px; position:sticky; top:0; z-index:1000; }
+  header h1 { margin:0; font-size:28px; text-align:center; flex:1; letter-spacing:1px; }
   .menu { cursor:pointer; font-size:28px; }
   .profile { width:40px; height:40px; border-radius:50%; background:#555; }
+  
+  /* Cards de moedas */
   #moedas { display:flex; justify-content:center; gap:10px; padding:10px; margin-top:10px; }
-  #moedas .card { background:#111; color:#fff; padding:10px; border-radius:8px; text-align:center; width:80px; }
+  #moedas .card { background:#111; color:#fff; padding:10px; border-radius:8px; text-align:center; width:80px; flex-shrink:0; }
+  #moedas .card span { display:block; font-size:12px; }
+  #moedas .card strong { display:block; font-size:16px; margin-top:5px; }
+
+  /* Barra de pesquisa */
   #search { display:flex; justify-content:center; margin:20px 0; }
-  #search input { width:80%; height:50px; font-size:18px; border:2px solid #000; border-radius:6px; padding:0 10px; }
+  #search input { width:80%; max-width:500px; height:50px; font-size:18px; border:2px solid #000; border-radius:6px; padding:0 10px; }
   #search button { margin-left:10px; padding:10px 20px; font-size:16px; border-radius:6px; cursor:pointer; }
+
+  /* Tops e grids */
   section h3 { margin:20px 0 10px; text-align:center; }
   .grid { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
-  .grid .card { background:#fff; color:#000; border:1px solid #ccc; padding:10px; border-radius:6px; text-align:center; width:calc(20% - 10px); box-sizing:border-box; }
+  .grid .card { background:#fff; color:#000; border:1px solid #ccc; padding:10px; border-radius:6px; text-align:center; width:calc(18% - 10px); box-sizing:border-box; }
+  .grid .card span { display:block; margin-top:5px; font-size:14px; }
+
+  /* Banner de propaganda */
   .banner { background:#eee; height:80px; margin:10px 0; text-align:center; line-height:80px; font-weight:bold; }
-  /* Carrossel de notícias */
-  #news-carousel { display:flex; overflow-x:auto; gap:10px; padding:10px; }
-  #news-carousel .news-card { min-width:200px; height:200px; background:#ccc; flex-shrink:0; border-radius:8px; display:flex; align-items:center; justify-content:center; text-align:center; font-weight:bold; }
+
+  /* Resultado da pesquisa */
+  #resultado { margin-top:20px; max-width:600px; margin-left:auto; margin-right:auto; padding:10px; border:1px solid #ccc; border-radius:6px; }
+
+  /* Carousel simples para notícias */
+  #carousel { display:flex; overflow-x:auto; gap:10px; padding:10px; margin-top:20px; }
+  #carousel .banner-news { flex:0 0 auto; width:150px; height:150px; background:#eee; border-radius:8px; text-align:center; line-height:150px; }
+
 </style>
 </head>
 <body>
@@ -37,6 +50,7 @@
   <div class="profile"></div>
 </header>
 
+<!-- Moedas -->
 <section id="moedas">
   <div class="card"><span>Dólar</span><strong id="dolar-value"></strong></div>
   <div class="card"><span>Euro</span><strong id="euro-value"></strong></div>
@@ -45,11 +59,13 @@
   <div class="card"><span>Real</span><strong id="real-value">R$ 1,00</strong></div>
 </section>
 
+<!-- Barra de pesquisa -->
 <section id="search">
   <input type="text" id="searchInput" placeholder="Pesquisar ação ou FII...">
   <button onclick="buscarAtivo()">Pesquisar</button>
 </section>
 
+<!-- Tops -->
 <section id="top">
   <h3>Maiores Altas - Ações</h3>
   <div id="acoesAltas" class="grid"></div>
@@ -66,96 +82,76 @@
   <div id="fiisBaixas" class="grid"></div>
 </section>
 
-<section id="news">
-  <h3>Notícias do Dia</h3>
-  <div id="news-carousel">
-    <div class="news-card">Notícia 1</div>
-    <div class="news-card">Notícia 2</div>
-    <div class="news-card">Notícia 3</div>
-  </div>
+<!-- Resultado pesquisa -->
+<section id="resultado"></section>
+
+<!-- Carousel de notícias -->
+<section id="carousel">
+  <div class="banner-news">Notícia 1</div>
+  <div class="banner-news">Notícia 2</div>
+  <div class="banner-news">Notícia 3</div>
 </section>
 
-<section id="resultado" style="margin-top:20px;"></section>
-
 <script>
-const TOKEN_BRAPI = 'kfWwE93iiUiHTg5V4XjbYR'; // seu token
-
+/* MOEDAS */
 async function carregarMoedas(){
   try{
-    const res = await fetch(`https://brapi.dev/api/quotes?symbols=USD,EUR,CNY,BTC,BRL&apikey=${TOKEN_BRAPI}`);
+    const res = await fetch('/api/moedas');
     const m = await res.json();
-    document.getElementById('dolar-value').innerText='US$ '+m.results[0].regularMarketPrice.toFixed(2);
-    document.getElementById('euro-value').innerText='€ '+m.results[1].regularMarketPrice.toFixed(2);
-    document.getElementById('yuans-value').innerText='¥ '+m.results[2].regularMarketPrice.toFixed(2);
-    document.getElementById('bitcoin-value').innerText='₿ '+m.results[3].regularMarketPrice.toLocaleString('pt-BR');
-    document.getElementById('real-value').innerText='R$ '+m.results[4].regularMarketPrice.toFixed(2);
-  }catch(e){ console.error('Erro moedas',e); }
+    document.getElementById('dolar-value').innerText='US$ '+m.dolar.toFixed(2);
+    document.getElementById('euro-value').innerText='€ '+m.euro.toFixed(2);
+    document.getElementById('yuans-value').innerText='¥ '+m.yuan.toFixed(2);
+    document.getElementById('bitcoin-value').innerText='₿ '+m.bitcoin.toLocaleString('pt-BR');
+  }catch(e){ console.error('Erro moedas',e) }
 }
 
+/* TOPS */
 async function carregarTop(){
-  const symbolsAcoes = ['PETR4','VALE3','ITUB4','BBDC4','ABEV3','BBAS3','WEGE3','ELET3','GGBR4','SUZB3'];
-  const symbolsFiis  = ['HGLG11','MXRF11','KNRI11','VISC11','XPLG11','BCFF11','IRDM11','HGRE11','RECT11','RBRF11'];
-  
-  // Ações
-  try{
-    const resAcoes = await fetch(`https://brapi.dev/api/quotes/list?symbols=${symbolsAcoes.join(',')}&apikey=${TOKEN_BRAPI}`);
-    const dataAcoes = await resAcoes.json();
-    const acoesSorted = dataAcoes.results.sort((a,b)=>b.regularMarketChangePercent - a.regularMarketChangePercent);
-    const acoesAltas = acoesSorted.slice(0,10);
-    const acoesBaixas = acoesSorted.slice(-10).reverse();
-
-    const elAltas = document.getElementById('acoesAltas');
-    const elBaixas = document.getElementById('acoesBaixas');
-    elAltas.innerHTML=''; elBaixas.innerHTML='';
-    acoesAltas.forEach(i=>{
-      elAltas.innerHTML+=`<div class="card"><strong>${i.symbol}</strong><span>R$ ${i.regularMarketPrice.toFixed(2)} (${i.regularMarketChangePercent.toFixed(2)}%)</span></div>`;
+  const res = await fetch('/api/top');
+  const data = await res.json();
+  const map=[
+    ['acoes_altas','acoesAltas'],
+    ['acoes_baixas','acoesBaixas'],
+    ['fiis_altas','fiisAltas'],
+    ['fiis_baixas','fiisBaixas']
+  ];
+  map.forEach(([api,id])=>{
+    const el=document.getElementById(id);
+    el.innerHTML='';
+    el.className='grid';
+    if(data[api]) data[api].forEach(i=>{
+      el.innerHTML+=`
+        <div class="card">
+          <strong>${i.symbol || i.codigo}</strong>
+          <span>R$ ${i.regularMarketPrice?.toFixed(2) || i.preco} (${i.regularMarketChangePercent?.toFixed(2) || i.variacao}%)</span>
+        </div>
+      `;
     });
-    acoesBaixas.forEach(i=>{
-      elBaixas.innerHTML+=`<div class="card"><strong>${i.symbol}</strong><span>R$ ${i.regularMarketPrice.toFixed(2)} (${i.regularMarketChangePercent.toFixed(2)}%)</span></div>`;
-    });
-  }catch(e){ console.error('Erro ações', e); }
-
-  // FIIs
-  try{
-    const resFiis = await fetch(`https://brapi.dev/api/quotes/list?symbols=${symbolsFiis.join(',')}&apikey=${TOKEN_BRAPI}`);
-    const dataFiis = await resFiis.json();
-    const fiisSorted = dataFiis.results.sort((a,b)=>b.regularMarketChangePercent - a.regularMarketChangePercent);
-    const fiisAltas = fiisSorted.slice(0,10);
-    const fiisBaixas = fiisSorted.slice(-10).reverse();
-
-    const elAltas = document.getElementById('fiisAltas');
-    const elBaixas = document.getElementById('fiisBaixas');
-    elAltas.innerHTML=''; elBaixas.innerHTML='';
-    fiisAltas.forEach(i=>{
-      elAltas.innerHTML+=`<div class="card"><strong>${i.symbol}</strong><span>R$ ${i.regularMarketPrice.toFixed(2)} (${i.regularMarketChangePercent.toFixed(2)}%)</span></div>`;
-    });
-    fiisBaixas.forEach(i=>{
-      elBaixas.innerHTML+=`<div class="card"><strong>${i.symbol}</strong><span>R$ ${i.regularMarketPrice.toFixed(2)} (${i.regularMarketChangePercent.toFixed(2)}%)</span></div>`;
-    });
-  }catch(e){ console.error('Erro FIIs', e); }
+  });
 }
 
+/* PESQUISA */
 async function buscarAtivo(){
   const symbol = document.getElementById('searchInput').value.toUpperCase();
   if(!symbol) return;
-  try{
-    const res = await fetch(`https://brapi.dev/api/quote/${symbol}?apikey=${TOKEN_BRAPI}`);
-    if(res.status!==200){ document.getElementById('resultado').innerHTML='<p>Ativo não encontrado</p>'; return; }
-    const data = await res.json();
-    const r = document.getElementById('resultado');
-    r.innerHTML=`
-      <h3>${data.results[0].symbol}</h3>
-      <p>Preço: R$ ${data.results[0].regularMarketPrice.toFixed(2)}</p>
-      <p>Variação: ${data.results[0].regularMarketChangePercent.toFixed(2)}%</p>
-      <p>Tipo: ${data.results[0].type}</p>
-      <p>Dividend Yield: ${data.results[0].dividendYield || '-'}</p>
-      <p>Último Dividendo: ${data.results[0].lastDividendValue || '-'}</p>
-    `;
-  }catch(e){ console.error('Erro ativo',e); }
+  const res = await fetch('/api/ativo/'+symbol);
+  if(res.status!==200){ document.getElementById('resultado').innerHTML='<p>Ativo não encontrado</p>'; return; }
+  const data = await res.json();
+  const r = document.getElementById('resultado');
+  r.innerHTML=`
+    <h3>${data.symbol}</h3>
+    <p>Preço: R$ ${data.regularMarketPrice?.toFixed(2)}</p>
+    <p>Variação: ${data.regularMarketChangePercent?.toFixed(2)}%</p>
+    <p>Tipo: ${data.type}</p>
+    <p>Dividend Yield: ${data.dividendYield || '-'}</p>
+    <p>Último Dividendo: ${data.lastDividendValue || '-'}</p>
+  `;
 }
 
+/* Inicializar */
 carregarMoedas();
 carregarTop();
 </script>
+
 </body>
 </html>
