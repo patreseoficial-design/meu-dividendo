@@ -1,36 +1,35 @@
+// scripts/top.js
 import fetch from 'node-fetch';
 
-const TOKEN = 'kfWwE93iiUiHTg5V4XjbYR'; // Seu token BRAPI
+const API_KEY = 'O78K51WkaV2DJHslEqkqtw8Tvx24kfm1';
+
+function filtrarBrasil(lista) {
+  return lista
+    .filter(a => a.symbol && a.symbol.endsWith('.SA'))
+    .slice(0, 10)
+    .map(a => ({
+      symbol: a.symbol.replace('.SA', ''),
+      price: a.price,
+      change: a.changesPercentage
+        ? parseFloat(a.changesPercentage.replace('%', ''))
+        : null
+    }));
+}
 
 export default async function top(req, res) {
   try {
-    // Símbolos para top Ações e FIIs
-    const acoesSymbols = ['PETR4', 'VALE3', 'ITUB4', 'BBDC4', 'ABEV3', 'BBAS3', 'WEGE3', 'ELET3', 'GGBR4', 'SUZB3'];
-    const fiisSymbols = ['HGLG11', 'MXRF11', 'KNRI11', 'VISC11', 'XPLG11', 'BCFF11', 'IRDM11', 'HGRE11', 'RECT11', 'RBRF11'];
+    const url = `https://financialmodelingprep.com/api/v3/stock_market/gainers?apikey=${API_KEY}`;
+    const response = await fetch(url);
+    const data = await response.json();
 
-    const fetchData = async (symbols) => {
-      const url = `https://brapi.dev/api/v2/quote?symbol=${symbols.join(',')}&apikey=${TOKEN}`;
-      const r = await fetch(url);
-      const j = await r.json();
-      return j.results.map(i => ({
-        codigo: i.symbol,
-        preco: i.regularMarketPrice?.toFixed(2),
-        variacao: i.regularMarketChangePercent?.toFixed(2)
-      }));
-    }
-
-    const acoes = await fetchData(acoesSymbols);
-    const fiis = await fetchData(fiisSymbols);
+    const brasil = filtrarBrasil(data);
 
     res.json({
-      acoes_altas: acoes.filter(i => i.variacao > 0).slice(0,10),
-      acoes_baixas: acoes.filter(i => i.variacao < 0).slice(0,10),
-      fiis_altas: fiis.filter(i => i.variacao > 0).slice(0,10),
-      fiis_baixas: fiis.filter(i => i.variacao < 0).slice(0,10)
+      acoes_altas: brasil
     });
 
-  } catch(e) {
-    console.error(e);
-    res.status(500).json({ error: 'Erro ao buscar tops' });
+  } catch (err) {
+    console.error('Erro TOP Brasil:', err);
+    res.status(500).json({ error: 'Erro ao buscar TOP Brasil' });
   }
 }
