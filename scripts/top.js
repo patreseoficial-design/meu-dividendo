@@ -1,35 +1,48 @@
-// scripts/top.js
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
+import { ACOES, FIIS } from "./listas.js";
 
-const API_KEY = 'O78K51WkaV2DJHslEqkqtw8Tvx24kfm1';
+const APIKEY = "SUA_API_AQUI";
 
-function filtrarBrasil(lista) {
-  return lista
-    .filter(a => a.symbol && a.symbol.endsWith('.SA'))
-    .slice(0, 10)
-    .map(a => ({
-      symbol: a.symbol.replace('.SA', ''),
-      price: a.price,
-      change: a.changesPercentage
-        ? parseFloat(a.changesPercentage.replace('%', ''))
-        : null
-    }));
+async function buscarAtivo(symbol){
+  const url = `https://financialmodelingprep.com/api/v3/quote/${symbol}.SA?apikey=${APIKEY}`;
+  const r = await fetch(url);
+  const j = await r.json();
+  return j[0];
 }
 
-export default async function top(req, res) {
-  try {
-    const url = `https://financialmodelingprep.com/api/v3/stock_market/gainers?apikey=${API_KEY}`;
-    const response = await fetch(url);
-    const data = await response.json();
+async function processar(lista){
+  const dados = [];
 
-    const brasil = filtrarBrasil(data);
+  for(const s of lista){
+    try{
+      const a = await buscarAtivo(s);
+      if(!a) continue;
 
-    res.json({
-      acoes_altas: brasil
-    });
-
-  } catch (err) {
-    console.error('Erro TOP Brasil:', err);
-    res.status(500).json({ error: 'Erro ao buscar TOP Brasil' });
+      dados.push({
+        symbol: s,
+        price: a.price,
+        change: a.changesPercentage,
+        volume: a.volume,
+        liquidez: a.price * a.volume
+      });
+    }catch{}
   }
+
+  return dados;
+}
+
+export default async function top(req,res){
+  const acoes = await processar(ACOES);
+  const fiis  = await processar(FIIS);
+
+  res.json({
+    acoes_altas: [...acoes].sort((a,b)=>b.change - a.change).slice(0,10),
+    acoes_baixas: [...acoes].sort((a,b)=>a.change - b.change).slice(0,10),
+
+    acoes_liquidas: [...acoes].sort((a,b)=>b.liquidez - a.liquidez).slice(0,10),
+    acoes_iliquidas: [...acoes].sort((a,b)=>a.liquidez - b.liquidez).slice(0,10),
+
+    fiis_liquidos: [...fiis].sort((a,b)=>b.liquidez - a.liquidez).slice(0,10),
+    fiis_iliquidos: [...fiis].sort((a,b)=>a.liquidez - b.liquidez).slice(0,10)
+  });
 }
