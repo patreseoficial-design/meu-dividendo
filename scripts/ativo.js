@@ -1,36 +1,43 @@
 // scripts/ativo.js
 import fetch from 'node-fetch';
 
-const TOKEN = 'kfWwE93iiUiHTg5V4XjbYR'; // SEU TOKEN BRAPI
+const TOKEN = 'kfWwE93iiUiHTg5V4XjbYR';
 
-export default async function ativo(req, res) {
+// Ativos perenes fixos
+const ATIVOS = [
+  'CMIG4',
+  'CPLE6',
+  'TAEE11',
+  'BBSE3',
+  'SUZB3',
+  'PETR4'
+];
+
+export default async function ativos(req, res) {
   try {
-    const symbol = req.params.symbol.toUpperCase();
+    const symbols = ATIVOS.join(',');
+    const r = await fetch(
+      `https://brapi.dev/api/quote/${symbols}?token=${TOKEN}`
+    );
+    const data = await r.json();
 
-    const url = `https://brapi.dev/api/quote/${symbol}?token=${TOKEN}`;
-
-    const r = await fetch(url);
-    const j = await r.json();
-
-    if (!j.results || j.results.length === 0) {
-      return res.status(404).json({ erro: 'Ativo não encontrado' });
-    }
-
-    const a = j.results[0];
-
-    res.json({
+    const resultado = (data.results || []).map(a => ({
       symbol: a.symbol,
-      nome: a.longName || a.shortName,
-      preco: a.regularMarketPrice,
-      variacao: a.regularMarketChange,
-      variacaoPercentual: a.regularMarketChangePercent,
-      tipo: a.type,
-      dividendYield: a.dividendYield || 0,
-      ultimoDividendo: a.lastDividendValue || 0
-    });
+      price: a.regularMarketPrice,
+      change: a.regularMarketChangePercent
+    }));
 
+    res.json(resultado);
   } catch (e) {
-    console.error('Erro ao buscar ativo:', e);
-    res.status(500).json({ erro: 'Falha ao buscar ativo' });
+    console.error('Erro ativos perenes', e);
+
+    // fallback para não quebrar o site
+    res.json(
+      ATIVOS.map(s => ({
+        symbol: s,
+        price: null,
+        change: null
+      }))
+    );
   }
 }
