@@ -1,6 +1,6 @@
 // scripts/top.js
 import fetch from "node-fetch";
-import { ACOES, FIIS } from "./listas.js";
+import { ACOES, FIIS } from "./lista.js";
 
 // Yahoo Finance endpoint
 async function buscarYahoo(symbols) {
