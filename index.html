@@ -4,169 +4,176 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meu Dividendo</title>
+
 <link rel="stylesheet" href="style.css">
+
 <style>
-  /* Body e header estilo Netflix */
-  body {
-    margin:0;
-    font-family:sans-serif;
-    background:#fff;
-    color:#000;
-  }
-  header {
-    background:#111;
-    height:4cm;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 20px;
-    position:sticky;
-    top:0;
-    z-index:1000;
-  }
-  header h1 {
-    margin:0;
-    font-size:28px;
-    text-align:center;
-    flex:1;
-    letter-spacing:1px;
-  }
-  .menu {
-    cursor:pointer;
-    font-size:28px;
-  }
-  .profile {
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    background:#555;
-  }
+body {
+  margin:0;
+  font-family:sans-serif;
+  background:#fff;
+  color:#000;
+}
 
-  /* Seção de moedas */
-  #moedas {
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    padding:10px;
-    margin-top:10px;
-  }
-  #moedas .card {
-    background:#111;
-    color:#fff;
-    padding:10px;
-    border-radius:8px;
-    text-align:center;
-    width:80px;
-    flex-shrink:0;
-  }
-  #moedas .card span {
-    display:block;
-    font-size:12px;
-  }
-  #moedas .card strong {
-    display:block;
-    font-size:16px;
-    margin-top:5px;
-  }
+header {
+  background:#111;
+  height:4cm;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
 
-  /* Centraliza a barra de pesquisa vertical e horizontalmente */
-  #search-wrapper {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:200px; /* ajuste se quiser mais ou menos altura */
-  }
-  #search {
-    display:flex;
-    width:80%;
-    max-width:500px;
-  }
-  #search input {
-    width:100%;
-    height:50px;
-    font-size:18px;
-    border:2px solid #000;
-    border-radius:6px 0 0 6px;
-    padding:0 15px;
-  }
-  #search button {
-    padding:10px 20px;
-    font-size:16px;
-    border-radius:0 6px 6px 0;
-    cursor:pointer;
-    border:none;
-    background:#111;
-    color:#fff;
-  }
+header h1 {
+  margin:0;
+  font-size:28px;
+  text-align:center;
+  flex:1;
+}
 
-  /* Tops e grids */
-  section h3 {
-    margin:20px 0 10px;
-    text-align:center;
-  }
-  .grid {
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    justify-content:center;
-  }
-  .grid .card {
-    background:#fff;
-    color:#000;
-    border:1px solid #ccc;
-    padding:10px;
-    border-radius:6px;
-    text-align:center;
-    width:calc(18% - 10px);
-    box-sizing:border-box;
-  }
-  .grid .card span {
-    display:block;
-    margin-top:5px;
-    font-size:14px;
-  }
+.menu { cursor:pointer; font-size:28px; }
+.profile {
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#555;
+}
 
-  /* Banner de propaganda */
-  .banner {
-    background:#eee;
-    height:80px;
-    margin:10px 0;
-    text-align:center;
-    line-height:80px;
-    font-weight:bold;
-  }
+/* MOEDAS */
+#moedas {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  padding:10px;
+}
+#moedas .card {
+  background:#111;
+  color:#fff;
+  padding:10px;
+  border-radius:8px;
+  text-align:center;
+  width:80px;
+}
 
-  /* Resultado da pesquisa */
-  #resultado {
-    margin-top:20px;
-    max-width:600px;
-    margin-left:auto;
-    margin-right:auto;
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:6px;
-  }
+/* 🔥 TICKER PERENE 🔥 */
+#ticker-wrapper {
+  width:100%;
+  overflow:hidden;
+  background:#0e0e0e;
+  border-top:1px solid #222;
+  border-bottom:1px solid #222;
+}
 
-  /* Carousel simples para notícias */
-  #carousel {
-    display:flex;
-    overflow-x:auto;
-    gap:10px;
-    padding:10px;
-    margin-top:20px;
-  }
-  #carousel .banner-news {
-    flex:0 0 auto;
-    width:150px;
-    height:150px;
-    background:#eee;
-    border-radius:8px;
-    text-align:center;
-    line-height:150px;
-  }
+#ticker {
+  display:inline-flex;
+  white-space:nowrap;
+  animation:tickerMove 25s linear infinite;
+}
+
+#ticker span {
+  padding:12px 28px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+#ticker span.up { color:#00c853; }
+#ticker span.down { color:#ff5252; }
+
+@keyframes tickerMove {
+  from { transform:translateX(100%); }
+  to { transform:translateX(-100%); }
+}
+
+/* PESQUISA */
+#search-wrapper {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:200px;
+}
+#search {
+  display:flex;
+  width:80%;
+  max-width:500px;
+}
+#search input {
+  width:100%;
+  height:50px;
+  font-size:18px;
+  border:2px solid #000;
+  border-radius:6px 0 0 6px;
+  padding:0 15px;
+}
+#search button {
+  padding:10px 20px;
+  font-size:16px;
+  border-radius:0 6px 6px 0;
+  border:none;
+  background:#111;
+  color:#fff;
+  cursor:pointer;
+}
+
+/* TOPS */
+section h3 {
+  margin:20px 0 10px;
+  text-align:center;
+}
+.grid {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+}
+.grid .card {
+  border:1px solid #ccc;
+  padding:10px;
+  border-radius:6px;
+  width:18%;
+  text-align:center;
+}
+
+/* BANNERS */
+.banner {
+  background:#eee;
+  height:80px;
+  margin:10px 0;
+  text-align:center;
+  line-height:80px;
+  font-weight:bold;
+}
+
+/* RESULTADO */
+#resultado {
+  max-width:600px;
+  margin:20px auto;
+  padding:10px;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+/* NOTÍCIAS */
+#carousel {
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  padding:10px;
+}
+.banner-news {
+  width:150px;
+  height:150px;
+  background:#eee;
+  border-radius:8px;
+  text-align:center;
+  line-height:150px;
+}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -175,24 +182,29 @@
   <div class="profile"></div>
 </header>
 
-<!-- Moedas -->
+<!-- MOEDAS -->
 <section id="moedas">
   <div class="card"><span>Dólar</span><strong id="dolar-value"></strong></div>
   <div class="card"><span>Euro</span><strong id="euro-value"></strong></div>
   <div class="card"><span>Yuans</span><strong id="yuans-value"></strong></div>
   <div class="card"><span>Bitcoin</span><strong id="bitcoin-value"></strong></div>
-  <div class="card"><span>Real</span><strong id="real-value">R$ 1,00</strong></div>
+  <div class="card"><span>Real</span><strong>R$ 1,00</strong></div>
 </section>
 
-<!-- Barra de pesquisa centralizada -->
+<!-- 🔥 TICKER PERENE 🔥 -->
+<section id="ticker-wrapper">
+  <div id="ticker"></div>
+</section>
+
+<!-- PESQUISA -->
 <section id="search-wrapper">
   <div id="search">
-    <input type="text" id="searchInput" placeholder="Pesquisar ação ou FII...">
+    <input id="searchInput" placeholder="Pesquisar ação ou FII...">
     <button onclick="buscarAtivo()">Pesquisar</button>
   </div>
 </section>
 
-<!-- Tops -->
+<!-- TOPS -->
 <section id="top">
   <h3>Maiores Altas - Ações</h3>
   <div id="acoesAltas" class="grid"></div>
@@ -209,10 +221,8 @@
   <div id="fiisBaixas" class="grid"></div>
 </section>
 
-<!-- Resultado pesquisa -->
 <section id="resultado"></section>
 
-<!-- Carousel de notícias -->
 <section id="carousel">
   <div class="banner-news">Notícia 1</div>
   <div class="banner-news">Notícia 2</div>
@@ -222,62 +232,62 @@
 <script>
 /* MOEDAS */
 async function carregarMoedas(){
-  try{
-    const res = await fetch('/api/moedas');
-    const m = await res.json();
-    document.getElementById('dolar-value').innerText='US$ '+m.dolar.toFixed(2);
-    document.getElementById('euro-value').innerText='€ '+m.euro.toFixed(2);
-    document.getElementById('yuans-value').innerText='¥ '+m.yuan.toFixed(2);
-    document.getElementById('bitcoin-value').innerText='₿ '+m.bitcoin.toLocaleString('pt-BR');
-  }catch(e){ console.error('Erro moedas',e) }
+  const r = await fetch('/api/moedas');
+  const m = await r.json();
+  dolar-value.innerText='US$ '+m.dolar.toFixed(2);
+  euro-value.innerText='€ '+m.euro.toFixed(2);
+  yuans-value.innerText='¥ '+m.yuan.toFixed(2);
+  bitcoin-value.innerText='₿ '+m.bitcoin.toLocaleString('pt-BR');
+}
+
+/* TICKER PERENE */
+async function carregarAtivosPerenes(){
+  const res = await fetch('/api/ativos');
+  const data = await res.json();
+  const ticker = document.getElementById('ticker');
+  ticker.innerHTML = '';
+
+  data.forEach(a=>{
+    const c = a.change>0?'up':a.change<0?'down':'';
+    ticker.innerHTML += `<span class="${c}">
+      ${a.symbol} R$ ${a.price.toFixed(2)} (${a.change.toFixed(2)}%)
+    </span>`;
+  });
+
+  ticker.innerHTML += ticker.innerHTML;
 }
 
 /* TOPS */
 async function carregarTop(){
-  const res = await fetch('/api/top');
-  const data = await res.json();
-  const map=[
-    ['acoes_altas','acoesAltas'],
-    ['acoes_baixas','acoesBaixas'],
-    ['fiis_altas','fiisAltas'],
-    ['fiis_baixas','fiisBaixas']
-  ];
-  map.forEach(([api,id])=>{
+  const r=await fetch('/api/top');
+  const d=await r.json();
+  [['acoes_altas','acoesAltas'],['acoes_baixas','acoesBaixas'],
+   ['fiis_altas','fiisAltas'],['fiis_baixas','fiisBaixas']]
+  .forEach(([k,id])=>{
     const el=document.getElementById(id);
     el.innerHTML='';
-    el.className='grid';
-    if(data[api]) data[api].forEach(i=>{
-      el.innerHTML+=`
-        <div class="card">
-          <strong>${i.symbol || i.codigo}</strong>
-          <span>R$ ${i.regularMarketPrice?.toFixed(2) || i.preco} (${i.regularMarketChangePercent?.toFixed(2) || i.variacao}%)</span>
-        </div>
-      `;
+    d[k]?.forEach(i=>{
+      el.innerHTML+=`<div class="card"><strong>${i.symbol}</strong>
+      <span>R$ ${i.preco} (${i.variacao}%)</span></div>`;
     });
   });
 }
 
 /* PESQUISA */
 async function buscarAtivo(){
-  const symbol = document.getElementById('searchInput').value.toUpperCase();
-  if(!symbol) return;
-  const res = await fetch('/api/ativo/'+symbol);
-  if(res.status!==200){ document.getElementById('resultado').innerHTML='<p>Ativo não encontrado</p>'; return; }
-  const data = await res.json();
-  const r = document.getElementById('resultado');
-  r.innerHTML=`
-    <h3>${data.symbol}</h3>
-    <p>Preço: R$ ${data.regularMarketPrice?.toFixed(2)}</p>
-    <p>Variação: ${data.regularMarketChangePercent?.toFixed(2)}%</p>
-    <p>Tipo: ${data.type}</p>
-    <p>Dividend Yield: ${data.dividendYield || '-'}</p>
-    <p>Último Dividendo: ${data.lastDividendValue || '-'}</p>
-  `;
+  const s=searchInput.value.toUpperCase();
+  const r=await fetch('/api/ativo/'+s);
+  if(r.status!==200){ resultado.innerHTML='Não encontrado'; return;}
+  const d=await r.json();
+  resultado.innerHTML=`<h3>${d.symbol}</h3>
+  <p>Preço: R$ ${d.regularMarketPrice}</p>`;
 }
 
-/* Inicializar */
+/* INIT */
 carregarMoedas();
 carregarTop();
+carregarAtivosPerenes();
+setInterval(carregarAtivosPerenes,60000);
 </script>
 
 </body>
