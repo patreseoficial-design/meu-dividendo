@@ -1,48 +1,70 @@
+// scripts/top.js
 import fetch from "node-fetch";
 import { ACOES, FIIS } from "./listas.js";
 
-const APIKEY = "SUA_API_AQUI";
+// Yahoo Finance endpoint
+async function buscarYahoo(symbols) {
+  const lista = symbols.join(",");
+  const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${lista}.SA`;
 
-async function buscarAtivo(symbol){
-  const url = `https://financialmodelingprep.com/api/v3/quote/${symbol}.SA?apikey=${APIKEY}`;
-  const r = await fetch(url);
-  const j = await r.json();
-  return j[0];
-}
-
-async function processar(lista){
-  const dados = [];
-
-  for(const s of lista){
-    try{
-      const a = await buscarAtivo(s);
-      if(!a) continue;
-
-      dados.push({
-        symbol: s,
-        price: a.price,
-        change: a.changesPercentage,
-        volume: a.volume,
-        liquidez: a.price * a.volume
-      });
-    }catch{}
-  }
-
-  return dados;
-}
-
-export default async function top(req,res){
-  const acoes = await processar(ACOES);
-  const fiis  = await processar(FIIS);
-
-  res.json({
-    acoes_altas: [...acoes].sort((a,b)=>b.change - a.change).slice(0,10),
-    acoes_baixas: [...acoes].sort((a,b)=>a.change - b.change).slice(0,10),
-
-    acoes_liquidas: [...acoes].sort((a,b)=>b.liquidez - a.liquidez).slice(0,10),
-    acoes_iliquidas: [...acoes].sort((a,b)=>a.liquidez - b.liquidez).slice(0,10),
-
-    fiis_liquidos: [...fiis].sort((a,b)=>b.liquidez - a.liquidez).slice(0,10),
-    fiis_iliquidos: [...fiis].sort((a,b)=>a.liquidez - b.liquidez).slice(0,10)
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0"
+    }
   });
+
+  const json = await res.json();
+  return json.quoteResponse.result || [];
+}
+
+export default async function top(req, res) {
+  try {
+    // Busca tudo de uma vez
+    const dadosAcoes = await buscarYahoo(ACOES);
+    const dadosFiis = await buscarYahoo(FIIS);
+
+    function normalizar(item) {
+      return {
+        symbol: item.symbol.replace(".SA", ""),
+        price: item.regularMarketPrice ?? null,
+        change: item.regularMarketChangePercent ?? null
+      };
+    }
+
+    const acoes = dadosAcoes
+      .filter(i => i.regularMarketChangePercent !== null)
+      .map(normalizar);
+
+    const fiis = dadosFiis
+      .filter(i => i.regularMarketChangePercent !== null)
+      .map(normalizar);
+
+    // Ordenações
+    const acoes_altas = [...acoes]
+      .sort((a, b) => b.change - a.change)
+      .slice(0, 10);
+
+    const acoes_baixas = [...acoes]
+      .sort((a, b) => a.change - b.change)
+      .slice(0, 10);
+
+    const fiis_altas = [...fiis]
+      .sort((a, b) => b.change - a.change)
+      .slice(0, 10);
+
+    const fiis_baixas = [...fiis]
+      .sort((a, b) => a.change - b.change)
+      .slice(0, 10);
+
+    res.json({
+      acoes_altas,
+      acoes_baixas,
+      fiis_altas,
+      fiis_baixas
+    });
+
+  } catch (e) {
+    console.error("Erro TOP:", e);
+    res.status(500).json({ erro: "Falha ao buscar tops" });
+  }
 }
