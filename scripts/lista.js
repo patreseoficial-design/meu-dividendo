@@ -1,4 +1,4 @@
-// scripts/listas.js
+// scripts/lista.js
 
 // 40 AÇÕES MAIS LÍQUIDAS DA B3
 export const ACOES = [
