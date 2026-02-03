@@ -81,13 +81,16 @@ function calcular() {
     }
   });
 
-  graf2 = new Chart(document.getElementById('graficoJuros'), {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        { label: 'Juros recebidos por mês', data: dataJuros, backgroundColor: '#111' }
-      ]
-    }
-  });
-}
+  graf2 = new Chart(graficoJuros,{
+  type:'bar',
+  data:{
+    labels,
+    datasets:[
+      {
+        label:'Juros recebidos por mês', 
+        data:dataJuros, 
+        backgroundColor: 'rgba(135, 206, 250, 0.8)' // azul claro
+      }
+    ]
+  }
+});
