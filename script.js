@@ -1,12 +1,8 @@
 // MENU TOGGLE
-function toggleMenu() {
+window.toggleMenu = function() {
   const menu = document.getElementById('menuLinks');
-  if(menu.style.display === 'block') {
-    menu.style.display = 'none';
-  } else {
-    menu.style.display = 'block';
-  }
-}
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+};
 
 // Carregar moedas
 async function carregarMoedas() {
