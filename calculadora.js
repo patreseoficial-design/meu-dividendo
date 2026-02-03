@@ -1,12 +1,4 @@
-// Limpa todos os inputs quando a página carregar
-window.onload = () => {
-  document.querySelectorAll("input").forEach(i => i.value = "");
-  document.getElementById('resultado-calculo').innerHTML = "";
-};
-
-
-
-  let graf1, graf2;
+let graf1, graf2;
 
 function calcular() {
   // PEGANDO OS ELEMENTOS
@@ -18,10 +10,10 @@ function calcular() {
   const tipoPeriodo = document.getElementById('tipoPeriodo').value;
 
   // AJUSTA TAXA E PERÍODO PARA MENSAL
-  if(tipoTaxa === 'anual') tx = Math.pow(1 + tx, 1/12) - 1;
-  if(tipoPeriodo === 'anos') meses *= 12;
+  if (tipoTaxa === 'anual') tx = Math.pow(1 + tx, 1 / 12) - 1;
+  if (tipoPeriodo === 'anos') meses *= 12;
 
-  // INICIALIZA VARIÁVEIS
+  // VARIÁVEIS
   let reinv = ini;
   let sem = ini;
   let jurosReinv = 0;
@@ -32,7 +24,7 @@ function calcular() {
 
   const labels = [], dataReinv = [], dataSem = [], dataJuros = [];
 
-  for(let i = 1; i <= meses; i++){
+  for (let i = 1; i <= meses; i++) {
     const jr = reinv * tx; // juros reinvestindo
     reinv += jr + men;
     jurosReinv += jr;
@@ -41,7 +33,7 @@ function calcular() {
     sem += js + men;
     jurosSem += js;
 
-    // Preenche tabela detalhada
+    // Tabela detalhada
     tbody.innerHTML += `
       <tr>
         <td>${i}</td>
@@ -57,26 +49,26 @@ function calcular() {
     dataJuros.push(jr);
   }
 
-  // RESUMO FINAL
+  // RESUMO
   const totalInvestido = ini + men * meses;
   const montante = reinv;
   const totalJuros = montante - totalInvestido;
 
   // MOSTRA CAIXA DE RESUMO
   const res = document.getElementById('resultadoResumo');
-res.style.display = 'block';
-res.style.border = '2px solid red';      // só para teste visual
-res.style.backgroundColor = 'yellow';    // só para teste visual
-document.getElementById('resTotalFinal').innerText = `Valor Total Final: R$ ${montante.toFixed(2)}`;
-document.getElementById('resTotalInvestido').innerText = `Valor Total Investido: R$ ${totalInvestido.toFixed(2)}`;
-document.getElementById('resTotalJuros').innerText = `Total em Juros: R$ ${totalJuros.toFixed(2)}`;
+  res.style.display = 'block';
+  res.style.border = '2px solid red';        // só para teste visual
+  res.style.backgroundColor = 'yellow';      // só para teste visual
+  document.getElementById('resTotalFinal').innerText = `Valor Total Final: R$ ${montante.toFixed(2)}`;
+  document.getElementById('resTotalInvestido').innerText = `Valor Total Investido: R$ ${totalInvestido.toFixed(2)}`;
+  document.getElementById('resTotalJuros').innerText = `Total em Juros: R$ ${totalJuros.toFixed(2)}`;
 
   // MOSTRA TABELA DETALHADA
   document.getElementById('resultado').style.display = 'block';
 
   // ATUALIZA GRÁFICOS
-  if(graf1) graf1.destroy();
-  if(graf2) graf2.destroy();
+  if (graf1) graf1.destroy();
+  if (graf2) graf2.destroy();
 
   graf1 = new Chart(document.getElementById('graficoComparativo'), {
     type: 'line',
