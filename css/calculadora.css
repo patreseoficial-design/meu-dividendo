@@ -176,3 +176,11 @@ header {
   height: 3cm;
   background: #111;
 }
+footer {
+  width: 100%;
+  background: #111;
+  color: #fff;
+  padding: 30px 15px;
+  text-align: center;
+  font-size: 14px;
+}
