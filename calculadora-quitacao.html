@@ -1,0 +1,37 @@
+<!-- CALCULADORA DE QUITAÇÃO DE BENS -->
+<div class="calc-box">
+  <h2>Calculadora de Quitação de Bens</h2>
+  <div class="inputs">
+
+    <div class="input-group">
+      <label>Valor do Bem</label>
+      <input type="number" id="valorBem" value="30000">
+    </div>
+
+    <div class="input-group">
+      <label>Valor da Parcela Mensal</label>
+      <input type="number" id="valorParcela" value="1000">
+    </div>
+
+    <div class="input-group">
+      <label>Taxa de Juros (%)</label>
+      <input type="number" id="taxaBem" value="1">
+    </div>
+
+    <div class="input-group">
+      <label>Período (Meses)</label>
+      <input type="number" id="periodoBem" value="36">
+    </div>
+
+  </div>
+
+  <button class="calc-btn" onclick="calcularQuitacao()">Calcular</button>
+
+  <!-- RESULTADO -->
+  <div id="resultadoQuitacao" class="result" style="display:none">
+    <h3>Resumo da Quitação</h3>
+    <p id="resTotalQuitacao"></p>
+    <p id="resParcelasQuitacao"></p>
+  </div>
+
+</div>
