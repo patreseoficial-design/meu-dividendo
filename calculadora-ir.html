@@ -14,7 +14,7 @@
 <div class="calc-box">
   <div class="inputs">
     <div class="input-group">
-      <label>Valor Recebido (Dividendos/FII/Venda)</label>
+      <label>Valor Recebido (Dividendos/FII)</label>
       <input type="number" id="valorIR" value="1000">
     </div>
 
@@ -35,22 +35,7 @@
   <p id="resTotalIR"></p>
 </div>
 
-<script>
-function calcularIR() {
-  const valor = +document.getElementById('valorIR').value;
-  const tipo = document.getElementById('tipoIR').value;
-  let aliquota = 0;
-
-  if(tipo === 'acoes') aliquota = 0; // Dividendos são isentos de IR
-  if(tipo === 'fii') aliquota = 0.2; // Exemplo: 20% sobre ganho de FIIs
-
-  const imposto = valor * aliquota;
-
-  const res = document.getElementById('resultadoIR');
-  res.style.display = 'block';
-  document.getElementById('resTotalIR').innerText = `Imposto a pagar: R$ ${imposto.toFixed(2)}`;
-}
-</script>
+<script src="js/calculadora-ir.js"></script>
 
 </body>
 </html>
