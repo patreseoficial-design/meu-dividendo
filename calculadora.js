@@ -59,11 +59,11 @@ function calcular() {
   totalJuros = montante - totalInvestido;
 
   // Mostra caixa de resumo
-  const res = document.getElementById('resultadoResumo');
-  res.style.display = 'block';
-  document.getElementById('totalFinal').innerText = `Valor Total Final: R$ ${montante.toFixed(2)}`;
-  document.getElementById('totalInvestido').innerText = `Valor Total Investido: R$ ${totalInvestido.toFixed(2)}`;
-  document.getElementById('totalJuros').innerText = `Total em Juros: R$ ${totalJuros.toFixed(2)}`;
+const res = document.getElementById('resultadoResumo');
+res.style.display = 'block';
+document.getElementById('resTotalFinal').innerText = `Valor Total Final: R$ ${montante.toFixed(2)}`;
+document.getElementById('resTotalInvestido').innerText = `Valor Total Investido: R$ ${totalInvestido.toFixed(2)}`;
+document.getElementById('resTotalJuros').innerText = `Total em Juros: R$ ${totalJuros.toFixed(2)}`;
 
   // Atualiza gráficos
   if(graf1) graf1.destroy();
