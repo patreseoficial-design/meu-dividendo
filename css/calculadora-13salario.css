@@ -63,3 +63,11 @@ function toggleMenu() {
   const menu = document.getElementById('menuLinks');
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
+footer {
+  width: 100%;
+  background-color: #111; /* preto */
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  margin: 0;
+}
