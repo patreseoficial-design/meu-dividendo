@@ -1,0 +1,37 @@
+<!-- CALCULADORA DE RESCISÃO -->
+<div class="calc-box">
+  <h2>Calculadora de Rescisão</h2>
+  <div class="inputs">
+
+    <div class="input-group">
+      <label>Salário Mensal</label>
+      <input type="number" id="salario" value="2500">
+    </div>
+
+    <div class="input-group">
+      <label>Meses Trabalhados</label>
+      <input type="number" id="mesesTrabalhados" value="12">
+    </div>
+
+    <div class="input-group">
+      <label>Férias Pendentes (em meses)</label>
+      <input type="number" id="ferias" value="1">
+    </div>
+
+    <div class="input-group">
+      <label>13º Salário (Proporcional)</label>
+      <input type="number" id="decimoTerceiro" value="1">
+    </div>
+
+  </div>
+
+  <button class="calc-btn" onclick="calcularRescisao()">Calcular</button>
+
+  <!-- RESULTADO -->
+  <div id="resultadoRescisao" class="result" style="display:none">
+    <h3>Resumo da Rescisão</h3>
+    <p id="resTotalRescisao"></p>
+    <p id="resDetalhesRescisao"></p>
+  </div>
+
+</div>
