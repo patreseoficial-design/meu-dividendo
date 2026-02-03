@@ -70,7 +70,7 @@ window.addEventListener('DOMContentLoaded', () => {
   carregarTop();
 });
 function toggleMenu() {
-  const menu = document.getElementById('side-menu');
-  menu.style.left = menu.style.left === '0px' ? '-260px' : '0px';
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 window.toggleMenu = toggleMenu;
