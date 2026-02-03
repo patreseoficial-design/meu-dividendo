@@ -15,6 +15,7 @@ body {
   color:#000;
 }
 
+/* HEADER */
 header {
   background:#111;
   height:4cm;
@@ -43,6 +44,31 @@ header h1 {
   background:#555;
 }
 
+/* MENU LATERAL */
+#side-menu {
+  position:fixed;
+  top:0;
+  left:-260px;
+  width:250px;
+  height:100%;
+  background:#111;
+  padding-top:100px;
+  transition:0.3s;
+  z-index:2000;
+}
+
+#side-menu a {
+  display:block;
+  padding:15px 20px;
+  color:#fff;
+  text-decoration:none;
+  font-size:16px;
+}
+
+#side-menu a:hover {
+  background:#222;
+}
+
 /* MOEDAS */
 #moedas {
   display:flex;
@@ -59,7 +85,7 @@ header h1 {
   width:80px;
 }
 
-/* 🔥 TICKER PERENE 🔥 */
+/* TICKER */
 #ticker-wrapper {
   width:100%;
   overflow:hidden;
@@ -176,8 +202,14 @@ section h3 {
 
 <body>
 
+<!-- MENU LATERAL -->
+<div id="side-menu">
+  <a href="index.html">🏠 Início</a>
+  <a href="calculadora.html">📈 Calculadora de Juros Compostos</a>
+</div>
+
 <header>
-  <div class="menu">☰</div>
+  <div class="menu" onclick="toggleMenu()">☰</div>
   <h1>Meu Dividendo</h1>
   <div class="profile"></div>
 </header>
@@ -191,12 +223,10 @@ section h3 {
   <div class="card"><span>Real</span><strong>R$ 1,00</strong></div>
 </section>
 
-<!-- 🔥 TICKER PERENE 🔥 -->
 <section id="ticker-wrapper">
   <div id="ticker"></div>
 </section>
 
-<!-- PESQUISA -->
 <section id="search-wrapper">
   <div id="search">
     <input id="searchInput" placeholder="Pesquisar ação ou FII...">
@@ -204,7 +234,6 @@ section h3 {
   </div>
 </section>
 
-<!-- TOPS -->
 <section id="top">
   <h3>Maiores Altas - Ações</h3>
   <div id="acoesAltas" class="grid"></div>
@@ -230,30 +259,33 @@ section h3 {
 </section>
 
 <script>
+function toggleMenu(){
+  const menu = document.getElementById('side-menu');
+  menu.style.left = menu.style.left === '0px' ? '-260px' : '0px';
+}
+
 /* MOEDAS */
 async function carregarMoedas(){
   const r = await fetch('/api/moedas');
   const m = await r.json();
-  dolar-value.innerText='US$ '+m.dolar.toFixed(2);
-  euro-value.innerText='€ '+m.euro.toFixed(2);
-  yuans-value.innerText='¥ '+m.yuan.toFixed(2);
-  bitcoin-value.innerText='₿ '+m.bitcoin.toLocaleString('pt-BR');
+  document.getElementById('dolar-value').innerText='US$ '+m.dolar.toFixed(2);
+  document.getElementById('euro-value').innerText='€ '+m.euro.toFixed(2);
+  document.getElementById('yuans-value').innerText='¥ '+m.yuan.toFixed(2);
+  document.getElementById('bitcoin-value').innerText='₿ '+m.bitcoin.toLocaleString('pt-BR');
 }
 
-/* TICKER PERENE */
+/* TICKER */
 async function carregarAtivosPerenes(){
   const res = await fetch('/api/ativos');
   const data = await res.json();
   const ticker = document.getElementById('ticker');
   ticker.innerHTML = '';
-
   data.forEach(a=>{
     const c = a.change>0?'up':a.change<0?'down':'';
     ticker.innerHTML += `<span class="${c}">
       ${a.symbol} R$ ${a.price.toFixed(2)} (${a.change.toFixed(2)}%)
     </span>`;
   });
-
   ticker.innerHTML += ticker.innerHTML;
 }
 
