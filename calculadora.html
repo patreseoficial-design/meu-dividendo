@@ -15,7 +15,7 @@ body{
   color:#000;
 }
 
-/* HEADER IGUAL AO PRINCIPAL */
+/* HEADER */
 header{
   background:#111;
   height:4cm;
@@ -43,7 +43,7 @@ header h1{
   margin:30px 0 15px;
 }
 
-/* TEXTO EXPLICATIVO */
+/* TEXTO */
 .explain{
   max-width:900px;
   margin:0 auto 20px;
@@ -64,7 +64,7 @@ header h1{
   font-weight:bold;
 }
 
-/* CAIXA DA CALCULADORA */
+/* CALCULADORA */
 .calc-box{
   max-width:900px;
   margin:0 auto;
@@ -73,32 +73,32 @@ header h1{
   padding:20px;
 }
 
-/* INPUTS ORGANIZADOS */
 .inputs{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:15px;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
 }
+
 .input-group{
   display:flex;
   flex-direction:column;
 }
 .input-group label{
   font-size:14px;
-  margin-bottom:5px;
+  margin-bottom:6px;
 }
 .input-group input,
 .input-group select{
-  height:40px;
+  height:42px;
   padding:0 10px;
   font-size:15px;
 }
 
 /* BOTÃO */
 .calc-btn{
-  margin-top:20px;
+  margin-top:22px;
   width:100%;
-  height:45px;
+  height:48px;
   font-size:16px;
   background:#111;
   color:#fff;
@@ -121,7 +121,7 @@ header h1{
 }
 .total{
   text-align:center;
-  font-size:22px;
+  font-size:20px;
   font-weight:bold;
   margin-bottom:20px;
 }
@@ -147,7 +147,6 @@ th{
   margin:30px auto;
 }
 
-/* RESPONSIVO */
 @media(max-width:600px){
   .page-title{font-size:22px;}
 }
@@ -166,9 +165,7 @@ th{
 
 <div class="explain">
 <p><strong>O que é a Calculadora de Juros Compostos?</strong><br>
-É uma ferramenta que ajuda a saber aproximadamente quanto renderá um investimento ou qual será o tamanho de uma dívida ao longo do tempo, considerando o efeito dos juros compostos (ou “juros sobre juros”).</p>
-
-<p>Para realizar o cálculo, são considerados o valor inicial e o mensal, a taxa de juros (mensal ou anual) e o período (em meses ou anos).</p>
+Ferramenta para simular investimentos considerando aportes e o efeito dos juros ao longo do tempo.</p>
 </div>
 
 <div class="banner">Propaganda</div>
@@ -216,17 +213,15 @@ th{
   <h3>Resultado</h3>
   <div id="totalFinal" class="total"></div>
 
-  <table id="tabela">
+  <table>
     <thead>
       <tr>
         <th>Mês</th>
-        <th>Juros (Reinvestindo)</th>
         <th>Total (Reinvestindo)</th>
-        <th>Juros (Sem Reinvestir)</th>
         <th>Total (Sem Reinvestir)</th>
       </tr>
     </thead>
-    <tbody></tbody>
+    <tbody id="tabelaBody"></tbody>
   </table>
 </div>
 
@@ -240,46 +235,48 @@ th{
 let chart;
 
 function calcular(){
-  const inicial = +inicial.value;
-  const mensal = +mensal.value;
-  let taxa = +taxa.value / 100;
-  let meses = +periodo.value;
+  const inicial = Number(document.getElementById('inicial').value);
+  const mensal = Number(document.getElementById('mensal').value);
+  let taxa = Number(document.getElementById('taxa').value) / 100;
+  let meses = Number(document.getElementById('periodo').value);
 
-  if(tipoTaxa.value === 'anual') taxa = Math.pow(1+taxa,1/12)-1;
-  if(tipoPeriodo.value === 'anos') meses *= 12;
+  if(document.getElementById('tipoTaxa').value === 'anual'){
+    taxa = Math.pow(1 + taxa, 1/12) - 1;
+  }
+
+  if(document.getElementById('tipoPeriodo').value === 'anos'){
+    meses *= 12;
+  }
 
   let totalReinv = inicial;
   let totalSem = inicial;
-  let jurosSem = 0;
 
-  const tbody = document.querySelector('#tabela tbody');
+  const tbody = document.getElementById('tabelaBody');
   tbody.innerHTML = '';
 
-  const labels=[], reinv=[], sem=[];
+  const labels = [];
+  const reinv = [];
+  const sem = [];
 
   for(let i=1;i<=meses;i++){
-    const jReinv = totalReinv * taxa;
-    totalReinv += jReinv + mensal;
-
-    jurosSem = inicial * taxa;
-    totalSem += jurosSem + mensal;
+    totalReinv = totalReinv * (1 + taxa) + mensal;
+    totalSem = totalSem + (inicial * taxa) + mensal;
 
     labels.push(i);
-    reinv.push(totalReinv.toFixed(2));
-    sem.push(totalSem.toFixed(2));
+    reinv.push(totalReinv);
+    sem.push(totalSem);
 
     tbody.innerHTML += `
       <tr>
         <td>${i}</td>
-        <td>R$ ${jReinv.toFixed(2)}</td>
         <td>R$ ${totalReinv.toFixed(2)}</td>
-        <td>R$ ${jurosSem.toFixed(2)}</td>
         <td>R$ ${totalSem.toFixed(2)}</td>
       </tr>`;
   }
 
-  resultado.style.display='block';
-  totalFinal.innerText = `Reinvestindo: R$ ${totalReinv.toFixed(2)} | Sem reinvestir: R$ ${totalSem.toFixed(2)}`;
+  document.getElementById('resultado').style.display='block';
+  document.getElementById('totalFinal').innerText =
+    `Reinvestindo: R$ ${totalReinv.toFixed(2)} | Sem reinvestir: R$ ${totalSem.toFixed(2)}`;
 
   if(chart) chart.destroy();
   chart = new Chart(document.getElementById('grafico'),{
@@ -290,6 +287,9 @@ function calcular(){
         {label:'Reinvestindo',data:reinv,borderWidth:2},
         {label:'Sem Reinvestir',data:sem,borderWidth:2}
       ]
+    },
+    options:{
+      responsive:true
     }
   });
 }
