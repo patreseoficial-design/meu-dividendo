@@ -229,3 +229,8 @@ body {
   margin: auto;
   padding: 16px;
 }
+
+input, select, button {
+  width: 100%;
+  max-width: 100%;
+}
