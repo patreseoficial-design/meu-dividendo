@@ -32,17 +32,8 @@
   <p id="resTotal13"></p>
 </div>
 
-<script>
-function calcular13() {
-  const salario = +document.getElementById('salario').value;
-  const meses = +document.getElementById('meses').value;
-  const total = salario * (meses / 12);
-
-  const res = document.getElementById('resultado13');
-  res.style.display = 'block';
-  document.getElementById('resTotal13').innerText = `Valor do 13º salário proporcional: R$ ${total.toFixed(2)}`;
-}
-</script>
+<!-- JS Separado -->
+<script src="js/calculadora-13salario.js"></script>
 
 </body>
 </html>
