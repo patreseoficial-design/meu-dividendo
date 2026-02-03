@@ -8,21 +8,34 @@
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
   <div class="menu" onclick="toggleMenu()">☰</div>
   <h1>Meu Dividendo</h1>
   <div class="profile"></div>
 
-  <!-- MENU HAMBÚRGUER SIMPLES -->
+  <!-- MENU HAMBÚRGUER -->
   <nav id="menuLinks" class="menu-links">
     <ul>
-      <li><a href="calculadora.html">Juros Compostos</a></li>
-      <li><a href="calculadora13.html">13º Salário</a></li>
-      <li><a href="calculadoraPIS.html">PIS</a></li>
-      <li><a href="calculadoraIR.html">IR sobre Investimentos</a></li>
+      <li><a href="calculadora.html">Calculadora</a></li>
+      <li><a href="calculadora-recisao.html">Rescisão</a></li>
+      <li><a href="calculadora-13salario.html">13º Salário</a></li>
+      <li><a href="calculadora-ir.html">IR sobre Investimentos</a></li>
+      <li><a href="calculadora-pis.html">PIS</a></li>
+      <li><a href="calculadora-quitacao.html">Quitação</a></li>
     </ul>
   </nav>
 </header>
+
+<!-- SCRIPT -->
+<script>
+  // FUNÇÃO PARA TOGGLE DO MENU HAMBÚRGUER
+  function toggleMenu() {
+    const menu = document.getElementById('menuLinks');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  }
+</script>
+  
 
 <!-- MOEDAS -->
 <section id="moedas">
