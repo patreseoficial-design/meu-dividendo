@@ -95,4 +95,65 @@ header {
     font-size: 13px;
     margin: 20px 10px;
   }
+}/* CONTAINER DA CALCULADORA */
+.calc-box {
+  width: 100%;
+  max-width: 900px;
+  margin: 24px auto;        /* margem externa (centraliza) */
+  padding: 20px;            /* espaço interno */
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* GRID DOS INPUTS */
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;                /* espaço entre campos */
+}
+
+/* CADA CAMPO */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* INPUTS */
+.input-group input,
+.input-group select {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* BOTÃO */
+.calc-btn {
+  margin-top: 20px;
+  width: 100%;
+  height: 48px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* RESULTADO */
+.result {
+  width: 100%;
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  background: #fff;
+  box-sizing: border-box;
 }
