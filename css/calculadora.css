@@ -250,4 +250,11 @@ footer {
 }.footer-content {
   max-width: 900px;
   margin: 0 auto;  /* centraliza */
+}header h1 a {
+  text-decoration: none; /* remove sublinhado */
+  color: #111;           /* cor do texto */
+}
+
+header h1 a:hover {
+  color: #5bc0eb;        /* muda a cor quando passa o mouse, opcional */
 }
