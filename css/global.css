@@ -31,6 +31,7 @@ header {
   padding: 0 20px;
 }
 
+
 header h1 {
   margin: 0;
   font-size: 24px;
@@ -38,6 +39,42 @@ header h1 {
   flex: 1;
 }
 
+.menu {
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.menu-links {
+  display: none; /* oculto por padrão */
+  position: absolute;
+  top: 60px; /* ajusta conforme header */
+  left: 0;
+  background: #fff;
+  width: 200px;
+  border: 1px solid #ccc;
+  z-index: 1000;
+}
+
+.menu-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-links li {
+  border-bottom: 1px solid #eee;
+}
+
+.menu-links li a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #111;
+}
+
+.menu-links li a:hover {
+  background-color: #f0f0f0;
+}
 .menu {
   font-size: 26px;
   cursor: pointer;
