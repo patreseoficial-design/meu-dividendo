@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de 13º Salário | Meu Dividendo</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+</head>
+<body>
+
+<h1 class="page-title">Calculadora de 13º Salário</h1>
+
+<div class="calc-box">
+  <div class="inputs">
+    <div class="input-group">
+      <label>Salário Mensal</label>
+      <input type="number" id="salario" value="2000">
+    </div>
+
+    <div class="input-group">
+      <label>Meses Trabalhados</label>
+      <input type="number" id="meses" value="12" min="1" max="12">
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calcular13()">Calcular</button>
+</div>
+
+<div id="resultado13" class="result" style="display:none">
+  <h2>Resultado</h2>
+  <p id="resTotal13"></p>
+</div>
+
+<script>
+function calcular13() {
+  const salario = +document.getElementById('salario').value;
+  const meses = +document.getElementById('meses').value;
+  const total = salario * (meses / 12);
+
+  const res = document.getElementById('resultado13');
+  res.style.display = 'block';
+  document.getElementById('resTotal13').innerText = `Valor do 13º salário proporcional: R$ ${total.toFixed(2)}`;
+}
+</script>
+
+</body>
+</html>
