@@ -132,6 +132,29 @@ canvas {
   border-radius: 8px;
 }
 
+/* ===== CENTRALIZAÇÃO DE TEXTOS EDUCATIVOS ===== */
+.explain, 
+.info-final {
+  text-align: center;        /* centraliza o conteúdo */
+  max-width: 900px;          /* limita a largura para leitura confortável */
+  margin: 20px auto;         /* centraliza horizontalmente e dá espaçamento vertical */
+  padding: 10px;             /* leve padding para ficar bonito */
+  line-height: 1.6;          /* melhora a leitura */
+}
+
+.explain ol, 
+.info-final ul {
+  text-align: left;          /* mantém listas alinhadas à esquerda dentro da seção centralizada */
+  display: inline-block;     /* faz a lista respeitar a largura do max-width */
+  padding-left: 20px;        /* deixa o recuo das listas */
+}
+
+.explain h2, 
+.info-final h2 {
+  text-align: center;        /* títulos centralizados */
+  margin-bottom: 15px;       /* espaço abaixo do título */
+}
+
 /* ===== MOBILE ===== */
 @media (max-width: 600px) {
   .calc-box {
