@@ -6,8 +6,7 @@
 
 <title>Calculadora de Juros Compostos Online | Meu Dividendo</title>
 
-<meta name="description" content="Calcule juros compostos de forma simples. Veja a evolução mês a mês, com e sem reinvestimento, e simule seus rendimentos futuros.">
-
+<meta name="description" content="Calculadora de juros compostos online gratuita. Simule investimentos com e sem reinvestimento, veja juros ganhos mês a mês e evolução do rendimento.">
 <meta name="keywords" content="calculadora de juros compostos, juros compostos, investimentos, renda passiva">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -15,7 +14,7 @@
 <style>
 body{
   margin:0;
-  font-family:sans-serif;
+  font-family:Arial, sans-serif;
   background:#fff;
   color:#000;
 }
@@ -23,21 +22,20 @@ body{
 /* HEADER */
 header{
   background:#111;
-  height:4cm;
   color:#fff;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 20px;
+  padding:15px;
 }
 header h1{
   flex:1;
   text-align:center;
   margin:0;
-  font-size:26px;
+  font-size:24px;
 }
-.menu{font-size:28px;cursor:pointer;}
-.profile{width:40px;height:40px;border-radius:50%;background:#555;}
+.menu{font-size:26px;cursor:pointer;}
+.profile{width:36px;height:36px;border-radius:50%;background:#555;}
 
 /* TITULO */
 .page-title{
@@ -55,7 +53,7 @@ header h1{
   font-size:15px;
 }
 
-/* BANNER ADS */
+/* ADS */
 .ad{
   background:#f2f2f2;
   height:90px;
@@ -64,7 +62,7 @@ header h1{
   display:flex;
   align-items:center;
   justify-content:center;
-  color:#888;
+  color:#777;
   font-size:14px;
 }
 
@@ -78,21 +76,21 @@ header h1{
 }
 .inputs{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   gap:15px;
 }
 .input-group{
   display:flex;
   flex-direction:column;
-  position:relative;
 }
 .input-group label{
   font-size:14px;
-  margin-bottom:5px;
+  margin-bottom:4px;
 }
 .info{
-  font-size:13px;
+  font-size:12px;
   color:#555;
+  margin-bottom:4px;
 }
 .input-group input,
 .input-group select{
@@ -124,14 +122,18 @@ header h1{
 }
 .total{
   text-align:center;
-  font-size:22px;
+  font-size:20px;
   font-weight:bold;
   margin-bottom:20px;
 }
 
-/* TABELA */
+/* TABELA RESPONSIVA */
+.table-wrap{
+  overflow-x:auto;
+}
 table{
   width:100%;
+  min-width:600px;
   border-collapse:collapse;
   font-size:14px;
 }
@@ -146,6 +148,16 @@ th{background:#f4f4f4;}
 .chart-box{
   max-width:900px;
   margin:30px auto;
+  padding:0 10px;
+}
+
+/* INFO FINAL */
+.info-final{
+  max-width:900px;
+  margin:40px auto;
+  padding:0 15px;
+  line-height:1.7;
+  font-size:15px;
 }
 
 /* RODAPE */
@@ -159,7 +171,7 @@ footer{
 
 /* MOBILE */
 @media(max-width:600px){
-  header h1{font-size:22px;}
+  header h1{font-size:20px;}
   .page-title{font-size:22px;}
 }
 </style>
@@ -176,30 +188,30 @@ footer{
 <h1 class="page-title">Calculadora de Juros Compostos</h1>
 
 <div class="explain">
-<p><strong>O que é a Calculadora de Juros Compostos?</strong><br>
-É uma ferramenta que ajuda a estimar quanto um investimento pode render ao longo do tempo, considerando o efeito dos juros sobre juros.</p>
+<p><strong>O que é a calculadora de juros compostos?</strong><br>
+Ela ajuda a estimar quanto um investimento pode render ao longo do tempo considerando o efeito dos juros sobre juros.</p>
 
-<p>Ela simula aportes mensais, taxa de juros e mostra a evolução do patrimônio com e sem reinvestimento dos rendimentos.</p>
+<p>Simule aportes mensais, compare cenários com e sem reinvestimento e veja o crescimento mês a mês.</p>
 </div>
 
-<div class="ad">Espaço para anúncio</div>
+<div class="ad"><!-- Google AdSense Topo --></div>
 
 <div class="calc-box">
   <div class="inputs">
     <div class="input-group">
-      <label>Valor inicial ℹ️</label>
-      <span class="info">Valor que você já possui</span>
+      <label>Valor inicial</label>
+      <span class="info">Dinheiro inicial investido</span>
       <input type="number" id="inicial" value="1000">
     </div>
 
     <div class="input-group">
-      <label>Aporte mensal ℹ️</label>
-      <span class="info">Quanto investe todo mês</span>
+      <label>Aporte mensal</label>
+      <span class="info">Valor investido todo mês</span>
       <input type="number" id="mensal" value="200">
     </div>
 
     <div class="input-group">
-      <label>Taxa de juros (%) ℹ️</label>
+      <label>Taxa de juros (%)</label>
       <span class="info">Ex: 1% ao mês</span>
       <input type="number" id="taxa" value="1">
     </div>
@@ -232,70 +244,116 @@ footer{
 <div id="resultado" class="result" style="display:none">
   <div id="totalFinal" class="total"></div>
 
-  <table id="tabela">
-    <thead>
-      <tr>
-        <th>Mês</th>
-        <th>Juros (Reinvestindo)</th>
-        <th>Total (Reinvestindo)</th>
-        <th>Juros (Sem Reinvestir)</th>
-        <th>Total (Sem Reinvestir)</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div class="table-wrap">
+    <table id="tabela">
+      <thead>
+        <tr>
+          <th>Mês</th>
+          <th>Juros (Reinvestindo)</th>
+          <th>Total (Reinvestindo)</th>
+          <th>Juros (Sem Reinvestir)</th>
+          <th>Total (Sem Reinvestir)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </div>
 
 <div class="chart-box">
-  <canvas id="grafico"></canvas>
+  <canvas id="graficoComparativo"></canvas>
 </div>
 
-<div class="ad">Espaço para anúncio</div>
+<div class="chart-box">
+  <canvas id="graficoJuros"></canvas>
+</div>
+
+<div class="ad"><!-- Google AdSense Rodapé --></div>
+
+<div class="info-final">
+<h2>Como calcular juros compostos?</h2>
+<p>
+A fórmula básica é: <strong>M = C × (1 + i)ᵗ</strong>, onde C é o capital inicial,
+i a taxa de juros e t o tempo. Quando há aportes mensais, o cálculo é feito mês a mês.
+</p>
+
+<p>
+Esta calculadora automatiza todo o processo, facilitando a visualização do efeito
+bola de neve dos juros compostos.
+</p>
+</div>
 
 <footer>
   <p>© 2026 Meu Dividendo</p>
-  <p>Ferramentas educacionais para investimentos e renda passiva.</p>
+  <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
+  <p><a href="#" style="color:#fff">Política de Privacidade</a></p>
 </footer>
 
 <script>
-let chart;
+let graf1, graf2;
+
 function calcular(){
-  const ini=+inicial.value, men=+mensal.value;
-  let tx=+taxa.value/100, m=+periodo.value;
+  const ini=+inicial.value;
+  const men=+mensal.value;
+  let tx=+taxa.value/100;
+  let meses=+periodo.value;
+
   if(tipoTaxa.value==='anual') tx=Math.pow(1+tx,1/12)-1;
-  if(tipoPeriodo.value==='anos') m*=12;
+  if(tipoPeriodo.value==='anos') meses*=12;
 
-  let tr=ini, ts=ini;
-  const tb=document.querySelector('#tabela tbody');
-  tb.innerHTML='';
-  const lab=[], r=[], s=[];
+  let reinv=ini, sem=ini;
+  let jurosReinv=0, jurosSem=0;
 
-  for(let i=1;i<=m;i++){
-    const jr=tr*tx;
-    tr+=jr+men;
+  const tbody=document.querySelector('#tabela tbody');
+  tbody.innerHTML='';
+
+  const labels=[], dataReinv=[], dataSem=[], dataJuros=[];
+
+  for(let i=1;i<=meses;i++){
+    const jr=reinv*tx;
+    reinv+=jr+men;
+    jurosReinv+=jr;
+
     const js=ini*tx;
-    ts+=js+men;
+    sem+=js+men;
+    jurosSem+=js;
 
-    lab.push(i); r.push(tr); s.push(ts);
+    labels.push(i);
+    dataReinv.push(reinv);
+    dataSem.push(sem);
+    dataJuros.push(jr);
 
-    tb.innerHTML+=`
+    tbody.innerHTML+=`
       <tr>
         <td>${i}</td>
         <td>R$ ${jr.toFixed(2)}</td>
-        <td>R$ ${tr.toFixed(2)}</td>
+        <td>R$ ${reinv.toFixed(2)}</td>
         <td>R$ ${js.toFixed(2)}</td>
-        <td>R$ ${ts.toFixed(2)}</td>
+        <td>R$ ${sem.toFixed(2)}</td>
       </tr>`;
   }
 
   resultado.style.display='block';
-  totalFinal.innerText=`Reinvestindo: R$ ${tr.toFixed(2)} | Sem reinvestir: R$ ${ts.toFixed(2)}`;
+  totalFinal.innerText=
+    `Juros totais reinvestindo: R$ ${jurosReinv.toFixed(2)} | Sem reinvestir: R$ ${jurosSem.toFixed(2)}`;
 
-  if(chart) chart.destroy();
-  chart=new Chart(grafico,{type:'line',data:{labels:lab,datasets:[
-    {label:'Reinvestindo',data:r,borderWidth:2},
-    {label:'Sem Reinvestir',data:s,borderWidth:2}
-  ]}});
+  if(graf1) graf1.destroy();
+  if(graf2) graf2.destroy();
+
+  graf1=new Chart(graficoComparativo,{
+    type:'line',
+    data:{labels,datasets:[
+      {label:'Reinvestindo',data:dataReinv,borderWidth:2},
+      {label:'Sem Reinvestir',data:dataSem,borderWidth:2}
+    ]}
+  });
+
+  graf2=new Chart(graficoJuros,{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Juros recebidos por mês',data:dataJuros}
+    ]}
+  });
 }
 </script>
 
