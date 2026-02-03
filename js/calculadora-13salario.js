@@ -1,12 +1,19 @@
-let graf1; // opcional futuramente se quiser gráficos do 13º
+// ===== MENU HAMBÚRGUER =====
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+// ===== CALCULADORA 13º SALÁRIO =====
+let graf1; // futuramente para gráficos se quiser
 
 function calcular13() {
   // PEGANDO ELEMENTOS
   const salarioBruto = +document.getElementById('salario').value || 0;
   const mesesTrabalhados = +document.getElementById('meses').value || 0;
-  const horasExtras = +document.getElementById('horasExtras').value || 0;
-  const insalubridadePerc = +document.getElementById('insalubridade').value || 0;
-  const periculosidadePerc = +document.getElementById('periculosidade').value || 0;
+  const horasExtras = +document.getElementById('horasExtras')?.value || 0;
+  const insalubridadePerc = +document.getElementById('insalubridade')?.value || 0;
+  const periculosidadePerc = +document.getElementById('periculosidade')?.value || 0;
 
   // 1️⃣ Salário proporcional pelos meses trabalhados
   let salarioProporcional = (salarioBruto / 12) * mesesTrabalhados;
@@ -39,14 +46,13 @@ function calcular13() {
   if (ir < 0) ir = 0;
 
   // 6️⃣ Parcelas
-  const primeiraParcela = salarioProporcional; // 1ª parcela sem descontos
-  const segundaParcela = salarioComAdicionais - inss - ir; // 2ª parcela líquida
+  const primeiraParcela = salarioProporcional; // sem descontos
+  const segundaParcela = salarioComAdicionais - inss - ir;
   const totalLiquido = primeiraParcela + segundaParcela;
 
   // 7️⃣ Exibir resultados
   const resBox = document.getElementById('resultado13');
   resBox.style.display = 'block';
-
   resBox.innerHTML = `
     <h2>Resultado do 13º Salário</h2>
     <p>Salário proporcional: R$ ${salarioProporcional.toFixed(2)}</p>
@@ -60,4 +66,63 @@ function calcular13() {
     <p>2ª Parcela Líquida: R$ ${segundaParcela.toFixed(2)}</p>
     <h3>Total Líquido do 13º: R$ ${totalLiquido.toFixed(2)}</h3>
   `;
+}
+
+// ===== PLANEJAMENTO MÊS A MÊS =====
+let grafPlanejamento;
+
+function planejar13() {
+  const salario = +document.getElementById('salarioGraf').value || 0;
+  const meses = +document.getElementById('mesesGraf').value || 0;
+
+  const tabelaBody = document.querySelector('#tabelaGraf tbody');
+  tabelaBody.innerHTML = '';
+
+  const labels = [], dataDespesas = [], dataInvest = [], dataReserva = [];
+
+  for (let i = 1; i <= meses; i++) {
+    const proporcional = salario / 12;
+    const desp = proporcional * 0.5;
+    const invest = proporcional * 0.3;
+    const reserva = proporcional * 0.2;
+
+    tabelaBody.innerHTML += `
+      <tr>
+        <td>${i}</td>
+        <td>R$ ${desp.toFixed(2)}</td>
+        <td>R$ ${invest.toFixed(2)}</td>
+        <td>R$ ${reserva.toFixed(2)}</td>
+      </tr>`;
+
+    labels.push(`Mês ${i}`);
+    dataDespesas.push(desp);
+    dataInvest.push(invest);
+    dataReserva.push(reserva);
+  }
+
+  document.getElementById('resultadoGraf').style.display = 'block';
+
+  if (grafPlanejamento) grafPlanejamento.destroy();
+
+  grafPlanejamento = new Chart(document.getElementById('graficoMeses'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Despesas (50%)', data: dataDespesas, backgroundColor: '#FF69B4' }, // rosa
+        { label: 'Investimento (30%)', data: dataInvest, backgroundColor: '#5bc0eb' }, // azul claro
+        { label: 'Reserva / Dívida (20%)', data: dataReserva, backgroundColor: '#90EE90' } // verde claro
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' },
+        title: { display: true, text: 'Distribuição mês a mês do 13º Salário' }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
 }
