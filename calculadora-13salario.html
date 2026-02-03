@@ -6,9 +6,82 @@
   <title>Calculadora de 13º Salário | Meu Dividendo</title>
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/calculadora.css">
+  <style>
+    /* ===== MENU HAMBÚRGUER ===== */
+    .menu {
+      font-size: 28px;
+      cursor: pointer;
+      user-select: none;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: #fff;
+    }
+
+    .menu-links {
+      display: none;
+      position: absolute;
+      top: 50px;
+      left: 10px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      z-index: 1000;
+      width: 220px;
+    }
+
+    .menu-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu-links li {
+      border-bottom: 1px solid #eee;
+    }
+
+    .menu-links li a {
+      display: block;
+      padding: 10px;
+      color: #111;
+      text-decoration: none;
+    }
+
+    .menu-links li a:hover {
+      background-color: #f0f0f0;
+    }
+
+    /* ===== TÍTULO CLICÁVEL ===== */
+    .site-title {
+      text-align: center;
+      margin: 0;
+      color: #fff;
+      padding: 20px 0 10px 0;
+    }
+
+    .site-title a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 28px;
+    }
+
+    /* ===== CAIXA DE RESULTADO ===== */
+    #resultado13 {
+      display: none;
+      text-align: center;
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
-<header>
+
+<header style="position: relative; background:#111; color:#fff; padding:10px 0;">
   <div class="menu" onclick="toggleMenu()">☰</div>
 
   <h1 class="site-title">
@@ -47,17 +120,76 @@
   <button class="calc-btn" onclick="calcular13()">Calcular</button>
 </div>
 
-<div id="resultado13" class="result" style="display:none">
+<div id="resultado13">
   <h2>Resultado</h2>
-  <p id="resTotal13"></p>
+  <p id="resBruto"></p>
+  <p id="resProporcional"></p>
+  <p id="resINSS"></p>
+  <p id="resIR"></p>
+  <p id="resParcela1"></p>
+  <p id="resParcela2"></p>
+  <p id="resTotal"></p>
 </div>
 
-<!-- JS Separado -->
-<script src="js/calculadora-13salario.js"></script>
-<footer>
+<footer style="background:#111; color:#fff; padding:20px; text-align:center;">
   <p>© 2026 Meu Dividendo</p>
   <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
   <p><a href="politica-de-privacidade.html" style="color:#fff; text-decoration:underline;">Política de Privacidade</a></p>
 </footer>
+
+<!-- JS -->
+<script>
+  // MENU HAMBURGUER
+  function toggleMenu() {
+    const menu = document.getElementById('menuLinks');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  }
+
+  // CALCULADORA 13º
+  function calcular13() {
+    const salarioBruto = +document.getElementById('salario').value;
+    const mesesTrabalhados = +document.getElementById('meses').value;
+
+    // 1️⃣ Valor proporcional
+    let valorProporcional = (salarioBruto / 12) * mesesTrabalhados;
+
+    // 2️⃣ INSS
+    let inss;
+    if (salarioBruto <= 1320) inss = salarioBruto * 0.075;
+    else if (salarioBruto <= 2571.29) inss = salarioBruto * 0.09;
+    else if (salarioBruto <= 3856.94) inss = salarioBruto * 0.12;
+    else if (salarioBruto <= 7507.49) inss = salarioBruto * 0.14;
+    else inss = 7507.49 * 0.14; // teto INSS
+
+    // 3️⃣ Base para IRRF
+    const baseIR = valorProporcional - inss;
+
+    // 4️⃣ IRRF
+    let ir = 0;
+    if (baseIR <= 1903.98) ir = 0;
+    else if (baseIR <= 2826.65) ir = baseIR * 0.075 - 142.8;
+    else if (baseIR <= 3751.05) ir = baseIR * 0.15 - 354.8;
+    else if (baseIR <= 4664.68) ir = baseIR * 0.225 - 636.13;
+    else ir = baseIR * 0.275 - 869.36;
+    if (ir < 0) ir = 0;
+
+    // 5️⃣ Parcelas
+    const primeiraParcela = valorProporcional - inss;
+    const segundaParcela = valorProporcional - inss - ir;
+    const totalLiquido = primeiraParcela + segundaParcela;
+
+    // MOSTRAR RESULTADOS
+    const resBox = document.getElementById('resultado13');
+    resBox.style.display = 'block';
+
+    document.getElementById('resBruto').innerText = `Salário Bruto: R$ ${salarioBruto.toFixed(2)}`;
+    document.getElementById('resProporcional').innerText = `Proporcional: R$ ${valorProporcional.toFixed(2)}`;
+    document.getElementById('resINSS').innerText = `INSS: R$ ${inss.toFixed(2)}`;
+    document.getElementById('resIR').innerText = `IRRF: R$ ${ir.toFixed(2)}`;
+    document.getElementById('resParcela1').innerText = `1ª Parcela Líquida: R$ ${primeiraParcela.toFixed(2)}`;
+    document.getElementById('resParcela2').innerText = `2ª Parcela Líquida: R$ ${segundaParcela.toFixed(2)}`;
+    document.getElementById('resTotal').innerText = `Total Líquido do 13º: R$ ${totalLiquido.toFixed(2)}`;
+  }
+</script>
 </body>
 </html>
