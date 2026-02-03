@@ -10,9 +10,10 @@ body{
   margin:0;
   font-family:sans-serif;
   background:#fff;
+  color:#000;
 }
 
-/* HEADER IGUAL AO INDEX */
+/* HEADER IGUAL AO PRINCIPAL */
 header{
   background:#111;
   height:4cm;
@@ -38,18 +39,22 @@ header h1{
   background:#555;
 }
 
-/* CONTEÚDO */
+/* CONTAINER */
 .container{
-  max-width:900px;
+  max-width:1000px;
   margin:30px auto;
   padding:20px;
 }
 
-/* TEXTO */
+h2{
+  text-align:center;
+}
+
+/* TEXTO EXPLICATIVO */
 .explain{
-  font-size:16px;
+  font-size:15px;
   line-height:1.6;
-  margin-bottom:20px;
+  margin:20px 0;
 }
 
 /* BANNER */
@@ -62,36 +67,38 @@ header h1{
   font-weight:bold;
 }
 
-/* FORM */
+/* FORM HORIZONTAL */
 .form-box{
   border:2px solid #000;
   border-radius:8px;
-  padding:20px;
-  margin-bottom:30px;
+  padding:15px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:15px;
 }
 
 .form-box label{
-  display:block;
-  margin-top:10px;
   font-weight:bold;
+  font-size:14px;
 }
 
 .form-box input,
 .form-box select{
   width:100%;
-  height:45px;
-  font-size:16px;
-  margin-top:5px;
-  padding:0 10px;
+  height:40px;
+  font-size:15px;
+  padding:0 8px;
   border:1px solid #000;
   border-radius:6px;
 }
 
+.form-box .full{
+  grid-column:1 / -1;
+}
+
 .form-box button{
-  margin-top:20px;
-  width:100%;
-  height:50px;
-  font-size:18px;
+  height:45px;
+  font-size:17px;
   background:#111;
   color:#fff;
   border:none;
@@ -100,9 +107,9 @@ header h1{
 
 /* RESULTADOS */
 .resultado-final{
-  font-size:26px;
+  font-size:28px;
   font-weight:bold;
-  margin-top:20px;
+  margin-top:30px;
   text-align:center;
 }
 
@@ -110,11 +117,12 @@ header h1{
   width:100%;
   border-collapse:collapse;
   margin-top:20px;
+  font-size:14px;
 }
 
 .tabela th, .tabela td{
   border:1px solid #ccc;
-  padding:8px;
+  padding:6px;
   text-align:center;
 }
 
@@ -138,34 +146,59 @@ header h1{
 <h2>Calculadora de Juros Compostos</h2>
 
 <div class="explain">
-Juros compostos são os juros calculados sobre o valor inicial investido
-<strong>somado aos rendimentos acumulados</strong>.  
-Quando você reinveste os dividendos, seu patrimônio cresce de forma exponencial,
-fazendo o dinheiro trabalhar para você ao longo do tempo.
+<strong>O que é a Calculadora de Juros Compostos?</strong><br>
+É uma ferramenta que ajuda a saber aproximadamente* quanto renderá um investimento
+ou qual será o tamanho de uma dívida ao longo do tempo, considerando o efeito dos
+juros compostos (ou “juros sobre juros”).<br><br>
+
+Para realizar o cálculo, são considerados o valor inicial e o mensal, a taxa de juros
+(mensal ou anual) e o período (em meses ou anos).
 </div>
 
-<div class="banner">Propaganda</div>
+<div class="banner">Banner de propaganda</div>
 
+<div class="explain">
+Saber calcular o crescimento dos juros compostos auxilia na comparação entre tipos
+de empréstimos e investimentos, ajudando na escolha da melhor opção de acordo com
+a situação e as metas financeiras.<br><br>
+
+<em>*Lembramos que os resultados fornecidos são estimativas e podem variar conforme
+mudanças nas taxas de juros ou outras condições financeiras.</em>
+</div>
+
+<!-- FORM -->
 <div class="form-box">
-  <label>Valor inicial (R$)</label>
-  <input id="valorInicial" type="number">
+  <div>
+    <label>Valor inicial (R$)</label>
+    <input id="valorInicial" type="number" value="0">
+  </div>
 
-  <label>Aporte mensal (R$)</label>
-  <input id="aporte" type="number">
+  <div>
+    <label>Aporte mensal (R$)</label>
+    <input id="aporte" type="number" value="0">
+  </div>
 
-  <label>Taxa mensal (%)</label>
-  <input id="taxa" type="number" step="0.01">
+  <div>
+    <label>Taxa (%)</label>
+    <input id="taxa" type="number" step="0.01" value="0">
+  </div>
 
-  <label>Período</label>
-  <input id="tempo" type="number">
+  <div>
+    <label>Período</label>
+    <input id="tempo" type="number" value="12">
+  </div>
 
-  <label>Meses ou Anos</label>
-  <select id="tipoTempo">
-    <option value="meses">Meses</option>
-    <option value="anos">Anos</option>
-  </select>
+  <div>
+    <label>Tipo</label>
+    <select id="tipoTempo">
+      <option value="meses">Meses</option>
+      <option value="anos">Anos</option>
+    </select>
+  </div>
 
-  <button onclick="calcular()">Calcular</button>
+  <div class="full">
+    <button onclick="calcular()">Calcular Juros Compostos</button>
+  </div>
 </div>
 
 <div id="resultado"></div>
@@ -174,26 +207,31 @@ fazendo o dinheiro trabalhar para você ao longo do tempo.
 
 <script>
 function calcular(){
-  let inicial = Number(valorInicial.value);
-  let aporte = Number(aporte.value);
-  let taxa = Number(taxa.value)/100;
-  let tempo = Number(tempo.value);
-  let tipo = tipoTempo.value;
+  const inicial = Number(document.getElementById('valorInicial').value);
+  const aporte = Number(document.getElementById('aporte').value);
+  const taxa = Number(document.getElementById('taxa').value) / 100;
+  let tempo = Number(document.getElementById('tempo').value);
+  const tipo = document.getElementById('tipoTempo').value;
 
   if(tipo === 'anos') tempo *= 12;
 
   let comReinvest = inicial;
   let semReinvest = inicial;
+  let totalDividendos = 0;
+
   let tabela = `
   <table class="tabela">
-  <tr>
-    <th>Mês</th>
-    <th>Com Reinvestimento</th>
-    <th>Sem Reinvestimento</th>
-  </tr>`;
+    <tr>
+      <th>Mês</th>
+      <th>Reinvestindo</th>
+      <th>Sem Reinvestir</th>
+    </tr>`;
 
   for(let i=1;i<=tempo;i++){
-    comReinvest = (comReinvest + aporte) * (1 + taxa);
+    const rendimento = comReinvest * taxa;
+    totalDividendos += rendimento;
+
+    comReinvest += rendimento + aporte;
     semReinvest += aporte;
 
     tabela += `
@@ -206,10 +244,10 @@ function calcular(){
 
   tabela += `</table>`;
 
-  resultado.innerHTML = `
+  document.getElementById('resultado').innerHTML = `
     <div class="resultado-final">
-      Patrimônio final reinvestindo: R$ ${comReinvest.toFixed(2)}<br>
-      Patrimônio final sem reinvestir: R$ ${semReinvest.toFixed(2)}
+      Reinvestindo dividendos: R$ ${comReinvest.toFixed(2)}<br>
+      Sem reinvestir dividendos: R$ ${semReinvest.toFixed(2)}
     </div>
     ${tabela}
   `;
