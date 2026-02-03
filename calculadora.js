@@ -69,7 +69,7 @@ res.style.border = '2px solid red';      // só para teste visual
 res.style.backgroundColor = 'yellow';    // só para teste visual
 document.getElementById('resTotalFinal').innerText = `Valor Total Final: R$ ${montante.toFixed(2)}`;
 document.getElementById('resTotalInvestido').innerText = `Valor Total Investido: R$ ${totalInvestido.toFixed(2)}`;
-document.getElementById('resTotalJuros').innerText = `Total em Juros: R$ ${totalJuros.toFixed(2)}`;,
+document.getElementById('resTotalJuros').innerText = `Total em Juros: R$ ${totalJuros.toFixed(2)}`;
 
   // MOSTRA TABELA DETALHADA
   document.getElementById('resultado').style.display = 'block';
@@ -99,6 +99,3 @@ document.getElementById('resTotalJuros').innerText = `Total em Juros: R$ ${total
     }
   });
 }
-res.style.display = 'block';
-res.style.border = '2px solid red';
-res.style.backgroundColor = 'yellow';
