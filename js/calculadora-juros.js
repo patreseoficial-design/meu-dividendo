@@ -1,5 +1,19 @@
+// ============================
+// MENU HAMBURGUER
+// ============================
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+// ============================
+// VARIÁVEIS GLOBAIS DE GRÁFICOS
+// ============================
 let graf1, graf2;
 
+// ============================
+// FUNÇÃO CALCULAR JUROS
+// ============================
 function calcular() {
   // PEGANDO OS ELEMENTOS
   const ini = +document.getElementById('inicial').value;
@@ -33,7 +47,7 @@ function calcular() {
     sem += js + men;
     jurosSem += js;
 
-    // Tabela detalhada
+    // POPULA TABELA
     tbody.innerHTML += `
       <tr>
         <td>${i}</td>
@@ -57,8 +71,8 @@ function calcular() {
   // MOSTRA CAIXA DE RESUMO
   const res = document.getElementById('resultadoResumo');
   res.style.display = 'block';
-  res.style.border = '2px solid red';        // só para teste visual
-  res.style.backgroundColor = 'yellow';      // só para teste visual
+  res.style.backgroundColor = '#fff'; // branco
+  res.style.border = '1px solid #ccc'; // borda discreta
   document.getElementById('resTotalFinal').innerText = `Valor Total Final: R$ ${montante.toFixed(2)}`;
   document.getElementById('resTotalInvestido').innerText = `Valor Total Investido: R$ ${totalInvestido.toFixed(2)}`;
   document.getElementById('resTotalJuros').innerText = `Total em Juros: R$ ${totalJuros.toFixed(2)}`;
@@ -81,16 +95,24 @@ function calcular() {
     }
   });
 
-  graf2 = new Chart(graficoJuros,{
-  type:'bar',
-  data:{
-    labels,
-    datasets:[
-      {
-        label:'Juros recebidos por mês', 
-        data:dataJuros, 
-        backgroundColor: 'rgba(135, 206, 250, 0.8)' // azul claro
+  graf2 = new Chart(document.getElementById('graficoJuros'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Juros recebidos por mês',
+          data: dataJuros,
+          backgroundColor: 'rgba(135, 206, 250, 0.8)' // azul claro
+        }
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
       }
-    ]
-  }
-});
+    }
+  });
+}
