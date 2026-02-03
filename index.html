@@ -1,213 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Dividendo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+  <title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>
 
-<style>
-body {
-  margin:0;
-  font-family:sans-serif;
-  background:#fff;
-  color:#000;
-}
+  <!-- SEO BÁSICO -->
+  <meta name="description" content="Acompanhe ações, FIIs, moedas e utilize calculadoras financeiras para organizar seus investimentos.">
+  <meta name="keywords" content="ações, fiis, dividendos, bolsa de valores, calculadora financeira">
+  <meta name="author" content="Meu Dividendo">
 
-/* HEADER */
-header {
-  background:#111;
-  height:4cm;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 20px;
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
-
-header h1 {
-  margin:0;
-  font-size:28px;
-  text-align:center;
-  flex:1;
-}
-
-.menu { cursor:pointer; font-size:28px; }
-.profile {
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:#555;
-}
-
-/* MENU LATERAL */
-#side-menu {
-  position:fixed;
-  top:0;
-  left:-260px;
-  width:250px;
-  height:100%;
-  background:#111;
-  padding-top:100px;
-  transition:0.3s;
-  z-index:2000;
-}
-
-#side-menu a {
-  display:block;
-  padding:15px 20px;
-  color:#fff;
-  text-decoration:none;
-  font-size:16px;
-}
-
-#side-menu a:hover {
-  background:#222;
-}
-
-/* MOEDAS */
-#moedas {
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  padding:10px;
-}
-#moedas .card {
-  background:#111;
-  color:#fff;
-  padding:10px;
-  border-radius:8px;
-  text-align:center;
-  width:80px;
-}
-
-/* TICKER */
-#ticker-wrapper {
-  width:100%;
-  overflow:hidden;
-  background:#0e0e0e;
-  border-top:1px solid #222;
-  border-bottom:1px solid #222;
-}
-
-#ticker {
-  display:inline-flex;
-  white-space:nowrap;
-  animation:tickerMove 25s linear infinite;
-}
-
-#ticker span {
-  padding:12px 28px;
-  font-weight:bold;
-  font-size:14px;
-}
-
-#ticker span.up { color:#00c853; }
-#ticker span.down { color:#ff5252; }
-
-@keyframes tickerMove {
-  from { transform:translateX(100%); }
-  to { transform:translateX(-100%); }
-}
-
-/* PESQUISA */
-#search-wrapper {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:200px;
-}
-#search {
-  display:flex;
-  width:80%;
-  max-width:500px;
-}
-#search input {
-  width:100%;
-  height:50px;
-  font-size:18px;
-  border:2px solid #000;
-  border-radius:6px 0 0 6px;
-  padding:0 15px;
-}
-#search button {
-  padding:10px 20px;
-  font-size:16px;
-  border-radius:0 6px 6px 0;
-  border:none;
-  background:#111;
-  color:#fff;
-  cursor:pointer;
-}
-
-/* TOPS */
-section h3 {
-  margin:20px 0 10px;
-  text-align:center;
-}
-.grid {
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  justify-content:center;
-}
-.grid .card {
-  border:1px solid #ccc;
-  padding:10px;
-  border-radius:6px;
-  width:18%;
-  text-align:center;
-}
-
-/* BANNERS */
-.banner {
-  background:#eee;
-  height:80px;
-  margin:10px 0;
-  text-align:center;
-  line-height:80px;
-  font-weight:bold;
-}
-
-/* RESULTADO */
-#resultado {
-  max-width:600px;
-  margin:20px auto;
-  padding:10px;
-  border:1px solid #ccc;
-  border-radius:6px;
-}
-
-/* NOTÍCIAS */
-#carousel {
-  display:flex;
-  overflow-x:auto;
-  gap:10px;
-  padding:10px;
-}
-.banner-news {
-  width:150px;
-  height:150px;
-  background:#eee;
-  border-radius:8px;
-  text-align:center;
-  line-height:150px;
-}
-</style>
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="global.css">
 </head>
 
 <body>
 
 <!-- MENU LATERAL -->
-<div id="side-menu">
+<nav id="side-menu">
   <a href="index.html">🏠 Início</a>
   <a href="calculadora.html">📈 Calculadora de Juros Compostos</a>
-</div>
+  <a href="politica-de-privacidade.html">🔒 Política de Privacidade</a>
+</nav>
 
+<!-- HEADER -->
 <header>
   <div class="menu" onclick="toggleMenu()">☰</div>
   <h1>Meu Dividendo</h1>
@@ -216,48 +33,67 @@ section h3 {
 
 <!-- MOEDAS -->
 <section id="moedas">
-  <div class="card"><span>Dólar</span><strong id="dolar-value"></strong></div>
-  <div class="card"><span>Euro</span><strong id="euro-value"></strong></div>
-  <div class="card"><span>Yuans</span><strong id="yuans-value"></strong></div>
-  <div class="card"><span>Bitcoin</span><strong id="bitcoin-value"></strong></div>
+  <div class="card"><span>Dólar</span><strong id="dolar-value">--</strong></div>
+  <div class="card"><span>Euro</span><strong id="euro-value">--</strong></div>
+  <div class="card"><span>Yuan</span><strong id="yuans-value">--</strong></div>
+  <div class="card"><span>Bitcoin</span><strong id="bitcoin-value">--</strong></div>
   <div class="card"><span>Real</span><strong>R$ 1,00</strong></div>
 </section>
 
+<!-- TICKER -->
 <section id="ticker-wrapper">
   <div id="ticker"></div>
 </section>
 
+<!-- PESQUISA -->
 <section id="search-wrapper">
   <div id="search">
-    <input id="searchInput" placeholder="Pesquisar ação ou FII...">
+    <input id="searchInput" placeholder="Pesquisar ação ou FII (ex: PETR4)">
     <button onclick="buscarAtivo()">Pesquisar</button>
   </div>
 </section>
 
-<section id="top">
-  <h3>Maiores Altas - Ações</h3>
+<!-- TOPS -->
+<section class="container">
+  <h3>📈 Maiores Altas - Ações</h3>
   <div id="acoesAltas" class="grid"></div>
 
-  <h3>Maiores Baixas - Ações</h3>
+  <h3>📉 Maiores Baixas - Ações</h3>
   <div id="acoesBaixas" class="grid"></div>
 
-  <div class="banner">Propaganda</div>
+  <!-- ESPAÇO PARA ANÚNCIO -->
+  <div class="banner">Espaço reservado para anúncio</div>
 
-  <h3>Maiores Altas - FIIs</h3>
+  <h3>🏢 Maiores Altas - FIIs</h3>
   <div id="fiisAltas" class="grid"></div>
 
-  <h3>Maiores Baixas - FIIs</h3>
+  <h3>🏢 Maiores Baixas - FIIs</h3>
   <div id="fiisBaixas" class="grid"></div>
 </section>
 
+<!-- RESULTADO DA BUSCA -->
 <section id="resultado"></section>
 
-<section id="carousel">
-  <div class="banner-news">Notícia 1</div>
-  <div class="banner-news">Notícia 2</div>
-  <div class="banner-news">Notícia 3</div>
+<!-- NOTÍCIAS -->
+<section class="container">
+  <h3>📰 Notícias do Mercado</h3>
+  <div id="carousel">
+    <div class="banner-news">Notícia 1</div>
+    <div class="banner-news">Notícia 2</div>
+    <div class="banner-news">Notícia 3</div>
+  </div>
 </section>
 
+<!-- RODAPÉ -->
+<footer class="container" style="text-align:center; font-size:14px; color:#555;">
+  <p>© 2026 Meu Dividendo — Conteúdo educativo, não é recomendação de investimento.</p>
+  <p>
+    <a href="politica-de-privacidade.html">Política de Privacidade</a> |
+    <a href="#">Termos de Uso</a>
+  </p>
+</footer>
+
+<!-- JAVASCRIPT -->
 <script>
 function toggleMenu(){
   const menu = document.getElementById('side-menu');
@@ -266,60 +102,79 @@ function toggleMenu(){
 
 /* MOEDAS */
 async function carregarMoedas(){
-  const r = await fetch('/api/moedas');
-  const m = await r.json();
-  document.getElementById('dolar-value').innerText='US$ '+m.dolar.toFixed(2);
-  document.getElementById('euro-value').innerText='€ '+m.euro.toFixed(2);
-  document.getElementById('yuans-value').innerText='¥ '+m.yuan.toFixed(2);
-  document.getElementById('bitcoin-value').innerText='₿ '+m.bitcoin.toLocaleString('pt-BR');
+  try {
+    const r = await fetch('/api/moedas');
+    const m = await r.json();
+    document.getElementById('dolar-value').innerText = 'US$ ' + m.dolar.toFixed(2);
+    document.getElementById('euro-value').innerText = '€ ' + m.euro.toFixed(2);
+    document.getElementById('yuans-value').innerText = '¥ ' + m.yuan.toFixed(2);
+    document.getElementById('bitcoin-value').innerText = '₿ ' + m.bitcoin.toLocaleString('pt-BR');
+  } catch(e){}
 }
 
 /* TICKER */
 async function carregarAtivosPerenes(){
-  const res = await fetch('/api/ativos');
-  const data = await res.json();
-  const ticker = document.getElementById('ticker');
-  ticker.innerHTML = '';
-  data.forEach(a=>{
-    const c = a.change>0?'up':a.change<0?'down':'';
-    ticker.innerHTML += `<span class="${c}">
-      ${a.symbol} R$ ${a.price.toFixed(2)} (${a.change.toFixed(2)}%)
-    </span>`;
-  });
-  ticker.innerHTML += ticker.innerHTML;
+  try {
+    const res = await fetch('/api/ativos');
+    const data = await res.json();
+    const ticker = document.getElementById('ticker');
+    ticker.innerHTML = '';
+    data.forEach(a=>{
+      const c = a.change > 0 ? 'up' : a.change < 0 ? 'down' : '';
+      ticker.innerHTML += `
+        <span class="${c}">
+          ${a.symbol} R$ ${a.price.toFixed(2)} (${a.change.toFixed(2)}%)
+        </span>`;
+    });
+    ticker.innerHTML += ticker.innerHTML;
+  } catch(e){}
 }
 
 /* TOPS */
 async function carregarTop(){
-  const r=await fetch('/api/top');
-  const d=await r.json();
-  [['acoes_altas','acoesAltas'],['acoes_baixas','acoesBaixas'],
-   ['fiis_altas','fiisAltas'],['fiis_baixas','fiisBaixas']]
-  .forEach(([k,id])=>{
-    const el=document.getElementById(id);
-    el.innerHTML='';
-    d[k]?.forEach(i=>{
-      el.innerHTML+=`<div class="card"><strong>${i.symbol}</strong>
-      <span>R$ ${i.preco} (${i.variacao}%)</span></div>`;
+  try {
+    const r = await fetch('/api/top');
+    const d = await r.json();
+    [
+      ['acoes_altas','acoesAltas'],
+      ['acoes_baixas','acoesBaixas'],
+      ['fiis_altas','fiisAltas'],
+      ['fiis_baixas','fiisBaixas']
+    ].forEach(([k,id])=>{
+      const el = document.getElementById(id);
+      el.innerHTML = '';
+      d[k]?.forEach(i=>{
+        el.innerHTML += `
+          <div class="card">
+            <strong>${i.symbol}</strong>
+            <span>R$ ${i.preco} (${i.variacao}%)</span>
+          </div>`;
+      });
     });
-  });
+  } catch(e){}
 }
 
 /* PESQUISA */
 async function buscarAtivo(){
-  const s=searchInput.value.toUpperCase();
-  const r=await fetch('/api/ativo/'+s);
-  if(r.status!==200){ resultado.innerHTML='Não encontrado'; return;}
-  const d=await r.json();
-  resultado.innerHTML=`<h3>${d.symbol}</h3>
-  <p>Preço: R$ ${d.regularMarketPrice}</p>`;
+  const s = searchInput.value.toUpperCase();
+  if(!s) return;
+  const r = await fetch('/api/ativo/' + s);
+  if(r.status !== 200){
+    resultado.innerHTML = 'Ativo não encontrado.';
+    return;
+  }
+  const d = await r.json();
+  resultado.innerHTML = `
+    <h3>${d.symbol}</h3>
+    <p>Preço atual: R$ ${d.regularMarketPrice}</p>
+  `;
 }
 
 /* INIT */
 carregarMoedas();
 carregarTop();
 carregarAtivosPerenes();
-setInterval(carregarAtivosPerenes,60000);
+setInterval(carregarAtivosPerenes, 60000);
 </script>
 
 </body>
