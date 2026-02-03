@@ -1,20 +1,78 @@
-/* CSS exclusivo da HOME (index.html) */
-
-/* Moedas */
-#moedas {
+/* SEARCH */
+#search-wrapper {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  padding: 10px;
+  align-items: center;
+  height: 300px;
 }
 
-/* Ticker perene */
+#search input {
+  width: 60%;
+  max-width: 500px;
+  height: 50px;
+  font-size: 18px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 0 15px;
+}
+
+#search button {
+  margin-left: 10px;
+  padding: 12px 25px;
+  background: #111;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* TICKER */
 #ticker-wrapper {
-  width: 100%;
-  overflow: hidden;
+  background:#111;
+  overflow:hidden;
+  white-space:nowrap;
+  padding:10px 0;
 }
 
-/* Pesquisa */
-#search-wrapper {
-  margin: 20px auto;
+#ticker {
+  display:inline-block;
+  padding-left:100%;
+  animation: ticker 30s linear infinite;
+  color:#fff;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.up { color:#0f0; }
+.down { color:#f33; }
+
+/* GRIDS */
+#acoesAltas,
+#acoesBaixas,
+#fiisAltas,
+#fiisBaixas {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  #acoesAltas,
+  #acoesBaixas,
+  #fiisAltas,
+  #fiisBaixas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* CARDS */
+.card {
+  background:#111;
+  color:#fff;
+  border-radius:10px;
+  padding:14px;
+  width:140px;
+  text-align:center;
 }
