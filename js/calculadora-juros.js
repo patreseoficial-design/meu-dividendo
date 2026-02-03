@@ -11,9 +11,6 @@ function toggleMenu() {
 // ============================
 let graf1, graf2;
 
-// ============================
-// FUNÇÃO CALCULAR JUROS
-// ============================
 function calcular() {
   // PEGANDO OS ELEMENTOS
   const ini = +document.getElementById('inicial').value;
@@ -47,7 +44,7 @@ function calcular() {
     sem += js + men;
     jurosSem += js;
 
-    // POPULA TABELA
+    // Tabela detalhada
     tbody.innerHTML += `
       <tr>
         <td>${i}</td>
@@ -71,8 +68,6 @@ function calcular() {
   // MOSTRA CAIXA DE RESUMO
   const res = document.getElementById('resultadoResumo');
   res.style.display = 'block';
-  res.style.backgroundColor = '#fff'; // branco
-  res.style.border = '1px solid #ccc'; // borda discreta
   document.getElementById('resTotalFinal').innerText = `Valor Total Final: R$ ${montante.toFixed(2)}`;
   document.getElementById('resTotalInvestido').innerText = `Valor Total Investido: R$ ${totalInvestido.toFixed(2)}`;
   document.getElementById('resTotalJuros').innerText = `Total em Juros: R$ ${totalJuros.toFixed(2)}`;
@@ -84,35 +79,26 @@ function calcular() {
   if (graf1) graf1.destroy();
   if (graf2) graf2.destroy();
 
+  // GRÁFICO COMPARATIVO - LINHA
   graf1 = new Chart(document.getElementById('graficoComparativo'), {
     type: 'line',
     data: {
       labels,
       datasets: [
-        { label: 'Reinvestindo', data: dataReinv, borderWidth: 2, borderColor: '#111', fill: false },
-        { label: 'Sem Reinvestir', data: dataSem, borderWidth: 2, borderColor: '#888', fill: false }
+        { label: 'Reinvestindo', data: dataReinv, borderWidth: 2, borderColor: '#FF69B4', fill: false }, // rosa
+        { label: 'Sem Reinvestir', data: dataSem, borderWidth: 2, borderColor: '#1E90FF', fill: false } // azul
       ]
     }
   });
 
+  // GRÁFICO DE JUROS - BARRA
   graf2 = new Chart(document.getElementById('graficoJuros'), {
-    type: 'bar',
-    data: {
+    type:'bar',
+    data:{
       labels,
-      datasets: [
-        {
-          label: 'Juros recebidos por mês',
-          data: dataJuros,
-          backgroundColor: 'rgba(135, 206, 250, 0.8)' // azul claro
-        }
+      datasets:[
+        { label:'Juros recebidos por mês', data:dataJuros, backgroundColor: 'rgba(135, 206, 250, 0.8)' } // azul claro
       ]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
     }
   });
 }
