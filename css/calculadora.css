@@ -218,7 +218,7 @@ canvas {
   max-width: 900px;
   margin: 20px auto;
   padding: 20px;
-  background: #f7f7f7;
+  background: #fff;      /* fundo branco */
   border: 1px solid #ccc;
   border-radius: 12px;
   z-index: 10;           /* garante que fique acima de outros elementos */
