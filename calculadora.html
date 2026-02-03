@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Juros Compostos</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #fff;
+  color: #000;
+}
+
+/* Cabeçalho */
+header {
+  background: #111;
+  height: 4cm;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  letter-spacing: 1px;
+}
+
+/* Título */
+h2 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* Banner */
+.banner {
+  background: #eee;
+  height: 70px;
+  margin: 0 auto 20px;
+  max-width: 600px;
+  text-align: center;
+  line-height: 70px;
+  font-weight: bold;
+}
+
+/* Caixa calculadora */
+.calculadora {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.calculadora label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.calculadora input {
+  width: 100%;
+  height: 40px;
+  margin-top: 5px;
+  padding: 0 10px;
+  font-size: 16px;
+}
+
+.calculadora button {
+  width: 100%;
+  margin-top: 20px;
+  height: 45px;
+  font-size: 16px;
+  background: #111;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+/* Resultado */
+#resultado {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  Meu Dividendo
+</header>
+
+<h2>Calculadora de Juros Compostos</h2>
+
+<div class="banner">
+  Propaganda
+</div>
+
+<div class="calculadora">
+  <label>Valor Inicial (R$)</label>
+  <input type="number" id="valor" placeholder="Ex: 1000">
+
+  <label>Taxa de Juros (% ao mês)</label>
+  <input type="number" id="taxa" placeholder="Ex: 1">
+
+  <label>Tempo (meses)</label>
+  <input type="number" id="tempo" placeholder="Ex: 12">
+
+  <button onclick="calcular()">Calcular</button>
+
+  <div id="resultado"></div>
+</div>
+
+<script>
+function calcular(){
+  const valor = parseFloat(document.getElementById('valor').value);
+  const taxa = parseFloat(document.getElementById('taxa').value) / 100;
+  const tempo = parseInt(document.getElementById('tempo').value);
+
+  if(isNaN(valor) || isNaN(taxa) || isNaN(tempo)){
+    document.getElementById('resultado').innerHTML = 'Preencha todos os campos';
+    return;
+  }
+
+  const montante = valor * Math.pow(1 + taxa, tempo);
+
+  document.getElementById('resultado').innerHTML = `
+    <strong>Valor final:</strong><br>
+    R$ ${montante.toFixed(2)}
+  `;
+}
+</script>
+
+</body>
+</html>
