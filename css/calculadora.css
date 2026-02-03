@@ -1,31 +1,31 @@
+/* ===== GLOBAL ===== */
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 /* ===== CALCULADORA ===== */
 .page-title {
   text-align: center;
-  margin-bottom: 20px; /* espaço abaixo do título */
-}
-.explain {
-  text-align: center;
-  margin-bottom: 20px; /* opcional, deixa um espaço abaixo do texto */
-}
-.info-final {
-  text-align: center;
-  margin-bottom: 20px; /* opcional, deixa espaço abaixo */
-}
-.result {
-  text-align: center;
-}
-.result table {
-  width: 100%; /* ou menor se quiser */
-  border-collapse: collapse;
-  text-align: center; /* centraliza o texto das células */
+  margin-bottom: 20px;
 }
 
-.result th, 
-.result td {
-  padding: 8px;
-  border: 1px solid #ddd;
-  text-align: center; /* garante centralização dentro de cada célula */
+.explain {
+  text-align: center;
+  margin-bottom: 20px;
 }
+
+.info-final {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 .calc-box {
   width: 100%;
   max-width: 900px;
@@ -34,7 +34,6 @@
   border: 1px solid #ddd;
   border-radius: 14px;
   background: #fff;
-  box-sizing: border-box;
 }
 
 .inputs {
@@ -72,7 +71,9 @@
   cursor: pointer;
 }
 
+/* ===== RESULTADOS ===== */
 .result {
+  text-align: center;
   width: 100%;
   max-width: 900px;
   margin: 24px auto;
@@ -80,15 +81,29 @@
   border-radius: 14px;
   border: 1px solid #ddd;
   background: #fff;
-  box-sizing: border-box;
+}
+
+.result table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.result th,
+.result td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
 }
 
 .table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* suaviza rolagem no mobile */
 }
 
 canvas {
   max-width: 100%;
+  height: auto !important;
 }
 
 /* ===== ANÚNCIOS ===== */
@@ -111,10 +126,24 @@ canvas {
   .calc-box {
     margin: 16px 10px;
     padding: 16px;
+    width: calc(100% - 20px);
+  }
+
+  .inputs {
+    grid-template-columns: 1fr; /* empilha inputs no mobile */
   }
 
   table {
     font-size: 13px;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  canvas {
+    width: 100% !important;
+    height: auto !important;
   }
 
   .ad {
