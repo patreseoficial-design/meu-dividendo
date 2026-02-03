@@ -61,3 +61,38 @@ header {
   padding: 30px 15px;
   text-align: center;
 }
+/* ===== BANNERS DE ANÚNCIO ===== */
+.ad {
+  width: 100%;
+  max-width: 900px;
+  min-height: 90px;
+
+  margin: 25px auto;
+  padding: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f4f4f4;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+/* Banner grande (desktop) */
+.ad.banner-large {
+  min-height: 120px;
+}
+
+/* Banner mobile */
+@media (max-width: 600px) {
+  .ad {
+    min-height: 60px;
+    font-size: 13px;
+    margin: 20px 10px;
+  }
+}
