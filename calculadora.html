@@ -3,85 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Juros Compostos</title>
+<title>Calculadora de Juros Compostos - Meu Dividendo</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background: #fff;
-  color: #000;
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:#fff;
 }
 
-/* Cabeçalho */
-header {
-  background: #111;
-  height: 4cm;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  letter-spacing: 1px;
+/* HEADER IGUAL AO INDEX */
+header{
+  background:#111;
+  height:4cm;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
 }
 
-/* Título */
-h2 {
-  text-align: center;
-  margin: 20px 0;
+header h1{
+  margin:0;
+  font-size:28px;
+  flex:1;
+  text-align:center;
 }
 
-/* Banner */
-.banner {
-  background: #eee;
-  height: 70px;
-  margin: 0 auto 20px;
-  max-width: 600px;
-  text-align: center;
-  line-height: 70px;
-  font-weight: bold;
+.menu{ font-size:28px; cursor:pointer; }
+.profile{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#555;
 }
 
-/* Caixa calculadora */
-.calculadora {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+/* CONTEÚDO */
+.container{
+  max-width:900px;
+  margin:30px auto;
+  padding:20px;
 }
 
-.calculadora label {
-  display: block;
-  margin-top: 10px;
-  font-size: 14px;
+/* TEXTO */
+.explain{
+  font-size:16px;
+  line-height:1.6;
+  margin-bottom:20px;
 }
 
-.calculadora input {
-  width: 100%;
-  height: 40px;
-  margin-top: 5px;
-  padding: 0 10px;
-  font-size: 16px;
+/* BANNER */
+.banner{
+  background:#eee;
+  height:80px;
+  margin:20px 0;
+  text-align:center;
+  line-height:80px;
+  font-weight:bold;
 }
 
-.calculadora button {
-  width: 100%;
-  margin-top: 20px;
-  height: 45px;
-  font-size: 16px;
-  background: #111;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  border-radius: 6px;
+/* FORM */
+.form-box{
+  border:2px solid #000;
+  border-radius:8px;
+  padding:20px;
+  margin-bottom:30px;
 }
 
-/* Resultado */
-#resultado {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 16px;
+.form-box label{
+  display:block;
+  margin-top:10px;
+  font-weight:bold;
+}
+
+.form-box input,
+.form-box select{
+  width:100%;
+  height:45px;
+  font-size:16px;
+  margin-top:5px;
+  padding:0 10px;
+  border:1px solid #000;
+  border-radius:6px;
+}
+
+.form-box button{
+  margin-top:20px;
+  width:100%;
+  height:50px;
+  font-size:18px;
+  background:#111;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
+
+/* RESULTADOS */
+.resultado-final{
+  font-size:26px;
+  font-weight:bold;
+  margin-top:20px;
+  text-align:center;
+}
+
+.tabela{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+.tabela th, .tabela td{
+  border:1px solid #ccc;
+  padding:8px;
+  text-align:center;
+}
+
+.tabela th{
+  background:#111;
+  color:#fff;
 }
 </style>
 </head>
@@ -89,46 +128,90 @@ h2 {
 <body>
 
 <header>
-  Meu Dividendo
+  <div class="menu" onclick="history.back()">←</div>
+  <h1>Meu Dividendo</h1>
+  <div class="profile"></div>
 </header>
+
+<div class="container">
 
 <h2>Calculadora de Juros Compostos</h2>
 
-<div class="banner">
-  Propaganda
+<div class="explain">
+Juros compostos são os juros calculados sobre o valor inicial investido
+<strong>somado aos rendimentos acumulados</strong>.  
+Quando você reinveste os dividendos, seu patrimônio cresce de forma exponencial,
+fazendo o dinheiro trabalhar para você ao longo do tempo.
 </div>
 
-<div class="calculadora">
-  <label>Valor Inicial (R$)</label>
-  <input type="number" id="valor" placeholder="Ex: 1000">
+<div class="banner">Propaganda</div>
 
-  <label>Taxa de Juros (% ao mês)</label>
-  <input type="number" id="taxa" placeholder="Ex: 1">
+<div class="form-box">
+  <label>Valor inicial (R$)</label>
+  <input id="valorInicial" type="number">
 
-  <label>Tempo (meses)</label>
-  <input type="number" id="tempo" placeholder="Ex: 12">
+  <label>Aporte mensal (R$)</label>
+  <input id="aporte" type="number">
+
+  <label>Taxa mensal (%)</label>
+  <input id="taxa" type="number" step="0.01">
+
+  <label>Período</label>
+  <input id="tempo" type="number">
+
+  <label>Meses ou Anos</label>
+  <select id="tipoTempo">
+    <option value="meses">Meses</option>
+    <option value="anos">Anos</option>
+  </select>
 
   <button onclick="calcular()">Calcular</button>
+</div>
 
-  <div id="resultado"></div>
+<div id="resultado"></div>
+
 </div>
 
 <script>
 function calcular(){
-  const valor = parseFloat(document.getElementById('valor').value);
-  const taxa = parseFloat(document.getElementById('taxa').value) / 100;
-  const tempo = parseInt(document.getElementById('tempo').value);
+  let inicial = Number(valorInicial.value);
+  let aporte = Number(aporte.value);
+  let taxa = Number(taxa.value)/100;
+  let tempo = Number(tempo.value);
+  let tipo = tipoTempo.value;
 
-  if(isNaN(valor) || isNaN(taxa) || isNaN(tempo)){
-    document.getElementById('resultado').innerHTML = 'Preencha todos os campos';
-    return;
+  if(tipo === 'anos') tempo *= 12;
+
+  let comReinvest = inicial;
+  let semReinvest = inicial;
+  let tabela = `
+  <table class="tabela">
+  <tr>
+    <th>Mês</th>
+    <th>Com Reinvestimento</th>
+    <th>Sem Reinvestimento</th>
+  </tr>`;
+
+  for(let i=1;i<=tempo;i++){
+    comReinvest = (comReinvest + aporte) * (1 + taxa);
+    semReinvest += aporte;
+
+    tabela += `
+    <tr>
+      <td>${i}</td>
+      <td>R$ ${comReinvest.toFixed(2)}</td>
+      <td>R$ ${semReinvest.toFixed(2)}</td>
+    </tr>`;
   }
 
-  const montante = valor * Math.pow(1 + taxa, tempo);
+  tabela += `</table>`;
 
-  document.getElementById('resultado').innerHTML = `
-    <strong>Valor final:</strong><br>
-    R$ ${montante.toFixed(2)}
+  resultado.innerHTML = `
+    <div class="resultado-final">
+      Patrimônio final reinvestindo: R$ ${comReinvest.toFixed(2)}<br>
+      Patrimônio final sem reinvestir: R$ ${semReinvest.toFixed(2)}
+    </div>
+    ${tabela}
   `;
 }
 </script>
