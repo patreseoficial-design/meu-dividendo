@@ -1,0 +1,20 @@
+/* CSS exclusivo da HOME (index.html) */
+
+/* Moedas */
+#moedas {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+/* Ticker perene */
+#ticker-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Pesquisa */
+#search-wrapper {
+  margin: 20px auto;
+}
