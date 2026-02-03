@@ -69,3 +69,8 @@ window.addEventListener('DOMContentLoaded', () => {
   carregarMoedas();
   carregarTop();
 });
+function toggleMenu() {
+  const menu = document.getElementById('side-menu');
+  menu.style.left = menu.style.left === '0px' ? '-260px' : '0px';
+}
+window.toggleMenu = toggleMenu;
