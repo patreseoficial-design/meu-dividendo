@@ -1,4 +1,8 @@
 /* ===== CALCULADORA ===== */
+.page-title {
+  text-align: center;
+  margin-bottom: 20px; /* espaço abaixo do título */
+}
 .calc-box {
   width: 100%;
   max-width: 900px;
