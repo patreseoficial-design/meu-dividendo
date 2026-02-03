@@ -33,4 +33,31 @@ canvas {
   table {
     font-size: 13px;
   }
+header {
+  background: #111;
+  height: 120px; /* ~3,5 cm */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.page-title {
+  text-align: center;
+  font-size: 26px;
+  margin: 25px 10px;
+}.explain {
+  max-width: 900px;
+  margin: auto;
+  padding: 0 15px;
+}.calc-box {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+}footer {
+  background: #111;
+  color: #fff;
+  padding: 30px 15px;
+  text-align: center;
 }
