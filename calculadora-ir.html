@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de IR | Meu Dividendo</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+</head>
+<body>
+
+<h1 class="page-title">Calculadora de IR sobre Investimentos</h1>
+
+<div class="calc-box">
+  <div class="inputs">
+    <div class="input-group">
+      <label>Valor Recebido (Dividendos/FII/Venda)</label>
+      <input type="number" id="valorIR" value="1000">
+    </div>
+
+    <div class="input-group">
+      <label>Tipo de Investimento</label>
+      <select id="tipoIR">
+        <option value="acoes">Ações - Dividendos</option>
+        <option value="fii">FIIs</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calcularIR()">Calcular</button>
+</div>
+
+<div id="resultadoIR" class="result" style="display:none">
+  <h2>Resultado</h2>
+  <p id="resTotalIR"></p>
+</div>
+
+<script>
+function calcularIR() {
+  const valor = +document.getElementById('valorIR').value;
+  const tipo = document.getElementById('tipoIR').value;
+  let aliquota = 0;
+
+  if(tipo === 'acoes') aliquota = 0; // Dividendos são isentos de IR
+  if(tipo === 'fii') aliquota = 0.2; // Exemplo: 20% sobre ganho de FIIs
+
+  const imposto = valor * aliquota;
+
+  const res = document.getElementById('resultadoIR');
+  res.style.display = 'block';
+  document.getElementById('resTotalIR').innerText = `Imposto a pagar: R$ ${imposto.toFixed(2)}`;
+}
+</script>
+
+</body>
+</html>
