@@ -370,3 +370,17 @@ carregarAtivosPerenes();
 setInterval(carregarAtivosPerenes,60000);  
 </script>  </body>  
 </html>  
+header {
+  background: #111;
+  height: 3cm;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.menu {
+  font-size: 28px;
+  cursor: pointer;
+}
