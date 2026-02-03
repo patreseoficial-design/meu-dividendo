@@ -1,3 +1,9 @@
+// MENU TOGGLE
+function toggleMenu() {
+  const menu = document.querySelector('.nav-menu');
+  menu.classList.toggle('show');
+}
+
 // Carregar moedas
 async function carregarMoedas() {
   try {
@@ -41,7 +47,7 @@ async function carregarTop() {
 async function buscarAtivo() {
   const symbol = document.getElementById('searchInput').value.toUpperCase();
   if (!symbol) return;
-  const res = await fetch('/api/ativo/' + symbol);
+  const res = await fetch('/api/ativos/' + symbol);
   if (res.status !== 200) {
     document.getElementById('resultado').innerHTML = '<p>Ativo não encontrado</p>';
     return;
@@ -58,5 +64,8 @@ async function buscarAtivo() {
   `;
 }
 
-carregarMoedas();
-carregarTop();
+// EXECUTA AO CARREGAR A PÁGINA
+window.addEventListener('DOMContentLoaded', () => {
+  carregarMoedas();
+  carregarTop();
+});
