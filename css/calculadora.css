@@ -151,3 +151,6 @@ canvas {
     min-height: 60px;
   }
 }
+.ad {
+  margin: 0 auto; /* centraliza horizontalmente */
+}
