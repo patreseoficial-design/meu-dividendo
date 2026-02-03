@@ -21,11 +21,22 @@
 
 <body>
 
-<!-- HEADER -->
 <header>
-  <div class="menu">☰</div>
+  <div class="menu" onclick="toggleMenu()">☰</div>
   <h1>Meu Dividendo</h1>
   <div class="profile"></div>
+
+  <!-- MENU HAMBÚRGUER -->
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="calculadora.html">Juros Compostos</a></li>
+      <li><a href="calculadora-13salario.html">13º Salário</a></li>
+      <li><a href="calculadora-pis.html">PIS</a></li>
+      <li><a href="calculadora-ir.html">IR sobre Investimentos</a></li>
+      <li><a href="calculadora-recisao.html">Recisão</a></li>
+      <li><a href="calculadora-quitacao.html">Quitação</a></li>
+    </ul>
+  </nav>
 </header>
 
 <h1 class="page-title">Calculadora de Juros Compostos</h1>
@@ -305,7 +316,15 @@ function calcular(){
     }
   });
 }
-<script src="js/calculadora-juros.js"></script>
+<!-- SCRIPTS -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+<script src="js/calculadora-juros.js" defer></script>
 
 </body>
 </html>
