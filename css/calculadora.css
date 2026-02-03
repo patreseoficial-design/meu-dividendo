@@ -258,3 +258,64 @@ footer {
 header h1 a:hover {
   color: #5bc0eb;        /* muda a cor quando passa o mouse, opcional */
 }
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centraliza o título */
+  position: relative;      /* necessário para os elementos absolutos dentro */
+  height: 60px;
+  background-color: #111;
+}
+
+/* Título clicável */
+header .site-title {
+  margin: 0;
+  font-size: 24px;
+}
+
+header .site-title a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Menu hambúrguer */
+header .menu {
+  position: absolute;
+  left: 10px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* Menu links */
+.menu-links {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  z-index: 1000;
+  width: 220px;
+}
+
+.menu-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-links li {
+  border-bottom: 1px solid #eee;
+}
+
+.menu-links li a {
+  display: block;
+  padding: 10px;
+  color: #111;
+  text-decoration: none;
+}
+
+.menu-links li a:hover {
+  background-color: #f0f0f0;
+}
