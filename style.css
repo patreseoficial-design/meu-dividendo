@@ -1,38 +1,56 @@
-<!DOCTYPE html>  <html lang="pt-BR">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>Meu Dividendo</title>  <link rel="stylesheet" href="style.css">  <style>  
-body {  
-  margin:0;  
-  font-family:sans-serif;  
-  background:#fff;  
-  color:#000;  
-}  
-  
-/* HEADER */  
-header {  
-  background:#111;  
-  height:4cm;  
-  color:#fff;  
-  display:flex;  
-  align-items:center;  
-  justify-content:space-between;  
-  padding:0 20px;  
-  position:sticky;  
-  top:0;  
-  z-index:1000;  
-}  
-  
-.menu {
-  cursor: pointer;
-  font-size: 2rem;
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
+/* BODY */
+body {
+  font-family: sans-serif;
+  background: #fff;
+  color: #000;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #111;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 4cm;
+}
+
+header h1 {
+  font-size: 28px;
+  flex: 1;
+  text-align: center;
+}
+
+.menu {
+  font-size: 28px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #555;
+}
+
+/* MENU LINKS */
 .menu-links {
-  display: none; /* oculto por padrão */
+  display: none; /* inicia oculto */
   position: absolute;
-  top: 60px; /* ajusta conforme header */
+  top: 60px;
   left: 0;
   background: #fff;
   width: 200px;
@@ -60,313 +78,158 @@ header {
 .menu-links li a:hover {
   background-color: #f0f0f0;
 }
-header h1 {  
-  margin:0;  
-  font-size:28px;  
-  text-align:center;  
-  flex:1;  
-}  
-  
-.menu { cursor:pointer; font-size:28px; }  
-.profile {  
-  width:40px;  
-  height:40px;  
-  border-radius:50%;  
-  background:#555;  
-}  
-  
-/* MENU LATERAL */  
-#side-menu {  
-  position:fixed;  
-  top:0;  
-  left:-260px;  
-  width:250px;  
-  height:100%;  
-  background:#111;  
-  padding-top:100px;  
-  transition:0.3s;  
-  z-index:2000;  
-}  
-  
-#side-menu a {  
-  display:block;  
-  padding:15px 20px;  
-  color:#fff;  
-  text-decoration:none;  
-  font-size:16px;  
-}  
-  
-#side-menu a:hover {  
-  background:#222;  
-}  
-  
-/* MOEDAS */  
-#moedas {  
-  display:flex;  
-  justify-content:center;  
-  gap:10px;  
-  padding:10px;  
-}  
-#moedas .card {  
-  background:#111;  
-  color:#fff;  
-  padding:10px;  
-  border-radius:8px;  
-  text-align:center;  
-  width:80px;  
-}  
-  
-/* TICKER */  
-#ticker-wrapper {  
-  width:100%;  
-  overflow:hidden;  
-  background:#0e0e0e;  
-  border-top:1px solid #222;  
-  border-bottom:1px solid #222;  
-}  
-  
-#ticker {  
-  display:inline-flex;  
-  white-space:nowrap;  
-  animation:tickerMove 25s linear infinite;  
-}  
-  
-#ticker span {  
-  padding:12px 28px;  
-  font-weight:bold;  
-  font-size:14px;  
-}  
-  
-#ticker span.up { color:#00c853; }  
-#ticker span.down { color:#ff5252; }  
-  
-@keyframes tickerMove {  
-  from { transform:translateX(100%); }  
-  to { transform:translateX(-100%); }  
-}  
-  
-/* PESQUISA */  
-#search-wrapper {  
-  display:flex;  
-  justify-content:center;  
-  align-items:center;  
-  height:200px;  
-}  
-#search {  
-  display:flex;  
-  width:80%;  
-  max-width:500px;  
-}  
-#search input {  
-  width:100%;  
-  height:50px;  
-  font-size:18px;  
-  border:2px solid #000;  
-  border-radius:6px 0 0 6px;  
-  padding:0 15px;  
-}  
-#search button {  
-  padding:10px 20px;  
-  font-size:16px;  
-  border-radius:0 6px 6px 0;  
-  border:none;  
-  background:#111;  
-  color:#fff;  
-  cursor:pointer;  
-}  
-  
-/* TOPS */  
-section h3 {  
-  margin:20px 0 10px;  
-  text-align:center;  
-}  
-.grid {  
-  display:flex;  
-  flex-wrap:wrap;  
-  gap:10px;  
-  justify-content:center;  
-}  
-.grid .card {  
-  border:1px solid #ccc;  
-  padding:10px;  
-  border-radius:6px;  
-  width:18%;  
-  text-align:center;  
-}  
-  
-/* BANNERS */  
-.banner {  
-  background:#eee;  
-  height:80px;  
-  margin:10px 0;  
-  text-align:center;  
-  line-height:80px;  
-  font-weight:bold;  
-}  
-  
-/* RESULTADO */  
-#resultado {  
-  max-width:600px;  
-  margin:20px auto;  
-  padding:10px;  
-  border:1px solid #ccc;  
-  border-radius:6px;  
-}  
-  
-/* NOTÍCIAS */  
-#carousel {  
-  display:flex;  
-  overflow-x:auto;  
-  gap:10px;  
-  padding:10px;  
-}  
-.banner-news {  
-  width:150px;  
-  height:150px;  
-  background:#eee;  
-  border-radius:8px;  
-  text-align:center;  
-  line-height:150px;  
-}  
-</style>  </head>  <body>  <!-- MENU LATERAL -->  <div id="side-menu">  
-  <a href="index.html">🏠 Início</a>  
-  <a href="calculadora.html">📈 Calculadora de Juros Compostos</a>  
-</div>  <header>  
-  <div class="menu" onclick="toggleMenu()">☰</div>  
-  <h1>Meu Dividendo</h1>  
-  <div class="profile"></div>  
-</header>  <!-- MOEDAS -->  <section id="moedas">  
-  <div class="card"><span>Dólar</span><strong id="dolar-value"></strong></div>  
-  <div class="card"><span>Euro</span><strong id="euro-value"></strong></div>  
-  <div class="card"><span>Yuans</span><strong id="yuans-value"></strong></div>  
-  <div class="card"><span>Bitcoin</span><strong id="bitcoin-value"></strong></div>  
-  <div class="card"><span>Real</span><strong>R$ 1,00</strong></div>  
-</section>  <section id="ticker-wrapper">  
-  <div id="ticker"></div>  
-</section>  <section id="search-wrapper">  
-  <div id="search">  
-    <input id="searchInput" placeholder="Pesquisar ação ou FII...">  
-    <button onclick="buscarAtivo()">Pesquisar</button>  
-  </div>  
-</section>  <section id="top">  
-  <h3>Maiores Altas - Ações</h3>  
-  <div id="acoesAltas" class="grid"></div>    <h3>Maiores Baixas - Ações</h3>  
-  <div id="acoesBaixas" class="grid"></div>    <div class="banner">Propaganda</div>    <h3>Maiores Altas - FIIs</h3>  
-  <div id="fiisAltas" class="grid"></div>    <h3>Maiores Baixas - FIIs</h3>  
-  <div id="fiisBaixas" class="grid"></div>  
-</section>  <section id="resultado"></section>  <section id="carousel">  
-  <div class="banner-news">Notícia 1</div>  
-  <div class="banner-news">Notícia 2</div>  
-  <div class="banner-news">Notícia 3</div>  
-</section>  <script>  
-function toggleMenu(){  
-  const menu = document.getElementById('side-menu');  
-  menu.style.left = menu.style.left === '0px' ? '-260px' : '0px';  
-}  
-  
-/* MOEDAS */  
-async function carregarMoedas(){  
-  const r = await fetch('/api/moedas');  
-  const m = await r.json();  
-  document.getElementById('dolar-value').innerText='US$ '+m.dolar.toFixed(2);  
-  document.getElementById('euro-value').innerText='€ '+m.euro.toFixed(2);  
-  document.getElementById('yuans-value').innerText='¥ '+m.yuan.toFixed(2);  
-  document.getElementById('bitcoin-value').innerText='₿ '+m.bitcoin.toLocaleString('pt-BR');  
-}  
-  
-/* TICKER */  
-async function carregarAtivosPerenes(){  
-  const res = await fetch('/api/ativos');  
-  const data = await res.json();  
-  const ticker = document.getElementById('ticker');  
-  ticker.innerHTML = '';  
-  data.forEach(a=>{  
-    const c = a.change>0?'up':a.change<0?'down':'';  
-    ticker.innerHTML += `<span class="${c}">  
-      ${a.symbol} R$ ${a.price.toFixed(2)} (${a.change.toFixed(2)}%)  
-    </span>`;  
-  });  
-  ticker.innerHTML += ticker.innerHTML;  
-}  
-  
-/* TOPS */  
-async function carregarTop(){  
-  const r=await fetch('/api/top');  
-  const d=await r.json();  
-  [['acoes_altas','acoesAltas'],['acoes_baixas','acoesBaixas'],  
-   ['fiis_altas','fiisAltas'],['fiis_baixas','fiisBaixas']]  
-  .forEach(([k,id])=>{  
-    const el=document.getElementById(id);  
-    el.innerHTML='';  
-    d[k]?.forEach(i=>{  
-      el.innerHTML+=`<div class="card"><strong>${i.symbol}</strong>  
-      <span>R$ ${i.preco} (${i.variacao}%)</span></div>`;  
-    });  
-  });  
-}  
-  
-/* PESQUISA */  
-async function buscarAtivo(){  
-  const s=searchInput.value.toUpperCase();  
-  const r=await fetch('/api/ativo/'+s);  
-  if(r.status!==200){ resultado.innerHTML='Não encontrado'; return;}  
-  const d=await r.json();  
-  resultado.innerHTML=`<h3>${d.symbol}</h3>  
-  <p>Preço: R$ ${d.regularMarketPrice}</p>`;  
-}  
-  
-/* INIT */  
-carregarMoedas();  
-carregarTop();  
-carregarAtivosPerenes();  
-setInterval(carregarAtivosPerenes,60000);  
-</script>  </body>  
-</html>  
 
-/* HEADER E MENU */
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background: #f2f2f2;
-  position: relative;
+/* MENU LATERAL */
+#side-menu {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 250px;
+  height: 100%;
+  background: #111;
+  padding-top: 100px;
+  transition: 0.3s;
+  z-index: 2000;
 }
 
-.menu {
-  font-size: 24px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.menu-links {
-  display: none; /* inicia oculto */
-  position: absolute;
-  top: 50px;
-  left: 0;
-  background: #fff;
-  width: 100%;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  z-index: 10;
-}
-
-.menu-links ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.menu-links li {
-  border-bottom: 1px solid #ddd;
-}
-
-.menu-links li a {
+#side-menu a {
   display: block;
-  padding: 10px 20px;
+  padding: 15px 20px;
+  color: #fff;
   text-decoration: none;
-  color: #333;
+  font-size: 16px;
 }
 
-.menu-links li a:hover {
+#side-menu a:hover {
+  background: #222;
+}
+
+/* MOEDAS */
+#moedas {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+#moedas .card {
+  background: #111;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  width: 80px;
+}
+
+/* TICKER */
+#ticker-wrapper {
+  width: 100%;
+  overflow: hidden;
+  background: #0e0e0e;
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+}
+
+#ticker {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: tickerMove 25s linear infinite;
+}
+
+#ticker span {
+  padding: 12px 28px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#ticker span.up { color: #00c853; }
+#ticker span.down { color: #ff5252; }
+
+@keyframes tickerMove {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
+
+/* PESQUISA */
+#search-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+#search {
+  display: flex;
+  width: 80%;
+  max-width: 500px;
+}
+
+#search input {
+  width: 100%;
+  height: 50px;
+  font-size: 18px;
+  border: 2px solid #000;
+  border-radius: 6px 0 0 6px;
+  padding: 0 15px;
+}
+
+#search button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 0 6px 6px 0;
+  border: none;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* GRID TOPS */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.grid .card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  width: 18%;
+  text-align: center;
+}
+
+/* BANNERS */
+.banner, .banner-news {
   background: #eee;
+  height: 80px;
+  margin: 10px 0;
+  text-align: center;
+  line-height: 80px;
+  font-weight: bold;
+}
+
+/* RESULTADO */
+#resultado {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* RODAPÉ */
+footer {
+  background: #111;
+  color: #fff;
+  padding: 30px 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* RESPONSIVO */
+@media (max-width: 600px) {
+  header h1 { font-size: 20px; }
+  #search { width: 90%; }
+  .grid .card { width: 45%; }
 }
