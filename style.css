@@ -45,17 +45,16 @@ header h1 {
   border-radius: 50%;
   background: #555;
 }
-
-/* MENU LINKS */
 .menu-links {
-  display: none; /* inicia oculto */
+  display: none; /* começa escondido */
   position: absolute;
-  top: 60px;
-  left: 0;
+  top: 60px; /* logo abaixo do header */
+  right: 20px; /* alinhado à direita do ícone */
   background: #fff;
-  width: 200px;
   border: 1px solid #ccc;
+  border-radius: 6px;
   z-index: 1000;
+  width: 200px;
 }
 
 .menu-links ul {
@@ -71,8 +70,8 @@ header h1 {
 .menu-links li a {
   display: block;
   padding: 10px;
-  text-decoration: none;
   color: #111;
+  text-decoration: none;
 }
 
 .menu-links li a:hover {
