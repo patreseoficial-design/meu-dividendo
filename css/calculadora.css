@@ -82,6 +82,17 @@ body, html {
   border: 1px solid #ddd;
   background: #fff;
 }
+.result {
+  width: 100%;
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  background: #fff;
+  box-sizing: border-box;
+  text-align: center; /* centraliza conteúdo */
+}
 
 .result table {
   width: 100%;
