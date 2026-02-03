@@ -154,6 +154,30 @@ canvas {
   text-align: center;        /* títulos centralizados */
   margin-bottom: 15px;       /* espaço abaixo do título */
 }
+.info-aplicacoes {
+  text-align: center;
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 20px;
+  background: #f7f7f7;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.info-aplicacoes h2,
+.info-aplicacoes h3 {
+  margin-bottom: 12px;
+}
+
+.info-aplicacoes p {
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.info-aplicacoes a {
+  color: #111;
+  text-decoration: underline;
+}
 
 /* ===== MOBILE ===== */
 @media (max-width: 600px) {
