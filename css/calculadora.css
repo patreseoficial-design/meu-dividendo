@@ -238,4 +238,16 @@ footer {
   color: #fff;
   padding: 20px;
   text-align: center;
+}footer {
+  width: 100vw;          /* garante largura total da tela */
+  max-width: 100%;       /* evita limitar por algum max-width global */
+  background-color: #111;/* fundo preto */
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  margin: 0;             /* remove margens */
+  box-sizing: border-box;/* inclui padding na largura total */
+}.footer-content {
+  max-width: 900px;
+  margin: 0 auto;  /* centraliza */
 }
