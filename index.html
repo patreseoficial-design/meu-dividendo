@@ -3,28 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>
-
-  <!-- SEO BÁSICO -->
-  <meta name="description" content="Acompanhe ações, FIIs, moedas e utilize calculadoras financeiras para organizar seus investimentos.">
-  <meta name="keywords" content="ações, fiis, dividendos, bolsa de valores, calculadora financeira">
-  <meta name="author" content="Meu Dividendo">
-
-  <!-- CSS GLOBAL -->
   <link rel="stylesheet" href="style.css">
-
+</head>
 <body>
-
-<!-- MENU LATERAL -->
-<nav id="side-menu">
-  <a href="index.html">🏠 Início</a>
-  <a href="calculadora.html">📈 Calculadora de Juros Compostos</a>
-  <a href="calculadora13.html">13º Salário</a>
-  <a href="calculadoraPIS.html">PIS</a>
-  <a href="calculadoraIR.html">IR sobre Investimentos</a>
-  <a href="politica-de-privacidade.html">🔒 Política de Privacidade</a>
-</nav>
 
 <header>
   <div class="menu" onclick="toggleMenu()">☰</div>
@@ -51,142 +33,33 @@
   <div class="card"><span>Real</span><strong>R$ 1,00</strong></div>
 </section>
 
-<!-- TICKER -->
-<section id="ticker-wrapper">
-  <div id="ticker"></div>
-</section>
-
-<!-- PESQUISA -->
-<section id="search-wrapper">
-  <div id="search">
-    <input id="searchInput" placeholder="Pesquisar ação ou FII (ex: PETR4)">
-    <button onclick="buscarAtivo()">Pesquisar</button>
-  </div>
-</section>
-
-<!-- TOPS -->
-<section class="container">
-  <h3>📈 Maiores Altas - Ações</h3>
-  <div id="acoesAltas" class="grid"></div>
-
-  <h3>📉 Maiores Baixas - Ações</h3>
-  <div id="acoesBaixas" class="grid"></div>
-
-  <!-- ESPAÇO PARA ANÚNCIO -->
-  <div class="banner">Espaço reservado para anúncio</div>
-
-  <h3>🏢 Maiores Altas - FIIs</h3>
-  <div id="fiisAltas" class="grid"></div>
-
-  <h3>🏢 Maiores Baixas - FIIs</h3>
-  <div id="fiisBaixas" class="grid"></div>
-</section>
-
-<!-- RESULTADO DA BUSCA -->
-<section id="resultado"></section>
-
-<!-- NOTÍCIAS -->
-<section class="container">
-  <h3>📰 Notícias do Mercado</h3>
-  <div id="carousel">
-    <div class="banner-news">Notícia 1</div>
-    <div class="banner-news">Notícia 2</div>
-    <div class="banner-news">Notícia 3</div>
-  </div>
-</section>
-
 <!-- RODAPÉ -->
-<footer class="container" style="text-align:center; font-size:14px; color:#555;">
+<footer>
   <p>© 2026 Meu Dividendo — Conteúdo educativo, não é recomendação de investimento.</p>
-  <p>
-    <a href="politica-de-privacidade.html">Política de Privacidade</a> |
-    <a href="#">Termos de Uso</a>
-  </p>
 </footer>
 
-<!-- JAVASCRIPT -->
+<!-- JS -->
 <script>
-function toggleMenu(){
-  const menu = document.getElementById('side-menu');
-  menu.style.left = menu.style.left === '0px' ? '-260px' : '0px';
+// Menu hambúrguer header
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 
-/* MOEDAS */
-async function carregarMoedas(){
-  try {
-    const r = await fetch('/api/moedas');
-    const m = await r.json();
-    document.getElementById('dolar-value').innerText = 'US$ ' + m.dolar.toFixed(2);
-    document.getElementById('euro-value').innerText = '€ ' + m.euro.toFixed(2);
-    document.getElementById('yuans-value').innerText = '¥ ' + m.yuan.toFixed(2);
-    document.getElementById('bitcoin-value').innerText = '₿ ' + m.bitcoin.toLocaleString('pt-BR');
-  } catch(e){}
-}
+// Exemplo: você mantém suas funções de moedas, tops e pesquisa
+async function carregarMoedas() { /* ... */ }
+async function carregarTop() { /* ... */ }
+async function carregarAtivosPerenes() { /* ... */ }
+async function buscarAtivo() { /* ... */ }
 
-/* TICKER */
-async function carregarAtivosPerenes(){
-  try {
-    const res = await fetch('/api/ativos');
-    const data = await res.json();
-    const ticker = document.getElementById('ticker');
-    ticker.innerHTML = '';
-    data.forEach(a=>{
-      const c = a.change > 0 ? 'up' : a.change < 0 ? 'down' : '';
-      ticker.innerHTML += `
-        <span class="${c}">
-          ${a.symbol} R$ ${a.price.toFixed(2)} (${a.change.toFixed(2)}%)
-        </span>`;
-    });
-    ticker.innerHTML += ticker.innerHTML;
-  } catch(e){}
-}
+// Inicializa funções
+window.addEventListener('DOMContentLoaded', () => {
+  carregarMoedas();
+  carregarTop();
+  carregarAtivosPerenes();
+  setInterval(carregarAtivosPerenes, 60000);
+});
+</script>
 
-/* TOPS */
-async function carregarTop(){
-  try {
-    const r = await fetch('/api/top');
-    const d = await r.json();
-    [
-      ['acoes_altas','acoesAltas'],
-      ['acoes_baixas','acoesBaixas'],
-      ['fiis_altas','fiisAltas'],
-      ['fiis_baixas','fiisBaixas']
-    ].forEach(([k,id])=>{
-      const el = document.getElementById(id);
-      el.innerHTML = '';
-      d[k]?.forEach(i=>{
-        el.innerHTML += `
-          <div class="card">
-            <strong>${i.symbol}</strong>
-            <span>R$ ${i.preco} (${i.variacao}%)</span>
-          </div>`;
-      });
-    });
-  } catch(e){}
-}
-
-/* PESQUISA */
-async function buscarAtivo(){
-  const s = searchInput.value.toUpperCase();
-  if(!s) return;
-  const r = await fetch('/api/ativo/' + s);
-  if(r.status !== 200){
-    resultado.innerHTML = 'Ativo não encontrado.';
-    return;
-  }
-  const d = await r.json();
-  resultado.innerHTML = `
-    <h3>${d.symbol}</h3>
-    <p>Preço atual: R$ ${d.regularMarketPrice}</p>
-  `;
-}
-
-/* INIT */
-carregarMoedas();
-carregarTop();
-carregarAtivosPerenes();
-setInterval(carregarAtivosPerenes, 60000);
-<!-- IMPORTAR O JS PRINCIPAL -->
-<script src="script.js" defer></script>
 </body>
 </html>
