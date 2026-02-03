@@ -99,3 +99,6 @@ document.getElementById('resTotalJuros').innerText = `Total em Juros: R$ ${total
     }
   });
 }
+res.style.display = 'block';
+res.style.border = '2px solid red';
+res.style.backgroundColor = 'yellow';
