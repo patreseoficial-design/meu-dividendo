@@ -172,3 +172,27 @@ header .logo { max-height:60px; display:block; margin:0.5rem auto; }
   0%   { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
+/* Menu lateral */
+#side-menu {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 250px;
+  height: 100%;
+  background: #111;
+  padding-top: 80px;
+  transition: 0.3s;
+  z-index: 2000;
+}
+
+#side-menu a {
+  display: block;
+  padding: 15px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+#side-menu a:hover {
+  background: #222;
+}
