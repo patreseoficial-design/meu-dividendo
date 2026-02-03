@@ -7,6 +7,10 @@
   text-align: center;
   margin-bottom: 20px; /* opcional, deixa um espaço abaixo do texto */
 }
+.info-final {
+  text-align: center;
+  margin-bottom: 20px; /* opcional, deixa espaço abaixo */
+}
 .calc-box {
   width: 100%;
   max-width: 900px;
