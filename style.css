@@ -196,3 +196,19 @@ header .logo { max-height:60px; display:block; margin:0.5rem auto; }
 #side-menu a:hover {
   background: #222;
 }
+.calculadora-box {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+.calculadora-box input,
+.calculadora-box select,
+.calculadora-box button {
+  width: 100%;
+  padding: 10px;
+}
