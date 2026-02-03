@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de PIS | Meu Dividendo</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+</head>
+<body>
+
+<h1 class="page-title">Calculadora de PIS</h1>
+
+<div class="calc-box">
+  <div class="inputs">
+    <div class="input-group">
+      <label>Salário Médio</label>
+      <input type="number" id="salarioPIS" value="2000">
+    </div>
+
+    <div class="input-group">
+      <label>Meses Trabalhados</label>
+      <input type="number" id="mesesPIS" value="12" min="1" max="12">
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calcularPIS()">Calcular</button>
+</div>
+
+<div id="resultadoPIS" class="result" style="display:none">
+  <h2>Resultado</h2>
+  <p id="resTotalPIS"></p>
+</div>
+
+<script>
+function calcularPIS() {
+  const salario = +document.getElementById('salarioPIS').value;
+  const meses = +document.getElementById('mesesPIS').value;
+  // Supondo valor de PIS proporcional ao salário e meses, você pode ajustar a regra
+  const valorPIS = 110 * (meses / 12); 
+
+  const res = document.getElementById('resultadoPIS');
+  res.style.display = 'block';
+  document.getElementById('resTotalPIS').innerText = `Valor do PIS proporcional: R$ ${valorPIS.toFixed(2)}`;
+}
+</script>
+
+</body>
+</html>
