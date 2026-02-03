@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/calculadora.css">
   <style>
-    /* ===== MENU HAMBÚRGUER ===== */
+    /* ===== MENU HAMBURGUER ===== */
     .menu {
       font-size: 28px;
       cursor: pointer;
@@ -51,21 +51,20 @@
       background-color: #f0f0f0;
     }
 
-    /* ===== TÍTULO CLICÁVEL ===== */
+    /* CENTRALIZA TÍTULO */
     .site-title {
       text-align: center;
       margin: 0;
-      color: #fff;
-      padding: 20px 0 10px 0;
+      padding: 10px 0;
     }
 
     .site-title a {
-      color: #fff;
       text-decoration: none;
+      color: #fff;
       font-size: 28px;
     }
 
-    /* ===== CAIXA DE RESULTADO ===== */
+    /* RESUMO */
     #resultado13 {
       display: none;
       text-align: center;
@@ -73,15 +72,15 @@
       margin: 20px auto;
       padding: 20px;
       background: #fff;
-      border-radius: 12px;
       border: 1px solid #ccc;
+      border-radius: 12px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
   </style>
 </head>
-<body>
 
-<header style="position: relative; background:#111; color:#fff; padding:10px 0;">
+<body>
+<header>
   <div class="menu" onclick="toggleMenu()">☰</div>
 
   <h1 class="site-title">
@@ -115,80 +114,74 @@
       <label>Meses Trabalhados</label>
       <input type="number" id="meses" value="12" min="1" max="12">
     </div>
+
+    <!-- CAMPOS OPCIONAIS -->
+    <div class="input-group">
+      <label>Horas Extras (R$)</label>
+      <input type="number" id="horasExtras" placeholder="0">
+    </div>
+
+    <div class="input-group">
+      <label>Insalubridade (%)</label>
+      <input type="number" id="insalubridade" placeholder="0">
+    </div>
+
+    <div class="input-group">
+      <label>Periculosidade (%)</label>
+      <input type="number" id="periculosidade" placeholder="0">
+    </div>
   </div>
 
   <button class="calc-btn" onclick="calcular13()">Calcular</button>
 </div>
 
-<div id="resultado13">
-  <h2>Resultado</h2>
-  <p id="resBruto"></p>
-  <p id="resProporcional"></p>
-  <p id="resINSS"></p>
-  <p id="resIR"></p>
-  <p id="resParcela1"></p>
-  <p id="resParcela2"></p>
-  <p id="resTotal"></p>
+<div id="resultado13" class="result">
+  <h2>Resultado do 13º Salário</h2>
+  <p id="resTotal13"></p>
 </div>
 
-<footer style="background:#111; color:#fff; padding:20px; text-align:center;">
+<footer>
   <p>© 2026 Meu Dividendo</p>
   <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
   <p><a href="politica-de-privacidade.html" style="color:#fff; text-decoration:underline;">Política de Privacidade</a></p>
 </footer>
 
-<!-- JS -->
 <script>
-  // MENU HAMBURGUER
+  // MENU HAMBÚRGUER
   function toggleMenu() {
     const menu = document.getElementById('menuLinks');
     menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
   }
 
-  // CALCULADORA 13º
+  // FUNÇÃO DE CÁLCULO 13º SALÁRIO COMPLETA
   function calcular13() {
-    const salarioBruto = +document.getElementById('salario').value;
-    const mesesTrabalhados = +document.getElementById('meses').value;
+    const salario = +document.getElementById('salario').value || 0;
+    const meses = +document.getElementById('meses').value || 0;
+    const horasExtras = +document.getElementById('horasExtras').value || 0;
+    const insalubridade = +document.getElementById('insalubridade').value || 0;
+    const periculosidade = +document.getElementById('periculosidade').value || 0;
 
-    // 1️⃣ Valor proporcional
-    let valorProporcional = (salarioBruto / 12) * mesesTrabalhados;
+    // Salário base proporcional
+    const salarioProporcional = salario * (meses / 12);
 
-    // 2️⃣ INSS
-    let inss;
-    if (salarioBruto <= 1320) inss = salarioBruto * 0.075;
-    else if (salarioBruto <= 2571.29) inss = salarioBruto * 0.09;
-    else if (salarioBruto <= 3856.94) inss = salarioBruto * 0.12;
-    else if (salarioBruto <= 7507.49) inss = salarioBruto * 0.14;
-    else inss = 7507.49 * 0.14; // teto INSS
+    // Adicionais
+    const adicionalHorasExtras = horasExtras;
+    const adicionalInsalubridade = salarioProporcional * (insalubridade / 100);
+    const adicionalPericulosidade = salarioProporcional * (periculosidade / 100);
 
-    // 3️⃣ Base para IRRF
-    const baseIR = valorProporcional - inss;
+    // Total do 13º
+    const total13 = salarioProporcional + adicionalHorasExtras + adicionalInsalubridade + adicionalPericulosidade;
 
-    // 4️⃣ IRRF
-    let ir = 0;
-    if (baseIR <= 1903.98) ir = 0;
-    else if (baseIR <= 2826.65) ir = baseIR * 0.075 - 142.8;
-    else if (baseIR <= 3751.05) ir = baseIR * 0.15 - 354.8;
-    else if (baseIR <= 4664.68) ir = baseIR * 0.225 - 636.13;
-    else ir = baseIR * 0.275 - 869.36;
-    if (ir < 0) ir = 0;
-
-    // 5️⃣ Parcelas
-    const primeiraParcela = valorProporcional - inss;
-    const segundaParcela = valorProporcional - inss - ir;
-    const totalLiquido = primeiraParcela + segundaParcela;
-
-    // MOSTRAR RESULTADOS
-    const resBox = document.getElementById('resultado13');
-    resBox.style.display = 'block';
-
-    document.getElementById('resBruto').innerText = `Salário Bruto: R$ ${salarioBruto.toFixed(2)}`;
-    document.getElementById('resProporcional').innerText = `Proporcional: R$ ${valorProporcional.toFixed(2)}`;
-    document.getElementById('resINSS').innerText = `INSS: R$ ${inss.toFixed(2)}`;
-    document.getElementById('resIR').innerText = `IRRF: R$ ${ir.toFixed(2)}`;
-    document.getElementById('resParcela1').innerText = `1ª Parcela Líquida: R$ ${primeiraParcela.toFixed(2)}`;
-    document.getElementById('resParcela2').innerText = `2ª Parcela Líquida: R$ ${segundaParcela.toFixed(2)}`;
-    document.getElementById('resTotal').innerText = `Total Líquido do 13º: R$ ${totalLiquido.toFixed(2)}`;
+    // Exibe resultado
+    const res = document.getElementById('resultado13');
+    res.style.display = 'block';
+    document.getElementById('resTotal13').innerHTML = `
+      Salário proporcional: R$ ${salarioProporcional.toFixed(2)}<br>
+      Horas Extras: R$ ${adicionalHorasExtras.toFixed(2)}<br>
+      Insalubridade: R$ ${adicionalInsalubridade.toFixed(2)}<br>
+      Periculosidade: R$ ${adicionalPericulosidade.toFixed(2)}<br>
+      <strong>Total do 13º Salário: R$ ${total13.toFixed(2)}</strong>
+    `;
   }
 </script>
 </body>
