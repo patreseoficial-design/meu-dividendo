@@ -578,3 +578,29 @@ footer {
     font-size: 13px;
   }
 }
+/* Caixa da calculadora */
+.calc-box {
+  margin: 30px auto;
+  padding: 24px;
+}
+
+/* Grupo de cada campo */
+.input-group {
+  margin-bottom: 14px; /* espaço entre os campos */
+}
+
+/* Inputs e selects */
+.input-group input,
+.input-group select {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 4px;
+}
+
+/* Texto de ajuda */
+.input-group .info {
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: #666;
+}
