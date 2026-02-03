@@ -14,7 +14,7 @@
 <div class="calc-box">
   <div class="inputs">
     <div class="input-group">
-      <label>Salário Médio</label>
+      <label>Salário Mensal</label>
       <input type="number" id="salarioPIS" value="2000">
     </div>
 
@@ -32,18 +32,7 @@
   <p id="resTotalPIS"></p>
 </div>
 
-<script>
-function calcularPIS() {
-  const salario = +document.getElementById('salarioPIS').value;
-  const meses = +document.getElementById('mesesPIS').value;
-  // Supondo valor de PIS proporcional ao salário e meses, você pode ajustar a regra
-  const valorPIS = 110 * (meses / 12); 
-
-  const res = document.getElementById('resultadoPIS');
-  res.style.display = 'block';
-  document.getElementById('resTotalPIS').innerText = `Valor do PIS proporcional: R$ ${valorPIS.toFixed(2)}`;
-}
-</script>
+<script src="js/calculadora-pis.js"></script>
 
 </body>
 </html>
