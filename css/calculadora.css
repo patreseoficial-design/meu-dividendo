@@ -11,6 +11,21 @@
   text-align: center;
   margin-bottom: 20px; /* opcional, deixa espaço abaixo */
 }
+.result {
+  text-align: center;
+}
+.result table {
+  width: 100%; /* ou menor se quiser */
+  border-collapse: collapse;
+  text-align: center; /* centraliza o texto das células */
+}
+
+.result th, 
+.result td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: center; /* garante centralização dentro de cada célula */
+}
 .calc-box {
   width: 100%;
   max-width: 900px;
