@@ -114,3 +114,50 @@ footer {
   text-align: center;
   font-size: 14px;
 }
+/* HEADER E MENU */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #f2f2f2;
+  position: relative;
+}
+
+.menu {
+  font-size: 24px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.menu-links {
+  display: none; /* inicia oculto */
+  position: absolute;
+  top: 50px;
+  left: 0;
+  background: #fff;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.menu-links ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-links li {
+  border-bottom: 1px solid #ddd;
+}
+
+.menu-links li a {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #333;
+}
+
+.menu-links li a:hover {
+  background: #eee;
+}
