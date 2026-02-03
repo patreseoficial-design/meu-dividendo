@@ -48,25 +48,22 @@
   <div class="inputs">
 
     <div class="input-group">
-      <label>Valor inicial</label>
-      <span class="info">Capital inicial investido</span>
+      <label>Valor Inicial</label>
       <input type="number" id="inicial" value="1000">
     </div>
 
     <div class="input-group">
-      <label>Aporte mensal</label>
-      <span class="info">Valor investido todo mês</span>
+      <label>Aporte Mensal</label>
       <input type="number" id="mensal" value="200">
     </div>
 
     <div class="input-group">
-      <label>Taxa de juros (%)</label>
-      <span class="info">Exemplo: 1% ao mês</span>
+      <label>Taxa de Juros (%)</label>
       <input type="number" id="taxa" value="1">
     </div>
 
     <div class="input-group">
-      <label>Tipo da taxa</label>
+      <label>Tipo da Taxa</label>
       <select id="tipoTaxa">
         <option value="mensal">Mensal</option>
         <option value="anual">Anual</option>
@@ -89,6 +86,14 @@
   </div>
 
   <button class="calc-btn" onclick="calcular()">Calcular</button>
+</div>
+
+<!-- CAIXA DE RESULTADO RESUMIDO -->
+<div id="resultadoResumo" class="result" style="display:none">
+  <h2>Resumo do Investimento</h2>
+  <p id="totalFinal"></p>
+  <p id="totalInvestido"></p>
+  <p id="totalJuros"></p>
 </div>
 
 <!-- RESULTADOS -->
