@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Juros Compostos - Meu Dividendo</title>
+<title>Calculadora de Juros Compostos</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -15,6 +15,7 @@ body{
   color:#000;
 }
 
+/* HEADER IGUAL AO PRINCIPAL */
 header{
   background:#111;
   height:4cm;
@@ -24,117 +25,131 @@ header{
   justify-content:space-between;
   padding:0 20px;
 }
-
 header h1{
-  margin:0;
-  font-size:28px;
   flex:1;
   text-align:center;
+  margin:0;
+  font-size:28px;
 }
-
-.menu{ font-size:28px; cursor:pointer; }
+.menu{font-size:28px;cursor:pointer;}
 .profile{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:#555;
+  width:40px;height:40px;border-radius:50%;background:#555;
 }
 
-.container{
-  max-width:900px;
-  margin:30px auto;
-  padding:20px;
-}
-
-h2{
+/* TÍTULO */
+.page-title{
   text-align:center;
-  margin-bottom:25px;
+  font-size:26px;
+  margin:30px 0 15px;
 }
 
+/* TEXTO EXPLICATIVO */
 .explain{
-  font-size:15px;
+  max-width:900px;
+  margin:0 auto 20px;
+  padding:0 15px;
   line-height:1.6;
-  margin-bottom:20px;
+  font-size:15px;
 }
 
+/* BANNER */
 .banner{
   background:#eee;
-  height:80px;
-  margin:20px 0;
-  text-align:center;
-  line-height:80px;
+  height:70px;
+  margin:20px auto;
+  max-width:900px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   font-weight:bold;
 }
 
-/* 🧮 FORM MELHORADO */
-.form-box{
-  border:2px solid #000;
+/* CAIXA DA CALCULADORA */
+.calc-box{
+  max-width:900px;
+  margin:0 auto;
+  border:1px solid #ccc;
   border-radius:10px;
   padding:20px;
-  max-width:600px;
-  margin:0 auto;
+}
+
+/* INPUTS ORGANIZADOS */
+.inputs{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
   gap:15px;
 }
-
-.form-box label{
+.input-group{
+  display:flex;
+  flex-direction:column;
+}
+.input-group label{
   font-size:14px;
-  font-weight:bold;
+  margin-bottom:5px;
 }
-
-.form-box input,
-.form-box select{
-  width:100%;
-  height:42px;
+.input-group input,
+.input-group select{
+  height:40px;
+  padding:0 10px;
   font-size:15px;
-  padding:0 8px;
-  border:1px solid #000;
-  border-radius:6px;
 }
 
-.form-box .full{
-  grid-column:1 / -1;
-}
-
-.form-box button{
+/* BOTÃO */
+.calc-btn{
+  margin-top:20px;
   width:100%;
   height:45px;
-  font-size:17px;
+  font-size:16px;
   background:#111;
   color:#fff;
   border:none;
   cursor:pointer;
+  border-radius:6px;
 }
 
-/* RESULTADOS */
-.resultado-final{
+/* RESULTADO */
+.result{
+  max-width:900px;
+  margin:30px auto;
+  padding:20px;
+  border:1px solid #ccc;
+  border-radius:10px;
+}
+.result h3{
   text-align:center;
-  font-size:24px;
+  margin-bottom:15px;
+}
+.total{
+  text-align:center;
+  font-size:22px;
   font-weight:bold;
-  margin-top:30px;
+  margin-bottom:20px;
 }
 
-.tabela{
+/* TABELA */
+table{
   width:100%;
   border-collapse:collapse;
-  margin-top:25px;
   font-size:14px;
 }
-
-.tabela th, .tabela td{
-  border:1px solid #ccc;
-  padding:6px;
+th,td{
+  border:1px solid #ddd;
+  padding:8px;
   text-align:center;
 }
-
-.tabela th{
-  background:#111;
-  color:#fff;
+th{
+  background:#f4f4f4;
 }
 
-.grafico-box{
-  margin-top:40px;
+/* GRÁFICO */
+.chart-box{
+  max-width:900px;
+  margin:30px auto;
+}
+
+/* RESPONSIVO */
+@media(max-width:600px){
+  .page-title{font-size:22px;}
 }
 </style>
 </head>
@@ -142,127 +157,139 @@ h2{
 <body>
 
 <header>
-  <div class="menu" onclick="history.back()">←</div>
+  <div class="menu">☰</div>
   <h1>Meu Dividendo</h1>
   <div class="profile"></div>
 </header>
 
-<div class="container">
-
-<h2>Calculadora de Juros Compostos</h2>
+<h2 class="page-title">Calculadora de Juros Compostos</h2>
 
 <div class="explain">
-<strong>O que é a Calculadora de Juros Compostos?</strong><br>
-É uma ferramenta que ajuda a saber aproximadamente* quanto renderá um investimento,
-considerando o efeito dos juros compostos (juros sobre juros).
+<p><strong>O que é a Calculadora de Juros Compostos?</strong><br>
+É uma ferramenta que ajuda a saber aproximadamente quanto renderá um investimento ou qual será o tamanho de uma dívida ao longo do tempo, considerando o efeito dos juros compostos (ou “juros sobre juros”).</p>
+
+<p>Para realizar o cálculo, são considerados o valor inicial e o mensal, a taxa de juros (mensal ou anual) e o período (em meses ou anos).</p>
 </div>
 
-<div class="banner">Banner de propaganda</div>
+<div class="banner">Propaganda</div>
 
-<div class="explain">
-*Os valores são estimativas e podem variar conforme taxas e condições de mercado.
+<!-- CALCULADORA -->
+<div class="calc-box">
+  <div class="inputs">
+    <div class="input-group">
+      <label>Valor inicial (R$)</label>
+      <input type="number" id="inicial" value="1000">
+    </div>
+    <div class="input-group">
+      <label>Aporte mensal (R$)</label>
+      <input type="number" id="mensal" value="200">
+    </div>
+    <div class="input-group">
+      <label>Taxa de juros (%)</label>
+      <input type="number" id="taxa" value="1">
+    </div>
+    <div class="input-group">
+      <label>Tipo da taxa</label>
+      <select id="tipoTaxa">
+        <option value="mensal">Mensal</option>
+        <option value="anual">Anual</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>Período</label>
+      <input type="number" id="periodo" value="12">
+    </div>
+    <div class="input-group">
+      <label>Meses / Anos</label>
+      <select id="tipoPeriodo">
+        <option value="meses">Meses</option>
+        <option value="anos">Anos</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calcular()">Calcular</button>
 </div>
 
-<!-- FORM -->
-<div class="form-box">
-  <div>
-    <label>Valor inicial (R$)</label>
-    <input id="valorInicial" type="number" value="1000">
-  </div>
+<!-- RESULTADOS -->
+<div id="resultado" class="result" style="display:none">
+  <h3>Resultado</h3>
+  <div id="totalFinal" class="total"></div>
 
-  <div>
-    <label>Taxa mensal (%)</label>
-    <input id="taxa" type="number" step="0.01" value="1">
-  </div>
-
-  <div>
-    <label>Período</label>
-    <input id="tempo" type="number" value="12">
-  </div>
-
-  <div>
-    <label>Tipo</label>
-    <select id="tipoTempo">
-      <option value="meses">Meses</option>
-      <option value="anos">Anos</option>
-    </select>
-  </div>
-
-  <div class="full">
-    <button onclick="calcular()">Calcular</button>
-  </div>
+  <table id="tabela">
+    <thead>
+      <tr>
+        <th>Mês</th>
+        <th>Juros (Reinvestindo)</th>
+        <th>Total (Reinvestindo)</th>
+        <th>Juros (Sem Reinvestir)</th>
+        <th>Total (Sem Reinvestir)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 </div>
 
-<div id="resultado"></div>
-
-<div class="grafico-box">
+<div class="chart-box">
   <canvas id="grafico"></canvas>
 </div>
 
-<div class="banner">Banner de propaganda</div>
-
-</div>
+<div class="banner">Propaganda</div>
 
 <script>
 let chart;
 
 function calcular(){
-  const inicial = Number(valorInicial.value);
-  const taxa = Number(taxa.value)/100;
-  let meses = Number(tempo.value);
-  if(tipoTempo.value==='anos') meses*=12;
+  const inicial = +inicial.value;
+  const mensal = +mensal.value;
+  let taxa = +taxa.value / 100;
+  let meses = +periodo.value;
 
-  let saldoReinvest = inicial;
-  let jurosFixos = inicial * taxa;
+  if(tipoTaxa.value === 'anual') taxa = Math.pow(1+taxa,1/12)-1;
+  if(tipoPeriodo.value === 'anos') meses *= 12;
 
-  let labels=[], dadosReinvest=[], dadosSem=[];
-  let tabela=`
-  <table class="tabela">
-    <tr>
-      <th>Mês</th>
-      <th>Juros no mês (Reinvestindo)</th>
-      <th>Juros no mês (Sem reinvestir)</th>
-    </tr>`;
+  let totalReinv = inicial;
+  let totalSem = inicial;
+  let jurosSem = 0;
+
+  const tbody = document.querySelector('#tabela tbody');
+  tbody.innerHTML = '';
+
+  const labels=[], reinv=[], sem=[];
 
   for(let i=1;i<=meses;i++){
-    const jurosMes = saldoReinvest * taxa;
-    saldoReinvest += jurosMes;
+    const jReinv = totalReinv * taxa;
+    totalReinv += jReinv + mensal;
+
+    jurosSem = inicial * taxa;
+    totalSem += jurosSem + mensal;
 
     labels.push(i);
-    dadosReinvest.push(jurosMes.toFixed(2));
-    dadosSem.push(jurosFixos.toFixed(2));
+    reinv.push(totalReinv.toFixed(2));
+    sem.push(totalSem.toFixed(2));
 
-    tabela+=`
-    <tr>
-      <td>${i}</td>
-      <td>R$ ${jurosMes.toFixed(2)}</td>
-      <td>R$ ${jurosFixos.toFixed(2)}</td>
-    </tr>`;
+    tbody.innerHTML += `
+      <tr>
+        <td>${i}</td>
+        <td>R$ ${jReinv.toFixed(2)}</td>
+        <td>R$ ${totalReinv.toFixed(2)}</td>
+        <td>R$ ${jurosSem.toFixed(2)}</td>
+        <td>R$ ${totalSem.toFixed(2)}</td>
+      </tr>`;
   }
 
-  tabela+='</table>';
-
-  resultado.innerHTML=`
-    <div class="resultado-final">
-      Total com reinvestimento: R$ ${saldoReinvest.toFixed(2)}
-    </div>
-    ${tabela}
-  `;
+  resultado.style.display='block';
+  totalFinal.innerText = `Reinvestindo: R$ ${totalReinv.toFixed(2)} | Sem reinvestir: R$ ${totalSem.toFixed(2)}`;
 
   if(chart) chart.destroy();
-
-  chart=new Chart(grafico,{
+  chart = new Chart(document.getElementById('grafico'),{
     type:'line',
     data:{
       labels,
       datasets:[
-        {label:'Juros Reinvestindo', data:dadosReinvest, borderWidth:3, tension:.3},
-        {label:'Juros Sem Reinvestir', data:dadosSem, borderWidth:3, tension:.3}
+        {label:'Reinvestindo',data:reinv,borderWidth:2},
+        {label:'Sem Reinvestir',data:sem,borderWidth:2}
       ]
-    },
-    options:{
-      animation:{duration:1200},
-      plugins:{legend:{position:'bottom'}}
     }
   });
 }
