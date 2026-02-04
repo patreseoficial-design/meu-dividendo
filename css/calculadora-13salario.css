@@ -101,8 +101,4 @@ footer {
   place-items: center;
   margin-top: 60px;
 }
-/* Toggle menu */
-function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
+
