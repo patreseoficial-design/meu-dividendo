@@ -1,37 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Rescisão Trabalhista Atualizada | Meu Dividendo</title>
+  <meta name="description" content="Calcule sua rescisão trabalhista completa: saldo de salário, aviso prévio, férias, 13º, FGTS, multa de 40% e descontos de INSS e IR.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- CABEÇALHO PADRÃO -->
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
+
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="calculadora.html">Juros Compostos</a></li>
+      <li><a href="calculadora-13salario.html">13º Salário</a></li>
+      <li><a href="calculadora-pis.html">PIS</a></li>
+      <li><a href="calculadora-ir.html">IR Investimentos</a></li>
+      <li><a href="calculadora-recisao.html">Rescisão Trabalhista</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- TÍTULO SEO -->
+<h1 class="page-title">Calculadora de Rescisão Trabalhista</h1>
+
+<!-- TEXTO INTRODUTÓRIO -->
+<div class="explain">
+  <p>
+    A rescisão trabalhista é o conjunto de valores pagos ao trabalhador no encerramento do contrato de trabalho.
+    Esses valores variam conforme o tipo de demissão, tempo de serviço e direitos adquiridos.
+    Nesta calculadora, você pode estimar saldo de salário, aviso prévio, férias, 13º salário,
+    FGTS, multa rescisória e descontos legais como INSS e Imposto de Renda.
+  </p>
+</div>
+
+<!-- BANNER ADSENSE -->
+<div class="ad-banner">Publicidade</div>
+
 <!-- CALCULADORA DE RESCISÃO -->
+<h2 class="page-subtitle">Calcule sua Rescisão</h2>
+
 <div class="calc-box">
-  <h2>Calculadora de Rescisão</h2>
   <div class="inputs">
 
     <div class="input-group">
-      <label>Salário Mensal</label>
-      <input type="number" id="salario" value="2500">
+      <label>Salário Mensal (R$)</label>
+      <input type="number" id="salario" value="2000">
     </div>
 
     <div class="input-group">
-      <label>Meses Trabalhados</label>
-      <input type="number" id="mesesTrabalhados" value="12">
+      <label>Data de Admissão</label>
+      <input type="date" id="admissao">
     </div>
 
     <div class="input-group">
-      <label>Férias Pendentes (em meses)</label>
-      <input type="number" id="ferias" value="1">
+      <label>Data de Demissão</label>
+      <input type="date" id="demissao">
     </div>
 
     <div class="input-group">
-      <label>13º Salário (Proporcional)</label>
-      <input type="number" id="decimoTerceiro" value="1">
+      <label>Tipo de Demissão</label>
+      <select id="tipoDemissao">
+        <option value="semJusta">Sem Justa Causa</option>
+        <option value="pedido">Pedido de Demissão</option>
+        <option value="justa">Justa Causa</option>
+      </select>
     </div>
 
   </div>
 
-  <button class="calc-btn" onclick="calcularRescisao()">Calcular</button>
-
-  <!-- RESULTADO -->
-  <div id="resultadoRescisao" class="result" style="display:none">
-    <h3>Resumo da Rescisão</h3>
-    <p id="resTotalRescisao"></p>
-    <p id="resDetalhesRescisao"></p>
-  </div>
-
+  <button class="calc-btn" onclick="calcularRescisao()">Calcular Rescisão</button>
 </div>
+
+<!-- RESULTADO -->
+<div id="resultadoRescisao" class="result" style="display:none">
+  <h2>Resultado da Rescisão</h2>
+
+  <p id="resSaldo"></p>
+  <p id="resAviso"></p>
+  <p id="resFerias"></p>
+  <p id="res13"></p>
+  <p id="resFGTS"></p>
+  <p id="resMulta"></p>
+  <p id="resINSS"></p>
+  <p id="resIR"></p>
+
+  <h3 id="resTotal"></h3>
+
+  <canvas id="graficoRescisao"></canvas>
+</div>
+
+<!-- BANNER -->
+<div class="ad-banner">Publicidade</div>
+
+<!-- COMO USAR -->
+<div class="explain">
+  <h2>Como usar a calculadora de rescisão</h2>
+  <p>
+    Informe seu salário, datas de admissão e demissão e o tipo de desligamento.
+    O sistema calcula automaticamente seus direitos conforme a legislação trabalhista.
+    Os valores exibidos são estimativas e podem variar conforme convenção coletiva.
+  </p>
+</div>
+
+<!-- EXPLICAÇÃO COMPLETA -->
+<div class="explain">
+  <h2>Como funciona a rescisão trabalhista</h2>
+  <p>
+    A rescisão inclui saldo de salário, aviso prévio (quando aplicável),
+    férias vencidas e proporcionais acrescidas de 1/3,
+    13º proporcional e saque do FGTS.
+    Em demissões sem justa causa, o trabalhador recebe ainda a multa de 40% do FGTS.
+    Descontos de INSS e Imposto de Renda são aplicados conforme a legislação vigente.
+  </p>
+</div>
+
+<!-- SEGURO-DESEMPREGO -->
+<h2 class="page-subtitle">Calculadora de Seguro-Desemprego</h2>
+
+<div class="calc-box">
+  <div class="inputs">
+    <div class="input-group">
+      <label>Último salário médio (R$)</label>
+      <input type="number" id="salarioSeguro" value="2000">
+    </div>
+
+    <div class="input-group">
+      <label>Número de solicitações anteriores</label>
+      <select id="solicitacoes">
+        <option value="0">Primeira solicitação</option>
+        <option value="1">Segunda solicitação</option>
+        <option value="2">Terceira ou mais</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calcularSeguro()">Calcular Seguro</button>
+</div>
+
+<div id="resultadoSeguro" class="result" style="display:none">
+  <h2>Resultado do Seguro-Desemprego</h2>
+  <p id="resParcelas"></p>
+  <p id="resValorParcela"></p>
+  <p id="resTotalSeguro"></p>
+</div>
+
+<!-- BANNER -->
+<div class="ad-banner">Publicidade</div>
+
+<!-- TEXTO SEGURO -->
+<div class="explain">
+  <h2>O que é o seguro-desemprego</h2>
+  <p>
+    O seguro-desemprego é um benefício concedido ao trabalhador dispensado sem justa causa.
+    O número de parcelas e o valor dependem do tempo trabalhado e da quantidade de solicitações anteriores.
+    O benefício é calculado com base na média salarial e segue regras definidas pelo governo federal.
+  </p>
+</div>
+
+<!-- RODAPÉ -->
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas.</p>
+</footer>
+
+<script src="js/calculadora-recisao.js"></script>
+
+</body>
+</html>
