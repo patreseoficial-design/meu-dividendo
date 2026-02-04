@@ -96,7 +96,11 @@ footer {
   margin: 0;
   text-align: center;
 }
-
+.titulo-planejamento {
+  display: grid;
+  place-items: center;
+  margin-top: 60px;
+}
 /* Toggle menu */
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
