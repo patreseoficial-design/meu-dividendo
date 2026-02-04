@@ -13,9 +13,11 @@ function calcularRescisao() {
   const tipoDemissao = document.getElementById('tipoDemissao').value;
 
   // ADICIONAIS OPCIONAIS
-  const periculosidade = Number(document.getElementById('periculosidade')?.value) || 0;
-  const insalubridade = Number(document.getElementById('insalubridade')?.value) || 0;
+  const periculosidadePercent = Number(document.getElementById('periculosidade')?.value) || 0;
+  const insalubridadePercent = Number(document.getElementById('insalubridade')?.value) || 0;
   const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
+
+  const avisoIndenizado = document.getElementById('avisoIndenizado')?.checked || false;
 
   if (!salario || !admissao || !demissao) {
     alert('Informe salário, data de admissão e demissão.');
@@ -44,15 +46,17 @@ function calcularRescisao() {
   const diasTrabalhadosMesDemissao = dias;
 
   // -------------------- ADICIONAIS --------------------
+  const periculosidade = salario * (periculosidadePercent / 100);
+  const insalubridade = salario * (insalubridadePercent / 100);
   const adicionais = periculosidade + insalubridade + horasExtras;
 
   // -------------------- SALDO DE SALÁRIO --------------------
-  const saldoSalario = (salario / 30) * diasTrabalhadosMesDemissao;
+  const saldoSalario = (salario / 30) * diasTrabalhadosMesDemissao + adicionais;
 
   // -------------------- AVISO PRÉVIO --------------------
   let avisoPrevio = 0;
-  if (tipoDemissao === 'semJusta') {
-    avisoPrevio = salario + adicionais; // inclui adicionais
+  if (tipoDemissao === 'semJusta' && avisoIndenizado) {
+    avisoPrevio = salario + adicionais; // indenizado
   }
 
   // -------------------- FÉRIAS PROPORCIONAIS --------------------
@@ -93,7 +97,7 @@ function calcularRescisao() {
   resBox.style.display = 'block';
 
   document.getElementById('resSaldo').innerText = `Saldo de Salário: R$ ${saldoSalario.toFixed(2)}`;
-  document.getElementById('resAviso').innerText = `Aviso Prévio: R$ ${avisoPrevio.toFixed(2)}`;
+  document.getElementById('resAviso').innerText = `Aviso Prévio${avisoIndenizado ? ' (indenizado)' : ''}: R$ ${avisoPrevio.toFixed(2)}`;
   document.getElementById('resFerias').innerText = `Férias + 1/3: R$ ${feriasComUmTerco.toFixed(2)}`;
   document.getElementById('res13').innerText = `13º Proporcional: R$ ${decimoTerceiro.toFixed(2)}`;
   document.getElementById('resAdicionais').innerText = `Adicionais (Periculosidade/Insalubridade/Horas extras): R$ ${adicionais.toFixed(2)}`;
@@ -114,7 +118,7 @@ function calcularRescisao() {
         label: 'Valores (R$)',
         data: [saldoSalario, avisoPrevio, feriasComUmTerco, decimoTerceiro, adicionais, fgts, multaFGTS, inss, ir],
         backgroundColor: [
-          '#4caf50', '#2196f3', '#ff9800', '#9c27b0', '#00bcd4', '#f44336', '#607d8b', '#795548', '#9e9e9e'
+          '#4caf50','#2196f3','#ff9800','#9c27b0','#00bcd4','#f44336','#607d8b','#795548','#9e9e9e'
         ]
       }]
     },
@@ -136,15 +140,13 @@ function calcularSeguro() {
     return;
   }
 
-  // -------------------- NORMAS INSS PARA SEGURO --------------------
   let parcelas = 0;
 
   if (mesesTrabalhados >= 6 && mesesTrabalhados <= 11) parcelas = 3;
   else if (mesesTrabalhados >= 12 && mesesTrabalhados <= 23) parcelas = 4;
   else if (mesesTrabalhados >= 24) parcelas = 5;
-  else parcelas = 0; // não tem direito
+  else parcelas = 0;
 
-  // Ajuste por solicitação anterior
   if (solicitacoes === 1) parcelas = Math.max(parcelas - 1, 1);
   if (solicitacoes >= 2) parcelas = Math.max(parcelas - 2, 1);
 
