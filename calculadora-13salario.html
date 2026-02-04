@@ -118,8 +118,9 @@
 <!-- PLANEJAMENTO MÊS A MÊS -->
 
 
-<div class="explain">
-  <h2>Planejamento mês a mês do 13º salário</h2>
+<h2 style="text-align:center; margin:60px 0 20px;">
+  Planejamento mês a mês do 13º salário
+</h2>
 
 <div class="calc-box">
   <div class="inputs">
@@ -127,29 +128,39 @@
       <label>Salário Mensal</label>
       <input type="number" id="salarioGraf" value="2000">
     </div>
+
     <div class="input-group">
       <label>Meses Trabalhados</label>
       <input type="number" id="mesesGraf" value="12" min="1" max="12">
     </div>
+
+    <div class="input-group">
+      <label>% para Investir</label>
+      <input type="number" id="percInvest" value="30" min="0" max="100">
+    </div>
   </div>
-  <button class="calc-btn" onclick="planejar13()">Gerar Planejamento</button>
+
+  <button class="calc-btn" onclick="planejar13()">
+    Gerar Planejamento
+  </button>
 </div>
 
 <div id="resultadoGraf" class="result" style="display:none">
   <h2>Distribuição mês a mês</h2>
+
   <div class="table-wrap">
     <table id="tabelaGraf">
       <thead>
         <tr>
           <th>Mês</th>
-          <th>Para Despesas (50%)</th>
-          <th>Para Investimento (30%)</th>
-          <th>Para Reserva / Dívida (20%)</th>
+          <th>13º Gerado</th>
+          <th>Valor para Investir</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
+
   <canvas id="graficoMeses"></canvas>
 </div>
 
