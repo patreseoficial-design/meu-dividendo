@@ -1,0 +1,154 @@
+/* ====== BASE ====== */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f8;
+  color: #111;
+}
+
+/* ====== TÍTULOS ====== */
+.page-title {
+  text-align: center;
+  margin: 30px 0 10px;
+}
+
+.page-subtitle {
+  text-align: center;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+/* ====== EXPLICAÇÕES ====== */
+.explain {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.explain h2 {
+  margin-top: 0;
+}
+
+/* ====== CAIXA DA CALCULADORA ====== */
+.calc-box {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.input-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* ====== BOTÃO ====== */
+.calc-btn {
+  display: block;
+  width: 100%;
+  margin-top: 25px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+.calc-btn:hover {
+  opacity: 0.9;
+}
+
+/* ====== RESULTADOS ====== */
+.result {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.result h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.result p {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+/* ====== TABELA ====== */
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 25px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+table th {
+  background: #f1f1f1;
+}
+
+/* ====== GRÁFICO ====== */
+canvas {
+  margin-top: 30px;
+  max-width: 100%;
+}
+
+/* ====== BANNER (SE USAR) ====== */
+.ad {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #eaeaea;
+  text-align: center;
+  border-radius: 12px;
+  color: #666;
+  font-weight: bold;
+}
+
+/* ====== RESPONSIVO ====== */
+@media (max-width: 600px) {
+  .inputs {
+    flex-direction: column;
+  }
+}
