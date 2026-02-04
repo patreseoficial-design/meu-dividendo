@@ -272,3 +272,8 @@ canvas {
   line-height: 1.6;
   font-size: 16px;
 }
+.info-section {
+  border-left: 3px solid #2196f3; /* linha fina azul à esquerda */
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
