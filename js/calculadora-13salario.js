@@ -95,59 +95,88 @@ let graf1; // futuramente para gráficos se quiser
 }
 
 // ===== PLANEJAMENTO MÊS A MÊS =====
-let grafPlanejamento;
+let grafico13 = null;
 
 function planejar13() {
-  const salario = +document.getElementById('salarioGraf').value || 0;
-  const meses = +document.getElementById('mesesGraf').value || 0;
+  const salario = Number(document.getElementById('salarioGraf').value) || 0;
+  const meses = Number(document.getElementById('mesesGraf').value) || 0;
+  const percInvest = Number(document.getElementById('percInvest').value) || 0;
 
-  const tabelaBody = document.querySelector('#tabelaGraf tbody');
-  tabelaBody.innerHTML = '';
+  if (salario <= 0 || meses <= 0) {
+    alert('Informe o salário e os meses trabalhados.');
+    return;
+  }
 
-  const labels = [], dataDespesas = [], dataInvest = [], dataReserva = [];
+  const valorMensal13 = salario / 12;
+  const mesesNomes = [
+    'Jan','Fev','Mar','Abr','Mai','Jun',
+    'Jul','Ago','Set','Out','Nov','Dez'
+  ];
 
-  for (let i = 1; i <= meses; i++) {
-    const proporcional = salario / 12;
-    const desp = proporcional * 0.5;
-    const invest = proporcional * 0.3;
-    const reserva = proporcional * 0.2;
+  const tbody = document.querySelector('#tabelaGraf tbody');
+  tbody.innerHTML = '';
 
-    tabelaBody.innerHTML += `
-      <tr>
-        <td>${i}</td>
-        <td>R$ ${desp.toFixed(2)}</td>
-        <td>R$ ${invest.toFixed(2)}</td>
-        <td>R$ ${reserva.toFixed(2)}</td>
-      </tr>`;
+  const dados13 = [];
+  const dadosInvest = [];
 
-    labels.push(`Mês ${i}`);
-    dataDespesas.push(desp);
-    dataInvest.push(invest);
-    dataReserva.push(reserva);
+  for (let i = 0; i < 12; i++) {
+    let valor13 = 0;
+    let valorInvest = 0;
+
+    if (i < meses) {
+      valor13 = valorMensal13;
+      valorInvest = valor13 * (percInvest / 100);
+    }
+
+    dados13.push(valor13.toFixed(2));
+    dadosInvest.push(valorInvest.toFixed(2));
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${mesesNomes[i]}</td>
+      <td>R$ ${valor13.toFixed(2)}</td>
+      <td>R$ ${valorInvest.toFixed(2)}</td>
+    `;
+    tbody.appendChild(tr);
   }
 
   document.getElementById('resultadoGraf').style.display = 'block';
 
-  if (grafPlanejamento) grafPlanejamento.destroy();
+  // DESTROI GRÁFICO ANTIGO (evita bug)
+  if (grafico13) {
+    grafico13.destroy();
+  }
 
-  grafPlanejamento = new Chart(document.getElementById('graficoMeses'), {
+  const ctx = document.getElementById('graficoMeses').getContext('2d');
+
+  grafico13 = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels,
+      labels: mesesNomes,
       datasets: [
-        { label: 'Despesas (50%)', data: dataDespesas, backgroundColor: '#FF69B4' }, // rosa
-        { label: 'Investimento (30%)', data: dataInvest, backgroundColor: '#5bc0eb' }, // azul claro
-        { label: 'Reserva / Dívida (20%)', data: dataReserva, backgroundColor: '#90EE90' } // verde claro
+        {
+          label: '13º acumulado por mês',
+          data: dados13,
+          backgroundColor: '#444'
+        },
+        {
+          label: 'Valor para investir',
+          data: dadosInvest,
+          backgroundColor: '#2ecc71'
+        }
       ]
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { position: 'top' },
-        title: { display: true, text: 'Distribuição mês a mês do 13º Salário' }
+        legend: {
+          position: 'top'
+        }
       },
       scales: {
-        y: { beginAtZero: true }
+        y: {
+          beginAtZero: true
+        }
       }
     }
   });
