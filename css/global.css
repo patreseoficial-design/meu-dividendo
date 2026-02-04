@@ -154,3 +154,23 @@ footer a {
     font-size: 20px;
   }
 }
+.explain {
+  width: 90%;
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 0; /* remove o fundo interno grande */
+  background-color: transparent; /* fundo transparente */
+  box-shadow: none; /* remove a sombra */
+  text-align: left; /* mantém alinhado à esquerda */
+  color: #333;
+}
+
+.explain h2 {
+  color: #2196f3; /* destaca os títulos */
+  margin-bottom: 5px;
+}
+
+.explain p {
+  line-height: 1.6;
+  font-size: 16px;
+}
