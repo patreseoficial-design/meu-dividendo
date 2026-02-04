@@ -75,3 +75,8 @@ footer {
   text-align: center;
   margin: 20px 0;
 }
+.titulo-planejamento {
+  text-align: center;
+  margin-top: 40px;   /* afasta do banner de cima */
+  margin-bottom: 20px; /* afasta da calculadora de baixo */
+}
