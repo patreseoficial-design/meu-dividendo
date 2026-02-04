@@ -85,6 +85,18 @@ footer {
 .titulo-planejamento-wrap h2 {
   text-align: center;
 }
+.titulo-planejamento-wrap {
+  width: 100%;
+  padding-top: 60px;     /* espaçamento REAL */
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.titulo-planejamento-wrap h2 {
+  margin: 0;
+  text-align: center;
+}
+
 /* Toggle menu */
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
