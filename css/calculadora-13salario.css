@@ -80,3 +80,14 @@ footer {
   margin-top: 40px;   /* afasta do banner de cima */
   margin-bottom: 20px; /* afasta da calculadora de baixo */
 }
+.titulo-planejamento-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;   /* AFASTA DO BANNER */
+  margin-bottom: 25px;
+}
+
+.titulo-planejamento-wrap h2 {
+  text-align: center;
+}
