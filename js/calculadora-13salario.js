@@ -152,3 +152,73 @@ function planejar13() {
     }
   });
 }
+function calcular13() {
+  const salario = Number(document.getElementById('salario')?.value) || 0;
+  const meses = Number(document.getElementById('meses')?.value) || 0;
+
+  const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
+  const insalubridadePerc = Number(document.getElementById('insalubridade')?.value) || 0;
+  const periculosidadePerc = Number(document.getElementById('periculosidade')?.value) || 0;
+
+  if (salario === 0 || meses === 0) {
+    alert('Informe pelo menos o salário e os meses.');
+    return;
+  }
+
+  const salarioProporcional = (salario / 12) * meses;
+
+  const adicionalInsalubridade = salarioProporcional * (insalubridadePerc / 100);
+  const adicionalPericulosidade = salarioProporcional * (periculosidadePerc / 100);
+
+  const salarioComAdicionais =
+    salarioProporcional +
+    horasExtras +
+    adicionalInsalubridade +
+    adicionalPericulosidade;
+
+  let inss = 0;
+  if (salarioComAdicionais <= 1320) inss = salarioComAdicionais * 0.075;
+  else if (salarioComAdicionais <= 2571.29) inss = salarioComAdicionais * 0.09;
+  else if (salarioComAdicionais <= 3856.94) inss = salarioComAdicionais * 0.12;
+  else if (salarioComAdicionais <= 7507.49) inss = salarioComAdicionais * 0.14;
+  else inss = 7507.49 * 0.14;
+
+  const baseIR = salarioComAdicionais - inss;
+  let ir = 0;
+
+  if (baseIR > 1903.98 && baseIR <= 2826.65) ir = baseIR * 0.075 - 142.8;
+  else if (baseIR <= 3751.05) ir = baseIR * 0.15 - 354.8;
+  else if (baseIR <= 4664.68) ir = baseIR * 0.225 - 636.13;
+  else if (baseIR > 4664.68) ir = baseIR * 0.275 - 869.36;
+
+  if (ir < 0) ir = 0;
+
+  const primeiraParcela = salarioProporcional / 2;
+  const segundaParcela = salarioComAdicionais - inss - ir;
+  const totalLiquido = primeiraParcela + segundaParcela;
+
+  let resBox = document.getElementById('resultado13');
+
+  // 👉 cria automaticamente se não existir
+  if (!resBox) {
+    resBox = document.createElement('div');
+    resBox.id = 'resultado13';
+    resBox.className = 'result';
+    document.body.appendChild(resBox);
+  }
+
+  resBox.style.display = 'block';
+  resBox.innerHTML = `
+    <h2>Resultado do 13º Salário</h2>
+    <p><strong>Salário proporcional:</strong> R$ ${salarioProporcional.toFixed(2)}</p>
+    <p><strong>Horas extras:</strong> R$ ${horasExtras.toFixed(2)}</p>
+    <p><strong>Insalubridade:</strong> R$ ${adicionalInsalubridade.toFixed(2)}</p>
+    <p><strong>Periculosidade:</strong> R$ ${adicionalPericulosidade.toFixed(2)}</p>
+    <p><strong>INSS:</strong> R$ ${inss.toFixed(2)}</p>
+    <p><strong>IRRF:</strong> R$ ${ir.toFixed(2)}</p>
+    <hr>
+    <p><strong>1ª Parcela:</strong> R$ ${primeiraParcela.toFixed(2)}</p>
+    <p><strong>2ª Parcela:</strong> R$ ${segundaParcela.toFixed(2)}</p>
+    <h3>Total Líquido: R$ ${totalLiquido.toFixed(2)}</h3>
+  `;
+}
