@@ -1,0 +1,234 @@
+/* ------------------ GLOBAL ------------------ */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+  color: #111;
+}
+
+h1, h2, h3 {
+  margin: 0 0 10px 0;
+}
+
+/* ------------------ CABEÇALHO ------------------ */
+header {
+  position: relative;
+  width: 100%;
+  background-color: #111;
+  padding: 10px 0;
+  text-align: center;
+  color: #fff;
+}
+
+header .menu {
+  font-size: 28px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  user-select: none;
+}
+
+header .site-title {
+  margin: 0;
+}
+
+header .site-title a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.menu-links {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  z-index: 1000;
+  width: 220px;
+}
+
+.menu-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-links li {
+  border-bottom: 1px solid #eee;
+}
+
+.menu-links li a {
+  display: block;
+  padding: 10px;
+  color: #111;
+  text-decoration: none;
+}
+
+.menu-links li a:hover {
+  background-color: #f0f0f0;
+}
+
+/* ------------------ FOOTER ------------------ */
+footer {
+  width: 100%;
+  background-color: #111;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+/* ------------------ PAGINA ------------------ */
+.page-title,
+.page-subtitle,
+.explain h2,
+.result h2,
+.result h3,
+.ad-banner,
+.calc-box h2 {
+  text-align: center; /* centraliza todos os títulos */
+  margin: 20px 0;
+}
+
+.explain p,
+.result p {
+  text-align: center; /* centraliza os parágrafos */
+}
+
+/* ------------------ CAIXA DE CALCULADORA ------------------ */
+.calc-box {
+  width: 90%;
+  max-width: 700px;
+  background-color: #fff;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centraliza conteúdo da caixa */
+}
+
+.inputs {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* centraliza os grupos de input */
+  gap: 15px;
+}
+
+.input-group {
+  flex: 1 1 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centraliza label e input */
+}
+
+.input-group label,
+.input-group input,
+.input-group select {
+  text-align: center;
+}
+
+/* ------------------ BOTÃO ------------------ */
+.calc-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background-color: #2196f3;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.calc-btn:hover {
+  background-color: #1976d2;
+}
+
+/* ------------------ RESULTADO ------------------ */
+.result {
+  width: 90%;
+  max-width: 700px;
+  background-color: #fff;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.result p, .result h3 {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+/* ------------------ BANNER ------------------ */
+.ad-banner {
+  width: 90%;
+  max-width: 700px;
+  height: 90px;
+  margin: 20px auto;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+}
+
+/* ------------------ EXPLICAÇÃO ------------------ */
+.explain {
+  width: 90%;
+  max-width: 700px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* ------------------ TABELAS ------------------ */
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+table th {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+/* ------------------ GRÁFICOS ------------------ */
+canvas {
+  margin-top: 15px;
+  width: 100% !important;
+  height: 300px !important;
+}
+
+/* ------------------ RESPONSIVO ------------------ */
+@media (max-width: 600px) {
+  .input-group {
+    flex: 1 1 100%;
+  }
+}
