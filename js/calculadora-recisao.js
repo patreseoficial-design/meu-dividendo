@@ -12,42 +12,48 @@ function calcularRescisao() {
   const demissao = document.getElementById('demissao').value;
   const tipoDemissao = document.getElementById('tipoDemissao').value;
 
+  // ADICIONAIS OPCIONAIS
+  const periculosidade = Number(document.getElementById('periculosidade')?.value) || 0;
+  const insalubridade = Number(document.getElementById('insalubridade')?.value) || 0;
+  const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
+
   if (!salario || !admissao || !demissao) {
     alert('Informe salário, data de admissão e demissão.');
     return;
   }
 
-  // CALCULANDO MESES TRABALHADOS
+  // DATAS
   const dtAdmissao = new Date(admissao);
   const dtDemissao = new Date(demissao);
   let mesesTrabalhados = (dtDemissao.getFullYear() - dtAdmissao.getFullYear()) * 12;
-  mesesTrabalhados += dtDemissao.getMonth() - dtAdmissao.getMonth() + 1;
-  if (mesesTrabalhados < 0) mesesTrabalhados = 0;
+  mesesTrabalhados += dtDemissao.getMonth() - dtAdmissao.getMonth();
+  const diasTrabalhadosMesDemissao = dtDemissao.getDate();
 
   // -------------------- SALDO DE SALÁRIO --------------------
-  const diasTrabalhadosMesDemissao = dtDemissao.getDate();
   const saldoSalario = (salario / 30) * diasTrabalhadosMesDemissao;
 
   // -------------------- AVISO PRÉVIO --------------------
   let avisoPrevio = 0;
   if (tipoDemissao === 'semJusta') {
-    // Aviso de 30 dias proporcional ao tempo (simplificação)
-    avisoPrevio = salario;
+    avisoPrevio = salario; // simplificação: 1 mês
   }
 
-  // -------------------- FÉRIAS --------------------
-  const feriasProporcionais = salario / 12 * mesesTrabalhados;
-  const feriasComUmTerco = feriasProporcionais * 1.3333; // acrescido 1/3
+  // -------------------- FÉRIAS PROPORCIONAIS --------------------
+  const feriasProporcionais = (salario / 12) * mesesTrabalhados;
+  const feriasComUmTerco = feriasProporcionais * 1.3333;
 
   // -------------------- 13º SALÁRIO --------------------
   const decimoTerceiro = (salario / 12) * mesesTrabalhados;
 
+  // -------------------- ADICIONAIS --------------------
+  const adicionais = periculosidade + insalubridade + horasExtras;
+
   // -------------------- FGTS --------------------
-  const fgts = (saldoSalario + feriasProporcionais + decimoTerceiro) * 0.08;
+  const fgts = (saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro + adicionais) * 0.08;
   const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
 
   // -------------------- INSS --------------------
-  const baseINSS = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro;
+  const baseINSS = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro + adicionais;
   let inss = 0;
   if (baseINSS <= 1320) inss = baseINSS * 0.075;
   else if (baseINSS <= 2571.29) inss = baseINSS * 0.09;
@@ -65,7 +71,7 @@ function calcularRescisao() {
   if (ir < 0) ir = 0;
 
   // -------------------- TOTAL LÍQUIDO --------------------
-  const totalLiquido = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro + multaFGTS - inss - ir;
+  const totalLiquido = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro + adicionais + multaFGTS - inss - ir;
 
   // -------------------- EXIBIR RESULTADOS --------------------
   const resBox = document.getElementById('resultadoRescisao');
@@ -75,6 +81,7 @@ function calcularRescisao() {
   document.getElementById('resAviso').innerText = `Aviso Prévio: R$ ${avisoPrevio.toFixed(2)}`;
   document.getElementById('resFerias').innerText = `Férias + 1/3: R$ ${feriasComUmTerco.toFixed(2)}`;
   document.getElementById('res13').innerText = `13º Proporcional: R$ ${decimoTerceiro.toFixed(2)}`;
+  document.getElementById('resAdicionais').innerText = `Adicionais (Periculosidade/Insalubridade/Horas extras): R$ ${adicionais.toFixed(2)}`;
   document.getElementById('resFGTS').innerText = `FGTS (8%): R$ ${fgts.toFixed(2)}`;
   document.getElementById('resMulta').innerText = `Multa FGTS (40%): R$ ${multaFGTS.toFixed(2)}`;
   document.getElementById('resINSS').innerText = `INSS: R$ ${inss.toFixed(2)}`;
@@ -87,12 +94,12 @@ function calcularRescisao() {
   window.graficoRescisao = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Saldo', 'Aviso', 'Férias', '13º', 'FGTS', 'Multa FGTS', 'INSS', 'IR'],
+      labels: ['Saldo', 'Aviso', 'Férias', '13º', 'Adicionais', 'FGTS', 'Multa FGTS', 'INSS', 'IR'],
       datasets: [{
         label: 'Valores (R$)',
-        data: [saldoSalario, avisoPrevio, feriasComUmTerco, decimoTerceiro, fgts, multaFGTS, inss, ir],
+        data: [saldoSalario, avisoPrevio, feriasComUmTerco, decimoTerceiro, adicionais, fgts, multaFGTS, inss, ir],
         backgroundColor: [
-          '#4caf50', '#2196f3', '#ff9800', '#9c27b0', '#00bcd4', '#f44336', '#607d8b', '#795548'
+          '#4caf50', '#2196f3', '#ff9800', '#9c27b0', '#00bcd4', '#f44336', '#607d8b', '#795548', '#9e9e9e'
         ]
       }]
     },
@@ -106,28 +113,28 @@ function calcularRescisao() {
 // -------------------- CALCULADORA DE SEGURO-DESEMPREGO --------------------
 function calcularSeguro() {
   const salario = Number(document.getElementById('salarioSeguro').value) || 0;
+  const mesesTrabalhados = Number(document.getElementById('mesesTrabalhados')?.value) || 0;
   const solicitacoes = Number(document.getElementById('solicitacoes').value);
 
-  if (!salario) {
-    alert('Informe o último salário.');
+  if (!salario || !mesesTrabalhados) {
+    alert('Informe o último salário e meses trabalhados.');
     return;
   }
 
   // -------------------- NORMAS INSS PARA SEGURO --------------------
   let parcelas = 0;
-  let valorParcela = 0;
 
-  if (solicitacoes === 0) { // primeira solicitação
-    parcelas = salario >= 2000 ? 5 : 4;
-  } else if (solicitacoes === 1) {
-    parcelas = salario >= 2000 ? 4 : 3;
-  } else {
-    parcelas = 3;
-  }
+  if (mesesTrabalhados >= 6 && mesesTrabalhados <= 11) parcelas = 3;
+  else if (mesesTrabalhados >= 12 && mesesTrabalhados <= 23) parcelas = 4;
+  else if (mesesTrabalhados >= 24) parcelas = 5;
+  else parcelas = 0; // não tem direito
 
-  // Limite de parcela (simplificado)
-  valorParcela = salario * 0.8;
-  if (valorParcela > 2200) valorParcela = 2200; // teto aproximado
+  // Ajuste por solicitação anterior
+  if (solicitacoes === 1) parcelas = Math.max(parcelas - 1, 1);
+  if (solicitacoes >= 2) parcelas = Math.max(parcelas - 2, 1);
+
+  let valorParcela = salario * 0.8;
+  if (valorParcela > 2200) valorParcela = 2200;
 
   const totalSeguro = parcelas * valorParcela;
 
