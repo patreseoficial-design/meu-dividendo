@@ -25,9 +25,26 @@ function calcularRescisao() {
   // DATAS
   const dtAdmissao = new Date(admissao);
   const dtDemissao = new Date(demissao);
-  let mesesTrabalhados = (dtDemissao.getFullYear() - dtAdmissao.getFullYear()) * 12;
-  mesesTrabalhados += dtDemissao.getMonth() - dtAdmissao.getMonth();
-  const diasTrabalhadosMesDemissao = dtDemissao.getDate();
+
+  // CALCULO DE TEMPO TRABALHADO EM MESES
+  let anos = dtDemissao.getFullYear() - dtAdmissao.getFullYear();
+  let meses = dtDemissao.getMonth() - dtAdmissao.getMonth();
+  let dias = dtDemissao.getDate() - dtAdmissao.getDate();
+
+  if (dias < 0) {
+    meses -= 1;
+    dias += 30;
+  }
+  if (meses < 0) {
+    anos -= 1;
+    meses += 12;
+  }
+
+  const mesesTrabalhados = anos * 12 + meses;
+  const diasTrabalhadosMesDemissao = dias;
+
+  // -------------------- ADICIONAIS --------------------
+  const adicionais = periculosidade + insalubridade + horasExtras;
 
   // -------------------- SALDO DE SALÁRIO --------------------
   const saldoSalario = (salario / 30) * diasTrabalhadosMesDemissao;
@@ -35,21 +52,19 @@ function calcularRescisao() {
   // -------------------- AVISO PRÉVIO --------------------
   let avisoPrevio = 0;
   if (tipoDemissao === 'semJusta') {
-    avisoPrevio = salario; // simplificação: 1 mês
+    avisoPrevio = salario + adicionais; // inclui adicionais
   }
 
   // -------------------- FÉRIAS PROPORCIONAIS --------------------
-  const feriasProporcionais = (salario / 12) * mesesTrabalhados;
-  const feriasComUmTerco = feriasProporcionais * 1.3333;
+  const feriasProporcionais = ((salario + adicionais) / 12) * mesesTrabalhados;
+  const feriasComUmTerco = feriasProporcionais * (1 + 1/3);
 
-  // -------------------- 13º SALÁRIO --------------------
-  const decimoTerceiro = (salario / 12) * mesesTrabalhados;
-
-  // -------------------- ADICIONAIS --------------------
-  const adicionais = periculosidade + insalubridade + horasExtras;
+  // -------------------- 13º SALÁRIO PROPORCIONAL --------------------
+  const decimoTerceiro = ((salario + adicionais) / 12) * mesesTrabalhados;
 
   // -------------------- FGTS --------------------
-  const fgts = (saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro + adicionais) * 0.08;
+  const fgtsBase = saldoSalario + avisoPrevio + feriasProporcionais + decimoTerceiro + adicionais;
+  const fgts = fgtsBase * 0.08;
   const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
 
   // -------------------- INSS --------------------
@@ -88,7 +103,7 @@ function calcularRescisao() {
   document.getElementById('resIR').innerText = `IRRF: R$ ${ir.toFixed(2)}`;
   document.getElementById('resTotal').innerText = `Total Líquido da Rescisão: R$ ${totalLiquido.toFixed(2)}`;
 
-  // -------------------- GRÁFICO DE TORRE --------------------
+  // -------------------- GRÁFICO --------------------
   const ctx = document.getElementById('graficoRescisao').getContext('2d');
   if (window.graficoRescisao) window.graficoRescisao.destroy();
   window.graficoRescisao = new Chart(ctx, {
@@ -116,7 +131,7 @@ function calcularSeguro() {
   const mesesTrabalhados = Number(document.getElementById('mesesTrabalhados')?.value) || 0;
   const solicitacoes = Number(document.getElementById('solicitacoes').value);
 
-  if (!salario || !mesesTrabalhados) {
+  if (!salario || mesesTrabalhados <= 0) {
     alert('Informe o último salário e meses trabalhados.');
     return;
   }
