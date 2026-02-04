@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quanto Investir por Mês | Meu Dividendo</title>
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
+
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="calculadora.html">Juros Compostos</a></li>
+      <li><a href="calculadora-13salario.html">13º Salário</a></li>
+      <li><a href="quanto-investir-por-mes.html">Quanto Investir por Mês</a></li>
+    </ul>
+  </nav>
+</header>
+
+<h1 class="page-title">Quanto Investir por Mês</h1>
+
+<p class="page-subtitle">
+  Descubra quanto do seu salário você pode investir todo mês sem apertar o orçamento
+</p>
+
+<div class="explain">
+  <h2>Como funciona essa calculadora?</h2>
+  <p>
+    Com base no seu salário mensal, a calculadora sugere uma divisão financeira equilibrada:
+    despesas, investimentos e reserva de segurança.
+  </p>
+  <p>
+    Essa estratégia ajuda você a criar o hábito de investir todo mês, mesmo ganhando pouco.
+  </p>
+</div>
+
+<!-- CALCULADORA -->
+<div class="calc-box">
+  <div class="inputs">
+    <div class="input-group">
+      <label>Salário Mensal</label>
+      <input type="number" id="salarioMensal" value="3000">
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calcularInvestimento()">Calcular Planejamento</button>
+</div>
+
+<!-- RESULTADO -->
+<div id="resultadoInvest" class="result" style="display:none">
+  <h2>Distribuição mensal do seu salário</h2>
+
+  <p id="resDespesa"></p>
+  <p id="resInvest"></p>
+  <p id="resReserva"></p>
+
+  <canvas id="graficoInvest"></canvas>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Categoria</th>
+          <th>Valor Mensal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Despesas (50%)</td>
+          <td id="tdDespesa"></td>
+        </tr>
+        <tr>
+          <td>Investimento (30%)</td>
+          <td id="tdInvest"></td>
+        </tr>
+        <tr>
+          <td>Reserva / Dívidas (20%)</td>
+          <td id="tdReserva"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas.</p>
+</footer>
+
+<script src="js/quanto-investir-por-mes.js"></script>
+</body>
+</html>
