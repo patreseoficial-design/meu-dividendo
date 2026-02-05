@@ -48,7 +48,7 @@ jurosSem += js;
 tbody.innerHTML += `  
   <tr>  
     <td>${i}</td>  
-    <td>R$ ${jr.toFixed(2)}</td>  
+    <td>R$ ${jr.toFixed(2).replace('.', ',')}</td>  
     <td>R$ ${reinv.toFixed(2)}</td>  
     <td>R$ ${js.toFixed(2)}</td>  
     <td>R$ ${sem.toFixed(2)}</td>  
