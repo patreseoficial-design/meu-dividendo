@@ -37,36 +37,34 @@ tbody.innerHTML = '';
 const labels = [], dataReinv = [], dataSem = [], dataJuros = [];
 
 for (let i = 1; i <= meses; i++) {
-const jr = reinv * tx;
-reinv += jr + men;
-jurosReinv += jr;
+  const jr = reinv * tx;
+  reinv += jr + men;
+  jurosReinv += jr;
 
-const js = ini * tx;  
-sem += js + men;  
-jurosSem += js;  
-
+  const js = ini * tx;
+  sem += js + men;
+  jurosSem += js;
 
   // Formata para exibir com vírgula
-  const jrExibir = jr.toFixed(2).replace('.', ',');
-  const reinvExibir = reinv.toFixed(2).replace('.', ',');
-  const jsExibir = js.toFixed(2).replace('.', ',');
-  const semExibir = sem.toFixed(2).replace('.', ',');
+  const jrExibir = jr.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const reinvExibir = reinv.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const jsExibir = js.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const semExibir = sem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-tbody.innerHTML += `
-  <tr>
-    <td>${i}</td>
-    <td>R$ ${jrExibir}</td>
-    <td>R$ ${reinvExibir}</td>
-    <td>R$ ${jsExibir}</td>
-    <td>R$ ${semExibir}</td>
-  </tr>
-`;
+  tbody.innerHTML += `
+    <tr>
+      <td>${i}</td>
+      <td>R$ ${jrExibir}</td>
+      <td>R$ ${reinvExibir}</td>
+      <td>R$ ${jsExibir}</td>
+      <td>R$ ${semExibir}</td>
+    </tr>
+  `;
 
-labels.push(i);  
-dataReinv.push(reinv);  
-dataSem.push(sem);  
-dataJuros.push(jr);
-
+  labels.push(i);
+  dataReinv.push(reinv);
+  dataSem.push(sem);
+  dataJuros.push(jr);
 }
 
 atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem);
