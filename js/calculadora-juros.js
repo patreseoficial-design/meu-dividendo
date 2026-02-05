@@ -79,6 +79,8 @@ function calcular() {
   if (graf1) graf1.destroy();
   if (graf2) graf2.destroy();
 
+atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem);
+
   // GRÁFICO COMPARATIVO - LINHA
   graf1 = new Chart(document.getElementById('graficoComparativo'), {
     type: 'line',
