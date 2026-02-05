@@ -45,15 +45,22 @@ const js = ini * tx;
 sem += js + men;  
 jurosSem += js;  
 
-tbody.innerHTML += `  
-  <tr>  
-    <td>${i}</td>  
-    <td>R$ ${jr.toFixed(2).replace('.', ',')}</td>  
-    <td>R$ ${reinv.toFixed(2)}</td>  
-    <td>R$ ${js.toFixed(2)}</td>  
-    <td>R$ ${sem.toFixed(2)}</td>  
-  </tr>  
-`;  
+
+  // Formata para exibir com vírgula
+  const jrExibir = jr.toFixed(2).replace('.', ',');
+  const reinvExibir = reinv.toFixed(2).replace('.', ',');
+  const jsExibir = js.toFixed(2).replace('.', ',');
+  const semExibir = sem.toFixed(2).replace('.', ',');
+
+tbody.innerHTML += `
+  <tr>
+    <td>${i}</td>
+    <td>R$ ${jrExibir}</td>
+    <td>R$ ${reinvExibir}</td>
+    <td>R$ ${jsExibir}</td>
+    <td>R$ ${semExibir}</td>
+  </tr>
+`;
 
 labels.push(i);  
 dataReinv.push(reinv);  
