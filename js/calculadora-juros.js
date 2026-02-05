@@ -102,7 +102,6 @@ document.getElementById('resultado').style.display = 'block';
     }
   });
 }
-
 // ============================
 // FUNÇÃO DE RESUMO COMPLETO
 // ============================
@@ -113,11 +112,11 @@ function atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem) {
   const totalInvestido = ini + men * meses;
 
   document.getElementById('resTotalFinal').innerText = 
-    `Valor Total Final (reinvestindo): R$ ${reinv.toFixed(2)} | Sem reinvestir: R$ ${sem.toFixed(2)}`;
+    `Valor Total Final (reinvestindo): R$ ${reinv.toFixed(2).replace('.', ',')} | Sem reinvestir: R$ ${sem.toFixed(2).replace('.', ',')}`;
 
   document.getElementById('resTotalInvestido').innerText = 
-    `Valor Total Investido: R$ ${totalInvestido.toFixed(2)}`;
+    `Valor Total Investido: R$ ${totalInvestido.toFixed(2).replace('.', ',')}`;
 
   document.getElementById('resTotalJuros').innerText = 
-    `Total em Juros (reinvestindo): R$ ${jurosReinv.toFixed(2)} | Sem reinvestir: R$ ${jurosSem.toFixed(2)}`;
+    `Total em Juros (reinvestindo): R$ ${jurosReinv.toFixed(2).replace('.', ',')} | Sem reinvestir: R$ ${jurosSem.toFixed(2).replace('.', ',')}`;
 }
