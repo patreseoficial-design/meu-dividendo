@@ -235,6 +235,48 @@
   </p>
 </div>
 
+<!-- FAQ JUROS COMPOSTOS -->
+<section class="faq">
+  <h2>Perguntas frequentes sobre juros compostos</h2>
+
+  <details>
+    <summary>O que são juros compostos?</summary>
+    <p>
+      Juros compostos são os juros calculados sobre o valor inicial somado aos juros acumulados ao longo do tempo,
+      criando o efeito conhecido como “juros sobre juros”.
+    </p>
+  </details>
+
+  <details>
+    <summary>O que são aportes mensais?</summary>
+    <p>
+      Aportes mensais são valores investidos regularmente todo mês, que aceleram o crescimento do patrimônio
+      quando combinados com juros compostos.
+    </p>
+  </details>
+
+  <details>
+    <summary>Juros compostos funcionam melhor no curto ou longo prazo?</summary>
+    <p>
+      No longo prazo. Quanto maior o tempo investido, maior o impacto dos juros compostos devido ao crescimento exponencial.
+    </p>
+  </details>
+
+  <details>
+    <summary>Reinvestir os rendimentos faz diferença?</summary>
+    <p>
+      Sim. Reinvestir os rendimentos aumenta significativamente o valor final, pois os juros passam a render novos juros.
+    </p>
+  </details>
+
+  <details>
+    <summary>Essa calculadora é gratuita?</summary>
+    <p>
+      Sim. A calculadora de juros compostos do Meu Dividendo é 100% gratuita e serve apenas para fins educativos.
+    </p>
+  </details>
+</section>
+
 <!-- RODAPÉ -->
 <footer>
   <p>© 2026 Meu Dividendo</p>
@@ -319,6 +361,7 @@ function calcular(){
     }
   });
 }
+</script>
 <!-- SCRIPTS -->
 <script>
 function toggleMenu() {
@@ -329,4 +372,53 @@ function toggleMenu() {
 
 <script src="js/calculadora-juros.js" defer></script>
 
+<!-- FAQ STRUCTURED DATA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "O que são juros compostos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Juros compostos são os juros calculados sobre o valor inicial somado aos juros acumulados ao longo do tempo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como funcionam os aportes mensais?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Os aportes mensais aumentam o capital investido e potencializam o efeito dos juros compostos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual a diferença entre juros simples e compostos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nos juros simples o rendimento é linear, nos juros compostos é exponencial."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Essa calculadora é confiável?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, para simulações e fins educativos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso usar para qualquer investimento?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, para diversos tipos de investimentos."
+      }
+    }
+  ]
+}
+</script>
 </body>
