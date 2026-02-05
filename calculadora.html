@@ -103,18 +103,20 @@
   <button class="calc-btn" onclick="calcular()">Calcular</button>
 </div>
 
-<!-- CAIXA DE RESULTADO RESUMIDO -->
+<!-- ============================
+     RESUMO COMPLETO
+============================ -->
 <div id="resultadoResumo" class="result" style="display:none">
   <h2>Resumo do Investimento</h2>
-  <p id="resTotalFinal"></p>
-  <p id="resTotalInvestido"></p>
-  <p id="resTotalJuros"></p>
+  <p id="resTotalFinal"> <!-- Total final com e sem reinvestimento --></p>
+  <p id="resTotalInvestido"> <!-- Total investido --></p>
+  <p id="resTotalJuros"> <!-- Juros recebidos com e sem reinvestimento --></p>
 </div>
 
-<!-- RESULTADOS -->
+<!-- ============================
+     TABELA DETALHADA
+============================ -->
 <div id="resultado" class="result" style="display:none">
-  <div id="totalFinal" class="total"></div>
-
   <div class="table-wrap">
     <table id="tabela">
       <thead>
