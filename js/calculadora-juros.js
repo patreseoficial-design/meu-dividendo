@@ -1,5 +1,5 @@
 // ============================
-// MENU HAMBURGUER
+// MENU HAMBÚRGUER
 // ============================
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
@@ -11,6 +11,9 @@ function toggleMenu() {
 // ============================
 let graf1, graf2;
 
+// ============================
+// FUNÇÃO PRINCIPAL DE CÁLCULO
+// ============================
 function calcular() {
   // PEGANDO OS ELEMENTOS
   const ini = +document.getElementById('inicial').value;
@@ -35,6 +38,9 @@ function calcular() {
 
   const labels = [], dataReinv = [], dataSem = [], dataJuros = [];
 
+  // ============================
+  // LOOP DE CÁLCULO MÊS A MÊS
+  // ============================
   for (let i = 1; i <= meses; i++) {
     const jr = reinv * tx; // juros reinvestindo
     reinv += jr + men;
@@ -44,7 +50,7 @@ function calcular() {
     sem += js + men;
     jurosSem += js;
 
-    // Tabela detalhada
+    // Adiciona linha na tabela
     tbody.innerHTML += `
       <tr>
         <td>${i}</td>
@@ -60,67 +66,59 @@ function calcular() {
     dataJuros.push(jr);
   }
 
-  // RESUMO
-  const totalInvestido = ini + men * meses;
-  const montante = reinv;
-  const totalJuros = montante - totalInvestido;
+  // ============================
+  // ATUALIZA RESUMO
+  // ============================
+  atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem);
 
-  // MOSTRA CAIXA DE RESUMO
-  const res = document.getElementById('resultadoResumo');
-  res.style.display = 'block';
-  document.getElementById('resTotalFinal').innerText = `Valor Total Final: R$ ${montante.toFixed(2)}`;
-  document.getElementById('resTotalInvestido').innerText = `Valor Total Investido: R$ ${totalInvestido.toFixed(2)}`;
-  document.getElementById('resTotalJuros').innerText = `Total em Juros: R$ ${totalJuros.toFixed(2)}`;
-
-  // MOSTRA TABELA DETALHADA
-  document.getElementById('resultado').style.display = 'block';
-
+  // ============================
   // ATUALIZA GRÁFICOS
+  // ============================
   if (graf1) graf1.destroy();
   if (graf2) graf2.destroy();
 
-atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem);
-
-  // GRÁFICO COMPARATIVO - LINHA
+  // Gráfico comparativo (linha)
   graf1 = new Chart(document.getElementById('graficoComparativo'), {
     type: 'line',
     data: {
       labels,
       datasets: [
-        { label: 'Reinvestindo', data: dataReinv, borderWidth: 2, borderColor: '#FF69B4', fill: false }, // rosa
-        { label: 'Sem Reinvestir', data: dataSem, borderWidth: 2, borderColor: '#1E90FF', fill: false } // azul
+        { label: 'Reinvestindo', data: dataReinv, borderWidth: 2, borderColor: '#FF69B4', fill: false },
+        { label: 'Sem Reinvestir', data: dataSem, borderWidth: 2, borderColor: '#1E90FF', fill: false }
       ]
     }
   });
 
-  // GRÁFICO DE JUROS - BARRA
+  // Gráfico de juros (barra)
   graf2 = new Chart(document.getElementById('graficoJuros'), {
     type:'bar',
     data:{
       labels,
       datasets:[
-        { label:'Juros recebidos por mês', data:dataJuros, backgroundColor: 'rgba(135, 206, 250, 0.8)' } // azul claro
+        { label:'Juros recebidos por mês', data:dataJuros, backgroundColor: 'rgba(135, 206, 250, 0.8)' }
       ]
     }
   });
+
+  // Mostra tabela detalhada
+  document.getElementById('resultado').style.display = 'block';
 }
+
+// ============================
+// FUNÇÃO PARA ATUALIZAR O RESUMO
+// ============================
 function atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem) {
-  // Seleciona o container do resumo
   const resumo = document.getElementById('resultadoResumo');
-  
-  // Mostra o resumo
   resumo.style.display = 'block';
 
-  // Calcula valor total investido (capital inicial + somatório dos aportes)
   const totalInvestido = ini + men * meses;
 
-  // Preenche os campos do resumo
   document.getElementById('resTotalFinal').innerText = 
     `Total final (reinvestindo): R$ ${reinv.toFixed(2)} | Sem reinvestir: R$ ${sem.toFixed(2)}`;
-  
+
   document.getElementById('resTotalInvestido').innerText = 
     `Total investido: R$ ${totalInvestido.toFixed(2)}`;
-  
+
   document.getElementById('resTotalJuros').innerText = 
     `Juros recebidos: R$ ${jurosReinv.toFixed(2)} | Sem reinvestir: R$ ${jurosSem.toFixed(2)}`;
 }
