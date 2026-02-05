@@ -1,125 +1,128 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+Calculadora de Juros Compostos Online | Meu Dividendo
+☰
 
-  <title>Calculadora de Juros Compostos com Aportes Mensais | Meu Dividendo</title>
+Meu Dividendo
 
-  <!-- SEO -->
-  <meta name="description" content="Calculadora de juros compostos com aportes mensais. Simule investimentos, veja o crescimento mês a mês e compare cenários com e sem reinvestimento.">
-  <meta name="author" content="Meu Dividendo">
+Juros Compostos
 
-  <!-- DADOS ESTRUTURADOS -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FinancialProduct",
-    "name": "Calculadora de Juros Compostos com Aportes Mensais",
-    "description": "Ferramenta online para simular investimentos com juros compostos e aportes mensais.",
-    "provider": {
-      "@type": "Organization",
-      "name": "Meu Dividendo"
-    }
-  }
-  </script>
+13º Salário
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/calculadora.css">
+PIS
 
-  <!-- CHART -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+IR sobre Investimentos
 
-<body>
+Rescisão
 
-<header>
-  <div class="menu" onclick="toggleMenu()">☰</div>
+Quitação
 
-  <!-- NÃO É H1 -->
-  <div class="site-title">
-    <a href="index.html">Meu Dividendo</a>
-  </div>
+📅 Quanto investir por mês
 
-  <nav id="menuLinks" class="menu-links">
-    <ul>
-      <li><a href="calculadora.html">Juros Compostos</a></li>
-      <li><a href="calculadora-13salario.html">13º Salário</a></li>
-      <li><a href="calculadora-pis.html">PIS</a></li>
-      <li><a href="calculadora-ir.html">IR sobre Investimentos</a></li>
-      <li><a href="calculadora-rescisao.html">Rescisão</a></li>
-      <li><a href="calculadora-quitacao.html">Quitação</a></li>
-      <li><a href="quanto-investir-por-mes.html">📅 Quanto investir por mês</a></li>
-    </ul>
-  </nav>
-</header>
 
-<!-- H1 ÚNICO -->
-<h1 class="page-title">
-  Calculadora de Juros Compostos com Aportes Mensais
-</h1>
+Calculadora de Juros Compostos
 
-<div class="explain">
-  <p>
-    Use nossa <strong>calculadora de juros compostos com aportes mensais</strong>
-    para simular investimentos e entender como o dinheiro cresce ao longo do tempo.
-  </p>
-</div>
+O que é a calculadora de juros compostos?     Ela ajuda a estimar quanto um investimento pode render ao longo do tempo considerando o efeito dos juros sobre juros.
 
-<!-- CALCULADORA (MANTIDA) -->
-<!-- 👉 SUA CALCULADORA CONTINUA IGUAL -->
-<!-- NÃO ALTEREI A LÓGICA -->
+Simule aportes mensais, compare cenários com e sem reinvestimento     e visualize o crescimento do patrimônio mês a mês.
 
-<!-- FAQ – ISSO AJUDA MUITO A RANQUEAR -->
-<section class="info-final">
-  <h2>Perguntas frequentes sobre juros compostos</h2>
+Espaço reservado para anúncio
 
-  <h3>O que são juros compostos?</h3>
-  <p>
-    Juros compostos são juros calculados sobre o valor inicial somado aos juros acumulados,
-    criando o efeito de crescimento exponencial.
-  </p>
+<div class="input-group">     <label>Valor Inicial</label>     <input type="number" id="inicial" value="1000">   </div>    <div class="input-group">     <label>Aporte Mensal</label>     <input type="number" id="mensal" value="200">   </div>    <div class="input-group">     <label>Taxa de Juros (%)</label>     <input type="number" id="taxa" value="1">   </div>    <div class="input-group">     <label>Tipo da Taxa</label>     <select id="tipoTaxa">       <option value="mensal">Mensal</option>       <option value="anual">Anual</option>     </select>   </div>    <div class="input-group">     <label>Período</label>     <input type="number" id="periodo" value="12">   </div>    <div class="input-group">     <label>Meses / Anos</label>     <select id="tipoPeriodo">       <option value="meses">Meses</option>       <option value="anos">Anos</option>     </select>   </div>   
 
-  <h3>Vale a pena investir com aportes mensais?</h3>
-  <p>
-    Sim. Os aportes mensais aumentam significativamente o valor final,
-    potencializando o efeito dos juros compostos no longo prazo.
-  </p>
+Calcular
 
-  <h3>Qual a diferença entre juros simples e compostos?</h3>
-  <p>
-    Nos juros simples, os juros incidem apenas sobre o valor inicial.
-    Já nos juros compostos, os juros incidem sobre o total acumulado.
-  </p>
+Resumo do Investimento
 
-  <h3>Essa calculadora considera juros mensais ou anuais?</h3>
-  <p>
-    A calculadora permite simular tanto taxas mensais quanto anuais,
-    ajustando automaticamente o cálculo.
-  </p>
+Mês
 
-  <h3>Os resultados são garantidos?</h3>
-  <p>
-    Não. Os valores são estimativas e servem apenas para fins educacionais,
-    não sendo uma recomendação de investimento.
-  </p>
-</section>
+Juros (Reinvestindo)
 
-<footer>
-  <p>© 2026 Meu Dividendo</p>
-  <p>Conteúdo educativo. Resultados são estimativas.</p>
-  <a href="politica-de-privacidade.html">Política de Privacidade</a>
-</footer>
+Total (Reinvestindo)
 
-<script>
-function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
-</script>
+Juros (Sem Reinvestir)
 
-<script src="js/calculadora-juros.js" defer></script>
+Total (Sem Reinvestir)
 
-</body>
-</html>
+Espaço reservado para anúncio
+
+Passo a passo para usar a calculadora de juros compostos
+
+Usar a calculadora de juros compostos para fazer cálculos financeiros (grátis) é fácil de ser utilizada. Confira o passo a passo:
+
+1. Passo 1: Preencha o campo “valor inicial” com a quantia que você irá investir inicialmente.
+
+
+2. Passo 2: No campo “valor mensal” coloque o quanto você pretende investir por mês.
+
+
+3. Passo 3: No campo “taxa de juros” informe qual será a taxa de juros mensal ou anual do investimento.
+
+
+4. Passo 4: Preencha o campo “período” com o tempo que você pretende investir.
+
+
+5. Passo 5: Clique em “Calcular” para saber o resultado.
+
+
+
+Como calcular juros compostos?
+
+A fórmula é: **M = C × (1 + i)ᵗ**, onde C é o capital inicial,       i é a taxa de juros e t o tempo.       
+   
+   Quando existem aportes mensais, o cálculo é feito mês a mês,       permitindo visualizar o efeito bola de neve dos juros compostos.
+
+Diferença entre juros simples e compostos
+
+Os juros compostos são pagos apenas no vencimento;
+
+Juros compostos são crescentes em termos reais e nominais, se a taxa for acima da inflação;
+
+Tecnicamente, nos juros compostos ocorre a fruição diferida dos juros pelo credor.
+
+
+Onde os juros compostos são aplicados?
+
+Primeiramente, **os juros compostos são conhecidos como juros sobre juros, já que seu cálculo leva em conta não apenas o valor inicial, mas também os juros do período.**       Na prática, eles são usados em várias relações comerciais como, por exemplo, em **empréstimos, investimentos e até mesmo em compras feitas em várias parcelas.**       No entanto, como os juros compostos oferecem um crescimento exponencial, eles são muito usados no mercado financeiro, para validar empréstimos, financiamentos ou investimentos.       Os juros compostos em si, não são bons nem ruins. A sua experiência com esses juros, como você pode ver na calculadora de juros compostos, vai depender de qual posição você toma na situação. Por exemplo:
+
+1- Contas
+
+Com o intuito de desestimular atrasos no pagamento de contas,instituições financeiras e empresas privadas podem usar os juros compostos, fazendo com que o pagador apenas aumente sua dívida caso não efetue o pagamento em dia.       Dessa forma, **quanto mais a conta demorar para ser quitada, mais alto será o valor em aberto.** Nessa situação, os juros compostos são vantajosos para a empresa, mas é um verdadeiro pesadelo para o cliente, pois a dívida pode virar uma grande bola de neve.
+
+2- Financiamentos
+
+**O cálculo de juros compostos também incide sobre financiamentos e empréstimos, já que as instituições preferem utilizar o método para garantir maiores rendimentos.** Neste caso, o financiamento pode sair bem caro para o cliente, pois os juros compostos irão aumentar muito o valor final a ser pago.
+
+3- Investimentos
+
+Por fim, os juros compostos também são muito usados como remuneração em investimentos. Sendo assim, **investir em ativos com juros compostos é uma boa forma de usar os juros compostos a seu favor.** Muitos investimentos de renda fixa remuneram com juros compostos, por exemplo, CDBs, CRIs, Tesouro Direto e etc.       Nas ações você também pode usufruir dos juros compostos. Mas neste caso, você deve reinvestir os dividendos recebidos, desse modo, você terá o efeito dos juros compostos no longo prazo.
+
+Agora que você sabe a diferença entre os dois tipos de juros, vamos a um exemplo:
+
+Suponha um investimento inicial de R$ 5.000 por 12 meses com 1% de juros ao mês, sem novos aportes:
+
+Juros compostos: R$ 5.634,13
+
+Juros simples: R$ 5.600,00
+
+
+No longo prazo, a diferença aumenta. Considerando 5, 10, 20 e 30 anos:
+
+5 anos – Juros simples: R$ 8.000,00 | Juros compostos: R$ 9.083,48
+
+10 anos – Juros simples: R$ 11.000,00 | Juros compostos: R$ 16.501,93
+
+20 anos – Juros simples: R$ 17.000,00 | Juros compostos: R$ 54.462,77
+
+30 anos – Juros simples: R$ 23.000,00 | Juros compostos: R$ 179.748,21
+
+Com trinta anos, é possível perceber a enorme diferença entre os juros simples e composto no longo prazo. Se você for investindo todos os meses, o valor final será ainda maior.       
+
+ Essa bola de neve de rendimento formada pelos juros compostos, é conhecida como a mágica dos juros compostos e pode te ajudar a construir seu patrimônio a longo prazo. Como Albert Einstein dizia: “juros compostos são a oitava maravilha do mundo”.       
+
+ Já usou a nossa calculadora de juros compostos? O que achou? Compartilha com todos que vão adorar usar essa ferramenta.
+
+
+© 2026 Meu Dividendo
+
+Conteúdo educativo. Resultados são estimativas e não recomendação financeira.
+
+Política de Privacidade
