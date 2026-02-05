@@ -11,60 +11,62 @@ function toggleMenu() {
 // ============================
 let graf1, graf2;
 
+
 // ============================
 // FUNÇÃO PRINCIPAL DE CÁLCULO
 // ============================
 function calcular() {
-  const ini = +document.getElementById('inicial').value;
-  const men = +document.getElementById('mensal').value;
-  let tx = +document.getElementById('taxa').value / 100;
-  let meses = +document.getElementById('periodo').value;
-  const tipoTaxa = document.getElementById('tipoTaxa').value;
-  const tipoPeriodo = document.getElementById('tipoPeriodo').value;
+const ini = +document.getElementById('inicial').value;
+const men = +document.getElementById('mensal').value;
+let tx = +document.getElementById('taxa').value / 100;
+let meses = +document.getElementById('periodo').value;
+const tipoTaxa = document.getElementById('tipoTaxa').value;
+const tipoPeriodo = document.getElementById('tipoPeriodo').value;
 
-  if (tipoTaxa === 'anual') tx = Math.pow(1 + tx, 1 / 12) - 1;
-  if (tipoPeriodo === 'anos') meses *= 12;
+if (tipoTaxa === 'anual') tx = Math.pow(1 + tx, 1 / 12) - 1;
+if (tipoPeriodo === 'anos') meses *= 12;
 
-  let reinv = ini;
-  let sem = ini;
-  let jurosReinv = 0;
-  let jurosSem = 0;
+let reinv = ini;
+let sem = ini;
+let jurosReinv = 0;
+let jurosSem = 0;
 
-  const tbody = document.querySelector('#tabela tbody');
-  tbody.innerHTML = '';
+const tbody = document.querySelector('#tabela tbody');
+tbody.innerHTML = '';
 
-  const labels = [], dataReinv = [], dataSem = [], dataJuros = [];
+const labels = [], dataReinv = [], dataSem = [], dataJuros = [];
 
-  for (let i = 1; i <= meses; i++) {
-    const jr = reinv * tx;
-    reinv += jr + men;
-    jurosReinv += jr;
+for (let i = 1; i <= meses; i++) {
+const jr = reinv * tx;
+reinv += jr + men;
+jurosReinv += jr;
 
-    const js = ini * tx;
-    sem += js + men;
-    jurosSem += js;
+const js = ini * tx;  
+sem += js + men;  
+jurosSem += js;  
 
-    // Adiciona linha na tabela com formatação BR
-    tbody.innerHTML += `
-      <tr>
-        <td>${i}</td>
-        <td>R$ ${jr.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-        <td>R$ ${reinv.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-        <td>R$ ${js.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-        <td>R$ ${sem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-      </tr>
-    `;
+tbody.innerHTML += `  
+  <tr>  
+    <td>${i}</td>  
+    <td>R$ ${jr.toFixed(2)}</td>  
+    <td>R$ ${reinv.toFixed(2)}</td>  
+    <td>R$ ${js.toFixed(2)}</td>  
+    <td>R$ ${sem.toFixed(2)}</td>  
+  </tr>  
+`;  
 
-    labels.push(i);
-    dataReinv.push(reinv); // mantemos números puros para o gráfico
-    dataSem.push(sem);
-    dataJuros.push(jr);
-  }
+labels.push(i);  
+dataReinv.push(reinv);  
+dataSem.push(sem);  
+dataJuros.push(jr);
 
-  atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem);
-
-  document.getElementById('resultado').style.display = 'block';
 }
+
+atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem);
+
+document.getElementById('resultado').style.display = 'block';
+   
+  
     
     
 
