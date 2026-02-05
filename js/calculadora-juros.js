@@ -47,10 +47,10 @@ function calcular() {
     tbody.innerHTML += `
       <tr>
         <td>${i}</td>
-        <td>R$ ${jr.toFixed(2)}</td>
-        <td>R$ ${reinv.toFixed(2)}</td>
-        <td>R$ ${js.toFixed(2)}</td>
-        <td>R$ ${sem.toFixed(2)}</td>
+        <td>R$ ${jr.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td>R$ ${reinv.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td>R$ ${js.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td>R$ ${sem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
       </tr>
     `;
 
@@ -63,6 +63,7 @@ function calcular() {
   atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem);
 
   document.getElementById('resultado').style.display = 'block';
+}
 
   // ============================
   // ATUALIZA GRÁFICOS
