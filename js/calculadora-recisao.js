@@ -1,3 +1,8 @@
+// -------------------- FUNÇÃO AUXILIAR FORMATAÇÃO --------------------
+function formatBRL(valor) {
+  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
 // -------------------- MENU HAMBÚRGUER --------------------
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
@@ -6,7 +11,6 @@ function toggleMenu() {
 
 // -------------------- CALCULADORA DE RESCISÃO --------------------
 function calcularRescisao() {
-  // --- PEGANDO DADOS ---
   const salario = Number(document.getElementById('salario').value) || 0;
   const admissao = document.getElementById('admissao').value;
   const demissao = document.getElementById('demissao').value;
@@ -22,7 +26,7 @@ function calcularRescisao() {
     return;
   }
 
-  // --- DATAS E TEMPO TRABALHADO ---
+  // --- DATAS ---
   const dtAdmissao = new Date(admissao);
   const dtDemissao = new Date(demissao);
 
@@ -42,35 +46,32 @@ function calcularRescisao() {
   const mesesTrabalhados = anos * 12 + meses + (dias > 0 ? 1 : 0);
   const diasTrabalhadosMesDemissao = dias > 0 ? dias : 0;
 
-  // --- ADICIONAIS PROPORCIONAIS ---
-  const periculosidade = (salario * periculosidadePerc / 100);
-  const insalubridade = (salario * insalubridadePerc / 100);
-
-  const adicionaisProporcionais = periculosidade + insalubridade + horasExtras;
+  // --- ADICIONAIS ---
+  const periculosidade = salario * (periculosidadePerc / 100);
+  const insalubridade = salario * (insalubridadePerc / 100);
+  const adicionais = periculosidade + insalubridade + horasExtras;
 
   // --- SALDO DE SALÁRIO ---
-  const saldoSalario = ((salario + adicionaisProporcionais) / 30) * diasTrabalhadosMesDemissao;
+  const saldoSalario = ((salario + adicionais) / 30) * diasTrabalhadosMesDemissao;
 
   // --- AVISO PRÉVIO ---
   let avisoPrevio = 0;
-  if (tipoDemissao === 'semJusta' && avisoIndenizado) {
-    avisoPrevio = salario + adicionaisProporcionais;
-  }
+  if (tipoDemissao === 'semJusta' && avisoIndenizado) avisoPrevio = salario + adicionais;
 
-  // --- FÉRIAS PROPORCIONAIS ---
-  const feriasProporcionais = ((salario + adicionaisProporcionais) / 12) * mesesTrabalhados;
-  const feriasComUmTerco = feriasProporcionais * (1 + 1/3);
+  // --- FÉRIAS ---
+  const feriasProporcionais = ((salario + adicionais) / 12) * mesesTrabalhados;
+  const feriasComUmTerco = feriasProporcionais * 1.3333;
 
-  // --- 13º SALÁRIO PROPORCIONAL ---
-  const decimoTerceiro = ((salario + adicionaisProporcionais) / 12) * mesesTrabalhados;
+  // --- 13º ---
+  const decimoTerceiro = ((salario + adicionais) / 12) * mesesTrabalhados;
 
   // --- FGTS ---
-  const fgtsBase = saldoSalario + avisoPrevio + feriasProporcionais + decimoTerceiro + adicionaisProporcionais;
+  const fgtsBase = saldoSalario + avisoPrevio + feriasProporcionais + decimoTerceiro + adicionais;
   const fgts = fgtsBase * 0.08;
   const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
 
   // --- INSS ---
-  const baseINSS = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro + adicionaisProporcionais;
+  const baseINSS = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro + adicionais;
   let inss = 0;
   if (baseINSS <= 1320) inss = baseINSS * 0.075;
   else if (baseINSS <= 2571.29) inss = baseINSS * 0.09;
@@ -88,22 +89,22 @@ function calcularRescisao() {
   if (ir < 0) ir = 0;
 
   // --- TOTAL LÍQUIDO ---
-  const totalLiquido = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro + adicionaisProporcionais + multaFGTS - inss - ir;
+  const totalLiquido = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro + adicionais + multaFGTS - inss - ir;
 
-  // --- EXIBIR RESULTADOS ---
+  // --- EXIBIR ---
   const resBox = document.getElementById('resultadoRescisao');
   resBox.style.display = 'block';
 
-  document.getElementById('resSaldo').innerText = `Saldo de Salário: R$ ${saldoSalario.toFixed(2)}`;
-  document.getElementById('resAviso').innerText = `Aviso Prévio (${avisoIndenizado ? 'indenizado' : 'não indenizado'}): R$ ${avisoPrevio.toFixed(2)}`;
-  document.getElementById('resFerias').innerText = `Férias + 1/3: R$ ${feriasComUmTerco.toFixed(2)}`;
-  document.getElementById('res13').innerText = `13º Proporcional: R$ ${decimoTerceiro.toFixed(2)}`;
-  document.getElementById('resAdicionais').innerText = `Adicionais: R$ ${adicionaisProporcionais.toFixed(2)}`;
-  document.getElementById('resFGTS').innerText = `FGTS (8%): R$ ${fgts.toFixed(2)}`;
-  document.getElementById('resMulta').innerText = `Multa FGTS (40%): R$ ${multaFGTS.toFixed(2)}`;
-  document.getElementById('resINSS').innerText = `Desconto INSS: R$ ${inss.toFixed(2)}`;
-  document.getElementById('resIR').innerText = `Desconto IRRF: R$ ${ir.toFixed(2)}`;
-  document.getElementById('resTotal').innerText = `Total Líquido da Rescisão: R$ ${totalLiquido.toFixed(2)}`;
+  document.getElementById('resSaldo').innerText = `Saldo de Salário: ${formatBRL(saldoSalario)}`;
+  document.getElementById('resAviso').innerText = `Aviso Prévio (${avisoIndenizado ? 'indenizado' : 'não indenizado'}): ${formatBRL(avisoPrevio)}`;
+  document.getElementById('resFerias').innerText = `Férias + 1/3: ${formatBRL(feriasComUmTerco)}`;
+  document.getElementById('res13').innerText = `13º Proporcional: ${formatBRL(decimoTerceiro)}`;
+  document.getElementById('resAdicionais').innerText = `Adicionais: ${formatBRL(adicionais)}`;
+  document.getElementById('resFGTS').innerText = `FGTS (8%): ${formatBRL(fgts)}`;
+  document.getElementById('resMulta').innerText = `Multa FGTS (40%): ${formatBRL(multaFGTS)}`;
+  document.getElementById('resINSS').innerText = `Desconto INSS: ${formatBRL(inss)}`;
+  document.getElementById('resIR').innerText = `Desconto IRRF: ${formatBRL(ir)}`;
+  document.getElementById('resTotal').innerText = `Total Líquido da Rescisão: ${formatBRL(totalLiquido)}`;
 
   // --- GRÁFICO ---
   const ctx = document.getElementById('graficoRescisao').getContext('2d');
@@ -114,17 +115,7 @@ function calcularRescisao() {
       labels: ['Saldo', 'Aviso', 'Férias', '13º', 'Adicionais', 'FGTS', 'Multa FGTS', 'INSS', 'IR'],
       datasets: [{
         label: 'Valores (R$)',
-        data: [
-          saldoSalario,
-          avisoPrevio,
-          feriasComUmTerco,
-          decimoTerceiro,
-          adicionaisProporcionais,
-          fgts,
-          multaFGTS,
-          inss,
-          ir
-        ],
+        data: [saldoSalario, avisoPrevio, feriasComUmTerco, decimoTerceiro, adicionais, fgts, multaFGTS, inss, ir],
         backgroundColor: [
           '#4caf50', '#2196f3', '#ff9800', '#9c27b0', '#00bcd4', '#f44336', '#607d8b', '#795548', '#9e9e9e'
         ]
