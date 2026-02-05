@@ -11,8 +11,10 @@ function toggleMenu() {
 // ============================
 let graf1, graf2;
 
+// ============================
+// FUNÇÃO PRINCIPAL DE CÁLCULO
+// ============================
 function calcular() {
-  // PEGANDO OS ELEMENTOS
   const ini = +document.getElementById('inicial').value;
   const men = +document.getElementById('mensal').value;
   let tx = +document.getElementById('taxa').value / 100;
@@ -20,11 +22,9 @@ function calcular() {
   const tipoTaxa = document.getElementById('tipoTaxa').value;
   const tipoPeriodo = document.getElementById('tipoPeriodo').value;
 
-  // AJUSTA TAXA E PERÍODO PARA MENSAL
   if (tipoTaxa === 'anual') tx = Math.pow(1 + tx, 1 / 12) - 1;
   if (tipoPeriodo === 'anos') meses *= 12;
 
-  // VARIÁVEIS
   let reinv = ini;
   let sem = ini;
   let jurosReinv = 0;
@@ -36,15 +36,14 @@ function calcular() {
   const labels = [], dataReinv = [], dataSem = [], dataJuros = [];
 
   for (let i = 1; i <= meses; i++) {
-    const jr = reinv * tx; // juros reinvestindo
+    const jr = reinv * tx;
     reinv += jr + men;
     jurosReinv += jr;
 
-    const js = ini * tx; // juros sem reinvestir
+    const js = ini * tx;
     sem += js + men;
     jurosSem += js;
 
-    // Tabela detalhada
     tbody.innerHTML += `
       <tr>
         <td>${i}</td>
@@ -52,7 +51,8 @@ function calcular() {
         <td>R$ ${reinv.toFixed(2)}</td>
         <td>R$ ${js.toFixed(2)}</td>
         <td>R$ ${sem.toFixed(2)}</td>
-      </tr>`;
+      </tr>
+    `;
 
     labels.push(i);
     dataReinv.push(reinv);
@@ -60,13 +60,13 @@ function calcular() {
     dataJuros.push(jr);
   }
 
-  // MOSTRA RESUMO COMPLETO
   atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem);
 
-  // MOSTRA TABELA DETALHADA
   document.getElementById('resultado').style.display = 'block';
 
+  // ============================
   // ATUALIZA GRÁFICOS
+  // ============================
   if (graf1) graf1.destroy();
   if (graf2) graf2.destroy();
 
@@ -82,18 +82,18 @@ function calcular() {
   });
 
   graf2 = new Chart(document.getElementById('graficoJuros'), {
-    type: 'bar',
-    data: {
+    type:'bar',
+    data:{
       labels,
-      datasets: [
-        { label: 'Juros recebidos por mês', data: dataJuros, backgroundColor: 'rgba(135, 206, 250, 0.8)' }
+      datasets:[
+        { label:'Juros recebidos por mês', data:dataJuros, backgroundColor: 'rgba(135, 206, 250, 0.8)' }
       ]
     }
   });
 }
 
 // ============================
-// FUNÇÃO PARA ATUALIZAR RESUMO COMPLETO
+// FUNÇÃO DE RESUMO COMPLETO
 // ============================
 function atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem) {
   const resumo = document.getElementById('resultadoResumo');
