@@ -102,3 +102,23 @@ function calcular() {
     }
   });
 }
+function atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem) {
+  // Seleciona o container do resumo
+  const resumo = document.getElementById('resultadoResumo');
+  
+  // Mostra o resumo
+  resumo.style.display = 'block';
+
+  // Calcula valor total investido (capital inicial + somatório dos aportes)
+  const totalInvestido = ini + men * meses;
+
+  // Preenche os campos do resumo
+  document.getElementById('resTotalFinal').innerText = 
+    `Total final (reinvestindo): R$ ${reinv.toFixed(2)} | Sem reinvestir: R$ ${sem.toFixed(2)}`;
+  
+  document.getElementById('resTotalInvestido').innerText = 
+    `Total investido: R$ ${totalInvestido.toFixed(2)}`;
+  
+  document.getElementById('resTotalJuros').innerText = 
+    `Juros recebidos: R$ ${jurosReinv.toFixed(2)} | Sem reinvestir: R$ ${jurosSem.toFixed(2)}`;
+}
