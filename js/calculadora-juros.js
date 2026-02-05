@@ -112,11 +112,11 @@ function atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem) {
   const totalInvestido = ini + men * meses;
 
   document.getElementById('resTotalFinal').innerText = 
-    `Valor Total Final (reinvestindo): R$ ${reinv.toFixed(2).replace('.', ',')} | Sem reinvestir: R$ ${sem.toFixed(2).replace('.', ',')}`;
+    `Valor Total Final (reinvestindo): R$ ${reinv.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} | Sem reinvestir: R$ ${sem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   document.getElementById('resTotalInvestido').innerText = 
-    `Valor Total Investido: R$ ${totalInvestido.toFixed(2).replace('.', ',')}`;
+    `Valor Total Investido: R$ ${totalInvestido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   document.getElementById('resTotalJuros').innerText = 
-    `Total em Juros (reinvestindo): R$ ${jurosReinv.toFixed(2).replace('.', ',')} | Sem reinvestir: R$ ${jurosSem.toFixed(2).replace('.', ',')}`;
+    `Total em Juros (reinvestindo): R$ ${jurosReinv.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} | Sem reinvestir: R$ ${jurosSem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
