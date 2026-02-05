@@ -44,6 +44,7 @@ function calcular() {
     sem += js + men;
     jurosSem += js;
 
+    // Adiciona linha na tabela com formatação BR
     tbody.innerHTML += `
       <tr>
         <td>${i}</td>
@@ -55,7 +56,7 @@ function calcular() {
     `;
 
     labels.push(i);
-    dataReinv.push(reinv);
+    dataReinv.push(reinv); // mantemos números puros para o gráfico
     dataSem.push(sem);
     dataJuros.push(jr);
   }
@@ -64,6 +65,8 @@ function calcular() {
 
   document.getElementById('resultado').style.display = 'block';
 }
+    
+    
 
   // ============================
   // ATUALIZA GRÁFICOS
