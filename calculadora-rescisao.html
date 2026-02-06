@@ -1,207 +1,235 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Calculadora de Rescisão Trabalhista Atualizada | Meu Dividendo</title>
-  <meta name="description" content="Calcule sua rescisão trabalhista completa: saldo de salário, aviso prévio, férias, 13º, FGTS, multa de 40% e descontos de INSS e IR.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="css/global.css">
-  
-<link rel="stylesheet" href="css/recisao.css">
+<title>Calculadora de Rescisão Online 2026 | Meu Dividendo</title>
+<meta name="description" content="Use a calculadora de rescisão online para descobrir quanto você tem a receber em caso de demissão. Inclui saldo, aviso prévio, férias, 13º, FGTS e descontos de INSS e IR.">
+<meta name="keywords" content="calculadora rescisão, rescisão online, calcular rescisão, aviso prévio, FGTS, férias proporcionais, 13º salário, INSS, IR">
+<meta name="author" content="Meu Dividendo">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- CSS -->
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/calculadora.css">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
-
 <body>
 
-<!-- CABEÇALHO PADRÃO -->
+<!-- ====== HEADER ====== -->
 <header>
   <div class="menu" onclick="toggleMenu()">☰</div>
-
-  <h1 class="site-title">
-    <a href="index.html">Meu Dividendo</a>
-  </h1>
-
+  <h1 class="site-title"><a href="index.html">Meu Dividendo</a></h1>
   <nav id="menuLinks" class="menu-links">
     <ul>
       <li><a href="index.html">🏠 Início</a></li>
       <li><a href="calculadora.html">Calculadora de Juros Compostos</a></li>
       <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
-      <li><a href="calculadora-pis.html">Calculadora de recebimento do PIS</a></li>
-      <li><a href="calculadora-ir.html">Calculadora de imposto de renda sobre Investimentos</a></li>
-      <li><a href="calculadora-rescisao.html">Calculadora de rescisão Trabalhista</a></li>
-<li><a
- href="calculadora-quitacao.html">calculadora de quitação patrimonial</a></li>
-<li><a href="quanto-investir-por-mes.html">Calculadora de quanto investir do seu salário por mês</a></li>
+      <li><a href="calculadora-pis.html">Calculadora de PIS</a></li>
+      <li><a href="calculadora-ir.html">Calculadora de IR sobre Investimentos</a></li>
+      <li><a href="calculadora-rescisao.html">Calculadora de Rescisão</a></li>
+      <li><a href="calculadora-quitacao.html">Calculadora de Quitação</a></li>
+      <li><a href="quanto-investir-por-mes.html">Quanto investir por mês</a></li>
     </ul>
   </nav>
 </header>
 
-<!-- TÍTULO SEO -->
-<h1 class="page-title">Calculadora de Rescisão Trabalhista</h1>
+<main>
+  <h1 class="page-title">Calculadora de Rescisão 2026</h1>
 
-<!-- TEXTO INTRODUTÓRIO -->
-<div class="explain">
-  <p>
-    A rescisão trabalhista é o conjunto de valores pagos ao trabalhador no encerramento do contrato de trabalho.
-    Esses valores variam conforme o tipo de demissão, tempo de serviço e direitos adquiridos.
-    Nesta calculadora, você pode estimar saldo de salário, aviso prévio, férias, 13º salário,
-    FGTS, multa rescisória e descontos legais como INSS e Imposto de Renda.
-  </p>
-</div>
-
-<!-- BANNER ADSENSE -->
-<div class="ad-banner">Publicidade</div>
-
-<!-- CALCULADORA DE RESCISÃO -->
-<h2 class="page-subtitle">Calcule sua Rescisão</h2>
-
-<div class="calc-box">
-  <div class="inputs">
-
-    <div class="input-group">
-      <label>Salário Mensal (R$)</label>
-      <input type="number" id="salario" value="2000">
-    </div>
-
-    <div class="input-group">
-      <label>Data de Admissão</label>
-      <input type="date" id="admissao">
-    </div>
-
-    <div class="input-group">
-      <label>Data de Demissão</label>
-      <input type="date" id="demissao">
-    </div>
-    <div class="input-group">
-  <label>Periculosidade (R$)</label>
-  <input type="number" id="periculosidade" value="0">
-</div>
-<div class="input-group">
-  <label>Insalubridade (R$)</label>
-  <input type="number" id="insalubridade" value="0">
-</div>
-<div class="input-group">
-  <label>Horas Extras (R$)</label>
-  <input type="number" id="horasExtras" value="0">
-</div>
-  <div class="input-group">
-  <label for="avisoIndenizado">Aviso Prévio Indenizado?</label>
-  <input type="checkbox" id="avisoIndenizado">
-</div>
-    <div class="input-group">
-      <label>Tipo de Demissão</label>
-      <select id="tipoDemissao">
-        <option value="semJusta">Sem Justa Causa</option>
-        <option value="pedido">Pedido de Demissão</option>
-        <option value="justa">Justa Causa</option>
-      </select>
-    </div>
-
+  <!-- EXPLICAÇÃO -->
+  <div class="explain">
+    <p><strong>O que é a Calculadora de Rescisão?</strong><br>
+    Descubra quanto você tem a receber em caso de demissão de forma simples e rápida. A calculadora inclui:</p>
+    <ul>
+      <li>Saldo de salário</li>
+      <li>Aviso prévio indenizado</li>
+      <li>Férias proporcionais + 1/3</li>
+      <li>13º proporcional</li>
+      <li>FGTS e multa de 40%</li>
+      <li>Descontos de INSS e IR</li>
+    </ul>
+    <p>Perfeita para empregados que desejam simular sua rescisão e planejar seus recebíveis.</p>
   </div>
 
-  <button class="calc-btn" onclick="calcularRescisao()">Calcular Rescisão</button>
-</div>
-
-<!-- RESULTADO -->
-<div id="resultadoRescisao" class="result" style="display:none">
-  <h2>Resultado da Rescisão</h2>
-
-  <p id="resSaldo"></p>
-  <p id="resAviso"></p>
-  <p id="resFerias"></p>
-  <p id="res13"></p>
-  <p id="resFGTS"></p>
-  <p id="resMulta"></p>
-  <p id="resINSS"></p>
-  <p id="resIR"></p>
-
-  <h3 id="resTotal"></h3>
-
-  <canvas id="graficoRescisao"></canvas>
-</div>
-
-<!-- BANNER -->
-<div class="ad-banner">Publicidade</div>
-
-<!-- COMO USAR -->
-<div class="explain">
-  <h2>Como usar a calculadora de rescisão</h2>
-  <p>
-    Informe seu salário, datas de admissão e demissão e o tipo de desligamento.
-    O sistema calcula automaticamente seus direitos conforme a legislação trabalhista.
-    Os valores exibidos são estimativas e podem variar conforme convenção coletiva.
-  </p>
-</div>
-
-<!-- EXPLICAÇÃO COMPLETA -->
-<div class="explain">
-  <h2>Como funciona a rescisão trabalhista</h2>
-  <p>
-    A rescisão inclui saldo de salário, aviso prévio (quando aplicável),
-    férias vencidas e proporcionais acrescidas de 1/3,
-    13º proporcional e saque do FGTS.
-    Em demissões sem justa causa, o trabalhador recebe ainda a multa de 40% do FGTS.
-    Descontos de INSS e Imposto de Renda são aplicados conforme a legislação vigente.
-  </p>
-</div>
-
-<!-- SEGURO-DESEMPREGO -->
-<h2 class="page-subtitle">Calculadora de Seguro-Desemprego</h2>
-
-<div class="calc-box">
-  <div class="inputs">
-    <div class="input-group">
-      <label>Último salário médio (R$)</label>
-      <input type="number" id="salarioSeguro" value="2000">
+  <!-- CALCULADORA -->
+  <div class="calc-box">
+    <div class="inputs">
+      <div class="input-group">
+        <label>Salário Mensal (R$)</label>
+        <input type="number" id="salario" value="2000" min="0">
+      </div>
+      <div class="input-group">
+        <label>Data de Admissão</label>
+        <input type="date" id="admissao">
+      </div>
+      <div class="input-group">
+        <label>Data de Demissão</label>
+        <input type="date" id="demissao">
+      </div>
+      <div class="input-group">
+        <label>Tipo de Demissão</label>
+        <select id="tipoDemissao">
+          <option value="semJusta">Sem Justa Causa</option>
+          <option value="comJusta">Com Justa Causa</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <input type="checkbox" id="avisoIndenizado">
+        <label for="avisoIndenizado">Aviso Prévio Indenizado</label>
+      </div>
+      <div class="input-group">
+        <label>Periculosidade (%)</label>
+        <input type="number" id="periculosidade" value="0" min="0" max="100">
+      </div>
+      <div class="input-group">
+        <label>Insalubridade (%)</label>
+        <input type="number" id="insalubridade" value="0" min="0" max="100">
+      </div>
+      <div class="input-group">
+        <label>Horas Extras (R$)</label>
+        <input type="number" id="horasExtras" value="0" min="0">
+      </div>
     </div>
-    
-    <div class="input-group">
-  <label>Meses trabalhados</label>
-  <input type="number" id="mesesTrabalhados" value="12">
-</div>
-   
 
-    <div class="input-group">
-      <label>Número de solicitações anteriores</label>   <select id="solicitacoes">
-        <option value="0">Primeira solicitação</option>
-        <option value="1">Segunda solicitação</option>
-        <option value="2">Terceira ou mais</option>
-      </select>
-    </div>
+    <button class="calc-btn" onclick="calcularRescisao()">Calcular Rescisão</button>
   </div>
 
-  <button class="calc-btn" onclick="calcularSeguro()">Calcular Seguro</button>
-</div>
+  <!-- RESULTADO -->
+  <div id="resultadoRescisao" style="display:none; margin-top:20px;">
+    <h2>Resultado da Rescisão</h2>
+    <p id="resSaldo"></p>
+    <p id="resAviso"></p>
+    <p id="resFerias"></p>
+    <p id="res13"></p>
+    <p id="resFGTS"></p>
+    <p id="resMulta"></p>
+    <p id="resINSS"></p>
+    <p id="resIR"></p>
+    <p id="resTotal" style="font-weight:bold; font-size:1.2em;"></p>
+    <canvas id="graficoRescisao" style="margin-top:20px;"></canvas>
+  </div>
 
-<div id="resultadoSeguro" class="result" style="display:none">
-  <h2>Resultado do Seguro-Desemprego</h2>
-  <p id="resParcelas"></p>
-  <p id="resValorParcela"></p>
-  <p id="resTotalSeguro"></p>
-</div>
+  <!-- FAQ -->
+  <div class="faq" style="margin-top:40px;">
+    <h2>Perguntas Frequentes</h2>
+    <h3>1. Quem tem direito à rescisão?</h3>
+    <p>Todos os empregados com contrato registrado em carteira que foram demitidos, seja por justa ou sem justa causa.</p>
 
-<!-- BANNER -->
-<div class="ad-banner">Publicidade</div>
+    <h3>2. O que é aviso prévio indenizado?</h3>
+    <p>Quando a empresa não exige que o funcionário trabalhe durante o período do aviso prévio, pagando o valor correspondente em dinheiro.</p>
 
-<!-- TEXTO SEGURO -->
-<div class="explain">
-  <h2>O que é o seguro-desemprego</h2>
-  <p>
-    O seguro-desemprego é um benefício concedido ao trabalhador dispensado sem justa causa.
-    O número de parcelas e o valor dependem do tempo trabalhado e da quantidade de solicitações anteriores.
-    O benefício é calculado com base na média salarial e segue regras definidas pelo governo federal.
-  </p>
-</div>
+    <h3>3. Como são calculadas as férias proporcionais?</h3>
+    <p>É calculado com base nos meses trabalhados no ano e inclui 1/3 constitucional.</p>
+
+    <h3>4. O que é FGTS e multa de 40%?</h3>
+    <p>O FGTS é o depósito feito pelo empregador em uma conta vinculada, e a multa de 40% é paga em casos de demissão sem justa causa.</p>
+  </div>
+</main>
 
 <!-- RODAPÉ -->
-<footer>
-  <p>© 2026 Meu Dividendo</p>
-  <p>Conteúdo educativo. Resultados são estimativas.</p>
+<footer style="margin-top:50px; padding:20px; background:#f1f1f1; text-align:center;">
+  <p>&copy; 2026 Meu Dividendo. Todos os direitos reservados.</p>
+  <p><a href="index.html">Início</a> | <a href="politica-privacidade.html">Política de Privacidade</a></p>
 </footer>
 
-<script src="js/calculadora-recisao.js"></script>
+<!-- SCRIPTS -->
+<script>
+// MENU HAMBÚRGUER
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+// FORMATAÇÃO MOEDA
+function formatBRL(valor) {
+  return valor.toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
+}
+
+// CALCULADORA DE RESCISÃO
+function calcularRescisao() {
+  const salario = Number(document.getElementById('salario').value) || 0;
+  const admissao = new Date(document.getElementById('admissao').value);
+  const demissao = new Date(document.getElementById('demissao').value);
+  const tipoDemissao = document.getElementById('tipoDemissao').value;
+  const avisoIndenizado = document.getElementById('avisoIndenizado').checked;
+
+  const periculosidadePerc = Number(document.getElementById('periculosidade').value) || 0;
+  const insalubridadePerc = Number(document.getElementById('insalubridade').value) || 0;
+  const horasExtras = Number(document.getElementById('horasExtras').value) || 0;
+
+  if (!salario || !admissao || !demissao) {
+    alert('Preencha todos os campos corretamente.');
+    return;
+  }
+
+  const periculosidade = salario * (periculosidadePerc / 100);
+  const insalubridade = salario * (insalubridadePerc / 100);
+  const adicionais = periculosidade + insalubridade + horasExtras;
+  const salarioBase = salario + adicionais;
+
+  const diasTrabalhadosMesDemissao = demissao.getDate();
+  const saldoSalario = (salarioBase / 30) * diasTrabalhadosMesDemissao;
+
+  let avisoPrevio = 0;
+  if (tipoDemissao === 'semJusta' && avisoIndenizado) avisoPrevio = salarioBase;
+
+  const mesesAnoAtual = demissao.getMonth() + 1;
+  const feriasProporcionais = (salarioBase / 12) * mesesAnoAtual;
+  const feriasComUmTerco = feriasProporcionais * 1.3333;
+  const decimoTerceiro = (salarioBase / 12) * mesesAnoAtual;
+
+  const fgtsBase = saldoSalario + avisoPrevio + decimoTerceiro;
+  const fgts = fgtsBase * 0.08;
+  const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
+
+  const baseINSS = saldoSalario + avisoPrevio + decimoTerceiro;
+  let inss = 0;
+  if (baseINSS <= 1320) inss = baseINSS * 0.075;
+  else if (baseINSS <= 2571.29) inss = baseINSS * 0.09;
+  else if (baseINSS <= 3856.94) inss = baseINSS * 0.12;
+  else if (baseINSS <= 7507.49) inss = baseINSS * 0.14;
+  else inss = 7507.49 * 0.14;
+
+  const baseIR = baseINSS - inss;
+  let ir = 0;
+  if (baseIR > 1903.98 && baseIR <= 2826.65) ir = baseIR * 0.075 - 142.8;
+  else if (baseIR <= 3751.05) ir = baseIR * 0.15 - 354.8;
+  else if (baseIR <= 4664.68) ir = baseIR * 0.225 - 636.13;
+  else if (baseIR > 4664.68) ir = baseIR * 0.275 - 869.36;
+  if (ir < 0) ir = 0;
+
+  const totalLiquido = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro + multaFGTS - inss - ir;
+
+  const resDiv = document.getElementById('resultadoRescisao');
+  resDiv.style.display = 'block';
+  document.getElementById('resSaldo').innerText = `Saldo de salário: ${formatBRL(saldoSalario)}`;
+  document.getElementById('resAviso').innerText = `Aviso prévio: ${formatBRL(avisoPrevio)}`;
+  document.getElementById('resFerias').innerText = `Férias + 1/3: ${formatBRL(feriasComUmTerco)}`;
+  document.getElementById('res13').innerText = `13º proporcional: ${formatBRL(decimoTerceiro)}`;
+  document.getElementById('resFGTS').innerText = `FGTS: ${formatBRL(fgts)}`;
+  document.getElementById('resMulta').innerText = `Multa FGTS (40%): ${formatBRL(multaFGTS)}`;
+  document.getElementById('resINSS').innerText = `Desconto INSS: ${formatBRL(inss)}`;
+  document.getElementById('resIR').innerText = `Desconto IRRF: ${formatBRL(ir)}`;
+  document.getElementById('resTotal').innerText = `Total líquido: ${formatBRL(totalLiquido)}`;
+
+  const ctx = document.getElementById('graficoRescisao').getContext('2d');
+  if (window.graficoRescisao) window.graficoRescisao.destroy();
+  window.graficoRescisao = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels:['Saldo','Aviso','Férias','13º','Adicionais','FGTS','Multa FGTS','INSS','IR'],
+      datasets:[{label:'Valores (R$)', data:[saldoSalario,avisoPrevio,feriasComUmTerco,decimoTerceiro,adicionais,fgts,multaFGTS,inss,ir],
+        backgroundColor:['#4caf50','#2196f3','#ff9800','#9c27b0','#00bcd4','#f44336','#607d8b','#795548','#9e9e9e']
+      }]
+    },
+    options:{responsive:true, plugins:{legend:{display:false}}}
+  });
+}
+</script>
 
 </body>
-</html>
+</html>2026
