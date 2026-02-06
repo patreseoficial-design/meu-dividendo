@@ -3,36 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de PIS | Meu Dividendo</title>
+
+  <title>Calculadora de PIS 2026 | Saiba Quanto Você Vai Receber</title>
+
+  <meta name="description" content="Calcule o valor do PIS 2026 de forma simples. Informe seu salário e meses trabalhados e descubra quanto tem direito a receber.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://seudominio.com/calculadora-pis">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Calculadora de PIS 2026">
+  <meta property="og:description" content="Descubra quanto você vai receber de PIS em 2026. Cálculo rápido e gratuito.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://seudominio.com/calculadora-pis">
+
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/calculadora.css">
 </head>
+
 <body>
 
-<h1 class="page-title">Calculadora de PIS</h1>
+<main class="container">
 
-<div class="calc-box">
-  <div class="inputs">
-    <div class="input-group">
-      <label>Salário Mensal</label>
-      <input type="number" id="salarioPIS" value="2000">
-    </div>
+  <h1 class="page-title">Calculadora de PIS 2026</h1>
 
-    <div class="input-group">
-      <label>Meses Trabalhados</label>
-      <input type="number" id="mesesPIS" value="12" min="1" max="12">
-    </div>
+  <p class="page-subtitle">
+    Descubra rapidamente se você tem direito ao <strong>PIS</strong> e quanto pode receber em 2026.
+  </p>
+
+  <!-- 🔸 BANNER ADSENSE TOPO -->
+  <div class="ad-banner ad-top">
+    <!-- Google AdSense -->
   </div>
 
-  <button class="calc-btn" onclick="calcularPIS()">Calcular</button>
-</div>
+  <!-- 🔹 CALCULADORA -->
+  <section class="calc-box">
+    <div class="inputs">
+      <div class="input-group">
+        <label for="salarioPIS">Salário Mensal Médio (R$)</label>
+        <input type="number" id="salarioPIS" value="2000" min="0">
+      </div>
 
-<div id="resultadoPIS" class="result" style="display:none">
-  <h2>Resultado</h2>
-  <p id="resTotalPIS"></p>
-</div>
+      <div class="input-group">
+        <label for="mesesPIS">Meses Trabalhados no Ano</label>
+        <input type="number" id="mesesPIS" value="12" min="1" max="12">
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcularPIS()">Calcular PIS</button>
+  </section>
+
+  <!-- 🔹 RESULTADO -->
+  <section id="resultadoPIS" class="result" style="display:none">
+    <h2>Resultado do PIS</h2>
+    <p id="resTotalPIS"></p>
+  </section>
+
+  <!-- 🔸 BANNER ADSENSE MEIO -->
+  <div class="ad-banner ad-middle">
+    <!-- Google AdSense -->
+  </div>
+
+  <!-- 🔹 TEXTO EXPLICATIVO -->
+  <section class="content">
+    <h2>O que é o PIS?</h2>
+    <p>
+      O <strong>PIS (Programa de Integração Social)</strong> é um benefício pago aos trabalhadores do setor privado
+      que atendem aos critérios definidos pelo governo federal.
+    </p>
+
+    <h2>Quem tem direito ao PIS em 2026?</h2>
+    <ul>
+      <li>Ter trabalhado com carteira assinada por pelo menos <strong>30 dias</strong> no ano-base</li>
+      <li>Ter recebido até <strong>2 salários mínimos</strong> de média mensal</li>
+      <li>Estar inscrito no PIS há pelo menos <strong>5 anos</strong></li>
+      <li>Dados corretamente informados pelo empregador (RAIS/eSocial)</li>
+    </ul>
+
+    <h2>Como é calculado o valor do PIS?</h2>
+    <p>
+      O valor do PIS é proporcional aos meses trabalhados no ano-base.
+      Quem trabalhou os 12 meses recebe o valor cheio (1 salário mínimo).
+    </p>
+
+    <p>
+      Exemplo:
+      <br>
+      👉 Trabalhou 6 meses → recebe metade do salário mínimo
+    </p>
+  </section>
+
+  <!-- 🔸 BANNER ADSENSE FUNDO -->
+  <div class="ad-banner ad-bottom">
+    <!-- Google AdSense -->
+  </div>
+
+  <!-- 🔹 FAQ -->
+  <section class="faq">
+    <h2>Perguntas Frequentes sobre o PIS</h2>
+
+    <details>
+      <summary>Quem recebe salário acima de 2 mínimos tem direito ao PIS?</summary>
+      <p>
+        Não. Para receber o PIS, a média salarial mensal deve ser de até dois salários mínimos.
+      </p>
+    </details>
+
+    <details>
+      <summary>Autônomo ou MEI recebe PIS?</summary>
+      <p>
+        Não. O PIS é destinado apenas a trabalhadores com carteira assinada no setor privado.
+      </p>
+    </details>
+
+    <details>
+      <summary>O PIS cai automaticamente na conta?</summary>
+      <p>
+        Depende. Pode ser pago pela Caixa Econômica Federal em conta, poupança social ou saque presencial.
+      </p>
+    </details>
+
+    <details>
+      <summary>Posso perder o PIS?</summary>
+      <p>
+        Sim. Caso os dados não sejam informados corretamente pelo empregador ou você não atenda aos requisitos.
+      </p>
+    </details>
+  </section>
+
+</main>
 
 <script src="js/calculadora-pis.js"></script>
+
+<!-- 🔹 SCHEMA FAQ (SEO AVANÇADO) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Quem tem direito ao PIS em 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Trabalhadores com carteira assinada, que receberam até dois salários mínimos e trabalharam ao menos 30 dias no ano-base."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como é calculado o valor do PIS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O valor é proporcional aos meses trabalhados no ano-base, podendo chegar a um salário mínimo."
+      }
+    }
+  ]
+}
+</script>
 
 </body>
 </html>
