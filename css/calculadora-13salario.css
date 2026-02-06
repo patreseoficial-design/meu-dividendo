@@ -120,11 +120,17 @@ footer {
   margin: 30px 0;
 }
 
+.imagem-explicativa {
+  width: 100%;
+  text-align: center;
+  margin: 30px 0;
+}
+
 .imagem-explicativa img {
-  display: block;       /* remove espaçamento estranho */
-  max-width: 100%;
-  width: 100%;          /* força respeitar o container */
+  max-width: 600px; /* você manda no tamanho */
+  width: 100%;
   height: auto;
   border-radius: 8px;
+  display: block;
   margin: 0 auto;
 }
