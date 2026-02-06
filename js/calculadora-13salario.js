@@ -12,11 +12,10 @@ function formatBR(valor) {
     currency: 'BRL'
   });
 }
-
 // ================= CALCULADORA 13º SALÁRIO =================
 function calcular13() {
   const salario = Number(document.getElementById('salario')?.value) || 0;
-  const meses = Number(document.getElementById('meses')?.value) || 0;
+  const meses = Number(document.getElementById('meses')?.value) || 12;
 
   const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
   const insalubridadePerc = Number(document.getElementById('insalubridade')?.value) || 0;
@@ -27,31 +26,33 @@ function calcular13() {
     return;
   }
 
-  const mesesTrabalhados = meses > 0 ? meses : 12;
+  // 1️⃣ Salário proporcional
+  const salarioProporcional = (salario / 12) * meses;
 
-  // Salário proporcional
-  const salarioProporcional = (salario / 12) * mesesTrabalhados;
-
-  // Adicionais
+  // 2️⃣ Adicionais proporcionais
   const adicionalInsalubridade = salarioProporcional * (insalubridadePerc / 100);
   const adicionalPericulosidade = salarioProporcional * (periculosidadePerc / 100);
 
-  const salarioComAdicionais =
+  // 3️⃣ Total bruto do 13º
+  const totalBruto =
     salarioProporcional +
     horasExtras +
     adicionalInsalubridade +
     adicionalPericulosidade;
 
-  // INSS
+  // 4️⃣ Primeira parcela (50% do bruto, SEM descontos)
+  const primeiraParcela = totalBruto / 2;
+
+  // 5️⃣ INSS (aplicado sobre o total bruto)
   let inss = 0;
-  if (salarioComAdicionais <= 1320) inss = salarioComAdicionais * 0.075;
-  else if (salarioComAdicionais <= 2571.29) inss = salarioComAdicionais * 0.09;
-  else if (salarioComAdicionais <= 3856.94) inss = salarioComAdicionais * 0.12;
-  else if (salarioComAdicionais <= 7507.49) inss = salarioComAdicionais * 0.14;
+  if (totalBruto <= 1320) inss = totalBruto * 0.075;
+  else if (totalBruto <= 2571.29) inss = totalBruto * 0.09;
+  else if (totalBruto <= 3856.94) inss = totalBruto * 0.12;
+  else if (totalBruto <= 7507.49) inss = totalBruto * 0.14;
   else inss = 7507.49 * 0.14;
 
-  // IRRF
-  const baseIR = salarioComAdicionais - inss;
+  // 6️⃣ IRRF
+  const baseIR = totalBruto - inss;
   let ir = 0;
 
   if (baseIR > 1903.98 && baseIR <= 2826.65) ir = baseIR * 0.075 - 142.8;
@@ -61,12 +62,13 @@ function calcular13() {
 
   if (ir < 0) ir = 0;
 
-  // Parcelas
-  const primeiraParcela = salarioProporcional / 2;
-  const segundaParcela = salarioComAdicionais - inss - ir;
-  const totalLiquido = primeiraParcela + segundaParcela;
+  // 7️⃣ Segunda parcela (restante com descontos)
+  const segundaParcela = totalBruto - primeiraParcela - inss - ir;
 
-  let resBox = document.getElementById('resultado13');
+  // 8️⃣ Total líquido correto
+  const totalLiquido = totalBruto - inss - ir;
+
+  const resBox = document.getElementById('resultado13');
   if (!resBox) return;
 
   resBox.style.display = 'block';
@@ -77,6 +79,8 @@ function calcular13() {
     <p><strong>Horas extras:</strong> ${formatBR(horasExtras)}</p>
     <p><strong>Insalubridade:</strong> ${formatBR(adicionalInsalubridade)}</p>
     <p><strong>Periculosidade:</strong> ${formatBR(adicionalPericulosidade)}</p>
+
+    <p><strong>Total Bruto:</strong> ${formatBR(totalBruto)}</p>
 
     <p><strong>INSS:</strong> ${formatBR(inss)}</p>
     <p><strong>IRRF:</strong> ${formatBR(ir)}</p>
@@ -89,7 +93,7 @@ function calcular13() {
     <h3>Total Líquido do 13º: ${formatBR(totalLiquido)}</h3>
   `;
 }
-
+   
 // ================= PLANEJAMENTO MÊS A MÊS =================
 let grafico13 = null;
 
