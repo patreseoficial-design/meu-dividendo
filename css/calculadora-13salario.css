@@ -113,12 +113,18 @@ footer {
   margin: 0;
 }
 .imagem-explicativa {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;     /* IMPEDE sair da tela */
   text-align: center;
   margin: 30px 0;
 }
 
 .imagem-explicativa img {
+  display: block;       /* remove espaçamento estranho */
   max-width: 100%;
+  width: 100%;          /* força respeitar o container */
   height: auto;
   border-radius: 8px;
+  margin: 0 auto;
 }
