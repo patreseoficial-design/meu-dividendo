@@ -122,15 +122,14 @@ footer {
 
 .imagem-explicativa {
   width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
   margin: 30px 0;
 }
 
 .imagem-explicativa img {
-  max-width: 600px; /* você manda no tamanho */
   width: 100%;
+  max-width: 420px;   /* TAMANHO REAL DA IMAGEM */
   height: auto;
   border-radius: 8px;
-  display: block;
-  margin: 0 auto;
 }
