@@ -129,7 +129,7 @@ footer {
 
 .imagem-explicativa img {
   width: 100%;
-  max-width: 420px;   /* TAMANHO REAL DA IMAGEM */
+  max-width: 300px;   /* TAMANHO REAL DA IMAGEM */
   height: auto;
   border-radius: 8px;
 }
