@@ -25,12 +25,9 @@ function calcularRescisao() {
   const demissao = new Date(demissaoInput);
 
   const tipoDemissao = document.getElementById('tipoDemissao')?.value;
-
-  const avisoIndenizado =
-  document.getElementById('avisoIndenizado')?.value === 'sim';
-
+  
   const temFeriasVencidas =
-    document.getElementById('feriasVencidas')?.value === 'sim';
+   document.getElementById('feriasVencidas')?.value === 'sim';
 
   // ================= ADICIONAIS =================
   const periculosidadePerc =
@@ -71,9 +68,14 @@ function calcularRescisao() {
 
   // ================= AVISO PRÉVIO =================
 
+// Lê se o aviso prévio foi marcado como "Sim"
+const avisoIndenizado =
+  document.getElementById('avisoIndenizado')?.value === 'sim';
+
+// Calcula o aviso prévio
 let avisoPrevio = 0;
 if (tipoDemissao === 'semJusta' && avisoIndenizado) {
-  avisoPrevio = salarioBase;
+  avisoPrevio = salarioBase; // adiciona 1 salário
 }
   // ================= FÉRIAS =================
 
