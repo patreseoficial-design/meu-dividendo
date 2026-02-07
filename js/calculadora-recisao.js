@@ -12,12 +12,10 @@ function toggleMenu() {
   if (!menu) return;
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
-
-// -------------------- CALCULAR RESCISÃO --------------------
+// ================= FUNÇÃO COMPLETA PARA CALCULAR RESCISÃO =================
 function calcularRescisao() {
   // ================= DADOS BÁSICOS =================
   const salario = Number(document.getElementById('salario')?.value) || 0;
-
   const admissaoInput = document.getElementById('admissao')?.value;
   const demissaoInput = document.getElementById('demissao')?.value;
 
@@ -25,32 +23,22 @@ function calcularRescisao() {
   const demissao = new Date(demissaoInput);
 
   const tipoDemissao = document.getElementById('tipoDemissao')?.value;
-  
-  const temFeriasVencidas =
-   document.getElementById('feriasVencidas')?.value === 'sim';
+  const avisoIndenizado = document.getElementById('avisoIndenizado')?.value === 'sim';
+  const temFeriasVencidas = document.getElementById('feriasVencidas')?.value === 'sim';
 
-  // ================= ADICIONAIS =================
-  const periculosidadePerc =
-    Number(document.getElementById('periculosidade')?.value) || 0;
-
-  const insalubridadePerc =
-    Number(document.getElementById('insalubridade')?.value) || 0;
-
-  const horasExtras =
-    Number(document.getElementById('horasExtras')?.value) || 0;
+  const periculosidadePerc = Number(document.getElementById('periculosidade')?.value) || 0;
+  const insalubridadePerc = Number(document.getElementById('insalubridade')?.value) || 0;
+  const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
 
   // ================= VALIDAÇÕES =================
   if (!salario || !admissaoInput || !demissaoInput || isNaN(admissao) || isNaN(demissao)) {
     alert('Preencha todos os campos corretamente.');
     return;
   }
-
   if (demissao <= admissao) {
     alert('A data de demissão deve ser maior que a data de admissão.');
     return;
   }
-
-  // >>> cálculos começam aqui
 
   // ================= ADICIONAIS =================
   const periculosidade = salario * (periculosidadePerc / 100);
@@ -67,72 +55,40 @@ function calcularRescisao() {
   const saldoSalario = (salarioBase / 30) * diasRestantes;
 
   // ================= AVISO PRÉVIO =================
+  let avisoPrevio = 0;
+  if (tipoDemissao === 'semJusta' && avisoIndenizado) {
+    avisoPrevio = salarioBase; // 1 salário
+  }
 
-// Lê se o aviso prévio foi marcado como "Sim"
-const avisoIndenizado =
-  document.getElementById('avisoIndenizado')?.value === 'sim';
-
-// Calcula o aviso prévio
-let avisoPrevio = 0;
-if (tipoDemissao === 'semJusta' && avisoIndenizado) {
-  avisoPrevio = salarioBase; // adiciona 1 salário
-}
   // ================= FÉRIAS =================
+  const mesesProporcionais = mesesTrabalhados % 12;
 
-// meses trabalhados no período atual
-const mesesProporcionais = mesesTrabalhados % 12;
+  let feriasVencidas = 0;
+  if (temFeriasVencidas) {
+    feriasVencidas = salarioBase * 1.3333; // salário + 1/3
+  }
 
-// férias vencidas (1 período, se marcado "Sim")
-let feriasVencidas = 0;
-if (document.getElementById('temFeriasVencidas')?.value === 'sim') {
-  feriasVencidas = salarioBase * 1.3333;
-}
+  const feriasProporcionais = (salarioBase / 12) * mesesProporcionais;
+  const feriasProporcionaisComTerco = feriasProporcionais * 1.3333;
 
-// férias proporcionais + 1/3
-const feriasProporcionais = (salarioBase / 12) * mesesProporcionais;
-const feriasProporcionaisComTerco = feriasProporcionais * 1.3333;
-
-// total de férias
-const feriasComUmTerco =
-  feriasVencidas + feriasProporcionaisComTerco;
+  const feriasComUmTerco = feriasVencidas + feriasProporcionaisComTerco;
 
   // ================= 13º =================
-  let meses13 =
-  (demissao.getFullYear() - admissao.getFullYear()) * 12 +
-  (demissao.getMonth() - admissao.getMonth());
+  let meses13 = (demissao.getFullYear() - admissao.getFullYear()) * 12 +
+                (demissao.getMonth() - admissao.getMonth());
+  if (demissao.getDate() >= 15) meses13 += 1;
+  if (meses13 > 12) meses13 = 12;
+  if (meses13 < 0) meses13 = 0;
+  const decimoTerceiro = (salarioBase / 12) * meses13;
 
-if (demissao.getDate() >= 15) {
-  meses13 += 1;
-}
+  // ================= FGTS =================
+  let mesesFGTS = Math.floor(totalDias / 30);
 
-if (meses13 > 12) meses13 = 12;
-if (meses13 < 0) meses13 = 0;
+  const fgts = (salarioBase + avisoPrevio + feriasVencidas) * 0.08 * mesesFGTS;
+  const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
 
-const decimoTerceiro = (salarioBase / 12) * meses13;
-// ================= FGTS (CORRETO) =================
-
-// calcular meses completos entre admissão e demissão
-let mesesFGTS =
-  (demissao.getFullYear() - admissao.getFullYear()) * 12 +
-  (demissao.getMonth() - admissao.getMonth());
-
-// regra do FGTS: se trabalhou 15 dias ou mais no último mês, conta mais 1
-if (demissao.getDate() >= 15) {
-  mesesFGTS += 1;
-}
-
-// garantia mínima
-if (mesesFGTS < 0) mesesFGTS = 0;
-
-// FGTS = 8% do salário base (salário + adicionais) por mês
-const fgts = salarioBase * 0.08 * mesesFGTS;
-
-// multa de 40% apenas sem justa causa
-const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
-  
   // ================= INSS =================
-  const baseINSS =
-    saldoSalario + avisoPrevio + decimoTerceiro + feriasComUmTerco;
+  const baseINSS = saldoSalario + avisoPrevio + decimoTerceiro + feriasComUmTerco;
 
   let inss = 0;
   if (baseINSS <= 1320) inss = baseINSS * 0.075;
@@ -150,15 +106,65 @@ const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
   else if (baseIR > 4664.68) ir = baseIR * 0.275 - 869.36;
   if (ir < 0) ir = 0;
 
-  // ================= TOTAL =================
-  const totalLiquido =
-    saldoSalario +
-    avisoPrevio +
-    feriasComUmTerco +
-    decimoTerceiro +
-    multaFGTS -
-    inss -
-    ir;
+  // ================= TOTAL LÍQUIDO =================
+  const totalLiquido = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro +
+                       multaFGTS - inss - ir;
+
+  // ================= EXIBIR RESULTADOS =================
+  const resDiv = document.getElementById('resultadoRescisao');
+  if (!resDiv) return;
+  resDiv.style.display = 'block';
+
+  document.getElementById('resSaldo').innerText = formatBRL(saldoSalario);
+  document.getElementById('resAviso').innerText = formatBRL(avisoPrevio);
+
+  const elFeriasVencidas = document.getElementById('resFeriasVencidas');
+  if (temFeriasVencidas) {
+    elFeriasVencidas.style.display = 'block';
+    elFeriasVencidas.innerText = formatBRL(feriasVencidas);
+  } else {
+    elFeriasVencidas.style.display = 'none';
+  }
+
+  document.getElementById('resFerias').innerText = formatBRL(feriasProporcionaisComTerco);
+  document.getElementById('res13').innerText = formatBRL(decimoTerceiro);
+  document.getElementById('resFGTS').innerText = formatBRL(fgts);
+  document.getElementById('resMulta').innerText = formatBRL(multaFGTS);
+  document.getElementById('resINSS').innerText = formatBRL(inss);
+  document.getElementById('resIR').innerText = formatBRL(ir);
+  document.getElementById('resTotal').innerText = formatBRL(totalLiquido);
+
+  // ================= GRÁFICO =================
+  const canvas = document.getElementById('graficoRescisao');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const ctx = canvas.getContext('2d');
+  if (window.graficoRescisao) window.graficoRescisao.destroy();
+
+  window.graficoRescisao = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Saldo', 'Aviso', 'Férias', '13º', 'FGTS', 'Multa FGTS', 'INSS', 'IR'],
+      datasets: [{
+        label: 'Valores (R$)',
+        data: [
+          saldoSalario,
+          avisoPrevio,
+          feriasComUmTerco,
+          decimoTerceiro,
+          fgts,
+          multaFGTS,
+          inss,
+          ir
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } }
+    }
+  });
+}
 
   // ================= EXIBIR RESULTADOS =================
   const resDiv = document.getElementById('resultadoRescisao');
