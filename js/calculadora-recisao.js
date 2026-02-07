@@ -1,9 +1,6 @@
 // -------------------- FUNÇÃO AUXILIAR FORMATAÇÃO --------------------
 function formatBRL(valor) {
-  return valor.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  });
+  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 // -------------------- MENU HAMBÚRGUER --------------------
@@ -13,7 +10,7 @@ function toggleMenu() {
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 
-// ================= FUNÇÃO COMPLETA PARA CALCULAR RESCISÃO =================
+// -------------------- FUNÇÃO COMPLETA PARA CALCULAR RESCISÃO --------------------
 function calcularRescisao() {
   // ================= DADOS BÁSICOS =================
   const salario = Number(document.getElementById('salario')?.value) || 0;
@@ -54,7 +51,7 @@ function calcularRescisao() {
   // ================= AVISO PRÉVIO =================
   let avisoPrevio = 0;
   if (tipoDemissao === 'semJusta' && avisoIndenizado) {
-    avisoPrevio = salarioBase; // 1 salário
+    avisoPrevio = salarioBase; // 1 salário indenizado
   }
 
   // ================= FÉRIAS =================
@@ -67,7 +64,6 @@ function calcularRescisao() {
 
   const feriasProporcionais = (salarioBase / 12) * mesesProporcionais;
   const feriasProporcionaisComTerco = feriasProporcionais * 1.3333;
-
   const feriasComUmTerco = feriasVencidas + feriasProporcionaisComTerco;
 
   // ================= 13º =================
@@ -79,7 +75,9 @@ function calcularRescisao() {
   const decimoTerceiro = (salarioBase / 12) * meses13;
 
   // ================= FGTS =================
-  const mesesFGTS = Math.floor(totalDias / 30);
+  let mesesFGTS = Math.floor(totalDias / 30);
+  if (demissao.getDate() >= 15) mesesFGTS += 1; // regra dos 15 dias
+
   const fgts = (salarioBase + avisoPrevio + feriasComUmTerco) * 0.08 * mesesFGTS;
   const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
 
