@@ -27,11 +27,43 @@ function calcularRescisao() {
   const insalubridadePerc = Number(document.getElementById('insalubridade')?.value) || 0;
   const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
 
+
   // ================= VALIDAÇÕES =================
   if (!salario || isNaN(admissao) || isNaN(demissao) || demissao <= admissao) {
     alert('Preencha todos os campos corretamente.');
     return;
   }
+
+// ================= CALCULAR MESES =================
+function calcularMeses() {
+  const admissaoInput = document.getElementById('admissao')?.value;
+  const demissaoInput = document.getElementById('demissao')?.value;
+
+  const admissao = new Date(admissaoInput);
+  const demissao = new Date(demissaoInput);
+
+  if (!admissaoInput || !demissaoInput || demissao <= admissao) {
+    alert('Preencha corretamente as datas de admissão e demissão.');
+    return;
+  }
+
+  // diferença total em dias
+  const totalDias = Math.floor((demissao - admissao) / (1000 * 60 * 60 * 24));
+  
+  // meses completos
+  const mesesTrabalhados = Math.floor(totalDias / 30);
+  
+  // dias restantes
+  const diasRestantes = totalDias % 30;
+
+  // regra FGTS: se tiver 15 dias ou mais no último mês, conta +1
+  let mesesFGTS = mesesTrabalhados;
+  if (diasRestantes >= 15) mesesFGTS += 1;
+
+  // exibir resultados
+  document.getElementById('resMeses').innerText = `Meses trabalhados: ${mesesTrabalhados}`;
+  document.getElementById('resMesesFGTS').innerText = `Meses para FGTS: ${mesesFGTS}`;
+}
 
   // ================= ADICIONAIS =================
   const periculosidade = salario * (periculosidadePerc / 100);
