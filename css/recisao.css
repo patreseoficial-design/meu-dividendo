@@ -81,6 +81,16 @@ footer {
   text-align: center;
 }
 
+footer a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
 /* ------------------ PAGINA ------------------ */
 .page-title,
 .page-subtitle,
