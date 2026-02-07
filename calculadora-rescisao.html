@@ -70,13 +70,14 @@
         <label>Data de Demissão</label>
         <input type="date" id="demissao">
       </div>
-  <div class="input-group">
-  <div class="checkbox-box">
-    <input type="checkbox" id="temFeriasVencidas">
-    <label for="temFeriasVencidas">Possui férias vencidas não gozadas</label>
-  </div>
-</div>
 
+  <div class="input-group">
+  <label>Possui férias vencidas?</label>
+  <select id="temFeriasVencidas">
+    <option value="nao">Não</option>
+    <option value="sim">Sim</option>
+  </select>
+</div>
 
       <div class="input-group">
         <label>Tipo de Demissão</label>
@@ -84,14 +85,13 @@
           <option value="semJusta">Sem Justa Causa</option>
           <option value="comJusta">Com Justa Causa</option>
         </select>
-      </div>
-<div class="input-group">
-  <div class="checkbox-box">
-    <input type="checkbox" id="avisoIndenizado">
-    <label for="avisoIndenizado">Aviso Prévio Indenizado</label>
-  </div>
+  <div class="input-group">
+  <label>Aviso Prévio Indenizado</label>
+  <select id="avisoIndenizado">
+    <option value="nao">Não</option>
+    <option value="sim">Sim</option>
+  </select>
 </div>
-     
       <div class="input-group">
         <label>Periculosidade (%)</label>
         <input type="number" id="periculosidade" value="0" min="0" max="100">
