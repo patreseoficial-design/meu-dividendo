@@ -56,14 +56,27 @@ function calcularRescisao() {
 
   // ================= 13º =================
   const decimoTerceiro = (salarioBase / 12) * mesesTrabalhados;
+// ================= FGTS (CORRETO) =================
 
-  // ================= FGTS =================
-  const totalMeses = Math.floor(
-    Math.abs(demissao - admissao) / (1000 * 60 * 60 * 24 * 30)
-  );
-  const fgts = salarioBase * 0.08 * totalMeses;
-  const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
+// calcular meses completos entre admissão e demissão
+let mesesFGTS =
+  (demissao.getFullYear() - admissao.getFullYear()) * 12 +
+  (demissao.getMonth() - admissao.getMonth());
 
+// regra do FGTS: se trabalhou 15 dias ou mais no último mês, conta mais 1
+if (demissao.getDate() >= 15) {
+  mesesFGTS += 1;
+}
+
+// garantia mínima
+if (mesesFGTS < 0) mesesFGTS = 0;
+
+// FGTS = 8% do salário base (salário + adicionais) por mês
+const fgts = salarioBase * 0.08 * mesesFGTS;
+
+// multa de 40% apenas sem justa causa
+const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
+  
   // ================= INSS =================
   const baseINSS =
     saldoSalario + avisoPrevio + decimoTerceiro + feriasComUmTerco;
