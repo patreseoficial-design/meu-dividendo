@@ -50,11 +50,12 @@ function calcularRescisao() {
 
   // ================= 13º =================
   const decimoTerceiro = (salarioBase / 12) * mesesTrabalhados;
+// ================= FGTS CORRETO (CONTRATO INTEIRO) =================
+const diffTime = Math.abs(demissao - admissao);
+const totalMeses = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 30));
 
-  // ================= FGTS =================
-  const fgtsBase = salarioBase * mesesTrabalhados + (salarioBase / 30) * diasRestantes;
-  const fgts = fgtsBase * 0.08;
-  const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
+const fgts = salarioBase * 0.08 * totalMeses;
+const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
 
   // ================= INSS =================
   const baseINSS = saldoSalario + avisoPrevio + decimoTerceiro + feriasComUmTerco;
