@@ -27,7 +27,7 @@ function calcularRescisao() {
   const tipoDemissao = document.getElementById('tipoDemissao')?.value;
 
   const avisoIndenizado =
-    document.getElementById('avisoIndenizado')?.value === 'sim';
+  document.getElementById('avisoIndenizado')?.value === 'sim';
 
   const temFeriasVencidas =
     document.getElementById('feriasVencidas')?.value === 'sim';
@@ -70,11 +70,11 @@ function calcularRescisao() {
   const saldoSalario = (salarioBase / 30) * diasRestantes;
 
   // ================= AVISO PRÉVIO =================
-  let avisoPrevio = 0;
-  if (tipoDemissao === 'semJusta' && avisoIndenizado) {
-    avisoPrevio = salarioBase;
-  }
 
+let avisoPrevio = 0;
+if (tipoDemissao === 'semJusta' && avisoIndenizado) {
+  avisoPrevio = salarioBase;
+}
   // ================= FÉRIAS =================
 
 // meses trabalhados no período atual
