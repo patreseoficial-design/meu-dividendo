@@ -196,9 +196,22 @@ footer {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.result p, .result h3 {
-  margin: 10px 0;
+/* --------- RESULTADO ALINHADO --------- */
+.result p {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  justify-content: space-between;
   font-size: 16px;
+  margin: 8px auto;
+}
+
+.result p strong {
+  font-weight: 600;
+}
+
+.result p span {
+  font-weight: 600;
 }
 
 /* ------------------ BANNER ------------------ */
