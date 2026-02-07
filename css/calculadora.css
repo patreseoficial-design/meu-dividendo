@@ -329,3 +329,21 @@ header .menu {
   height: auto;
   border-radius: 12px;
 }
+/* ===== CHECKBOX PADRÃO (Aviso + Férias vencidas) ===== */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.checkbox-group label,
+.checkbox-group span {
+  font-size: 15px;
+  cursor: pointer;
+}
