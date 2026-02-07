@@ -143,8 +143,7 @@ footer a:hover {
 .input-group select {
   text-align: center;
 }
-
-/* ===== CHECKBOX BONITINHO ===== */
+/* ---------------- CHECKBOX PADRÃO ---------------- */
 .checkbox-group {
   margin-top: 10px;
 }
@@ -153,12 +152,13 @@ footer a:hover {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 14px;
-  border: 1px solid #ddd;
+  background: #f7f7f7;
+  padding: 12px 14px;
   border-radius: 8px;
   cursor: pointer;
-  background: #fafafa;
-  transition: background 0.2s, border-color 0.2s;
+  font-size: 15px;
+  border: 1px solid #ddd;
+  transition: background 0.2s ease, border 0.2s ease;
 }
 
 .checkbox-label:hover {
@@ -172,9 +172,6 @@ footer a:hover {
   cursor: pointer;
 }
 
-.checkbox-label span {
-  font-size: 0.95rem;
-}
 /* ------------------ BOTÃO ------------------ */
 .calc-btn {
   display: block;
