@@ -12,6 +12,7 @@ function toggleMenu() {
   if (!menu) return;
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
+
 // ================= FUNÇÃO COMPLETA PARA CALCULAR RESCISÃO =================
 function calcularRescisao() {
   // ================= DADOS BÁSICOS =================
@@ -31,12 +32,8 @@ function calcularRescisao() {
   const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
 
   // ================= VALIDAÇÕES =================
-  if (!salario || !admissaoInput || !demissaoInput || isNaN(admissao) || isNaN(demissao)) {
+  if (!salario || isNaN(admissao) || isNaN(demissao) || demissao <= admissao) {
     alert('Preencha todos os campos corretamente.');
-    return;
-  }
-  if (demissao <= admissao) {
-    alert('A data de demissão deve ser maior que a data de admissão.');
     return;
   }
 
@@ -82,14 +79,12 @@ function calcularRescisao() {
   const decimoTerceiro = (salarioBase / 12) * meses13;
 
   // ================= FGTS =================
-  let mesesFGTS = Math.floor(totalDias / 30);
-
-  const fgts = (salarioBase + avisoPrevio + feriasVencidas) * 0.08 * mesesFGTS;
+  const mesesFGTS = Math.floor(totalDias / 30);
+  const fgts = (salarioBase + avisoPrevio + feriasComUmTerco) * 0.08 * mesesFGTS;
   const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
 
   // ================= INSS =================
   const baseINSS = saldoSalario + avisoPrevio + decimoTerceiro + feriasComUmTerco;
-
   let inss = 0;
   if (baseINSS <= 1320) inss = baseINSS * 0.075;
   else if (baseINSS <= 2571.29) inss = baseINSS * 0.09;
@@ -115,119 +110,41 @@ function calcularRescisao() {
   if (!resDiv) return;
   resDiv.style.display = 'block';
 
-  document.getElementById('resSaldo').innerText = formatBRL(saldoSalario);
-  document.getElementById('resAviso').innerText = formatBRL(avisoPrevio);
+  document.getElementById('resSaldo').innerText = `Saldo de salário: ${formatBRL(saldoSalario)}`;
+  document.getElementById('resAviso').innerText = `Aviso prévio: ${formatBRL(avisoPrevio)}`;
 
   const elFeriasVencidas = document.getElementById('resFeriasVencidas');
   if (temFeriasVencidas) {
     elFeriasVencidas.style.display = 'block';
-    elFeriasVencidas.innerText = formatBRL(feriasVencidas);
+    elFeriasVencidas.innerText = `Férias vencidas + 1/3: ${formatBRL(feriasVencidas)}`;
   } else {
     elFeriasVencidas.style.display = 'none';
   }
 
-  document.getElementById('resFerias').innerText = formatBRL(feriasProporcionaisComTerco);
-  document.getElementById('res13').innerText = formatBRL(decimoTerceiro);
-  document.getElementById('resFGTS').innerText = formatBRL(fgts);
-  document.getElementById('resMulta').innerText = formatBRL(multaFGTS);
-  document.getElementById('resINSS').innerText = formatBRL(inss);
-  document.getElementById('resIR').innerText = formatBRL(ir);
-  document.getElementById('resTotal').innerText = formatBRL(totalLiquido);
-
-  // ================= GRÁFICO =================
-  const canvas = document.getElementById('graficoRescisao');
-  if (!canvas || typeof Chart === 'undefined') return;
-
-  const ctx = canvas.getContext('2d');
-  if (window.graficoRescisao) window.graficoRescisao.destroy();
-
-  window.graficoRescisao = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Saldo', 'Aviso', 'Férias', '13º', 'FGTS', 'Multa FGTS', 'INSS', 'IR'],
-      datasets: [{
-        label: 'Valores (R$)',
-        data: [
-          saldoSalario,
-          avisoPrevio,
-          feriasComUmTerco,
-          decimoTerceiro,
-          fgts,
-          multaFGTS,
-          inss,
-          ir
-        ]
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } }
-    }
-  });
-}
-
-  // ================= EXIBIR RESULTADOS =================
-  const resDiv = document.getElementById('resultadoRescisao');
-  if (!resDiv) return;
-
-  resDiv.style.display = 'block';
-
-  document.getElementById('resSaldo').innerText = `Saldo de salário: ${formatBRL(saldoSalario)}`;
-  document.getElementById('resAviso').innerText =
-  `Aviso prévio: ${formatBRL(avisoPrevio)}`;
-
-// ===== FÉRIAS VENCIDAS =====
-const elFeriasVencidas = document.getElementById('resFeriasVencidas');
-
-if (elFeriasVencidas) {
-  if (feriasVencidas > 0) {
-    elFeriasVencidas.style.display = 'block';
-    elFeriasVencidas.innerText =
-      `Férias vencidas + 1/3: ${formatBRL(feriasVencidas)}`;
-  } else {
-    elFeriasVencidas.style.display = 'none';
-  }
-}
-
-// ===== FÉRIAS PROPORCIONAIS =====
-document.getElementById('resFerias').innerText =
-  `Férias proporcionais + 1/3: ${formatBRL(feriasProporcionaisComTerco)}`;
+  document.getElementById('resFerias').innerText = `Férias proporcionais + 1/3: ${formatBRL(feriasProporcionaisComTerco)}`;
   document.getElementById('res13').innerText = `13º proporcional: ${formatBRL(decimoTerceiro)}`;
   document.getElementById('resFGTS').innerText = `FGTS: ${formatBRL(fgts)}`;
   document.getElementById('resMulta').innerText = `Multa FGTS (40%): ${formatBRL(multaFGTS)}`;
   document.getElementById('resINSS').innerText = `Desconto INSS: ${formatBRL(inss)}`;
   document.getElementById('resIR').innerText = `Desconto IRRF: ${formatBRL(ir)}`;
   document.getElementById('resTotal').innerText = `Total líquido: ${formatBRL(totalLiquido)}`;
-  
+
   // ================= GRÁFICO =================
   const canvas = document.getElementById('graficoRescisao');
-  if (!canvas || typeof Chart === 'undefined') return;
+  if (canvas && typeof Chart !== 'undefined') {
+    const ctx = canvas.getContext('2d');
+    if (window.graficoRescisao) window.graficoRescisao.destroy();
 
-  const ctx = canvas.getContext('2d');
-  if (window.graficoRescisao) window.graficoRescisao.destroy();
-
-  window.graficoRescisao = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Saldo', 'Aviso', 'Férias', '13º', 'Adicionais', 'FGTS', 'Multa FGTS', 'INSS', 'IR'],
-      datasets: [{
-        label: 'Valores (R$)',
-        data: [
-          saldoSalario,
-          avisoPrevio,
-          feriasComUmTerco,
-          decimoTerceiro,
-          adicionais,
-          fgts,
-          multaFGTS,
-          inss,
-          ir
-        ]
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } }
-    }
-  });
+    window.graficoRescisao = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Saldo', 'Aviso', 'Férias', '13º', 'FGTS', 'Multa FGTS', 'INSS', 'IR'],
+        datasets: [{
+          label: 'Valores (R$)',
+          data: [saldoSalario, avisoPrevio, feriasComUmTerco, decimoTerceiro, fgts, multaFGTS, inss, ir]
+        }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+  }
 }
