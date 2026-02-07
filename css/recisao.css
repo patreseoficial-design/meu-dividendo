@@ -297,3 +297,26 @@ canvas {
   line-height: 1.6;
   font-size: 16px;
 }
+.footer {
+  background: #111;
+  color: #fff;
+  padding: 30px 15px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.footer a {
+  color: #00e5ff;
+  text-decoration: none;
+  margin: 0 6px;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer-disclaimer {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-top: 10px;
+}
