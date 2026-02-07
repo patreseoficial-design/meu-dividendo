@@ -75,8 +75,9 @@ function calcularRescisao() {
   const decimoTerceiro = (salarioBase / 12) * meses13;
 
   // ================= FGTS =================
+  // Calcular meses totais considerando mês parcial >= 15 dias
   let mesesFGTS = Math.floor(totalDias / 30);
-  if (demissao.getDate() >= 15) mesesFGTS += 1; // regra dos 15 dias
+  if (totalDias % 30 >= 15) mesesFGTS += 1;
 
   const fgts = (salarioBase + avisoPrevio + feriasComUmTerco) * 0.08 * mesesFGTS;
   const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
