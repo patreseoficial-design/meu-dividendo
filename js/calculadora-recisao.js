@@ -15,20 +15,45 @@ function toggleMenu() {
 
 // -------------------- CALCULAR RESCISÃO --------------------
 function calcularRescisao() {
+  // ================= DADOS BÁSICOS =================
   const salario = Number(document.getElementById('salario')?.value) || 0;
-  const admissao = new Date(document.getElementById('admissao')?.value);
-  const demissao = new Date(document.getElementById('demissao')?.value);
+
+  const admissaoInput = document.getElementById('admissao')?.value;
+  const demissaoInput = document.getElementById('demissao')?.value;
+
+  const admissao = new Date(admissaoInput);
+  const demissao = new Date(demissaoInput);
+
   const tipoDemissao = document.getElementById('tipoDemissao')?.value;
-  const avisoIndenizado = document.getElementById('avisoIndenizado')?.checked;
 
-  const periculosidadePerc = Number(document.getElementById('periculosidade')?.value) || 0;
-  const insalubridadePerc = Number(document.getElementById('insalubridade')?.value) || 0;
-  const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
+  const avisoIndenizado =
+    document.getElementById('avisoIndenizado')?.value === 'sim';
 
-  if (!salario || isNaN(admissao) || isNaN(demissao)) {
+  const temFeriasVencidas =
+    document.getElementById('feriasVencidas')?.value === 'sim';
+
+  // ================= ADICIONAIS =================
+  const periculosidadePerc =
+    Number(document.getElementById('periculosidade')?.value) || 0;
+
+  const insalubridadePerc =
+    Number(document.getElementById('insalubridade')?.value) || 0;
+
+  const horasExtras =
+    Number(document.getElementById('horasExtras')?.value) || 0;
+
+  // ================= VALIDAÇÕES =================
+  if (!salario || !admissaoInput || !demissaoInput || isNaN(admissao) || isNaN(demissao)) {
     alert('Preencha todos os campos corretamente.');
     return;
   }
+
+  if (demissao <= admissao) {
+    alert('A data de demissão deve ser maior que a data de admissão.');
+    return;
+  }
+
+  // >>> cálculos começam aqui
 
   // ================= ADICIONAIS =================
   const periculosidade = salario * (periculosidadePerc / 100);
@@ -51,24 +76,37 @@ function calcularRescisao() {
   }
 
   // ================= FÉRIAS =================
-const periodosCompletos = Math.floor(mesesTrabalhados / 12);
+
+// meses trabalhados no período atual
 const mesesProporcionais = mesesTrabalhados % 12;
 
-// Férias vencidas (se marcou o checkbox)
+// férias vencidas (1 período, se marcado "Sim")
 let feriasVencidas = 0;
-if (document.getElementById('temFeriasVencidas')?.checked) {
-  feriasVencidas = periodosCompletos * salarioBase * 1.3333;
+if (document.getElementById('temFeriasVencidas')?.value === 'sim') {
+  feriasVencidas = salarioBase * 1.3333;
 }
 
-// Férias proporcionais
+// férias proporcionais + 1/3
 const feriasProporcionais = (salarioBase / 12) * mesesProporcionais;
 const feriasProporcionaisComTerco = feriasProporcionais * 1.3333;
 
-// Total de férias
-const feriasComUmTerco = feriasVencidas + feriasProporcionaisComTerco;
+// total de férias
+const feriasComUmTerco =
+  feriasVencidas + feriasProporcionaisComTerco;
 
   // ================= 13º =================
-  const decimoTerceiro = (salarioBase / 12) * mesesTrabalhados;
+  let meses13 =
+  (demissao.getFullYear() - admissao.getFullYear()) * 12 +
+  (demissao.getMonth() - admissao.getMonth());
+
+if (demissao.getDate() >= 15) {
+  meses13 += 1;
+}
+
+if (meses13 > 12) meses13 = 12;
+if (meses13 < 0) meses13 = 0;
+
+const decimoTerceiro = (salarioBase / 12) * meses13;
 // ================= FGTS (CORRETO) =================
 
 // calcular meses completos entre admissão e demissão
