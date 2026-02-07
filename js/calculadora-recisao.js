@@ -55,12 +55,10 @@ function calcularRescisao() {
 
   // ================= FÉRIAS =================
   const mesesProporcionais = mesesTrabalhados % 12;
-
   let feriasVencidas = 0;
   if (temFeriasVencidas) {
     feriasVencidas = salarioBase * 1.3333; // salário + 1/3
   }
-
   const feriasProporcionais = (salarioBase / 12) * mesesProporcionais;
   const feriasProporcionaisComTerco = feriasProporcionais * 1.3333;
   const feriasComUmTerco = feriasVencidas + feriasProporcionaisComTerco;
@@ -74,13 +72,20 @@ function calcularRescisao() {
   const decimoTerceiro = (salarioBase / 12) * meses13;
 
   // ================= FGTS =================
-  let mesesFGTS = Math.floor(totalDias / 30);
-  if (diasRestantes >= 15) mesesFGTS += 1; // mês parcial >= 15 dias
+  // Base para FGTS = salário + adicionais
+  const fgtsBase = salarioBase;
 
-  // FGTS considera salário + adicionais + férias + aviso
-  const fgtsBase = salarioBase + avisoPrevio + feriasComUmTerco;
-  const fgts = fgtsBase * 0.08 * mesesFGTS;
-  const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
+  // FGTS sobre salário + adicionais × meses trabalhados
+  const fgtsSalario = fgtsBase * 0.08 * mesesTrabalhados;
+
+  // FGTS sobre 13º
+  const fgts13 = decimoTerceiro * 0.08;
+
+  // FGTS sobre férias (incluindo vencidas e proporcionais)
+  const fgtsFerias = feriasComUmTerco * 0.08;
+
+  // FGTS total
+  const fgts = fgtsSalario + fgts13 + fgtsFerias;
 
   // ================= INSS =================
   const baseINSS = saldoSalario + avisoPrevio + decimoTerceiro + feriasComUmTerco;
@@ -102,7 +107,7 @@ function calcularRescisao() {
 
   // ================= TOTAL LÍQUIDO =================
   const totalLiquido = saldoSalario + avisoPrevio + feriasComUmTerco + decimoTerceiro +
-                       multaFGTS - inss - ir;
+                       fgts - inss - ir;
 
   // ================= EXIBIR RESULTADOS =================
   const resDiv = document.getElementById('resultadoRescisao');
@@ -111,6 +116,7 @@ function calcularRescisao() {
 
   document.getElementById('resSaldo').innerText = `Saldo de salário: ${formatBRL(saldoSalario)}`;
   document.getElementById('resAviso').innerText = `Aviso prévio: ${formatBRL(avisoPrevio)}`;
+  document.getElementById('resMeses').innerText = `Meses trabalhados: ${mesesTrabalhados}`;
 
   const elFeriasVencidas = document.getElementById('resFeriasVencidas');
   if (temFeriasVencidas) {
@@ -123,7 +129,6 @@ function calcularRescisao() {
   document.getElementById('resFerias').innerText = `Férias proporcionais + 1/3: ${formatBRL(feriasProporcionaisComTerco)}`;
   document.getElementById('res13').innerText = `13º proporcional: ${formatBRL(decimoTerceiro)}`;
   document.getElementById('resFGTS').innerText = `FGTS: ${formatBRL(fgts)}`;
-  document.getElementById('resMulta').innerText = `Multa FGTS (40%): ${formatBRL(multaFGTS)}`;
   document.getElementById('resINSS').innerText = `Desconto INSS: ${formatBRL(inss)}`;
   document.getElementById('resIR').innerText = `Desconto IRRF: ${formatBRL(ir)}`;
   document.getElementById('resTotal').innerText = `Total líquido: ${formatBRL(totalLiquido)}`;
@@ -137,10 +142,10 @@ function calcularRescisao() {
     window.graficoRescisao = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Saldo', 'Aviso', 'Férias', '13º', 'FGTS', 'Multa FGTS', 'INSS', 'IR'],
+        labels: ['Saldo', 'Aviso', 'Férias', '13º', 'FGTS', 'INSS', 'IR'],
         datasets: [{
           label: 'Valores (R$)',
-          data: [saldoSalario, avisoPrevio, feriasComUmTerco, decimoTerceiro, fgts, multaFGTS, inss, ir]
+          data: [saldoSalario, avisoPrevio, feriasComUmTerco, decimoTerceiro, fgts, inss, ir]
         }]
       },
       options: { responsive: true, plugins: { legend: { display: false } } }
