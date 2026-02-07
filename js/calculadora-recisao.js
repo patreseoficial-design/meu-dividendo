@@ -16,7 +16,6 @@ function calcularRescisao() {
   const salario = Number(document.getElementById('salario')?.value) || 0;
   const admissaoInput = document.getElementById('admissao')?.value;
   const demissaoInput = document.getElementById('demissao')?.value;
-
   const admissao = new Date(admissaoInput);
   const demissao = new Date(demissaoInput);
 
@@ -75,11 +74,12 @@ function calcularRescisao() {
   const decimoTerceiro = (salarioBase / 12) * meses13;
 
   // ================= FGTS =================
-  // Calcular meses totais considerando mês parcial >= 15 dias
   let mesesFGTS = Math.floor(totalDias / 30);
-  if (totalDias % 30 >= 15) mesesFGTS += 1;
+  if (diasRestantes >= 15) mesesFGTS += 1; // mês parcial >= 15 dias
 
-  const fgts = (salarioBase + avisoPrevio + feriasComUmTerco) * 0.08 * mesesFGTS;
+  // FGTS considera salário + adicionais + férias + aviso
+  const fgtsBase = salarioBase + avisoPrevio + feriasComUmTerco;
+  const fgts = fgtsBase * 0.08 * mesesFGTS;
   const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
 
   // ================= INSS =================
