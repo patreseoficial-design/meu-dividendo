@@ -60,9 +60,9 @@ function calcularMeses() {
   let mesesFGTS = mesesTrabalhados;
   if (diasRestantes >= 15) mesesFGTS += 1;
 
-  // exibir resultados
-  document.getElementById('resMeses').innerText = `Meses trabalhados: ${mesesTrabalhados}`;
-  document.getElementById('resMesesFGTS').innerText = `Meses para FGTS: ${mesesFGTS}`;
+  // exibir resultados no padrão <p><strong>...</strong><span>...</span></p>
+  document.getElementById('resMeses').innerText = mesesTrabalhados;
+  document.getElementById('resMesesFGTS').innerText = mesesFGTS;
 }
 
   // ================= ADICIONAIS =================
