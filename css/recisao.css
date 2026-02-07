@@ -323,3 +323,9 @@ canvas {
 body {
   text-align: center;
 }
+.calc-box,
+.inputs,
+.input-group,
+footer {
+  text-align: center;
+}
