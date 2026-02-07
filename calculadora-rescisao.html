@@ -108,20 +108,29 @@
   </div>
 
   <!-- RESULTADO -->
-  <div id="resultadoRescisao" style="display:none; margin-top:20px;">
-    <h2>Resultado da Rescisão</h2>
-    <p id="resSaldo"></p>
-    <p id="resAviso"></p>
-    <p id="resFerias"></p>
-    <p id="resFeriasVencidas"></p>
-    <p id="res13"></p>
-    <p id="resFGTS"></p>
-    <p id="resMulta"></p>
-    <p id="resINSS"></p>
-    <p id="resIR"></p>
-    <p id="resTotal" style="font-weight:bold; font-size:1.2em;"></p>
-    <canvas id="graficoRescisao" style="margin-top:20px;"></canvas>
-  </div>
+<div id="resultadoRescisao" class="result" style="display:none; margin-top:20px;">
+  <h2>Resultado da Rescisão</h2>
+
+  <p><strong>Saldo de salário:</strong> <span id="resSaldo"></span></p>
+  <p><strong>Aviso prévio:</strong> <span id="resAviso"></span></p>
+
+  <p><strong>Férias proporcionais + 1/3:</strong> <span id="resFerias"></span></p>
+  <p id="linhaFeriasVencidas" style="display:none;">
+    <strong>Férias vencidas + 1/3:</strong> <span id="resFeriasVencidas"></span>
+  </p>
+
+  <p><strong>13º proporcional:</strong> <span id="res13"></span></p>
+  <p><strong>FGTS:</strong> <span id="resFGTS"></span></p>
+  <p><strong>Multa FGTS (40%):</strong> <span id="resMulta"></span></p>
+  <p><strong>INSS:</strong> <span id="resINSS"></span></p>
+  <p><strong>IRRF:</strong> <span id="resIR"></span></p>
+
+  <p id="resTotalLiquido">
+    <strong>Total líquido:</strong> <span id="resTotal"></span>
+  </p>
+
+  <canvas id="graficoRescisao" style="margin-top:20px;"></canvas>
+</div>
 
   <!-- FAQ -->
   <div class="faq" style="margin-top:40px;">
