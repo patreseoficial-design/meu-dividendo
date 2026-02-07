@@ -71,12 +71,18 @@
         <input type="date" id="demissao">
       </div>
       <div class="input-group">
+  <input type="checkbox" id="temFeriasVencidas">
+  <label for="temFeriasVencidas">Possui férias vencidas não gozadas</label>
+</div>
+
+      <div class="input-group">
         <label>Tipo de Demissão</label>
         <select id="tipoDemissao">
           <option value="semJusta">Sem Justa Causa</option>
           <option value="comJusta">Com Justa Causa</option>
         </select>
       </div>
+
       <div class="input-group">
         <input type="checkbox" id="avisoIndenizado">
         <label for="avisoIndenizado">Aviso Prévio Indenizado</label>
@@ -104,6 +110,7 @@
     <p id="resSaldo"></p>
     <p id="resAviso"></p>
     <p id="resFerias"></p>
+    <p id="resFeriasVencidas"></p>
     <p id="res13"></p>
     <p id="resFGTS"></p>
     <p id="resMulta"></p>
