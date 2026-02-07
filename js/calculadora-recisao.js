@@ -50,9 +50,22 @@ function calcularRescisao() {
     avisoPrevio = salarioBase;
   }
 
-  // ================= FÉRIAS + 1/3 =================
-  const feriasProporcionais = (salarioBase / 12) * mesesTrabalhados;
-  const feriasComUmTerco = feriasProporcionais * 1.3333;
+  // ================= FÉRIAS =================
+const periodosCompletos = Math.floor(mesesTrabalhados / 12);
+const mesesProporcionais = mesesTrabalhados % 12;
+
+// Férias vencidas (se marcou o checkbox)
+let feriasVencidas = 0;
+if (document.getElementById('temFeriasVencidas')?.checked) {
+  feriasVencidas = periodosCompletos * salarioBase * 1.3333;
+}
+
+// Férias proporcionais
+const feriasProporcionais = (salarioBase / 12) * mesesProporcionais;
+const feriasProporcionaisComTerco = feriasProporcionais * 1.3333;
+
+// Total de férias
+const feriasComUmTerco = feriasVencidas + feriasProporcionaisComTerco;
 
   // ================= 13º =================
   const decimoTerceiro = (salarioBase / 12) * mesesTrabalhados;
@@ -114,15 +127,32 @@ const multaFGTS = tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
   resDiv.style.display = 'block';
 
   document.getElementById('resSaldo').innerText = `Saldo de salário: ${formatBRL(saldoSalario)}`;
-  document.getElementById('resAviso').innerText = `Aviso prévio: ${formatBRL(avisoPrevio)}`;
-  document.getElementById('resFerias').innerText = `Férias + 1/3: ${formatBRL(feriasComUmTerco)}`;
+  document.getElementById('resAviso').innerText =
+  `Aviso prévio: ${formatBRL(avisoPrevio)}`;
+
+// ===== FÉRIAS VENCIDAS =====
+const elFeriasVencidas = document.getElementById('resFeriasVencidas');
+
+if (elFeriasVencidas) {
+  if (feriasVencidas > 0) {
+    elFeriasVencidas.style.display = 'block';
+    elFeriasVencidas.innerText =
+      `Férias vencidas + 1/3: ${formatBRL(feriasVencidas)}`;
+  } else {
+    elFeriasVencidas.style.display = 'none';
+  }
+}
+
+// ===== FÉRIAS PROPORCIONAIS =====
+document.getElementById('resFerias').innerText =
+  `Férias proporcionais + 1/3: ${formatBRL(feriasProporcionaisComTerco)}`;
   document.getElementById('res13').innerText = `13º proporcional: ${formatBRL(decimoTerceiro)}`;
   document.getElementById('resFGTS').innerText = `FGTS: ${formatBRL(fgts)}`;
   document.getElementById('resMulta').innerText = `Multa FGTS (40%): ${formatBRL(multaFGTS)}`;
   document.getElementById('resINSS').innerText = `Desconto INSS: ${formatBRL(inss)}`;
   document.getElementById('resIR').innerText = `Desconto IRRF: ${formatBRL(ir)}`;
   document.getElementById('resTotal').innerText = `Total líquido: ${formatBRL(totalLiquido)}`;
-
+  
   // ================= GRÁFICO =================
   const canvas = document.getElementById('graficoRescisao');
   if (!canvas || typeof Chart === 'undefined') return;
