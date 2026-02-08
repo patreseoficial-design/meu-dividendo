@@ -45,31 +45,31 @@
 
   
 <!-- MOEDAS -->
-
-  <!-- Container flexível para moedas -->
-  <div style="display:flex; justify-content:space-between; gap:4px; flex-wrap:nowrap; padding:0 8px;">
-    <div class="card" style="flex:1; min-width:60px; max-width:90px; padding:12px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+<section id="moedas">
+  <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:nowrap; padding:0 8px;">
+    <div class="card" style="flex:1; min-width:80px; max-width:120px; background-color:#000; color:#fff; padding:16px; border-radius:16px; text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
       <strong>Dólar</strong>
-      <p id="dolar-value">--</p>
+      <p id="dolar-value" style="margin:8px 0 0 0; font-size:16px;">--</p>
     </div>
-    <div class="card" style="flex:1; min-width:60px; max-width:90px; padding:12px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+    <div class="card" style="flex:1; min-width:80px; max-width:120px; background-color:#000; color:#fff; padding:16px; border-radius:16px; text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
       <strong>Euro</strong>
-      <p id="euro-value">--</p>
+      <p id="euro-value" style="margin:8px 0 0 0; font-size:16px;">--</p>
     </div>
-    <div class="card" style="flex:1; min-width:60px; max-width:90px; padding:12px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+    <div class="card" style="flex:1; min-width:80px; max-width:120px; background-color:#000; color:#fff; padding:16px; border-radius:16px; text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
       <strong>Yuan</strong>
-      <p id="yuans-value">--</p>
+      <p id="yuans-value" style="margin:8px 0 0 0; font-size:16px;">--</p>
     </div>
-    <div class="card" style="flex:1; min-width:60px; max-width:90px; padding:12px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+    <div class="card" style="flex:1; min-width:80px; max-width:120px; background-color:#000; color:#fff; padding:16px; border-radius:16px; text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
       <strong>Bitcoin</strong>
-      <p id="bitcoin-value">--</p>
+      <p id="bitcoin-value" style="margin:8px 0 0 0; font-size:16px;">--</p>
     </div>
-    <div class="card" style="flex:1; min-width:60px; max-width:90px; padding:12px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+    <div class="card" style="flex:1; min-width:80px; max-width:120px; background-color:#000; color:#fff; padding:16px; border-radius:16px; text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
       <strong>Real</strong>
-      <p>R$ 1,00</p>
+      <p style="margin:8px 0 0 0; font-size:16px;">R$ 1,00</p>
     </div>
   </div>
 </section>
+
 <!-- JS -->
 <script>
 async function carregarMoedas() {
