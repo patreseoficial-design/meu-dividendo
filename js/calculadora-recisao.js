@@ -64,14 +64,34 @@ function calcularRescisao() {
   const salarioBase = salario + periculosidade + insalubridade + horasExtras;
 
   // ===== MESES =====
-  const meses = calcularMesesCLT(admissao, demissao);
-  if (!meses) return;
-  const { mesesContrato, mesesFGTS, mesesPara13 } = meses;
+const meses = calcularMesesCLT(admissao, demissao);
+if (!meses) return;
+const { mesesContrato, mesesFGTS } = meses;
 
-  // Atualiza spans dinâmicos
-  document.getElementById('resMeses').innerText = mesesContrato;
-  document.getElementById('resMesesFGTS').innerText = mesesFGTS;
-  document.getElementById('resMeses13').innerText = mesesPara13;
+// Calcula meses para 13º diretamente no ano da demissão
+const dataDemissao = new Date(demissao);
+const anoDemissao = dataDemissao.getFullYear();
+let mesesPara13 = 0;
+
+for (let mes = 0; mes <= dataDemissao.getMonth(); mes++) {
+    const primeiroDia = new Date(anoDemissao, mes, 1);
+    const ultimoDia = new Date(anoDemissao, mes + 1, 0);
+
+    const inicioMes = new Date(admissao) > primeiroDia ? new Date(admissao) : primeiroDia;
+    const fimMes = dataDemissao < ultimoDia ? dataDemissao : ultimoDia;
+
+    if (fimMes >= inicioMes) {
+        const dias = Math.floor((fimMes - inicioMes) / (1000*60*60*24)) + 1;
+        if (dias >= 15) mesesPara13++;
+    }
+}
+
+if (mesesPara13 > 12) mesesPara13 = 12;
+
+// Atualiza spans dinâmicos
+document.getElementById('resMeses').innerText = mesesContrato;
+document.getElementById('resMesesFGTS').innerText = mesesFGTS;
+document.getElementById('resMeses13').innerText = mesesPara13;
 
   // ===== 13º PROPORCIONAL =====
   const decimoTerceiro = (salarioBase / 12) * mesesPara13;
