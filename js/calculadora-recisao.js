@@ -89,14 +89,11 @@ if (!meses) return;
 
 const { mesesContrato, mesesFGTS, mesesPara13 } = meses;
 
-const meses = calcularMesesCLT(admissao, demissao);
-if (!meses) return;
-
-const { mesesContrato, mesesFGTS, mesesPara13 } = meses;
-
 // ===== 13º =====
 const decimoTerceiro = (salarioBase / 12) * mesesPara13;
 
+// Mostrar no HTML
+resMeses13.innerText = mesesPara13;
 // Mostrar no HTML
 resMeses13.innerText = mesesPara13;
 
