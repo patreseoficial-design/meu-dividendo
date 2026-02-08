@@ -83,10 +83,13 @@ function calcularRescisao() {
     salario + periculosidade + insalubridade + horasExtras;
 
   // ===== MESES =====
-  const meses = calcularMesesCLT(admissao, demissao);
-  if (!meses) return;
+const meses = calcularMesesCLT(admissao, demissao);
+if (!meses) return;
 
-  const { mesesContrato, meses13, mesesFGTS } = meses;
+const { mesesContrato, mesesFGTS, mesesPara13 } = meses;
+
+// ===== 13º =====
+const decimoTerceiro = (salarioBase / 12) * mesesPara13;
 
   // ===== SALDO DE SALÁRIO =====
   const diaDemissao = new Date(demissao).getDate();
