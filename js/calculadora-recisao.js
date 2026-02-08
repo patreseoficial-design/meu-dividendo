@@ -39,14 +39,50 @@ function calcularRescisao() {
   const adicionais = periculosidade + insalubridade + horasExtras;
   const salarioBase = salario + adicionais;
 
-  // ================= TEMPO TRABALHADO =================
-  const totalDias = Math.floor((demissao - admissao) / (1000 * 60 * 60 * 24));
-  const mesesTrabalhados = Math.floor(totalDias / 30);
-  const diasRestantes = totalDias % 30;
+  // ============================
+// CÁLCULO DE MESES TRABALHADOS E MESES FGTS
+// ============================
 
-  // regra FGTS: se tiver 15 dias ou mais no último mês, conta +1
-  const mesesFGTS = diasRestantes >= 15 ? mesesTrabalhados + 1 : mesesTrabalhados;
+function calcularMeses(admissao, demissao) {
 
+  // Converte datas para objeto Date
+  const dataAdmissao = new Date(admissao);
+  const dataDemissao = new Date(demissao);
+
+  // Diferença total em milissegundos
+  const diffTime = dataDemissao.getTime() - dataAdmissao.getTime();
+
+  // Converte para dias (1 dia = 1000 * 60 * 60 * 24)
+  const diasTrabalhados = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+  // ============================
+  // MESES TRABALHADOS
+  // ============================
+  // Regra CLT: 30 dias = 1 mês
+  const mesesTrabalhados = Math.floor(diasTrabalhados / 30);
+
+  // Dias restantes que não fecharam um mês
+  const diasRestantes = diasTrabalhados % 30;
+
+  // ============================
+  // MESES PARA FGTS
+  // ============================
+  // Se tiver 15 dias ou mais, conta +1 mês
+  let mesesFGTS = mesesTrabalhados;
+
+  if (diasRestantes >= 15) {
+    mesesFGTS += 1;
+  }
+
+  // ============================
+  // RETORNO DOS VALORES
+  // ============================
+  return {
+    diasTrabalhados,
+    mesesTrabalhados,
+    mesesFGTS
+  };
+}
   // ================= SALDO SALÁRIO =================
   const saldoSalario = (salarioBase / 30) * diasRestantes;
 
@@ -132,4 +168,23 @@ function calcularRescisao() {
   document.getElementById('resINSS').innerText = formatBRL(inss);
   document.getElementById('resIR').innerText = formatBRL(ir);
   document.getElementById('resTotal').innerText = formatBRL(totalLiquido);
+}
+function calcularRescisao() {
+
+  const admissao = document.getElementById('dataAdmissao').value;
+  const demissao = document.getElementById('dataDemissao').value;
+
+  if (!admissao || !demissao) {
+    alert('Preencha as datas corretamente');
+    return;
+  }
+
+  const resultado = calcularMeses(admissao, demissao);
+
+  // Mostra no HTML
+  document.getElementById('resMesesTrabalhados').innerText =
+    resultado.mesesTrabalhados;
+
+  document.getElementById('resMesesFGTS').innerText =
+    resultado.mesesFGTS;
 }
