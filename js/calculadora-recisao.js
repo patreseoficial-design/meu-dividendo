@@ -15,6 +15,7 @@ function calcularMesesCLT(admissao, demissao) {
 
   let mesesContrato = 0;
   let mesesFGTS = 0;
+  let mesesPara13 = 0; // novo campo para 13º
 
   let cursor = new Date(ini.getFullYear(), ini.getMonth(), 1);
 
@@ -33,14 +34,22 @@ function calcularMesesCLT(admissao, demissao) {
 
       if (dias >= 15) {
         mesesFGTS++;
+
+        // Se o mês for do ano da demissão, conta para 13º
+        if (cursor.getFullYear() === fim.getFullYear()) {
+          mesesPara13++;
+        }
       }
     }
     cursor.setMonth(cursor.getMonth() + 1);
   }
 
-  return { mesesContrato, mesesFGTS };
+  return { mesesContrato, mesesFGTS, mesesPara13 };
 }
 
+  
+
+ 
 // ================= FUNÇÃO PRINCIPAL =================
 function calcularRescisao() {
 
