@@ -14,7 +14,6 @@ function calcularMesesCLT(admissao, demissao) {
   if (fim <= ini) return null;
 
   let mesesContrato = 0;
-  let meses13 = 0;
   let mesesFGTS = 0;
 
   let cursor = new Date(ini.getFullYear(), ini.getMonth(), 1);
@@ -33,14 +32,13 @@ function calcularMesesCLT(admissao, demissao) {
       mesesContrato++;
 
       if (dias >= 15) {
-        meses13++;
         mesesFGTS++;
       }
     }
     cursor.setMonth(cursor.getMonth() + 1);
   }
 
-  return { mesesContrato, meses13, mesesFGTS };
+  return { mesesContrato, mesesFGTS };
 }
 
 // ================= FUNÇÃO PRINCIPAL =================
