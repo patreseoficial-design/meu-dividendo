@@ -83,7 +83,9 @@
     </div>
   </div>
 </section>
-</script>
+
+
+    <script>
 // ===================== CARREGAR MOEDAS =====================
 async function carregarMoedas() {
   try {
@@ -97,12 +99,10 @@ async function carregarMoedas() {
     const yuan = parseFloat(data.CNYBRL.ask);
     const bitcoin = parseFloat(data.BTCBRL.ask);
 
-    // Atualiza os valores no padrão "Nome da moeda R$ valor"
     document.getElementById('dolar-value').innerText = `Dólar R$ ${dolar.toFixed(2)}`;
     document.getElementById('euro-value').innerText = `Euro R$ ${euro.toFixed(2)}`;
     document.getElementById('yuans-value').innerText = `Yuan R$ ${yuan.toFixed(2)}`;
     document.getElementById('bitcoin-value').innerText = `Bitcoin R$ ${bitcoin.toLocaleString('pt-BR')}`;
-
   } catch (error) {
     console.error('Erro ao carregar moedas:', error);
     document.getElementById('dolar-value').innerText = '--';
