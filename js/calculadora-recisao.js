@@ -129,8 +129,11 @@ function calcularRescisao() {
   const fgts13 =
     decimoTerceiro * 0.08;
 
+  const fgtsFerias =
+    feriasTotal * 0.08;
+
   const fgtsTotal =
-    fgtsSalario + fgts13;
+    fgtsSalario + fgts13 + fgtsFerias;
 
   const multaFGTS =
     tipoDemissao === 'semJusta'
@@ -138,26 +141,42 @@ function calcularRescisao() {
       : 0;
 
   // ===== INSS =====
+  // NÃO incide sobre férias indenizadas
   const baseINSS =
-    saldoSalario + avisoPrevio + decimoTerceiro;
+    saldoSalario +
+    avisoPrevio +
+    decimoTerceiro +
+    tercoVencidas +
+    tercoProporcionais;
 
   let inss = 0;
-  if (baseINSS <= 1320) inss = baseINSS * 0.075;
+
+  if (baseINSS <= 1320)
+    inss = baseINSS * 0.075;
   else if (baseINSS <= 2571.29)
-    inss = 1320 * 0.075 +
-           (baseINSS - 1320) * 0.09;
+    inss =
+      1320 * 0.075 +
+      (baseINSS - 1320) * 0.09;
   else if (baseINSS <= 3856.94)
-    inss = 1320 * 0.075 +
-           (2571.29 - 1320) * 0.09 +
-           (baseINSS - 2571.29) * 0.12;
+    inss =
+      1320 * 0.075 +
+      (2571.29 - 1320) * 0.09 +
+      (baseINSS - 2571.29) * 0.12;
   else
-    inss = 1320 * 0.075 +
-           (2571.29 - 1320) * 0.09 +
-           (3856.94 - 2571.29) * 0.12 +
-           (baseINSS - 3856.94) * 0.14;
+    inss =
+      1320 * 0.075 +
+      (2571.29 - 1320) * 0.09 +
+      (3856.94 - 2571.29) * 0.12 +
+      (baseINSS - 3856.94) * 0.14;
 
   // ===== IR =====
-  const baseIR = baseINSS - inss;
+  // NÃO incide sobre férias indenizadas nem 1/3
+  const baseIR =
+    saldoSalario +
+    avisoPrevio +
+    decimoTerceiro -
+    inss;
+
   let ir = 0;
 
   if (baseIR > 1903.98 && baseIR <= 2826.65)
