@@ -38,31 +38,36 @@
   }
 </script>
   
-
 <!-- MOEDAS -->
-<section id="moedas" style="margin:40px 0; text-align:center;">
-  <h2 style="margin-bottom:20px;">Cotações do dia</h2>
-  <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
-    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+<section id="moedas" style="text-align:center; margin:40px 0;">
+  <h2 style="margin-bottom:20px;">Cotações Atualizadas</h2>
+  <div style="display:flex; justify-content:center; gap:16px; flex-wrap:nowrap; flex-shrink:0;">
+    
+    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; min-width:120px;">
       <span>Dólar</span>
       <strong id="dolar-value">--</strong>
     </div>
-    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+
+    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; min-width:120px;">
       <span>Euro</span>
       <strong id="euro-value">--</strong>
     </div>
-    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+
+    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; min-width:120px;">
       <span>Yuan</span>
       <strong id="yuans-value">--</strong>
     </div>
-    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+
+    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; min-width:120px;">
       <span>Bitcoin</span>
       <strong id="bitcoin-value">--</strong>
     </div>
-    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+
+    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; min-width:120px;">
       <span>Real</span>
       <strong>R$ 1,00</strong>
     </div>
+
   </div>
 </section>
 
@@ -70,23 +75,24 @@
 // ===================== CARREGAR MOEDAS =====================
 async function carregarMoedas() {
   try {
-    // Chamada da API (substitua '/api/moedas' pelo seu endpoint real)
-    const res = await fetch('/api/moedas');
-    if (!res.ok) throw new Error('Erro na API');
-    const m = await res.json();
+    const res = await fetch(
+      "https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL"
+    );
+    const data = await res.json();
 
-    // Função para formatar em R$
-    const formatarBR = v => 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+    const dolar = parseFloat(data.USDBRL.ask);
+    const euro = parseFloat(data.EURBRL.ask);
+    const yuan = parseFloat(data.CNYBRL.ask);
+    const bitcoin = parseFloat(data.BTCBRL.ask);
 
-    // Atualiza valores
-    document.getElementById('dolar-value').innerText = m.dolar ? 'Dólar ' + formatarBR(m.dolar) : '--';
-    document.getElementById('euro-value').innerText = m.euro ? 'Euro ' + formatarBR(m.euro) : '--';
-    document.getElementById('yuans-value').innerText = m.yuan ? 'Yuan ' + formatarBR(m.yuan) : '--';
-    document.getElementById('bitcoin-value').innerText = m.bitcoin ? 'Bitcoin ' + formatarBR(m.bitcoin) : '--';
+    // Atualiza os valores no padrão "Nome da moeda R$ valor"
+    document.getElementById('dolar-value').innerText = `Dólar R$ ${dolar.toFixed(2)}`;
+    document.getElementById('euro-value').innerText = `Euro R$ ${euro.toFixed(2)}`;
+    document.getElementById('yuans-value').innerText = `Yuan R$ ${yuan.toFixed(2)}`;
+    document.getElementById('bitcoin-value').innerText = `Bitcoin R$ ${bitcoin.toLocaleString('pt-BR')}`;
 
-  } catch (e) {
-    console.error('Erro ao carregar moedas:', e);
-    // Se erro, mantém '--'
+  } catch (error) {
+    console.error('Erro ao carregar moedas:', error);
     document.getElementById('dolar-value').innerText = '--';
     document.getElementById('euro-value').innerText = '--';
     document.getElementById('yuans-value').innerText = '--';
@@ -94,7 +100,7 @@ async function carregarMoedas() {
   }
 }
 
-// Chama a função quando a página carregar
+// Executa ao carregar a página
 window.addEventListener('load', carregarMoedas);
 </script>
 
