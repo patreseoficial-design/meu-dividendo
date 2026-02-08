@@ -39,51 +39,66 @@
 </script>
   
 
-    <!-- MOEDAS -->
+    
+<!-- MOEDAS -->
 <section id="moedas" style="text-align:center; margin:40px 0;">
-  <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
-    <!-- Título -->
-    <h2 style="margin:0;">Cotações Atualizadas</h2>
+  <h2 style="margin-bottom:16px;">Cotações Atualizadas</h2>
 
-    <!-- Linha dos cards (scroll horizontal se tela pequena) -->
-    <div style="
-      display:flex;
-      justify-content:flex-start;
-      gap:16px;
-      overflow-x:auto;
-      width:100%;
-      padding:8px 0;
-      box-sizing:border-box;
-      ">
-      
-      <div class="card" style="flex:0 0 auto; min-width:120px; padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
-        <span>Dólar</span>
-        <strong id="dolar-value">--</strong>
-      </div>
-
-      <div class="card" style="flex:0 0 auto; min-width:120px; padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
-        <span>Euro</span>
-        <strong id="euro-value">--</strong>
-      </div>
-
-      <div class="card" style="flex:0 0 auto; min-width:120px; padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
-        <span>Yuan</span>
-        <strong id="yuans-value">--</strong>
-      </div>
-
-      <div class="card" style="flex:0 0 auto; min-width:120px; padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
-        <span>Bitcoin</span>
-        <strong id="bitcoin-value">--</strong>
-      </div>
-
-      <div class="card" style="flex:0 0 auto; min-width:120px; padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
-        <span>Real</span>
-        <strong>R$ 1,00</strong>
-      </div>
+  <!-- Container flexível para moedas -->
+  <div style="display:flex; gap:16px; overflow-x:auto; padding-bottom:8px; -webkit-overflow-scrolling:touch;">
+    <div class="card" style="flex:0 0 auto; min-width:120px; padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+      <strong>Dólar</strong>
+      <p id="dolar-value">--</p>
+    </div>
+    <div class="card" style="flex:0 0 auto; min-width:120px; padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+      <strong>Euro</strong>
+      <p id="euro-value">--</p>
+    </div>
+    <div class="card" style="flex:0 0 auto; min-width:120px; padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+      <strong>Yuan</strong>
+      <p id="yuans-value">--</p>
+    </div>
+    <div class="card" style="flex:0 0 auto; min-width:120px; padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+      <strong>Bitcoin</strong>
+      <p id="bitcoin-value">--</p>
+    </div>
+    <div class="card" style="flex:0 0 auto; min-width:120px; padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+      <strong>Real</strong>
+      <p>R$ 1,00</p>
     </div>
   </div>
 </section>
 
+<!-- JS -->
+<script>
+async function carregarMoedas() {
+  try {
+    const res = await fetch(
+      "https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL"
+    );
+    const data = await res.json();
+
+    const dolar = parseFloat(data.USDBRL.ask);
+    const euro = parseFloat(data.EURBRL.ask);
+    const yuan = parseFloat(data.CNYBRL.ask);
+    const bitcoin = parseFloat(data.BTCBRL.ask);
+
+    document.getElementById('dolar-value').innerText = `R$ ${dolar.toFixed(2)}`;
+    document.getElementById('euro-value').innerText = `R$ ${euro.toFixed(2)}`;
+    document.getElementById('yuans-value').innerText = `R$ ${yuan.toFixed(2)}`;
+    document.getElementById('bitcoin-value').innerText = `R$ ${bitcoin.toLocaleString('pt-BR')}`;
+  } catch (error) {
+    console.error('Erro ao carregar moedas:', error);
+    document.getElementById('dolar-value').innerText = '--';
+    document.getElementById('euro-value').innerText = '--';
+    document.getElementById('yuans-value').innerText = '--';
+    document.getElementById('bitcoin-value').innerText = '--';
+  }
+}
+
+// Atualiza ao carregar a página
+window.addEventListener('load', carregarMoedas);
+</script>
 
     <script>
 // ===================== CARREGAR MOEDAS =====================
