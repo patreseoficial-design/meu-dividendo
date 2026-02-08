@@ -40,29 +40,31 @@
   
 
 <!-- MOEDAS -->
-<section id="moedas" style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin:40px 0;">
-  <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
-    <span>Dólar</span>
-    <strong id="dolar-value">--</strong>
+<section id="moedas" style="margin:40px 0; text-align:center;">
+  <h2 style="margin-bottom:20px;">Cotações do dia</h2>
+  <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+      <span>Dólar</span>
+      <strong id="dolar-value">--</strong>
+    </div>
+    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+      <span>Euro</span>
+      <strong id="euro-value">--</strong>
+    </div>
+    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+      <span>Yuan</span>
+      <strong id="yuans-value">--</strong>
+    </div>
+    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+      <span>Bitcoin</span>
+      <strong id="bitcoin-value">--</strong>
+    </div>
+    <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+      <span>Real</span>
+      <strong>R$ 1,00</strong>
+    </div>
   </div>
-  <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
-    <span>Euro</span>
-    <strong id="euro-value">--</strong>
-  </div>
-  <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
-    <span>Yuan</span>
-    <strong id="yuans-value">--</strong>
-  </div>
-  <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
-    <span>Bitcoin</span>
-    <strong id="bitcoin-value">--</strong>
-  </div>
-  <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
-    <span>Real</span>
-    <strong>R$ 1,00</strong>
-  </div>
-</section>
-
+</section
 <script>
 // ===================== CARREGAR MOEDAS =====================
 async function carregarMoedas() {
