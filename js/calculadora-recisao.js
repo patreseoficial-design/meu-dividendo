@@ -6,7 +6,6 @@ function formatBRL(v) {
     currency: 'BRL'
   });
 }
-
 // ================= MESES CLT =================
 function calcularMesesCLT(admissao, demissao) {
   const ini = new Date(admissao);
@@ -15,7 +14,10 @@ function calcularMesesCLT(admissao, demissao) {
 
   let mesesContrato = 0;
   let mesesFGTS = 0;
-  let mesesPara13 = 0; // novo campo para 13º
+
+  // Para 13º
+  let mesesPara13 = 0;
+  const anoDemissao = fim.getFullYear();
 
   let cursor = new Date(ini.getFullYear(), ini.getMonth(), 1);
 
@@ -34,20 +36,19 @@ function calcularMesesCLT(admissao, demissao) {
 
       if (dias >= 15) {
         mesesFGTS++;
+      }
 
-        // Se o mês for do ano da demissão, conta para 13º
-        if (cursor.getFullYear() === fim.getFullYear()) {
-          mesesPara13++;
-        }
+      // Só conta para 13º se for o mesmo ano da demissão
+      if (cursor.getFullYear() === anoDemissao && dias >= 15) {
+        mesesPara13++;
       }
     }
+
     cursor.setMonth(cursor.getMonth() + 1);
   }
 
   return { mesesContrato, mesesFGTS, mesesPara13 };
 }
-
-  
 
  
 // ================= FUNÇÃO PRINCIPAL =================
@@ -88,8 +89,16 @@ if (!meses) return;
 
 const { mesesContrato, mesesFGTS, mesesPara13 } = meses;
 
+const meses = calcularMesesCLT(admissao, demissao);
+if (!meses) return;
+
+const { mesesContrato, mesesFGTS, mesesPara13 } = meses;
+
 // ===== 13º =====
 const decimoTerceiro = (salarioBase / 12) * mesesPara13;
+
+// Mostrar no HTML
+resMeses13.innerText = mesesPara13;
 
   // ===== SALDO DE SALÁRIO =====
   const diaDemissao = new Date(demissao).getDate();
