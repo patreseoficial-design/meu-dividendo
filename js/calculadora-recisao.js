@@ -13,27 +13,55 @@ function toggleMenu() {
   if (!menu) return;
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
-
-// ================= CÁLCULO DE MESES =================
-function calcularMeses(admissao, demissao) {
-  const ini = new Date(admissao);
+// ================= CÁLCULO CORRETO DE MESES (CLT) =================
+function calcularMesesCLT(admissao, demissao) {
+  const inicio = new Date(admissao);
   const fim = new Date(demissao);
 
-  if (fim <= ini) return null;
+  if (fim <= inicio) return null;
 
-  const diffDias =
-    Math.floor((fim - ini) / (1000 * 60 * 60 * 24)) + 1;
+  let mesesContrato = 0;
+  let meses13 = 0;
+  let mesesFGTS = 0;
 
-  const mesesTrabalhados = Math.floor(diffDias / 30);
-  const diasRestantes = diffDias % 30;
+  let atual = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
 
-  let mesesFGTS = mesesTrabalhados;
-  if (diasRestantes >= 15) mesesFGTS++;
+  while (atual <= fim) {
+    const primeiroDiaMes = new Date(atual);
+    const ultimoDiaMes = new Date(
+      atual.getFullYear(),
+      atual.getMonth() + 1,
+      0
+    );
+
+    const inicioMes =
+      inicio > primeiroDiaMes ? inicio : primeiroDiaMes;
+    const fimMes =
+      fim < ultimoDiaMes ? fim : ultimoDiaMes;
+
+    if (fimMes >= inicioMes) {
+      const diasTrabalhadosMes =
+        Math.floor(
+          (fimMes - inicioMes) / (1000 * 60 * 60 * 24)
+        ) + 1;
+
+      // Contagem de meses trabalhados no contrato
+      mesesContrato++;
+
+      // Regra dos 15 dias
+      if (diasTrabalhadosMes >= 15) {
+        meses13++;
+        mesesFGTS++;
+      }
+    }
+
+    atual.setMonth(atual.getMonth() + 1);
+  }
 
   return {
-    mesesTrabalhados,
-    mesesFGTS,
-    diasRestantes
+    mesesContrato,
+    meses13,
+    mesesFGTS
   };
 }
 
