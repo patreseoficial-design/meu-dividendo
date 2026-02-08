@@ -1,3 +1,4 @@
+<script>
 // ================= FUNÇÃO AUXILIAR =================
 function formatBRL(valor) {
   return valor.toLocaleString('pt-BR', {
@@ -15,27 +16,21 @@ function toggleMenu() {
 
 // ================= CÁLCULO DE MESES =================
 function calcularMeses(admissao, demissao) {
+  const ini = new Date(admissao);
+  const fim = new Date(demissao);
 
-  const dataAdmissao = new Date(admissao);
-  const dataDemissao = new Date(demissao);
+  if (fim <= ini) return null;
 
-  const diffTime = dataDemissao - dataAdmissao;
-  if (diffTime <= 0) return null;
+  const diffDias =
+    Math.floor((fim - ini) / (1000 * 60 * 60 * 24)) + 1;
 
-  // dias totais trabalhados
-  const diasTrabalhados =
-    Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  const mesesTrabalhados = Math.floor(diffDias / 30);
+  const diasRestantes = diffDias % 30;
 
-  // regra CLT: 30 dias = 1 mês
-  const mesesTrabalhados = Math.floor(diasTrabalhados / 30);
-  const diasRestantes = diasTrabalhados % 30;
-
-  // FGTS: se tiver 15 dias ou mais, conta +1 mês
   let mesesFGTS = mesesTrabalhados;
   if (diasRestantes >= 15) mesesFGTS++;
 
   return {
-    diasTrabalhados,
     mesesTrabalhados,
     mesesFGTS,
     diasRestantes
@@ -45,7 +40,7 @@ function calcularMeses(admissao, demissao) {
 // ================= FUNÇÃO PRINCIPAL =================
 function calcularRescisao() {
 
-  // ===== DADOS BÁSICOS =====
+  // ===== DADOS =====
   const salario = Number(document.getElementById('salario').value) || 0;
   const admissao = document.getElementById('admissao').value;
   const demissao = document.getElementById('demissao').value;
@@ -54,7 +49,7 @@ function calcularRescisao() {
   const avisoIndenizado =
     document.getElementById('avisoIndenizado').value === 'sim';
   const temFeriasVencidas =
-    document.getElementById('feriasVencidas').value === 'sim';
+    document.getElementById('temFeriasVencidas').value === 'sim';
 
   const periculosidadePerc =
     Number(document.getElementById('periculosidade').value) || 0;
@@ -64,7 +59,7 @@ function calcularRescisao() {
     Number(document.getElementById('horasExtras').value) || 0;
 
   if (!salario || !admissao || !demissao) {
-    alert('Preencha todos os campos obrigatórios.');
+    alert('Preencha todos os campos.');
     return;
   }
 
@@ -75,11 +70,7 @@ function calcularRescisao() {
     return;
   }
 
-  const {
-    mesesTrabalhados,
-    mesesFGTS,
-    diasRestantes
-  } = mesesCalc;
+  const { mesesTrabalhados, mesesFGTS, diasRestantes } = mesesCalc;
 
   // ===== ADICIONAIS =====
   const periculosidade = salario * (periculosidadePerc / 100);
@@ -102,7 +93,8 @@ function calcularRescisao() {
 
   let feriasVencidas = 0;
   if (temFeriasVencidas) {
-    feriasVencidas = salarioBase * 1.3333;
+    // férias vencidas em DOBRO + 1/3
+    feriasVencidas = salarioBase * 2 * 1.3333;
   }
 
   const feriasProporcionais =
@@ -113,30 +105,25 @@ function calcularRescisao() {
   const feriasTotal =
     feriasVencidas + feriasProporcionaisComTerco;
 
-  // ===== 13º =====
+  // ===== 13º (PERÍODO CORRETO) =====
   let meses13 =
-    (new Date(demissao).getFullYear() -
-      new Date(admissao).getFullYear()) * 12 +
-    (new Date(demissao).getMonth() -
-      new Date(admissao).getMonth());
+    (new Date(demissao).getMonth() + 1);
 
-  if (new Date(demissao).getDate() >= 15) meses13++;
-  if (meses13 > 12) meses13 = 12;
+  if (new Date(demissao).getDate() < 15) meses13--;
+
   if (meses13 < 0) meses13 = 0;
+  if (meses13 > 12) meses13 = 12;
 
   const decimoTerceiro =
     (salarioBase / 12) * meses13;
 
-  // ===== FGTS (LÓGICA CORRETA) =====
-  // FGTS sobre salário + adicionais mês a mês
+  // ===== FGTS =====
   const fgtsSalario =
     salarioBase * 0.08 * mesesFGTS;
 
-  // FGTS sobre 13º
   const fgts13 =
     decimoTerceiro * 0.08;
 
-  // FGTS sobre férias
   const fgtsFerias =
     feriasTotal * 0.08;
 
@@ -164,8 +151,8 @@ function calcularRescisao() {
   else inss = 7507.49 * 0.14;
 
   // ===== IR =====
-  let ir = 0;
   const baseIR = baseINSS - inss;
+  let ir = 0;
 
   if (baseIR > 1903.98 && baseIR <= 2826.65)
     ir = baseIR * 0.075 - 142.8;
@@ -188,7 +175,7 @@ function calcularRescisao() {
     inss -
     ir;
 
-  // ===== EXIBIÇÃO =====
+  // ===== RESULTADO =====
   document.getElementById('resultadoRescisao').style.display = 'block';
 
   document.getElementById('resMeses').innerText = mesesTrabalhados;
@@ -204,3 +191,4 @@ function calcularRescisao() {
   document.getElementById('resIR').innerText = formatBRL(ir);
   document.getElementById('resTotal').innerText = formatBRL(totalLiquido);
 }
+</script>
