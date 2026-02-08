@@ -4,17 +4,41 @@ window.toggleMenu = function() {
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 };
 
-// Carregar moedas
+
+// ================= Carregar moedas =================
 async function carregarMoedas() {
   try {
-    const res = await fetch('/api/moedas');
-    const m = await res.json();
-    document.getElementById('dolar-value').innerText = 'US$ ' + m.dolar.toFixed(2);
-    document.getElementById('euro-value').innerText = '€ ' + m.euro.toFixed(2);
-    document.getElementById('yuans-value').innerText = '¥ ' + m.yuan.toFixed(2);
-    document.getElementById('bitcoin-value').innerText = '₿ ' + m.bitcoin.toLocaleString('pt-BR');
-  } catch (e) { console.error('Erro moedas', e); }
+    // API gratuita exemplo: https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,BTC-BRL,CNY-BRL
+    const res = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,BTC-BRL,CNY-BRL');
+    const data = await res.json();
+
+    // Extrair valores de fechamento (last)
+    const dolar = parseFloat(data['USDBRL'].ask);    // último preço do Dólar
+    const euro = parseFloat(data['EURBRL'].ask);     // último preço do Euro
+    const yuan = parseFloat(data['CNYBRL'].ask);     // último preço do Yuan
+    const bitcoin = parseFloat(data['BTCBRL'].ask);  // último preço do Bitcoin
+
+    // Atualiza o HTML
+    document.getElementById('dolar-value').innerText = 'US$ ' + dolar.toFixed(2);
+    document.getElementById('euro-value').innerText = '€ ' + euro.toFixed(2);
+    document.getElementById('yuans-value').innerText = '¥ ' + yuan.toFixed(2);
+    document.getElementById('bitcoin-value').innerText = '₿ ' + bitcoin.toLocaleString('pt-BR');
+    
+  } catch (erro) {
+    console.error('Erro ao carregar moedas', erro);
+
+    // Caso dê erro, mantém valores antigos ou mostra "não disponível"
+    document.getElementById('dolar-value').innerText = 'US$ --';
+    document.getElementById('euro-value').innerText = '€ --';
+    document.getElementById('yuans-value').innerText = '¥ --';
+    document.getElementById('bitcoin-value').innerText = '₿ --';
+  }
 }
+
+// Chama a função quando a página carrega
+window.addEventListener('load', carregarMoedas);
+
+
 
 // Carregar tops (ações e FIIs)
 async function carregarTop() {
