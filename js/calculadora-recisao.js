@@ -79,8 +79,11 @@ function calcularRescisao() {
 
   const salarioBase = salario + adicionais;
 
-  // ===== SALDO DE SALÁRIO =====
-  const saldoSalario = (salarioBase / 30) * diasRestantes;
+  // ===== SALDO DE SALÁRIO (COM ADICIONAIS CORRETOS) =====
+const diaDemissao = new Date(demissao).getDate();
+
+// CLT: salário mensal dividido por 30
+const saldoSalario = (salarioBase / 30) * diaDemissao;
 
   // ===== AVISO PRÉVIO =====
   let avisoPrevio = 0;
