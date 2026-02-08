@@ -95,19 +95,24 @@ const saldoSalario = (salarioBase / 30) * diaDemissao;
   const mesesProporcionais = mesesTrabalhados % 12;
 
   let feriasVencidas = 0;
-  if (temFeriasVencidas) {
-    // férias vencidas em DOBRO + 1/3
-    feriasVencidas = salarioBase * 2 * 1.3333;
-  }
+let tercoVencidas = 0;
+
+if (temFeriasVencidas === 'sim') {
+  feriasVencidas = salarioComAdicionais;
+  tercoVencidas = feriasVencidas / 3;
+}
 
   const feriasProporcionais =
-    (salarioBase / 12) * mesesProporcionais;
-  const feriasProporcionaisComTerco =
-    feriasProporcionais * 1.3333;
+  (salarioComAdicionais / 12) * mesesFerias;
+
+const tercoProporcionais =
+  feriasProporcionais / 3;
 
   const feriasTotal =
-    feriasVencidas + feriasProporcionaisComTerco;
-
+  feriasProporcionais +
+  tercoProporcionais +
+  feriasVencidas +
+  tercoVencidas;
   // ===== 13º (PERÍODO CORRETO) =====
   let meses13 =
     (new Date(demissao).getMonth() + 1);
@@ -118,7 +123,7 @@ const saldoSalario = (salarioBase / 30) * diaDemissao;
   if (meses13 > 12) meses13 = 12;
 
   const decimoTerceiro =
-    (salarioBase / 12) * meses13;
+  (salarioComAdicionais / 12) * meses13;
 
   // ===== FGTS =====
   const fgtsSalario =
