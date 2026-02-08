@@ -40,13 +40,57 @@
   
 
 <!-- MOEDAS -->
-<section id="moedas">
-  <div class="card"><span>Dólar</span><strong id="dolar-value">--</strong></div>
-  <div class="card"><span>Euro</span><strong id="euro-value">--</strong></div>
-  <div class="card"><span>Yuan</span><strong id="yuans-value">--</strong></div>
-  <div class="card"><span>Bitcoin</span><strong id="bitcoin-value">--</strong></div>
-  <div class="card"><span>Real</span><strong>R$ 1,00</strong></div>
+<section id="moedas" style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin:40px 0;">
+  <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+    <span>Dólar</span>
+    <strong id="dolar-value">--</strong>
+  </div>
+  <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+    <span>Euro</span>
+    <strong id="euro-value">--</strong>
+  </div>
+  <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+    <span>Yuan</span>
+    <strong id="yuans-value">--</strong>
+  </div>
+  <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+    <span>Bitcoin</span>
+    <strong id="bitcoin-value">--</strong>
+  </div>
+  <div class="card" style="padding:16px; border:1px solid #ccc; border-radius:12px; text-align:center;">
+    <span>Real</span>
+    <strong>R$ 1,00</strong>
+  </div>
 </section>
+
+<script>
+// ===================== CARREGAR MOEDAS =====================
+async function carregarMoedas() {
+  try {
+    // Chamada da API (substitua '/api/moedas' pelo seu endpoint real)
+    const res = await fetch('/api/moedas');
+    if (!res.ok) throw new Error('Erro na API');
+    const m = await res.json();
+
+    // Atualiza valores
+    document.getElementById('dolar-value').innerText = m.dolar ? 'US$ ' + m.dolar.toFixed(2) : '--';
+    document.getElementById('euro-value').innerText = m.euro ? '€ ' + m.euro.toFixed(2) : '--';
+    document.getElementById('yuans-value').innerText = m.yuan ? '¥ ' + m.yuan.toFixed(2) : '--';
+    document.getElementById('bitcoin-value').innerText = m.bitcoin ? '₿ ' + m.bitcoin.toLocaleString('pt-BR') : '--';
+
+  } catch (e) {
+    console.error('Erro ao carregar moedas:', e);
+    // Se erro, mantém '--'
+    document.getElementById('dolar-value').innerText = '--';
+    document.getElementById('euro-value').innerText = '--';
+    document.getElementById('yuans-value').innerText = '--';
+    document.getElementById('bitcoin-value').innerText = '--';
+  }
+}
+
+// Chama a função quando a página carregar
+window.addEventListener('load', carregarMoedas);
+</script>
 
 <!-- RODAPÉ -->
 <footer>
