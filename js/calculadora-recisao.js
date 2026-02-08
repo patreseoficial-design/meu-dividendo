@@ -91,14 +91,18 @@ function calcularRescisao() {
     return;
   }
 
-  // ===== MESES =====
-  const mesesCalc = calcularMeses(admissao, demissao);
-  if (!mesesCalc) {
-    alert('Datas inválidas.');
-    return;
-  }
+  // ===== MESES (CLT) =====
+const mesesCalc = calcularMesesCLT(admissao, demissao);
+if (!mesesCalc) {
+  alert('Datas inválidas.');
+  return;
+}
 
-  const { mesesTrabalhados, mesesFGTS, diasRestantes } = mesesCalc;
+const {
+  mesesContrato,
+  meses13,
+  mesesFGTS
+} = mesesCalc;
 
   // ===== ADICIONAIS =====
   const periculosidade = salario * (periculosidadePerc / 100);
