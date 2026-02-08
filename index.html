@@ -64,39 +64,29 @@
       <strong>R$ 1,00</strong>
     </div>
   </div>
-</section
+</section>
+
 <script>
 // ===================== CARREGAR MOEDAS =====================
 async function carregarMoedas() {
   try {
-    const res = await fetch(
-      "https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL"
-    );
-    const data = await res.json();
+    // Chamada da API (substitua '/api/moedas' pelo seu endpoint real)
+    const res = await fetch('/api/moedas');
+    if (!res.ok) throw new Error('Erro na API');
+    const m = await res.json();
 
-    // USD → Dólar
-    const dolar = parseFloat(data.USDBRL.ask);
-    // EUR → Euro
-    const euro = parseFloat(data.EURBRL.ask);
-    // CNY → Yuan
-    const yuan = parseFloat(data.CNYBRL.ask);
-    // BTC → Bitcoin
-    const bitcoin = parseFloat(data.BTCBRL.ask);
+    // Função para formatar em R$
+    const formatarBR = v => 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
 
-    // Atualiza no HTML
-    document.getElementById('dolar-value').innerText = 
-      `US$ ${dolar.toFixed(2)}`;
-    document.getElementById('euro-value').innerText = 
-      `€ ${euro.toFixed(2)}`;
-    document.getElementById('yuans-value').innerText = 
-      `¥ ${yuan.toFixed(2)}`;
-    document.getElementById('bitcoin-value').innerText = 
-      `₿ ${bitcoin.toLocaleString('pt-BR')}`;
+    // Atualiza valores
+    document.getElementById('dolar-value').innerText = m.dolar ? 'Dólar ' + formatarBR(m.dolar) : '--';
+    document.getElementById('euro-value').innerText = m.euro ? 'Euro ' + formatarBR(m.euro) : '--';
+    document.getElementById('yuans-value').innerText = m.yuan ? 'Yuan ' + formatarBR(m.yuan) : '--';
+    document.getElementById('bitcoin-value').innerText = m.bitcoin ? 'Bitcoin ' + formatarBR(m.bitcoin) : '--';
 
-  } catch (error) {
-    console.error('Erro ao carregar moedas:', error);
-
-    // Se der erro, pode manter '--'
+  } catch (e) {
+    console.error('Erro ao carregar moedas:', e);
+    // Se erro, mantém '--'
     document.getElementById('dolar-value').innerText = '--';
     document.getElementById('euro-value').innerText = '--';
     document.getElementById('yuans-value').innerText = '--';
