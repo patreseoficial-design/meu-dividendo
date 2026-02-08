@@ -92,27 +92,43 @@ const saldoSalario = (salarioBase / 30) * diaDemissao;
   }
 
   // ===== FÉRIAS =====
-  const mesesProporcionais = mesesTrabalhados % 12;
+const qtdFeriasVencidas = Number(
+  document.getElementById('qtdFeriasVencidas')?.value || 0
+);
 
-  let feriasVencidas = 0;
+// meses proporcionais (último período incompleto)
+const mesesProporcionais = mesesTrabalhados % 12;
+
+// ===== FÉRIAS VENCIDAS =====
+let feriasVencidas = 0;
 let tercoVencidas = 0;
 
-if (temFeriasVencidas === 'sim') {
+if (qtdFeriasVencidas === 1) {
+  // 1 período vencido normal
   feriasVencidas = salarioComAdicionais;
   tercoVencidas = feriasVencidas / 3;
 }
 
-  const feriasProporcionais =
-  (salarioComAdicionais / 12) * mesesFerias;
+if (qtdFeriasVencidas >= 2) {
+  // 2 períodos ou mais → férias em DOBRO
+  feriasVencidas = salarioComAdicionais * 2;
+  tercoVencidas = salarioComAdicionais / 3;
+}
+
+// ===== FÉRIAS PROPORCIONAIS =====
+const feriasProporcionais =
+  (salarioComAdicionais / 12) * mesesProporcionais;
 
 const tercoProporcionais =
   feriasProporcionais / 3;
 
-  const feriasTotal =
-  feriasProporcionais +
-  tercoProporcionais +
+// ===== TOTAL DE FÉRIAS =====
+const feriasTotal =
   feriasVencidas +
-  tercoVencidas;
+  tercoVencidas +
+  feriasProporcionais +
+  tercoProporcionais;
+
   // ===== 13º (PERÍODO CORRETO) =====
   let meses13 =
     (new Date(demissao).getMonth() + 1);
