@@ -118,9 +118,33 @@ function calcularRescisao() {
     feriasProporcionais +
     tercoProporcionais;
 
-  // ===== 13º =====
-  const decimoTerceiro =
-    (salarioBase / 12) * meses13;
+  // ===== 13º PROPORCIONAL (SOMENTE ANO DA DEMISSÃO) =====
+const dataDemissao = new Date(demissao);
+const anoDemissao = dataDemissao.getFullYear();
+
+let meses13Final = 0;
+
+for (let mes = 0; mes <= dataDemissao.getMonth(); mes++) {
+  const primeiroDia = new Date(anoDemissao, mes, 1);
+  const ultimoDia = new Date(anoDemissao, mes + 1, 0);
+
+  const inicioMes =
+    new Date(admissao) > primeiroDia ? new Date(admissao) : primeiroDia;
+  const fimMes =
+    dataDemissao < ultimoDia ? dataDemissao : ultimoDia;
+
+  if (fimMes >= inicioMes) {
+    const dias =
+      Math.floor((fimMes - inicioMes) / (1000 * 60 * 60 * 24)) + 1;
+
+    if (dias >= 15) meses13Final++;
+  }
+}
+
+if (meses13Final > 12) meses13Final = 12;
+
+const decimoTerceiro =
+  (salarioBase / 12) * meses13Final;
 
   // ===== FGTS =====
   const fgtsSalario =
