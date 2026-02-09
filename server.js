@@ -35,29 +35,21 @@ app.listen(PORT, () => {
 });
 
 // ======================
-// <!-- brapi -->
-// Rota para detalhes de um ativo via Brapi
-// ======================
-import fetch from 'node-fetch';
+// --- BRAPI
+const BRAPI_KEY = "kfWwE93iiUiHTg5V4XjbYR";
 
-app.get('/api/ativo/:ticker', async (req, res) => {
-  const ticker = req.params.ticker.toUpperCase();
-  const brapiKey = process.env.BRAPI_KEY || "kfWwE93iiUiHTg5V4XjbYR"; // chave do servidor
+app.get('/api/ativos', async (req, res) => {
+  const symbol = req.query.symbol;
+  if(!symbol) return res.status(400).json({ error: "symbol não informado" });
 
   try {
-    const response = await fetch(`https://brapi.dev/api/quote/${ticker}?apikey=${brapiKey}`);
-    if (!response.ok) throw new Error("Erro ao acessar Brapi");
+    const brapiRes = await fetch(`https://brapi.dev/api/quote/${symbol}?apikey=${BRAPI_KEY}`);
+    const data = await brapiRes.json();
+    if(!data.results || data.results.length === 0) return res.status(404).json({ error: "ativo não encontrado" });
 
-    const data = await response.json();
-    if (!data.results || data.results.length === 0) {
-      return res.status(404).json({ error: `Ativo "${ticker}" não encontrado na Brapi.` });
-    }
-
-    // Retorna apenas o ativo
     res.json(data.results[0]);
-
-  } catch (e) {
-    console.error("Erro Brapi:", e);
-    res.status(500).json({ error: "Erro ao buscar dados do servidor" });
+  } catch(e) {
+    console.error(e);
+    res.status(500).json({ error: "erro ao buscar na Brapi" });
   }
 });
