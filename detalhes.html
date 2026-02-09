@@ -22,6 +22,7 @@ canvas { max-width:100%; }
 .menu-links li { margin:16px 0; }
 .menu-links a { color:#000; text-decoration:none; font-size:1.1em; padding:8px 16px; display:block; }
 #indicadores { display:flex; flex-wrap:wrap; gap:12px; margin-top:12px; }
+#errorMsg { color:red; font-weight:bold; margin:16px; }
 </style>
 </head>
 <body>
@@ -48,69 +49,87 @@ function toggleMenu() {
   const menu = document.getElementById('menuLinks');
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
-</script>
 
-<div id="nomeAtivo">Ativo</div>
-<div id="errorMsg" style="color:red; font-weight:bold; margin:16px;"></div>
-<div id="cards"></div>
+// ====================== CONFIGURAÇÃO DAS CHAVES ======================
+const BRAPI_KEY = "COLOQUE_SUA_KEY_BRAAPI_AQUI";
+const ALPHA_KEY = "3D5Q8G9JDMWBXMJ0";
 
-<div class="section">
-  <h3>Histórico de Preços</h3>
-  <canvas id="precoChart"></canvas>
-</div>
-
-<div class="section">
-  <h3>Dividendos / Rendimentos</h3>
-  <table id="dividendosTable">
-    <thead><tr><th>Data Ex</th><th>Data Pagamento</th><th>Valor</th></tr></thead>
-    <tbody></tbody>
-  </table>
-</div>
-
-<div class="section">
-  <h3>Indicadores Financeiros</h3>
-  <div id="indicadores"></div>
-</div>
-
-<script>
-(async () => {
-  const params = new URLSearchParams(window.location.search);
-  const ticker = params.get("ativo");
+// ====================== FUNÇÃO PARA BUSCAR DADOS ======================
+async function buscarAtivo(ticker) {
   const errorDiv = document.getElementById("errorMsg");
-
-  if(!ticker){ 
-    errorDiv.textContent = "Nenhum ativo informado na URL!";
-    return; 
-  }
-
   let ativo = null;
 
+  // --- Tenta Brapi primeiro ---
   try {
-    // Busca dados principais do Brapi
-    const res = await fetch(`https://brapi.dev/api/quote/${ticker}`);
+    const brapiUrl = `https://brapi.dev/api/quote/${ticker}?apikey=${BRAPI_KEY}`;
+    const res = await fetch(brapiUrl);
     const data = await res.json();
 
-    if(!data.results || data.results.length === 0){
+    if (data?.results && data.results.length > 0) {
+      const r = data.results[0];
+      ativo = {
+        ticker: r.symbol,
+        preco_atual: { valor: r.regularMarketPrice, variacao_dia: r.regularMarketChangePercent },
+        historico_precos: { dados: (r.historicalData || []).map(h=>({data:h.date, close:h.close})) },
+        dividendos: { dados: (r.dividends || []).map(d=>({data_ex:d.exDate, payDate:d.payDate, valor:d.amount})) },
+        indicadores: {
+          pvp: r.pvToPrice,
+          dy_12m: r.dividendYield,
+          patrimonio_liquido: r.bookValue,
+          valor_mercado: r.marketCap
+        },
+        patrimonio_carteira: null
+      };
+    } else {
       errorDiv.textContent = `Ativo "${ticker}" não encontrado na Brapi.`;
-      return;
     }
-
-    ativo = data.results[0];
-
   } catch(e){
-    console.error("Erro ao buscar dados Brapi:", e);
-    errorDiv.textContent = `Erro ao buscar dados Brapi: ${e.message}`;
-    return;
+    console.error("Erro Brapi:", e);
+    errorDiv.textContent = "Erro ao buscar na Brapi. Tentando Alpha Vantage...";
   }
 
-  // Nome e preço
-  document.getElementById("nomeAtivo").textContent = ativo.symbol;
+  // --- Se faltar dados, tenta Alpha Vantage ---
+  if(!ativo || !ativo.preco_atual) {
+    try {
+      const alphaUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${ticker}.SA&apikey=${ALPHA_KEY}`;
+      const res = await fetch(alphaUrl);
+      const data = await res.json();
+      const dates = Object.keys(data["Time Series (Daily)"] || {});
+      if (dates.length > 0) {
+        const last = dates[0];
+        ativo = ativo || {};
+        ativo.ticker = ticker;
+        ativo.preco_atual = { valor: parseFloat(data["Time Series (Daily)"][last]["4. close"]), variacao_dia: null };
+        ativo.historico_precos = { dados: dates.slice(0,90).map(d=>({data:d, close:parseFloat(data["Time Series (Daily)"][d]["4. close"])})) };
+      }
+    } catch(e){
+      console.error("Erro Alpha Vantage:", e);
+      errorDiv.textContent += " Erro Alpha Vantage também.";
+    }
+  }
 
+  return ativo;
+}
+
+// ====================== RENDERIZAÇÃO ======================
+async function renderizarAtivo() {
+  const params = new URLSearchParams(window.location.search);
+  const ticker = params.get("ativo");
+  if(!ticker){ alert("Nenhum ativo informado!"); return; }
+
+  const ativo = await buscarAtivo(ticker);
+  if(!ativo){ return; }
+
+  document.getElementById("nomeAtivo").textContent = ativo.ticker;
+  const errorDiv = document.getElementById("errorMsg");
+  errorDiv.textContent = `JSON carregado com sucesso: ${ticker}`;
+
+  // Cards de preço e variação
   const cardsDiv = document.getElementById("cards");
   cardsDiv.innerHTML = "";
   const cardsInfo = [
-    {label:"Preço", value:`R$ ${ativo.regularMarketPrice ?? "--"}`},
-    {label:"Variação", value:`${ativo.regularMarketChangePercent ?? "--"}%`}
+    {label:"Preço", value:`R$ ${ativo.preco_atual?.valor ?? "--"}`},
+    {label:"Variação", value:`${ativo.preco_atual?.variacao_dia ?? "--"}%`}
   ];
   cardsInfo.forEach(i=>{
     const card = document.createElement("div");
@@ -119,12 +138,10 @@ function toggleMenu() {
     cardsDiv.appendChild(card);
   });
 
-  // Histórico de preços (últimos dias)
-  const historico = ativo.history ?? [];
-  const datas = historico.map(d => d.date);
-  const precos = historico.map(d => d.close);
-
+  // Gráfico histórico
   const ctx = document.getElementById('precoChart').getContext('2d');
+  const datas = (ativo.historico_precos?.dados || []).map(d=>d.data);
+  const precos = (ativo.historico_precos?.dados || []).map(d=>d.close);
   new Chart(ctx,{
     type:'line',
     data:{ labels:datas, datasets:[{label:'Preço', data:precos, borderColor:'#007bff', backgroundColor:'rgba(0,123,255,0.1)'}] },
@@ -134,33 +151,51 @@ function toggleMenu() {
   // Dividendos
   const tbody = document.querySelector("#dividendosTable tbody");
   tbody.innerHTML="";
-  const dividendos = ativo.dividends ?? [];
-  dividendos.forEach(div => {
+  (ativo.dividendos?.dados||[]).forEach(div=>{
     const tr = document.createElement("tr");
-    tr.innerHTML=`<td>${div.exDate}</td><td>${div.payDate ?? "--"}</td><td>R$ ${div.dividend ?? "--"}</td>`;
+    tr.innerHTML=`<td>${div.data_ex}</td><td>${div.payDate??"--"}</td><td>R$ ${div.valor}</td>`;
     tbody.appendChild(tr);
   });
 
-  // Indicadores Financeiros básicos
+  // Indicadores
   const indicadoresDiv = document.getElementById("indicadores");
   indicadoresDiv.innerHTML="";
+  const ind = ativo.indicadores || {};
   const indicadores = [
-    {label:"P/VP", value:ativo.priceToBook ?? "--"},
-    {label:"Dividend Yield", value:ativo.dividendYield ?? "--"},
-    {label:"Patrimônio Líquido", value:ativo.totalAssets ?? "--"},
-    {label:"Valor de Mercado", value:ativo.marketCap ?? "--"}
+    {label:"P/VP", value:ind.pvp ?? "--"},
+    {label:"Dividend Yield", value:ind.dy_12m ?? "--"},
+    {label:"Patrimônio Líquido", value:ind.patrimonio_liquido ?? "--"},
+    {label:"Valor de Mercado", value:ind.valor_mercado ?? "--"},
+    {label:"Patrimônio na Carteira", value:ativo.patrimonio_carteira ?? "--"}
   ];
   indicadores.forEach(i=>{
     const card = document.createElement("div");
     card.className="card";
-    card.innerHTML=`<strong>${i.label}</strong><br>${i.value}`;
+    card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
     indicadoresDiv.appendChild(card);
   });
+}
 
-  errorDiv.textContent = `JSON carregado com sucesso: ${ticker}`;
-
-})();
+// ====================== EXECUTA ======================
+renderizarAtivo();
 </script>
+
+<div id="cards"></div>
+<div class="section">
+  <h3>Histórico de Preços</h3>
+  <canvas id="precoChart"></canvas>
+</div>
+<div class="section">
+  <h3>Dividendos / Rendimentos</h3>
+  <table id="dividendosTable">
+    <thead><tr><th>Data Ex</th><th>Data Pagamento</th><th>Valor</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<div class="section">
+  <h3>Indicadores Financeiros</h3>
+  <div id="indicadores"></div>
+</div>
 
 </body>
 </html>
