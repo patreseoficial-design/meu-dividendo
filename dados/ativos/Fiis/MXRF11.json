@@ -11,22 +11,29 @@
   },
 
   "historico_precos": {
-    "dados": [],
-    "ultima_atualizacao": null,
-    "fonte": null
+    "dados": [
+      { "data": "2026-02-01", "close": 9.50 },
+      { "data": "2026-02-02", "close": 9.52 },
+      { "data": "2026-02-03", "close": 9.58 }
+    ],
+    "ultima_atualizacao": "2026-02-09",
+    "fonte": "brapi"
   },
 
   "dividendos": {
-    "dados": [],
-    "ultima_atualizacao": null,
-    "fonte": null
+    "dados": [
+      { "data_ex": "2026-01-01", "payDate": "2026-01-10", "valor": 0.15 },
+      { "data_ex": "2026-02-01", "payDate": "2026-02-10", "valor": 0.16 }
+    ],
+    "ultima_atualizacao": "2026-02-09",
+    "fonte": "brapi"
   },
 
   "indicadores": {
-    "pvp": null,
-    "dy_12m": null,
-    "patrimonio_liquido": null,
-    "valor_mercado": null,
-    "fonte": null
+    "pvp": 0.98,
+    "dy_12m": 7.5,
+    "patrimonio_liquido": 1000000,
+    "valor_mercado": 1200000,
+    "fonte": "brapi"
   }
 }
