@@ -63,7 +63,7 @@ function toggleMenu() {
 
   try {
     // Busca dados do servidor (server.js)
-    const res = await fetch(`/api/ativo/${ticker}`);
+    const res = await fetch(`/api/ativos?symbol=${ticker}`);
     if (!res.ok) throw new Error("Erro ao buscar dados do servidor");
     const ativo = await res.json();
 
