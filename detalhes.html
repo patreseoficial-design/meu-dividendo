@@ -22,6 +22,7 @@ canvas { max-width:100%; }
 .menu-links ul { list-style:none; padding:0; margin:0; }
 .menu-links li { margin:16px 0; }
 .menu-links a { color:#000; text-decoration:none; font-size:1.1em; padding:8px 16px; display:block; }
+#indicadores { display:flex; flex-wrap:wrap; gap:12px; margin-top:12px; }
 </style>
 </head>
 <body>
@@ -68,7 +69,7 @@ function toggleMenu() {
 
 <div class="section">
   <h3>Indicadores Financeiros</h3>
-  <div id="indicadores" style="display:flex; flex-wrap:wrap; gap:12px;"></div>
+  <div id="indicadores"></div>
 </div>
 
 <script>
@@ -76,79 +77,40 @@ function toggleMenu() {
   const params = new URLSearchParams(window.location.search);
   const ticker = params.get("ativo");
 
-  if (!ticker) { alert("Nenhum ativo informado!"); return; }
+  if(!ticker){ alert("Nenhum ativo informado!"); return; }
 
   let ativo = null;
 
-  // 1️⃣ Tenta pegar o JSON local
-  try {
-    ativo = await fetch(`dados/ativos/Ações/${ticker}.json`).then(r => r.json());
-  } catch(e){ }
+  // Primeiro tenta Ações
+  try { ativo = await fetch(`dados/ativos/Ações/${ticker}.json`).then(r => r.json()); } catch(e){}
+
+  // Se não existir, tenta FIIs
   if(!ativo){
-    try { ativo = await fetch(`dados/ativos/Fiis/${ticker}.json`).then(r => r.json()); } catch(e){ }
+    try { ativo = await fetch(`dados/ativos/Fiis/${ticker}.json`).then(r => r.json()); } catch(e){}
   }
 
-  // 2️⃣ Se não houver JSON, busca direto da API Brapi
-  if(!ativo){
-    try{
-      const res = await fetch(`https://brapi.dev/api/quote/${ticker}?token=kfWwE93iiUiHTg5V4XjbYR`);
-      const data = await res.json();
-      const stock = data.results[0];
-      if(!stock) throw "Ativo não encontrado na API";
-
-      ativo = {
-        ticker: ticker,
-        preco_atual: {
-          valor: stock.regularMarketPrice,
-          variacao_dia: stock.regularMarketChangePercent
-        },
-        indicadores: {
-          pvp: stock.priceBook,
-          dy_12m: stock.dividendYield,
-          patrimonio_liquido: stock.totalEquity,
-          valor_mercado: stock.marketCap
-        },
-        historico_precos: { dados: [] },
-        dividendos: { dados: [] }
-      };
-
-      // Histórico via Yahoo
-      try{
-        const resYahoo = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}.SA?range=1y&interval=1d`);
-        const ydata = await resYahoo.json();
-        const result = ydata.chart.result[0];
-        const ts = result.timestamp;
-        const closes = result.indicators.quote[0].close;
-        ativo.historico_precos.dados = ts.map((t,i)=>({data: new Date(t*1000).toISOString().split("T")[0], close: closes[i]}));
-        // Dividendos 5 anos
-        const events = result.events?.dividends || {};
-        ativo.dividendos.dados = Object.keys(events).map(k=>({data_ex:new Date(events[k].date*1000).toISOString().split("T")[0], valor: events[k].amount}));
-      }catch(e){ console.warn("Yahoo não retornou dados históricos/dividendos", e); }
-
-    }catch(err){
-      console.error("Não foi possível obter dados do ativo:", err);
-      alert("Erro ao carregar os dados do ativo.");
-      return;
-    }
+  if(!ativo){ 
+    alert("Ativo não encontrado!");
+    return;
   }
 
   document.getElementById("nomeAtivo").textContent = ativo.ticker;
 
-  // Cards
+  // Cards de preço e variação
   const cardsDiv = document.getElementById("cards");
   cardsDiv.innerHTML = "";
   const cardsInfo = [
-    { label:"Preço", value:`R$ ${ativo.preco_atual?.valor ?? "--"}` },
-    { label:"Variação", value:`${ativo.preco_atual?.variacao_dia ?? "--"}%` },
+    {label:"Preço", value:`R$ ${ativo.preco_atual?.valor ?? "--"}`},
+    {label:"Variação", value:`${ativo.preco_atual?.variacao_dia ?? "--"}%`}
   ];
   cardsInfo.forEach(i=>{
     const card = document.createElement("div");
     card.className="card";
-    card.innerHTML=`<strong>${i.label}</strong><br>${i.value}`;
+    card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
     cardsDiv.appendChild(card);
   });
 
-  // Gráfico
+  // Gráfico histórico de preços
   const ctx = document.getElementById('precoChart').getContext('2d');
   const datas = (ativo.historico_precos?.dados||[]).map(d=>d.data);
   const precos = (ativo.historico_precos?.dados||[]).map(d=>d.close);
@@ -167,7 +129,7 @@ function toggleMenu() {
     tbody.appendChild(tr);
   });
 
-  // Indicadores
+  // Indicadores Financeiros
   const indicadoresDiv = document.getElementById("indicadores");
   indicadoresDiv.innerHTML="";
   const ind = ativo.indicadores||{};
@@ -175,10 +137,11 @@ function toggleMenu() {
     {label:"P/VP", value:ind.pvp ?? "--"},
     {label:"Dividend Yield", value:ind.dy_12m ?? "--"},
     {label:"Patrimônio Líquido", value:ind.patrimonio_liquido ?? "--"},
-    {label:"Valor de Mercado", value:ind.valor_mercado ?? "--"}
+    {label:"Valor de Mercado", value:ind.valor_mercado ?? "--"},
+    {label:"Patrimônio na Carteira", value:ativo.patrimonio_carteira ?? "--"}
   ];
   indicadores.forEach(i=>{
-    const card=document.createElement("div");
+    const card = document.createElement("div");
     card.className="card";
     card.innerHTML=`<strong>${i.label}</strong><br>${i.value}`;
     indicadoresDiv.appendChild(card);
@@ -187,36 +150,5 @@ function toggleMenu() {
 })();
 </script>
 
-<!-- OUTROS SCRIPTS E HTML ... -->
-
-<!-- Teste da API -->
-<script>
-  // Pega ticker da URL
-  const params = new URLSearchParams(window.location.search);
-  const ticker = params.get("ativo") || "MXRF11"; // pode trocar para outro ativo de teste
-
-  async function testarAPI(ticker) {
-    try {
-      const res = await fetch(`dados/ativos/Ações/${ticker}.json`);
-      const ativo = await res.json();
-
-      console.log("=== DADOS COMPLETOS DO ATIVO ===");
-      console.log(ativo);
-
-      // Verificar especificamente cada campo
-      console.log("P/VP:", ativo.indicadores?.pvp);
-      console.log("Patrimônio Líquido:", ativo.indicadores?.patrimonio_liquido);
-      console.log("Dividend Yield:", ativo.indicadores?.dy_12m);
-      console.log("Valor de Mercado:", ativo.indicadores?.valor_mercado);
-      console.log("Dividendos e Rendimentos:", ativo.dividendos);
-      console.log("Patrimônio na carteira do FII:", ativo.patrimonio_carteira);
-      console.log("Histórico de Preço:", ativo.historico_precos);
-    } catch (err) {
-      console.error("Erro ao carregar dados do ativo:", err);
-    }
-  }
-
-  testarAPI(ticker);
-</script>
 </body>
 </html>
