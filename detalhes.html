@@ -1,134 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detalhes do Ativo</title>
-
-  <!-- CSS externo -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- CSS interno -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detalhes do Ativo</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  body { 
-    font-family: Arial, sans-serif; 
-    margin:0; padding:0; 
-    background:#f5f5f5; /* fundo claro */
-    color:#333; 
-  }
-
-  header { 
-  background: #000;   /* fundo preto */
-  color: #fff;        /* texto branco */
-  padding: 16px; 
-  text-align: center; 
-  font-size: 1.2em; 
-  position: relative;
-  border-bottom: 1px solid #222;
-}
-
-  #nomeAtivo { 
-    text-align:center; 
-    margin:24px 0; 
-    font-size:2em; 
-    font-weight:bold; 
-  }
-
-  #cards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
-    gap: 12px; 
-    margin-bottom: 24px;
-  }
-
-  .card {
-    background: #000; 
-    color: #fff; 
-    padding: 16px 24px; 
-    border-radius: 12px; 
-    text-align: center;
-  }
-
-  .section { 
-    margin:20px; 
-    background:#fff; 
-    padding:16px; 
-    border-radius:12px; 
-  }
-
-  table { 
-    width:100%; 
-    border-collapse:collapse; 
-    margin-top:12px; 
-  }
-
-  th, td { 
-    padding:8px; 
-    border:1px solid #ccc; 
-    text-align:center; 
-  }
-
-  th { 
-    background:#eee; 
-  }
-
-  canvas { 
-    max-width:100%; 
-  }
-
-  /* ===== MENU HAMBÚRGUER ===== */
-  .menu { 
-    font-size: 1.5em; 
-    cursor: pointer; 
-    position: absolute;
-    left: 16px; /* fica do lado esquerdo do header */
-    top: 16px;
-  }
-
-  .menu-links {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100%;
-    background-color: #fff; /* fundo branco */
-    color: #000; /* texto preto */
-    padding-top: 60px;
-    display: none; /* inicialmente escondido */
-    flex-direction: column;
-    z-index: 1000;
-    border-right: 1px solid #ccc;
-  }
-
-  .menu-links ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .menu-links li {
-    margin: 16px 0;
-  }
-
-  .menu-links a {
-    color: #000; /* links pretos */
-    text-decoration: none;
-    font-size: 1.1em;
-    padding: 8px 16px;
-    display: block;
-  }
+body { font-family: Arial; margin:0; padding:0; background:#f5f5f5; color:#333; }
+header { background:#000; color:#fff; padding:16px; text-align:center; position:relative; border-bottom:1px solid #222; }
+#nomeAtivo { text-align:center; margin:24px 0; font-size:2em; font-weight:bold; }
+#cards { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-bottom:24px; }
+.card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; text-align:center; }
+.section { margin:20px; background:#fff; padding:16px; border-radius:12px; }
+table { width:100%; border-collapse:collapse; margin-top:12px; }
+th, td { padding:8px; border:1px solid #ccc; text-align:center; }
+th { background:#eee; }
+canvas { max-width:100%; }
+.menu { font-size:1.5em; cursor:pointer; position:absolute; left:16px; top:16px; }
+.menu-links { position:fixed; top:0; left:0; width:250px; height:100%; background:#fff; color:#000; padding-top:60px; display:none; flex-direction:column; z-index:1000; border-right:1px solid #ccc; }
+.menu-links ul { list-style:none; padding:0; margin:0; }
+.menu-links li { margin:16px 0; }
+.menu-links a { color:#000; text-decoration:none; font-size:1.1em; padding:8px 16px; display:block; }
 </style>
+</head>
+<body>
 
-<!-- HEADER -->
 <header>
   <div class="menu" onclick="toggleMenu()">☰</div>
   <h1>Meu Dividendo</h1>
-  <div class="profile"></div>
-
-  <!-- MENU HAMBÚRGUER -->
-  <nav id="menuLinks" class="menu-links" style="display:none;">
+  <nav id="menuLinks" class="menu-links">
     <ul>
       <li><a href="index.html">🏠 Início</a></li>
       <li><a href="calculadora.html">Calculadora de juros compostos</a></li>
@@ -142,156 +43,149 @@
   </nav>
 </header>
 
-<!-- SCRIPT MENU -->
 <script>
-  function toggleMenu() {
-    const menu = document.getElementById('menuLinks');
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-  }
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
 </script>
 
-<!-- Nome do ativo -->
 <div id="nomeAtivo">Ativo</div>
+<div id="cards"></div>
 
-<!-- Aqui você vai colocar depois os cards e a imagem clicável -->
-<!-- Cards principais -->
-<div id="cards">
-  <!-- Os cards serão preenchidos dinamicamente via JS -->
-</div>
-
-<!-- Imagem clicável -->
-<div style="text-align:center; margin: 30px 0;">
-  <a href="calculadora.html">
-    <img 
-      src="imagens/bannerjuroscompostos.png"
-      alt="Usar parte do PIS para investir e construir patrimônio"
-      width="800"
-      height="450"
-      style="max-width:100%; height:auto; border-radius:12px;"
-      loading="lazy"
-    >
-  </a>
-</div>
-
-<!-- Gráficos -->
 <div class="section">
   <h3>Histórico de Preços</h3>
   <canvas id="precoChart"></canvas>
 </div>
 
-<!-- Dividendos -->
 <div class="section">
   <h3>Dividendos / Rendimentos</h3>
   <table id="dividendosTable">
-    <thead>
-      <tr><th>Data Base</th><th>Data Pagamento</th><th>Rendimento</th></tr>
-    </thead>
+    <thead><tr><th>Data Ex</th><th>Data Pagamento</th><th>Valor</th></tr></thead>
     <tbody></tbody>
   </table>
 </div>
 
-<!-- Indicadores -->
 <div class="section">
   <h3>Indicadores Financeiros</h3>
   <div id="indicadores" style="display:flex; flex-wrap:wrap; gap:12px;"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Pega a nomenclatura do ativo na URL
-const params = new URLSearchParams(window.location.search);
-const ativo = params.get("ativo");
+(async () => {
+  const params = new URLSearchParams(window.location.search);
+  const ticker = params.get("ativo");
 
-if(!ativo) {
-  alert("Nenhum ativo informado!");
-} else {
-  document.getElementById("nomeAtivo").textContent = ativo;
+  if (!ticker) { alert("Nenhum ativo informado!"); return; }
 
-  // 1️⃣ Buscar dados do ativo
-  fetch(`https://brapi.dev/api/quote/${ativo}?token=kfWwE93iiUiHTg5V4XjbYR`)
-    .then(res => res.json())
-    .then(data => {
+  let ativo = null;
+
+  // 1️⃣ Tenta pegar o JSON local
+  try {
+    ativo = await fetch(`dados/ativos/Ações/${ticker}.json`).then(r => r.json());
+  } catch(e){ }
+  if(!ativo){
+    try { ativo = await fetch(`dados/ativos/Fiis/${ticker}.json`).then(r => r.json()); } catch(e){ }
+  }
+
+  // 2️⃣ Se não houver JSON, busca direto da API Brapi
+  if(!ativo){
+    try{
+      const res = await fetch(`https://brapi.dev/api/quote/${ticker}?token=kfWwE93iiUiHTg5V4XjbYR`);
+      const data = await res.json();
       const stock = data.results[0];
-      if(!stock) { alert("Ativo não encontrado."); return; }
+      if(!stock) throw "Ativo não encontrado na API";
 
-   // Preencher cards principais
-const cardsDiv = document.getElementById("cards");
-const cardsInfo = [
-  {label:"Preço", value:`R$ ${stock.regularMarketPrice}`},
-  {label:"Variação", value:`${stock.regularMarketChangePercent}%`},
-  {label:"Máx/Mín", value:`R$ ${stock.regularMarketDayHigh} / R$ ${stock.regularMarketDayLow}`},
-  {label:"Volume", value:stock.regularMarketVolume || "N/A"}
-];
-cardsInfo.forEach(i => {
-  const card = document.createElement("div");
-  card.className = "card";
-  card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
-  cardsDiv.appendChild(card);
-});
+      ativo = {
+        ticker: ticker,
+        preco_atual: {
+          valor: stock.regularMarketPrice,
+          variacao_dia: stock.regularMarketChangePercent
+        },
+        indicadores: {
+          pvp: stock.priceBook,
+          dy_12m: stock.dividendYield,
+          patrimonio_liquido: stock.totalEquity,
+          valor_mercado: stock.marketCap
+        },
+        historico_precos: { dados: [] },
+        dividendos: { dados: [] }
+      };
 
-      // 3️⃣ Histórico de preços (gráfico)
-      fetch(`https://brapi.dev/api/quote/${ativo}/chart?interval=1d&range=1y&token=kfWwE93iiUiHTg5V4XjbYR`)
-        .then(res => res.json())
-        .then(chartData => {
-          const datas = chartData.results.map(d=>d.date);
-          const precos = chartData.results.map(d=>d.close);
-          const ctx = document.getElementById('precoChart').getContext('2d');
-          new Chart(ctx, {
-            type:'line',
-            data:{ labels: datas, datasets:[{ label:'Preço', data:precos, borderColor:'#007bff', backgroundColor:'rgba(0,123,255,0.1)' }] },
-            options:{ responsive:true, plugins:{ legend:{display:true}, tooltip:{mode:'index'} } }
-          });
-        });
+      // Histórico via Yahoo
+      try{
+        const resYahoo = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}.SA?range=1y&interval=1d`);
+        const ydata = await resYahoo.json();
+        const result = ydata.chart.result[0];
+        const ts = result.timestamp;
+        const closes = result.indicators.quote[0].close;
+        ativo.historico_precos.dados = ts.map((t,i)=>({data: new Date(t*1000).toISOString().split("T")[0], close: closes[i]}));
+        // Dividendos 5 anos
+        const events = result.events?.dividends || {};
+        ativo.dividendos.dados = Object.keys(events).map(k=>({data_ex:new Date(events[k].date*1000).toISOString().split("T")[0], valor: events[k].amount}));
+      }catch(e){ console.warn("Yahoo não retornou dados históricos/dividendos", e); }
 
-      // 4️⃣ Dividendos
-      fetch(`https://brapi.dev/api/stock/dividends?symbol=${ativo}&token=kfWwE93iiUiHTg5V4XjbYR`)
-        .then(res => res.json())
-        .then(divData => {
-          const tbody = document.querySelector("#dividendosTable tbody");
-          divData.results.forEach(div => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `<td>${div.exDate}</td><td>${div.payDate}</td><td>R$ ${div.amount}</td>`;
-            tbody.appendChild(tr);
-          });
-        });
+    }catch(err){
+      console.error("Não foi possível obter dados do ativo:", err);
+      alert("Erro ao carregar os dados do ativo.");
+      return;
+    }
+  }
 
-      // 5️⃣ Indicadores financeiros
-      fetch(`https://brapi.dev/api/stock/financials?symbol=${ativo}&token=kfWwE93iiUiHTg5V4XjbYR`)
-        .then(res => res.json())
-        .then(finData => {
-          const indicadoresDiv = document.getElementById("indicadores");
-          if(finData.results && finData.results.length > 0){
-            const f = finData.results[0];
-            const indicadores = [
-              {label:"P/L", value:f.priceEarnings || "N/A"},
-              {label:"P/VP", value:f.priceBook || "N/A"},
-              {label:"Dividend Yield", value:f.dividendYield || "N/A"},
-              {label:"Patrimônio Líquido", value:f.totalEquity || "N/A"},
-              {label:"Valor de Mercado", value:f.marketCap || "N/A"}
-            ];
-            indicadores.forEach(ind => {
-              const card = document.createElement("div");
-              card.className = "card";
-              card.innerHTML = `<strong>${ind.label}</strong><br>${ind.value}`;
-              indicadoresDiv.appendChild(card);
-            });
-          }
-        });
+  document.getElementById("nomeAtivo").textContent = ativo.ticker;
 
-    })
-    .catch(err => { console.error(err); alert("Erro ao buscar informações do ativo."); });
-}
+  // Cards
+  const cardsDiv = document.getElementById("cards");
+  cardsDiv.innerHTML = "";
+  const cardsInfo = [
+    { label:"Preço", value:`R$ ${ativo.preco_atual?.valor ?? "--"}` },
+    { label:"Variação", value:`${ativo.preco_atual?.variacao_dia ?? "--"}%` },
+  ];
+  cardsInfo.forEach(i=>{
+    const card = document.createElement("div");
+    card.className="card";
+    card.innerHTML=`<strong>${i.label}</strong><br>${i.value}`;
+    cardsDiv.appendChild(card);
+  });
+
+  // Gráfico
+  const ctx = document.getElementById('precoChart').getContext('2d');
+  const datas = (ativo.historico_precos?.dados||[]).map(d=>d.data);
+  const precos = (ativo.historico_precos?.dados||[]).map(d=>d.close);
+  new Chart(ctx,{
+    type:'line',
+    data:{ labels:datas, datasets:[{label:'Preço', data:precos, borderColor:'#007bff', backgroundColor:'rgba(0,123,255,0.1)'}] },
+    options:{ responsive:true, plugins:{ legend:{display:true}, tooltip:{mode:'index'} } }
+  });
+
+  // Dividendos
+  const tbody = document.querySelector("#dividendosTable tbody");
+  tbody.innerHTML="";
+  (ativo.dividendos?.dados||[]).forEach(div=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML=`<td>${div.data_ex}</td><td>${div.payDate??"--"}</td><td>R$ ${div.valor}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // Indicadores
+  const indicadoresDiv = document.getElementById("indicadores");
+  indicadoresDiv.innerHTML="";
+  const ind = ativo.indicadores||{};
+  const indicadores = [
+    {label:"P/VP", value:ind.pvp ?? "--"},
+    {label:"Dividend Yield", value:ind.dy_12m ?? "--"},
+    {label:"Patrimônio Líquido", value:ind.patrimonio_liquido ?? "--"},
+    {label:"Valor de Mercado", value:ind.valor_mercado ?? "--"}
+  ];
+  indicadores.forEach(i=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`<strong>${i.label}</strong><br>${i.value}`;
+    indicadoresDiv.appendChild(card);
+  });
+
+})();
 </script>
 
-<!-- ...todo seu HTML acima... -->
-
-<!-- Indicadores -->
-<div class="section">
-  <h3>Indicadores Financeiros</h3>
-  <div id="indicadores" style="display:flex; flex-wrap:wrap; gap:12px;"></div>
-</div>
-
-<!-- Inclui o main.js aqui no final do body -->
-<script src="js/main.js"></script>
 </body>
 </html>
