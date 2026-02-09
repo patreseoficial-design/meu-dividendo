@@ -160,6 +160,40 @@ function toggleMenu() {
     .then(r => r.json())
     .then(d => console.log('JSON lido:', d))
     .catch(e => console.error('Erro fetch JSON:', e));
+
+// ======= DEBUG: mostrar erros de fetch/JSON =======
+(async () => {
+  const params = new URLSearchParams(window.location.search);
+  const ticker = params.get("ativo");
+  const errorDiv = document.getElementById("errorMsg");
+
+  if(!ticker){
+    errorDiv.textContent = "Nenhum ativo informado na URL!";
+    return;
+  }
+
+  const pastas = ["ações", "Fiis"];
+  let ativo = null;
+
+  for(const pasta of pastas){
+    try{
+      const res = await fetch(`dados/ativos/${pasta}/${ticker}.json`);
+      if(!res.ok) throw new Error(`Arquivo não encontrado em ${pasta}`);
+      ativo = await res.json();
+      if(ativo) break;
+    } catch(e){
+      console.error(`Erro ao buscar em ${pasta}:`, e);
+      errorDiv.textContent = `Erro ao buscar JSON em ${pasta}: ${e.message}`;
+    }
+  }
+
+  if(!ativo){
+    errorDiv.textContent = `Ativo "${ticker}" não encontrado em Ações ou Fiis.`;
+    return;
+  }
+
+  console.log("JSON carregado com sucesso:", ativo);
+})();
 </script>
 
 </body>
