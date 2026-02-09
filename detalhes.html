@@ -187,5 +187,36 @@ function toggleMenu() {
 })();
 </script>
 
+<!-- OUTROS SCRIPTS E HTML ... -->
+
+<!-- Teste da API -->
+<script>
+  // Pega ticker da URL
+  const params = new URLSearchParams(window.location.search);
+  const ticker = params.get("ativo") || "MXRF11"; // pode trocar para outro ativo de teste
+
+  async function testarAPI(ticker) {
+    try {
+      const res = await fetch(`dados/ativos/Ações/${ticker}.json`);
+      const ativo = await res.json();
+
+      console.log("=== DADOS COMPLETOS DO ATIVO ===");
+      console.log(ativo);
+
+      // Verificar especificamente cada campo
+      console.log("P/VP:", ativo.indicadores?.pvp);
+      console.log("Patrimônio Líquido:", ativo.indicadores?.patrimonio_liquido);
+      console.log("Dividend Yield:", ativo.indicadores?.dy_12m);
+      console.log("Valor de Mercado:", ativo.indicadores?.valor_mercado);
+      console.log("Dividendos e Rendimentos:", ativo.dividendos);
+      console.log("Patrimônio na carteira do FII:", ativo.patrimonio_carteira);
+      console.log("Histórico de Preço:", ativo.historico_precos);
+    } catch (err) {
+      console.error("Erro ao carregar dados do ativo:", err);
+    }
+  }
+
+  testarAPI(ticker);
+</script>
 </body>
 </html>
