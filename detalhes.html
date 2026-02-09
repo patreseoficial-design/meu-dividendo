@@ -18,6 +18,7 @@ canvas { max-width:100%; }
 .menu-links ul { list-style:none; padding:0; margin:0; }
 .menu-links li { margin:16px 0; }
 .menu-links a { color:#000; text-decoration:none; font-size:1.1em; padding:8px 16px; display:block; }
+#errorMsg { color:red; font-weight:bold; margin:16px; }
 </style>
 </head>
 <body>
@@ -36,7 +37,7 @@ canvas { max-width:100%; }
 </header>
 
 <div id="nomeAtivo">Ativo</div>
-<div id="errorMsg" style="color:red; font-weight:bold; margin:16px;"></div>
+<div id="errorMsg"></div>
 <div id="cards"></div>
 
 <div class="section">
@@ -61,6 +62,7 @@ function toggleMenu() {
   }
 
   try {
+    // Chama o servidor local que vai buscar da Brapi
     const res = await fetch(`/api/ativo?ativo=${ticker}`);
     if (!res.ok) throw new Error("Erro ao buscar dados do servidor");
     const ativo = await res.json();
@@ -90,7 +92,12 @@ function toggleMenu() {
       type: 'line',
       data: {
         labels: historico.map(h => h.data),
-        datasets: [{ label: 'Preço', data: historico.map(h => h.close), borderColor: '#007bff', backgroundColor: 'rgba(0,123,255,0.1)' }]
+        datasets: [{
+          label: 'Preço',
+          data: historico.map(h => h.close),
+          borderColor: '#007bff',
+          backgroundColor: 'rgba(0,123,255,0.1)'
+        }]
       },
       options: { responsive: true, plugins: { legend: { display: true }, tooltip: { mode: 'index' } } }
     });
