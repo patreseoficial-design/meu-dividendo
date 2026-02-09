@@ -12,16 +12,12 @@ header { background:#000; color:#fff; padding:16px; text-align:center; border-bo
 #cards { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-bottom:24px; }
 .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; text-align:center; }
 .section { margin:20px; background:#fff; padding:16px; border-radius:12px; }
-table { width:100%; border-collapse:collapse; margin-top:12px; }
-th, td { padding:8px; border:1px solid #ccc; text-align:center; }
-th { background:#eee; }
 canvas { max-width:100%; }
 .menu { font-size:1.5em; cursor:pointer; position:absolute; left:16px; top:16px; }
 .menu-links { position:fixed; top:0; left:0; width:250px; height:100%; background:#fff; color:#000; padding-top:60px; display:none; flex-direction:column; z-index:1000; border-right:1px solid #ccc; }
 .menu-links ul { list-style:none; padding:0; margin:0; }
 .menu-links li { margin:16px 0; }
 .menu-links a { color:#000; text-decoration:none; font-size:1.1em; padding:8px 16px; display:block; }
-#errorMsg { color:red; font-weight:bold; text-align:center; margin:16px; }
 </style>
 </head>
 <body>
@@ -32,33 +28,17 @@ canvas { max-width:100%; }
   <nav id="menuLinks" class="menu-links">
     <ul>
       <li><a href="index.html">🏠 Início</a></li>
-      <li><a href="calculadora.html">Calculadora de juros compostos</a></li>
-      <li><a href="calculadora-rescisao.html">Calculadora de rescisão</a></li>
-      <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
     </ul>
   </nav>
 </header>
 
 <div id="nomeAtivo">Ativo</div>
-<div id="errorMsg"></div>
+<div id="errorMsg" style="color:red; font-weight:bold; margin:16px;"></div>
 <div id="cards"></div>
 
 <div class="section">
   <h3>Histórico de Preços (últimos 3 meses)</h3>
   <canvas id="precoChart"></canvas>
-</div>
-
-<div class="section">
-  <h3>Dividendos / Rendimentos</h3>
-  <table id="dividendosTable">
-    <thead><tr><th>Data Ex</th><th>Data Pagamento</th><th>Valor</th></tr></thead>
-    <tbody></tbody>
-  </table>
-</div>
-
-<div class="section">
-  <h3>Indicadores Financeiros</h3>
-  <div id="indicadores"></div>
 </div>
 
 <script>
@@ -77,23 +57,18 @@ function toggleMenu() {
     return;
   }
 
-  const brapiKey = "kfWwE93iiUiHTg5V4XjbYR"; // sua chave Brapi
-  const url = `https://brapi.dev/api/quote/${ticker}?apikey=${brapiKey}`;
-
   try {
-    const res = await fetch(url);
-    if(!res.ok) throw new Error("Erro ao acessar a Brapi");
-    const data = await res.json();
+    const res = await fetch(`/api/ativo?ativo=${ticker}`);
+    const ativo = await res.json();
 
-    if(!data.results || data.results.length === 0){
-      errorDiv.textContent = `Ativo "${ticker}" não encontrado na Brapi.`;
+    if(ativo.error){
+      errorDiv.textContent = ativo.error;
       return;
     }
 
-    const ativo = data.results[0];
     document.getElementById("nomeAtivo").textContent = ativo.shortName || ativo.symbol;
 
-    // ======= CARDS =======
+    // Cards
     const cardsDiv = document.getElementById("cards");
     cardsDiv.innerHTML = "";
     const cardsInfo = [
@@ -109,56 +84,22 @@ function toggleMenu() {
       cardsDiv.appendChild(card);
     });
 
-    // ======= HISTÓRICO DE PREÇOS =======
+    // Histórico de preços
     const historico = ativo.history?.map(h => ({ data: h.date, close: h.close })) || [];
-    if(historico.length > 0){
-      const ctx = document.getElementById('precoChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: historico.map(h => h.data),
-          datasets: [{ label: 'Preço', data: historico.map(h => h.close), borderColor: '#007bff', backgroundColor: 'rgba(0,123,255,0.1)' }]
-        },
-        options: { responsive: true, plugins: { legend: { display: true }, tooltip: { mode: 'index' } } }
-      });
-    } else {
-      document.getElementById('precoChart').remove();
-    }
-
-    // ======= DIVIDENDOS =======
-    const tbody = document.querySelector("#dividendosTable tbody");
-    tbody.innerHTML="";
-    const dividendos = ativo.dividends?.data || [];
-    dividendos.forEach(div=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${div.exDate ?? "--"}</td><td>${div.payDate ?? "--"}</td><td>${div.value ?? "--"}</td>`;
-      tbody.appendChild(tr);
-    });
-    if(dividendos.length === 0){
-      document.getElementById("dividendosTable").style.display = "none";
-    }
-
-    // ======= INDICADORES =======
-    const indicadoresDiv = document.getElementById("indicadores");
-    indicadoresDiv.innerHTML="";
-    const indicadores = [
-      { label: "P/VP", value: ativo.priceToBook ?? "--" },
-      { label: "Dividend Yield 12m", value: ativo.dividendYield ?? "--" },
-      { label: "Patrimônio Líquido", value: ativo.marketCap ?? "--" },
-      { label: "Valor de Mercado", value: ativo.marketCap ?? "--" }
-    ];
-    indicadores.forEach(i=>{
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
-      indicadoresDiv.appendChild(card);
+    const ctx = document.getElementById('precoChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: historico.map(h => h.data),
+        datasets: [{ label: 'Preço', data: historico.map(h => h.close), borderColor: '#007bff', backgroundColor: 'rgba(0,123,255,0.1)' }]
+      },
+      options: { responsive: true, plugins: { legend: { display: true }, tooltip: { mode: 'index' } } }
     });
 
   } catch(e){
     console.error(e);
-    errorDiv.textContent = "Erro ao carregar dados da Brapi: " + e.message;
+    errorDiv.textContent = "Erro ao carregar dados: " + e.message;
   }
-
 })();
 </script>
 
