@@ -1,124 +1,154 @@
-const fs = require("fs");
-const path = require("path");
-const fetch = require("node-fetch"); // Node 18+ pode usar fetch nativo
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detalhes do Ativo</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body { font-family: Arial; margin:0; padding:0; background:#f5f5f5; color:#333; }
+header { background:#000; color:#fff; padding:16px; text-align:center; position:relative; border-bottom:1px solid #222; }
+#nomeAtivo { text-align:center; margin:24px 0; font-size:2em; font-weight:bold; }
+#cards { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-bottom:24px; }
+.card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; text-align:center; }
+.section { margin:20px; background:#fff; padding:16px; border-radius:12px; }
+table { width:100%; border-collapse:collapse; margin-top:12px; }
+th, td { padding:8px; border:1px solid #ccc; text-align:center; }
+th { background:#eee; }
+canvas { max-width:100%; }
+.menu { font-size:1.5em; cursor:pointer; position:absolute; left:16px; top:16px; }
+.menu-links { position:fixed; top:0; left:0; width:250px; height:100%; background:#fff; color:#000; padding-top:60px; display:none; flex-direction:column; z-index:1000; border-right:1px solid #ccc; }
+.menu-links ul { list-style:none; padding:0; margin:0; }
+.menu-links li { margin:16px 0; }
+.menu-links a { color:#000; text-decoration:none; font-size:1.1em; padding:8px 16px; display:block; }
+#indicadores { display:flex; flex-wrap:wrap; gap:12px; margin-top:12px; }
+</style>
+</head>
+<body>
 
-// PASTAS
-const pastas = {
-  acao: "Ações",
-  fii: "Fiis"
-};
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <h1>Meu Dividendo</h1>
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="calculadora.html">Calculadora de juros compostos</a></li>
+      <li><a href="calculadora-rescisao.html">Calculadora de rescisão</a></li>
+      <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
+      <li><a href="calculadora-ir.html">Calculadora imposto de renda sobre Investimentos</a></li>
+      <li><a href="quanto-investir-por-mes.html">Quanto investir por mês</a></li>
+      <li><a href="calculadora-pis.html">Calculadora do PIS</a></li>
+      <li><a href="calculadora-quitacao.html">Calculadora de quitação patrimonial</a></li>
+    </ul>
+  </nav>
+</header>
 
-// FUNÇÃO: carregar ativo do JSON
-function carregarAtivoDoArquivo(tipo, ticker) {
-  const pasta = pastas[tipo];
-  const filePath = path.join(__dirname, "..", "dados", "ativos", pasta, `${ticker}.json`);
-  if (!fs.existsSync(filePath)) {
-    console.warn(`Arquivo do ativo ${ticker} não encontrado em ${filePath}`);
-    return null;
-  }
-  const rawData = fs.readFileSync(filePath, "utf8");
-  return JSON.parse(rawData);
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
+</script>
 
-// FUNÇÃO: salvar JSON atualizado
-function salvarAtivo(tipo, ativoJson) {
-  const pasta = pastas[tipo];
-  const filePath = path.join(__dirname, "..", "dados", "ativos", pasta, `${ativoJson.ticker}.json`);
-  fs.writeFileSync(filePath, JSON.stringify(ativoJson, null, 2));
-  console.log(`Arquivo atualizado: ${filePath}`);
-}
+<div id="nomeAtivo">Ativo</div>
+<div id="cards"></div>
 
-// FUNÇÃO: atualizar preço e indicadores via Brapi
-async function atualizarBrapi(ativoJson) {
-  try {
-    const res = await fetch(`https://brapi.dev/api/quote/${ativoJson.ticker}?token=kfWwE93iiUiHTg5V4XjbYR`);
-    const data = await res.json();
-    const stock = data.results[0];
-    if (!stock) return;
+<div class="section">
+  <h3>Histórico de Preços</h3>
+  <canvas id="precoChart"></canvas>
+</div>
 
-    ativoJson.preco_atual = {
-      valor: stock.regularMarketPrice,
-      variacao_dia: stock.regularMarketChangePercent,
-      atualizado_em: new Date().toISOString().split("T")[0],
-      fonte: "brapi"
-    };
+<div class="section">
+  <h3>Dividendos / Rendimentos</h3>
+  <table id="dividendosTable">
+    <thead><tr><th>Data Ex</th><th>Data Pagamento</th><th>Valor</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
 
-    ativoJson.indicadores = {
-      pvp: stock.priceBook || null,
-      dy_12m: stock.dividendYield || null,
-      patrimonio_liquido: stock.totalEquity || null,
-      valor_mercado: stock.marketCap || null,
-      fonte: "brapi"
-    };
-  } catch (err) {
-    console.error(`Erro Brapi ${ativoJson.ticker}:`, err);
-  }
-}
+<div class="section">
+  <h3>Indicadores Financeiros</h3>
+  <div id="indicadores"></div>
+</div>
 
-// FUNÇÃO: atualizar histórico de preços e dividendos via Yahoo
-async function atualizarYahoo(ativoJson) {
-  const tickerYahoo = ativoJson.ticker + ".SA"; // para ativos B3
+<script>
+(async () => {
+  const params = new URLSearchParams(window.location.search);
+  const ticker = params.get("ativo");
 
-  // Histórico de preços 1 ano
-  try {
-    const resPreco = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${tickerYahoo}?range=1y&interval=1d`);
-    const dataPreco = await resPreco.json();
-    if (dataPreco.chart && dataPreco.chart.result) {
-      const result = dataPreco.chart.result[0];
-      const timestamps = result.timestamp;
-      const closes = result.indicators.quote[0].close;
+  if(!ticker){ alert("Nenhum ativo informado!"); return; }
 
-      ativoJson.historico_precos = {
-        dados: timestamps.map((t, i) => ({
-          data: new Date(t * 1000).toISOString().split("T")[0],
-          close: closes[i]
-        })),
-        ultima_atualizacao: new Date().toISOString().split("T")[0],
-        fonte: "yahoo"
-      };
-    }
-  } catch (err) {
-    console.error(`Erro Yahoo Preço ${ativoJson.ticker}:`, err);
+  let ativo = null;
+
+  // Primeiro tenta Ações
+  try { ativo = await fetch(`dados/ativos/Ações/${ticker}.json`).then(r => r.json()); } catch(e){}
+
+  // Se não existir, tenta FIIs
+  if(!ativo){
+    try { ativo = await fetch(`dados/ativos/Fiis/${ticker}.json`).then(r => r.json()); } catch(e){}
   }
 
-  // Dividendos 5 anos
-  try {
-    const resDiv = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${tickerYahoo}?range=5y&interval=1d`);
-    const dataDiv = await resDiv.json();
-    if (dataDiv.chart && dataDiv.chart.result) {
-      const events = dataDiv.chart.result[0].events?.dividends || {};
-      ativoJson.dividendos = {
-        dados: Object.keys(events).map(key => ({
-          data_ex: events[key].date ? new Date(events[key].date * 1000).toISOString().split("T")[0] : null,
-          valor: events[key].amount
-        })),
-        ultima_atualizacao: new Date().toISOString().split("T")[0],
-        fonte: "yahoo"
-      };
-    }
-  } catch (err) {
-    console.error(`Erro Yahoo Dividendos ${ativoJson.ticker}:`, err);
+  if(!ativo){ 
+    alert("Ativo não encontrado!");
+    return;
   }
-}
 
-// FUNÇÃO PRINCIPAL: percorre todos os ativos
-async function atualizarTodosAtivos() {
-  for (const tipo of Object.keys(pastas)) {
-    const pasta = path.join(__dirname, "..", "dados", "ativos", pastas[tipo]);
-    const arquivos = fs.readdirSync(pasta).filter(f => f.endsWith(".json"));
+  document.getElementById("nomeAtivo").textContent = ativo.ticker;
 
-    for (const arquivo of arquivos) {
-      const ticker = arquivo.replace(".json", "");
-      const ativo = carregarAtivoDoArquivo(tipo, ticker);
-      if (!ativo) continue;
+  // Cards de preço e variação
+  const cardsDiv = document.getElementById("cards");
+  cardsDiv.innerHTML = "";
+  const cardsInfo = [
+    {label:"Preço", value:`R$ ${ativo.preco_atual?.valor ?? "--"}`},
+    {label:"Variação", value:`${ativo.preco_atual?.variacao_dia ?? "--"}%`}
+  ];
+  cardsInfo.forEach(i=>{
+    const card = document.createElement("div");
+    card.className="card";
+    card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
+    cardsDiv.appendChild(card);
+  });
 
-      console.log(`Atualizando ${ativo.ticker}...`);
-      await atualizarBrapi(ativo);
-      await atualizarYahoo(ativo);
-      salvarAtivo(tipo, ativo);
-    }
-  }
-}
+  // Gráfico histórico de preços
+  const ctx = document.getElementById('precoChart').getContext('2d');
+  const datas = (ativo.historico_precos?.dados||[]).map(d=>d.data);
+  const precos = (ativo.historico_precos?.dados||[]).map(d=>d.close);
+  new Chart(ctx,{
+    type:'line',
+    data:{ labels:datas, datasets:[{label:'Preço', data:precos, borderColor:'#007bff', backgroundColor:'rgba(0,123,255,0.1)'}] },
+    options:{ responsive:true, plugins:{ legend:{display:true}, tooltip:{mode:'index'} } }
+  });
 
-// Roda tudo
-atualizarTodosAtivos().then(() => console.log("Todos ativos atualizados!"));
+  // Dividendos
+  const tbody = document.querySelector("#dividendosTable tbody");
+  tbody.innerHTML="";
+  (ativo.dividendos?.dados||[]).forEach(div=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML=`<td>${div.data_ex}</td><td>${div.payDate??"--"}</td><td>R$ ${div.valor}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // Indicadores Financeiros
+  const indicadoresDiv = document.getElementById("indicadores");
+  indicadoresDiv.innerHTML="";
+  const ind = ativo.indicadores||{};
+  const indicadores = [
+    {label:"P/VP", value:ind.pvp ?? "--"},
+    {label:"Dividend Yield", value:ind.dy_12m ?? "--"},
+    {label:"Patrimônio Líquido", value:ind.patrimonio_liquido ?? "--"},
+    {label:"Valor de Mercado", value:ind.valor_mercado ?? "--"},
+    {label:"Patrimônio na Carteira", value:ativo.patrimonio_carteira ?? "--"}
+  ];
+  indicadores.forEach(i=>{
+    const card = document.createElement("div");
+    card.className="card";
+    card.innerHTML=`<strong>${i.label}</strong><br>${i.value}`;
+    indicadoresDiv.appendChild(card);
+  });
+
+})();
+</script>
+
+</body>
+</html>
