@@ -18,6 +18,7 @@ canvas { max-width:100%; }
 .menu-links ul { list-style:none; padding:0; margin:0; }
 .menu-links li { margin:16px 0; }
 .menu-links a { color:#000; text-decoration:none; font-size:1.1em; padding:8px 16px; display:block; }
+#errorMsg { color:red; font-weight:bold; text-align:center; margin:16px; }
 </style>
 </head>
 <body>
@@ -36,7 +37,7 @@ canvas { max-width:100%; }
 </header>
 
 <div id="nomeAtivo">Ativo</div>
-<div id="errorMsg" style="color:red; font-weight:bold; margin:16px;"></div>
+<div id="errorMsg"></div>
 <div id="cards"></div>
 
 <div class="section">
@@ -61,18 +62,19 @@ function toggleMenu() {
   }
 
   const brapiKey = "kfWwE93iiUiHTg5V4XjbYR"; // sua chave Brapi
+  const url = `https://brapi.dev/api/quote/${ticker}?apikey=${brapiKey}`;
 
   try {
-    // 1️⃣ Dados principais do ativo
-    const quoteRes = await fetch(`https://brapi.dev/api/quote/${ticker}?apikey=${brapiKey}`);
-    const quoteData = await quoteRes.json();
+    const res = await fetch(url);
+    if(!res.ok) throw new Error("Erro ao acessar a Brapi");
+    const data = await res.json();
 
-    if(!quoteData.results || quoteData.results.length === 0){
+    if(!data.results || data.results.length === 0){
       errorDiv.textContent = `Ativo "${ticker}" não encontrado na Brapi.`;
       return;
     }
 
-    const ativo = quoteData.results[0];
+    const ativo = data.results[0];
     document.getElementById("nomeAtivo").textContent = ativo.shortName || ativo.symbol;
 
     // Cards
@@ -91,20 +93,21 @@ function toggleMenu() {
       cardsDiv.appendChild(card);
     });
 
-    // 2️⃣ Histórico de preços (últimos 3 meses)
-    const histRes = await fetch(`https://brapi.dev/api/quote/historical?symbol=${ticker}&range=3mo&interval=1d&apikey=${brapiKey}`);
-    const histData = await histRes.json();
-    const historico = histData.results?.map(h => ({ data: h.date, close: h.close })) || [];
-
-    const ctx = document.getElementById('precoChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: historico.map(h => h.data),
-        datasets: [{ label: 'Preço', data: historico.map(h => h.close), borderColor: '#007bff', backgroundColor: 'rgba(0,123,255,0.1)' }]
-      },
-      options: { responsive: true, plugins: { legend: { display: true }, tooltip: { mode: 'index' } } }
-    });
+    // Histórico de preços
+    const historico = ativo.history?.map(h => ({ data: h.date, close: h.close })) || [];
+    if(historico.length > 0){
+      const ctx = document.getElementById('precoChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: historico.map(h => h.data),
+          datasets: [{ label: 'Preço', data: historico.map(h => h.close), borderColor: '#007bff', backgroundColor: 'rgba(0,123,255,0.1)' }]
+        },
+        options: { responsive: true, plugins: { legend: { display: true }, tooltip: { mode: 'index' } } }
+      });
+    } else {
+      document.getElementById('precoChart').remove(); // Remove canvas se não houver histórico
+    }
 
   } catch(e){
     console.error(e);
