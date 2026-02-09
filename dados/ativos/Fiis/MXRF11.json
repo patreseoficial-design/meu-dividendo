@@ -1,0 +1,32 @@
+{
+  "ticker": "MXRF11",
+  "tipo": "fii",
+  "nome": "Maxi Renda FII",
+
+  "preco_atual": {
+    "valor": 9.58,
+    "variacao_dia": -0.32,
+    "atualizado_em": "2026-02-09",
+    "fonte": "brapi"
+  },
+
+  "historico_precos": {
+    "dados": [],
+    "ultima_atualizacao": null,
+    "fonte": null
+  },
+
+  "dividendos": {
+    "dados": [],
+    "ultima_atualizacao": null,
+    "fonte": null
+  },
+
+  "indicadores": {
+    "pvp": null,
+    "dy_12m": null,
+    "patrimonio_liquido": null,
+    "valor_mercado": null,
+    "fonte": null
+  }
+}
