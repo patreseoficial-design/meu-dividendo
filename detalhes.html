@@ -82,7 +82,7 @@ function toggleMenu() {
   let ativo = null;
 
   // Primeiro tenta Ações
-  try { ativo = await fetch(`dados/ativos/Ações/${ticker}.json`).then(r => r.json()); } catch(e){}
+  try { ativo = await fetch(`dados/ativos/ações/${ticker}.json`).then(r => r.json()); } catch(e){}
 
   // Se não existir, tenta FIIs
   if(!ativo){
