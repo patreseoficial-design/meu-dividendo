@@ -1,17 +1,19 @@
-const { fiis, acoes } = require("./config/ativos");
-const { rasparFII } = require("./scrapers/fii");
-const { rasparAcao } = require("./scrapers/acao");
+const express = require("express");
+const app = express();
 
-async function iniciar() {
-  for (const fii of fiis) {
-    await rasparFII(fii);
-  }
+app.get("/", (req, res) => {
+  res.send("🚀 Scraper Meu Dividendo ONLINE");
+});
 
-  for (const acao of acoes) {
-    await rasparAcao(acao);
-  }
+app.get("/teste", (req, res) => {
+  res.json({
+    status: "ok",
+    ativo: "MXRF11",
+    mensagem: "API online funcionando"
+  });
+});
 
-  console.log("✅ Scraping finalizado");
-}
-
-iniciar();
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Servidor rodando na porta", PORT);
+});
