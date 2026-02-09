@@ -148,6 +148,18 @@ function toggleMenu() {
   });
 
 })();
+
+
+
+  // ...seu código de preencher cards, gráfico, dividendos, indicadores...
+
+  // TESTE: verificar se o JSON está acessível
+  const tickerTeste = "MXRF11"; // ou outro ativo
+  const pasta = "Fiis"; // Ações ou Fiis, depende do ativo
+  fetch(`dados/ativos/${pasta}/${tickerTeste}.json`)
+    .then(r => r.json())
+    .then(d => console.log('JSON lido:', d))
+    .catch(e => console.error('Erro fetch JSON:', e));
 </script>
 
 </body>
