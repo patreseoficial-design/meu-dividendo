@@ -53,24 +53,25 @@ function toggleMenu() {
 
 (async () => {
   const params = new URLSearchParams(window.location.search);
-  const ticker = params.get("ativo");
+  const symbol = params.get("ativo");
   const errorDiv = document.getElementById("errorMsg");
 
-  if (!ticker) {
+  if(!symbol){
     errorDiv.textContent = "Nenhum ativo informado na URL!";
     return;
   }
 
   try {
-    // Busca dados do servidor (server.js)
-    const res = await fetch(`/api/ativos?symbol=${ticker}`);
-    if (!res.ok) throw new Error("Erro ao buscar dados do servidor");
+    // Puxa o ativo pesquisado via seu server.js
+    const res = await fetch(`/api/ativos?symbol=${symbol}`);
+    if(!res.ok) throw new Error("Erro ao buscar dados no servidor");
+
     const ativo = await res.json();
 
     // Nome do ativo
     document.getElementById("nomeAtivo").textContent = ativo.shortName || ativo.symbol;
 
-    // Cards principais
+    // Cards
     const cardsDiv = document.getElementById("cards");
     cardsDiv.innerHTML = "";
     const cardsInfo = [
@@ -79,7 +80,7 @@ function toggleMenu() {
       { label: "Negócios Hoje", value: ativo.regularMarketVolume ?? "--" },
       { label: "Abertura", value: ativo.regularMarketOpen ?? "--" }
     ];
-    cardsInfo.forEach(i => {
+    cardsInfo.forEach(i=>{
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
@@ -87,18 +88,18 @@ function toggleMenu() {
     });
 
     // Histórico de preços
-    const historico = ativo.history?.map(h => ({ data: h.date, close: h.close })) || [];
+    const historico = ativo.history || [];
     const ctx = document.getElementById('precoChart').getContext('2d');
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: historico.map(h => h.data),
+        labels: historico.map(h => h.date),
         datasets: [{ label: 'Preço', data: historico.map(h => h.close), borderColor: '#007bff', backgroundColor: 'rgba(0,123,255,0.1)' }]
       },
       options: { responsive: true, plugins: { legend: { display: true }, tooltip: { mode: 'index' } } }
     });
 
-  } catch (e) {
+  } catch(e){
     console.error(e);
     errorDiv.textContent = "Erro ao carregar dados: " + e.message;
   }
