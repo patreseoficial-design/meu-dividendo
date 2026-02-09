@@ -1,1 +1,21 @@
-{"type":"module","dependencies":{"express":"^4.18.2","node-fetch":"^2.6.7"}}
+{
+  "name": "meu-dividendo",
+  "version": "1.0.0",
+  "description": "Site de finanças com detalhes de ativos, gráficos e indicadores",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": ["finanças", "ativos", "express", "node-fetch"],
+  "author": "Seu Nome",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
