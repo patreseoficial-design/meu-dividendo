@@ -1,8 +1,9 @@
-
 // atualizarAtivos.js
 const fs = require("fs");
 const path = require("path");
 const fetch = require("node-fetch"); // Node 18+ já tem fetch nativo
+
+const DIAS_ATUALIZACAO = 5; // intervalo de atualização
 
 // ====================== Funções utilitárias ======================
 function carregarAtivoDoArquivo(tipo, ticker) {
@@ -20,6 +21,14 @@ function salvarAtivo(tipo, ativoJson) {
   console.log(`✅ ${ativoJson.ticker} atualizado e salvo.`);
 }
 
+function precisaAtualizar(dataString) {
+  if (!dataString) return true;
+  const ultima = new Date(dataString);
+  const hoje = new Date();
+  const diff = (hoje - ultima) / (1000 * 60 * 60 * 24); // diferença em dias
+  return diff >= DIAS_ATUALIZACAO;
+}
+
 // ====================== Atualização Brapi ======================
 async function atualizarBrapi(ativoJson) {
   const ticker = ativoJson.ticker;
@@ -29,13 +38,15 @@ async function atualizarBrapi(ativoJson) {
     const stock = data.results[0];
     if (!stock) return ativoJson;
 
-    // Preço
-    ativoJson.preco_atual = {
-      valor: stock.regularMarketPrice,
-      variacao_dia: stock.regularMarketChangePercent,
-      atualizado_em: new Date().toISOString().split("T")[0],
-      fonte: "brapi"
-    };
+    // Atualiza preço se estiver desatualizado
+    if (precisaAtualizar(ativoJson.preco_atual.atualizado_em)) {
+      ativoJson.preco_atual = {
+        valor: stock.regularMarketPrice,
+        variacao_dia: stock.regularMarketChangePercent,
+        atualizado_em: new Date().toISOString().split("T")[0],
+        fonte: "brapi"
+      };
+    }
 
     // Indicadores
     const finRes = await fetch(`https://brapi.dev/api/stock/financials?symbol=${ticker}&token=kfWwE93iiUiHTg5V4XjbYR`);
@@ -62,42 +73,48 @@ async function atualizarYahoo(ativoJson) {
   const ticker = ativoJson.ticker;
 
   // Histórico de preços
-  try {
-    const resPreco = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}.SA?range=1y&interval=1d`);
-    const dataPreco = await resPreco.json();
-    const result = dataPreco.chart.result[0];
-    const timestamps = result.timestamp;
-    const closes = result.indicators.quote[0].close;
+  if (precisaAtualizar(ativoJson.historico_precos.ultima_atualizacao)) {
+    try {
+      const resPreco = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}.SA?range=1y&interval=1d`);
+      const dataPreco = await resPreco.json();
+      const result = dataPreco.chart.result[0];
+      const timestamps = result.timestamp;
+      const closes = result.indicators.quote[0].close;
 
-    ativoJson.historico_precos.dados = timestamps.map((t, i) => ({
-      data: new Date(t * 1000).toISOString().split("T")[0],
-      close: closes[i]
-    }));
-    ativoJson.historico_precos.ultima_atualizacao = new Date().toISOString().split("T")[0];
-    ativoJson.historico_precos.fonte = "yahoo";
-  } catch (err) {
-    console.error("Erro Yahoo Preço:", ticker, err);
+      ativoJson.historico_precos.dados = timestamps.map((t, i) => ({
+        data: new Date(t * 1000).toISOString().split("T")[0],
+        close: closes[i]
+      }));
+      ativoJson.historico_precos.ultima_atualizacao = new Date().toISOString().split("T")[0];
+      ativoJson.historico_precos.fonte = "yahoo";
+      console.log(`📈 Histórico Yahoo atualizado: ${ticker}`);
+    } catch (err) {
+      console.error("Erro Yahoo Preço:", ticker, err);
+    }
   }
 
   // Dividendos
-  try {
-    const resDiv = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}.SA?range=5y&interval=1d`);
-    const dataDiv = await resDiv.json();
-    const events = dataDiv.chart.result[0].events?.dividends || {};
-    ativoJson.dividendos.dados = Object.keys(events).map(key => ({
-      data_ex: events[key].date ? new Date(events[key].date * 1000).toISOString().split("T")[0] : null,
-      valor: events[key].amount
-    }));
-    ativoJson.dividendos.ultima_atualizacao = new Date().toISOString().split("T")[0];
-    ativoJson.dividendos.fonte = "yahoo";
-  } catch (err) {
-    console.error("Erro Yahoo Dividendos:", ticker, err);
+  if (precisaAtualizar(ativoJson.dividendos.ultima_atualizacao)) {
+    try {
+      const resDiv = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}.SA?range=5y&interval=1d`);
+      const dataDiv = await resDiv.json();
+      const events = dataDiv.chart.result[0].events?.dividends || {};
+      ativoJson.dividendos.dados = Object.keys(events).map(key => ({
+        data_ex: events[key].date ? new Date(events[key].date * 1000).toISOString().split("T")[0] : null,
+        valor: events[key].amount
+      }));
+      ativoJson.dividendos.ultima_atualizacao = new Date().toISOString().split("T")[0];
+      ativoJson.dividendos.fonte = "yahoo";
+      console.log(`💰 Dividendos Yahoo atualizados: ${ticker}`);
+    } catch (err) {
+      console.error("Erro Yahoo Dividendos:", ticker, err);
+    }
   }
 
   return ativoJson;
 }
 
-// ====================== Loop de atualização ======================
+// ====================== Atualiza ativo completo ======================
 async function atualizarAtivoCompleto(tipo, ticker) {
   let ativo = carregarAtivoDoArquivo(tipo, ticker);
   ativo = await atualizarBrapi(ativo);
@@ -105,14 +122,28 @@ async function atualizarAtivoCompleto(tipo, ticker) {
   salvarAtivo(tipo, ativo);
 }
 
-// ====================== Rodar para teste ======================
-const ativosParaAtualizar = [
-  {tipo: "fii", ticker: "MXRF11"},
-  {tipo: "acao", ticker: "PETR4"} // só exemplo, adicione mais
-];
+// ====================== Varrer todas as pastas ======================
+async function atualizarTodosAtivos() {
+  const tipos = ["Ações", "Fiis"];
+  for (const tipoPasta of tipos) {
+    const pastaPath = path.join(__dirname, "..", "dados", "ativos", tipoPasta);
+    const arquivos = fs.readdirSync(pastaPath).filter(f => f.endsWith(".json"));
 
-(async () => {
-  for (let a of ativosParaAtualizar) {
-    await atualizarAtivoCompleto(a.tipo, a.ticker);
+    for (const arquivo of arquivos) {
+      const ticker = path.basename(arquivo, ".json");
+      const tipo = tipoPasta === "Ações" ? "acao" : "fii";
+      try {
+        console.log(`\n🔄 Atualizando ${ticker} (${tipo})...`);
+        await atualizarAtivoCompleto(tipo, ticker);
+      } catch (err) {
+        console.error("Erro ao atualizar ativo:", ticker, err);
+      }
+    }
   }
+}
+
+// ====================== Rodar ======================
+(async () => {
+  await atualizarTodosAtivos();
+  console.log("\n🎉 Todos os ativos foram atualizados!");
 })();
