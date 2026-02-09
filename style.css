@@ -232,3 +232,21 @@ footer {
   #search { width: 90%; }
   .grid .card { width: 45%; }
 }
+/* MENU HAMBÚRGUER */
+.menu-links {
+  position: fixed;      /* fixa na tela */
+  top: 0;               /* começa no topo */
+  left: -250px;         /* inicialmente escondido à esquerda */
+  width: 250px;         /* largura do menu */
+  height: 100%;         /* ocupa a altura inteira */
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  transition: left 0.3s ease; /* animação suave */
+  z-index: 1000;        /* fica acima de outros elementos */
+  padding-top: 60px;    /* espaço para header, se quiser */
+}
+
+/* quando o menu estiver ativo */
+.menu-links.show {
+  left: 0; /* aparece na tela */
+}
