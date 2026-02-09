@@ -1,18 +1,13 @@
 {
-  "name": "scraper-b3",
+  "name": "scraper-mercado",
   "version": "1.0.0",
-  "description": "Scraper de FIIs e Ações da B3 (dividendos e dados patrimoniais)",
   "main": "src/index.js",
-  "type": "commonjs",
   "scripts": {
-    "start": "node src/index.js",
-    "cron": "node cron.js"
+    "start": "node src/index.js"
   },
-  "author": "Meu Dividendo",
-  "license": "MIT",
   "dependencies": {
-    "axios": "^1.6.7",
-    "cheerio": "^1.0.0-rc.12",
-    "sqlite3": "^5.1.7"
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0",
+    "express": "^4.18.2"
   }
 }
