@@ -61,19 +61,18 @@ function toggleMenu() {
   }
 
   const brapiKey = "kfWwE93iiUiHTg5V4XjbYR"; // sua chave Brapi
-  const url = `https://brapi.dev/api/quote/${ticker}?apikey=${brapiKey}`;
 
   try {
-    const res = await fetch(url);
-    if(!res.ok) throw new Error("Erro ao acessar a Brapi");
-    const data = await res.json();
+    // 1️⃣ Dados principais do ativo
+    const quoteRes = await fetch(`https://brapi.dev/api/quote/${ticker}?apikey=${brapiKey}`);
+    const quoteData = await quoteRes.json();
 
-    if(!data.results || data.results.length === 0){
+    if(!quoteData.results || quoteData.results.length === 0){
       errorDiv.textContent = `Ativo "${ticker}" não encontrado na Brapi.`;
       return;
     }
 
-    const ativo = data.results[0];
+    const ativo = quoteData.results[0];
     document.getElementById("nomeAtivo").textContent = ativo.shortName || ativo.symbol;
 
     // Cards
@@ -92,8 +91,11 @@ function toggleMenu() {
       cardsDiv.appendChild(card);
     });
 
-    // Histórico de preços
-    const historico = ativo.history?.map(h => ({ data: h.date, close: h.close })) || [];
+    // 2️⃣ Histórico de preços (últimos 3 meses)
+    const histRes = await fetch(`https://brapi.dev/api/quote/historical?symbol=${ticker}&range=3mo&interval=1d&apikey=${brapiKey}`);
+    const histData = await histRes.json();
+    const historico = histData.results?.map(h => ({ data: h.date, close: h.close })) || [];
+
     const ctx = document.getElementById('precoChart').getContext('2d');
     new Chart(ctx, {
       type: 'line',
