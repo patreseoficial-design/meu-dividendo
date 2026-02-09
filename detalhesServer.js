@@ -1,33 +1,113 @@
-import express from "express";
-import fetch from "node-fetch";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detalhes do Ativo</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body { font-family: Arial; margin:0; padding:0; background:#f5f5f5; color:#333; }
+header { background:#000; color:#fff; padding:16px; text-align:center; border-bottom:1px solid #222; position:relative; }
+#nomeAtivo { text-align:center; margin:24px 0; font-size:2em; font-weight:bold; }
+#cards { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-bottom:24px; }
+.card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; text-align:center; }
+.section { margin:20px; background:#fff; padding:16px; border-radius:12px; }
+canvas { max-width:100%; }
+.menu { font-size:1.5em; cursor:pointer; position:absolute; left:16px; top:16px; }
+.menu-links { position:fixed; top:0; left:0; width:250px; height:100%; background:#fff; color:#000; padding-top:60px; display:none; flex-direction:column; z-index:1000; border-right:1px solid #ccc; }
+.menu-links ul { list-style:none; padding:0; margin:0; }
+.menu-links li { margin:16px 0; }
+.menu-links a { color:#000; text-decoration:none; font-size:1.1em; padding:8px 16px; display:block; }
+#errorMsg { color:red; font-weight:bold; margin:16px; }
+</style>
+</head>
+<body>
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <h1>Meu Dividendo</h1>
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="calculadora.html">Calculadora de juros compostos</a></li>
+      <li><a href="calculadora-rescisao.html">Calculadora de rescisão</a></li>
+      <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
+    </ul>
+  </nav>
+</header>
 
-// Sua chave da Brapi
-const BRAPI_KEY = "kfWwE93iiUiHTg5V4XjbYR";
+<div id="nomeAtivo">Ativo</div>
+<div id="errorMsg"></div>
+<div id="cards"></div>
 
-// Servir arquivos estáticos (HTML, CSS, JS)
-app.use(express.static("public"));
+<div class="section">
+  <h3>Histórico de Preços (últimos 3 meses)</h3>
+  <canvas id="precoChart"></canvas>
+</div>
 
-// Endpoint que retorna dados do ativo
-app.get("/api/ativo", async (req, res) => {
-  const ticker = req.query.ativo;
-  if (!ticker) return res.status(400).json({ error: "Nenhum ativo informado" });
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+(async () => {
+  const params = new URLSearchParams(window.location.search);
+  const ticker = params.get("ativo");
+  const errorDiv = document.getElementById("errorMsg");
+
+  if (!ticker) {
+    errorDiv.textContent = "Nenhum ativo informado na URL!";
+    return;
+  }
 
   try {
-    const url = `https://brapi.dev/api/quote/${ticker}?apikey=${BRAPI_KEY}`;
-    const response = await fetch(url);
-    const data = await response.json();
+    // Chama o servidor local que vai buscar da Brapi
+    const res = await fetch(`/api/ativo?ativo=${ticker}`);
+    if (!res.ok) throw new Error("Erro ao buscar dados do servidor");
+    const ativo = await res.json();
 
-    if (!data.results || data.results.length === 0)
-      return res.status(404).json({ error: `Ativo "${ticker}" não encontrado na Brapi.` });
+    document.getElementById("nomeAtivo").textContent = ativo.shortName || ativo.symbol;
 
-    res.json(data.results[0]);
+    // Cards
+    const cardsDiv = document.getElementById("cards");
+    cardsDiv.innerHTML = "";
+    const cardsInfo = [
+      { label: "Preço Atual", value: ativo.regularMarketPrice ?? "--" },
+      { label: "Variação (%)", value: ativo.regularMarketChangePercent ?? "--" },
+      { label: "Negócios Hoje", value: ativo.regularMarketVolume ?? "--" },
+      { label: "Abertura", value: ativo.regularMarketOpen ?? "--" }
+    ];
+    cardsInfo.forEach(i => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
+      cardsDiv.appendChild(card);
+    });
+
+    // Histórico de preços
+    const historico = ativo.history?.map(h => ({ data: h.date, close: h.close })) || [];
+    const ctx = document.getElementById('precoChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: historico.map(h => h.data),
+        datasets: [{
+          label: 'Preço',
+          data: historico.map(h => h.close),
+          borderColor: '#007bff',
+          backgroundColor: 'rgba(0,123,255,0.1)'
+        }]
+      },
+      options: { responsive: true, plugins: { legend: { display: true }, tooltip: { mode: 'index' } } }
+    });
+
   } catch (e) {
-    console.error("Erro ao buscar Brapi:", e);
-    res.status(500).json({ error: "Erro ao buscar dados da Brapi" });
+    console.error(e);
+    errorDiv.textContent = "Erro ao carregar dados: " + e.message;
   }
-});
+})();
+</script>
 
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+</body>
+</html>
