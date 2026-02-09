@@ -12,6 +12,9 @@ header { background:#000; color:#fff; padding:16px; text-align:center; border-bo
 #cards { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-bottom:24px; }
 .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; text-align:center; }
 .section { margin:20px; background:#fff; padding:16px; border-radius:12px; }
+table { width:100%; border-collapse:collapse; margin-top:12px; }
+th, td { padding:8px; border:1px solid #ccc; text-align:center; }
+th { background:#eee; }
 canvas { max-width:100%; }
 .menu { font-size:1.5em; cursor:pointer; position:absolute; left:16px; top:16px; }
 .menu-links { position:fixed; top:0; left:0; width:250px; height:100%; background:#fff; color:#000; padding-top:60px; display:none; flex-direction:column; z-index:1000; border-right:1px solid #ccc; }
@@ -43,6 +46,19 @@ canvas { max-width:100%; }
 <div class="section">
   <h3>Histórico de Preços (últimos 3 meses)</h3>
   <canvas id="precoChart"></canvas>
+</div>
+
+<div class="section">
+  <h3>Dividendos / Rendimentos</h3>
+  <table id="dividendosTable">
+    <thead><tr><th>Data Ex</th><th>Data Pagamento</th><th>Valor</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h3>Indicadores Financeiros</h3>
+  <div id="indicadores"></div>
 </div>
 
 <script>
@@ -77,7 +93,7 @@ function toggleMenu() {
     const ativo = data.results[0];
     document.getElementById("nomeAtivo").textContent = ativo.shortName || ativo.symbol;
 
-    // Cards
+    // ======= CARDS =======
     const cardsDiv = document.getElementById("cards");
     cardsDiv.innerHTML = "";
     const cardsInfo = [
@@ -93,7 +109,7 @@ function toggleMenu() {
       cardsDiv.appendChild(card);
     });
 
-    // Histórico de preços
+    // ======= HISTÓRICO DE PREÇOS =======
     const historico = ativo.history?.map(h => ({ data: h.date, close: h.close })) || [];
     if(historico.length > 0){
       const ctx = document.getElementById('precoChart').getContext('2d');
@@ -106,8 +122,37 @@ function toggleMenu() {
         options: { responsive: true, plugins: { legend: { display: true }, tooltip: { mode: 'index' } } }
       });
     } else {
-      document.getElementById('precoChart').remove(); // Remove canvas se não houver histórico
+      document.getElementById('precoChart').remove();
     }
+
+    // ======= DIVIDENDOS =======
+    const tbody = document.querySelector("#dividendosTable tbody");
+    tbody.innerHTML="";
+    const dividendos = ativo.dividends?.data || [];
+    dividendos.forEach(div=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${div.exDate ?? "--"}</td><td>${div.payDate ?? "--"}</td><td>${div.value ?? "--"}</td>`;
+      tbody.appendChild(tr);
+    });
+    if(dividendos.length === 0){
+      document.getElementById("dividendosTable").style.display = "none";
+    }
+
+    // ======= INDICADORES =======
+    const indicadoresDiv = document.getElementById("indicadores");
+    indicadoresDiv.innerHTML="";
+    const indicadores = [
+      { label: "P/VP", value: ativo.priceToBook ?? "--" },
+      { label: "Dividend Yield 12m", value: ativo.dividendYield ?? "--" },
+      { label: "Patrimônio Líquido", value: ativo.marketCap ?? "--" },
+      { label: "Valor de Mercado", value: ativo.marketCap ?? "--" }
+    ];
+    indicadores.forEach(i=>{
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
+      indicadoresDiv.appendChild(card);
+    });
 
   } catch(e){
     console.error(e);
