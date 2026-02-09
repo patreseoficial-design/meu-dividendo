@@ -28,6 +28,21 @@
 <div id="cards">
   <!-- Cards serão preenchidos dinamicamente -->
 
+   //  Preencher cards principais
+      const cardsDiv = document.getElementById("cards");
+      const cardsInfo = [
+        {label:"Preço", value:`R$ ${stock.regularMarketPrice}`},
+        {label:"Variação", value:`${stock.regularMarketChangePercent}%`},
+        {label:"Máx/Mín", value:`R$ ${stock.regularMarketDayHigh} / R$ ${stock.regularMarketDayLow}`},
+        {label:"Volume", value:stock.regularMarketVolume || "N/A"}
+      ];
+      cardsInfo.forEach(i => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
+        cardsDiv.appendChild(card);
+      });
+
 <div style="text-align:center; margin: 30px 0;">
   <a href="calculadora-juros-composto.html">
     <img 
@@ -82,20 +97,7 @@ if(!ativo) {
       const stock = data.results[0];
       if(!stock) { alert("Ativo não encontrado."); return; }
 
-      // 2️⃣ Preencher cards principais
-      const cardsDiv = document.getElementById("cards");
-      const cardsInfo = [
-        {label:"Preço", value:`R$ ${stock.regularMarketPrice}`},
-        {label:"Variação", value:`${stock.regularMarketChangePercent}%`},
-        {label:"Máx/Mín", value:`R$ ${stock.regularMarketDayHigh} / R$ ${stock.regularMarketDayLow}`},
-        {label:"Volume", value:stock.regularMarketVolume || "N/A"}
-      ];
-      cardsInfo.forEach(i => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
-        cardsDiv.appendChild(card);
-      });
+   
 
       // 3️⃣ Histórico de preços (gráfico)
       fetch(`https://brapi.dev/api/quote/${ativo}/chart?interval=1d&range=1y&token=kfWwE93iiUiHTg5V4XjbYR`)
