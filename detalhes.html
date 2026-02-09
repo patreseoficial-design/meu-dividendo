@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detalhes do Ativo</title>
+<link href="https://cdn.jsdelivr.net/npm/chart.js" rel="stylesheet">
+<style>
+  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
+  header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; }
+  #nomeAtivo { text-align:center; margin:24px 0; font-size:2em; font-weight:bold; }
+  #cards { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:24px; }
+  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; flex:1 1 120px; text-align:center; min-width:120px; }
+  .section { margin:20px; background:#fff; padding:16px; border-radius:12px; }
+  table { width:100%; border-collapse:collapse; margin-top:12px; }
+  th, td { padding:8px; border:1px solid #ccc; text-align:center; }
+  th { background:#eee; }
+  canvas { max-width:100%; }
+</style>
+</head>
+<body>
+
+<header>Meu Site Financeiro</header>
+
+<div id="nomeAtivo">Ativo</div>
+
+<!-- Cards principais -->
+<div id="cards">
+  <!-- Cards serão preenchidos dinamicamente -->
+</div>
+
+<!-- Gráficos -->
+<div class="section">
+  <h3>Histórico de Preços</h3>
+  <canvas id="precoChart"></canvas>
+</div>
+
+<!-- Dividendos -->
+<div class="section">
+  <h3>Dividendos / Rendimentos</h3>
+  <table id="dividendosTable">
+    <thead>
+      <tr><th>Data Base</th><th>Data Pagamento</th><th>Rendimento</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<!-- Indicadores -->
+<div class="section">
+  <h3>Indicadores Financeiros</h3>
+  <div id="indicadores" style="display:flex; flex-wrap:wrap; gap:12px;"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Pega a nomenclatura do ativo na URL
+const params = new URLSearchParams(window.location.search);
+const ativo = params.get("ativo");
+
+if(!ativo) {
+  alert("Nenhum ativo informado!");
+} else {
+  document.getElementById("nomeAtivo").textContent = ativo;
+
+  // 1️⃣ Buscar dados do ativo
+  fetch(`https://brapi.dev/api/quote/${ativo}?token=kfWwE93iiUiHTg5V4XjbYR`)
+    .then(res => res.json())
+    .then(data => {
+      const stock = data.results[0];
+      if(!stock) { alert("Ativo não encontrado."); return; }
+
+      // 2️⃣ Preencher cards principais
+      const cardsDiv = document.getElementById("cards");
+      const cardsInfo = [
+        {label:"Preço", value:`R$ ${stock.regularMarketPrice}`},
+        {label:"Variação", value:`${stock.regularMarketChangePercent}%`},
+        {label:"Máx/Mín", value:`R$ ${stock.regularMarketDayHigh} / R$ ${stock.regularMarketDayLow}`},
+        {label:"Volume", value:stock.regularMarketVolume || "N/A"}
+      ];
+      cardsInfo.forEach(i => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
+        cardsDiv.appendChild(card);
+      });
+
+      // 3️⃣ Histórico de preços (gráfico)
+      fetch(`https://brapi.dev/api/quote/${ativo}/chart?interval=1d&range=1y&token=kfWwE93iiUiHTg5V4XjbYR`)
+        .then(res => res.json())
+        .then(chartData => {
+          const datas = chartData.results.map(d=>d.date);
+          const precos = chartData.results.map(d=>d.close);
+          const ctx = document.getElementById('precoChart').getContext('2d');
+          new Chart(ctx, {
+            type:'line',
+            data:{ labels: datas, datasets:[{ label:'Preço', data:precos, borderColor:'#007bff', backgroundColor:'rgba(0,123,255,0.1)' }] },
+            options:{ responsive:true, plugins:{ legend:{display:true}, tooltip:{mode:'index'} } }
+          });
+        });
+
+      // 4️⃣ Dividendos
+      fetch(`https://brapi.dev/api/stock/dividends?symbol=${ativo}&token=kfWwE93iiUiHTg5V4XjbYR`)
+        .then(res => res.json())
+        .then(divData => {
+          const tbody = document.querySelector("#dividendosTable tbody");
+          divData.results.forEach(div => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td>${div.exDate}</td><td>${div.payDate}</td><td>R$ ${div.amount}</td>`;
+            tbody.appendChild(tr);
+          });
+        });
+
+      // 5️⃣ Indicadores financeiros
+      fetch(`https://brapi.dev/api/stock/financials?symbol=${ativo}&token=kfWwE93iiUiHTg5V4XjbYR`)
+        .then(res => res.json())
+        .then(finData => {
+          const indicadoresDiv = document.getElementById("indicadores");
+          if(finData.results && finData.results.length > 0){
+            const f = finData.results[0];
+            const indicadores = [
+              {label:"P/L", value:f.priceEarnings || "N/A"},
+              {label:"P/VP", value:f.priceBook || "N/A"},
+              {label:"Dividend Yield", value:f.dividendYield || "N/A"},
+              {label:"Patrimônio Líquido", value:f.totalEquity || "N/A"},
+              {label:"Valor de Mercado", value:f.marketCap || "N/A"}
+            ];
+            indicadores.forEach(ind => {
+              const card = document.createElement("div");
+              card.className = "card";
+              card.innerHTML = `<strong>${ind.label}</strong><br>${ind.value}`;
+              indicadoresDiv.appendChild(card);
+            });
+          }
+        });
+
+    })
+    .catch(err => { console.error(err); alert("Erro ao buscar informações do ativo."); });
+}
+</script>
+
+</body>
+</html>
