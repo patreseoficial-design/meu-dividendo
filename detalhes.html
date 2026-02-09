@@ -28,6 +28,9 @@ canvas { max-width:100%; }
   <nav id="menuLinks" class="menu-links">
     <ul>
       <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="calculadora.html">Calculadora de juros compostos</a></li>
+      <li><a href="calculadora-rescisao.html">Calculadora de rescisão</a></li>
+      <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
     </ul>
   </nav>
 </header>
@@ -52,19 +55,15 @@ function toggleMenu() {
   const ticker = params.get("ativo");
   const errorDiv = document.getElementById("errorMsg");
 
-  if(!ticker){
+  if (!ticker) {
     errorDiv.textContent = "Nenhum ativo informado na URL!";
     return;
   }
 
   try {
     const res = await fetch(`/api/ativo?ativo=${ticker}`);
+    if (!res.ok) throw new Error("Erro ao buscar dados do servidor");
     const ativo = await res.json();
-
-    if(ativo.error){
-      errorDiv.textContent = ativo.error;
-      return;
-    }
 
     document.getElementById("nomeAtivo").textContent = ativo.shortName || ativo.symbol;
 
@@ -77,7 +76,7 @@ function toggleMenu() {
       { label: "Negócios Hoje", value: ativo.regularMarketVolume ?? "--" },
       { label: "Abertura", value: ativo.regularMarketOpen ?? "--" }
     ];
-    cardsInfo.forEach(i=>{
+    cardsInfo.forEach(i => {
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
@@ -96,7 +95,7 @@ function toggleMenu() {
       options: { responsive: true, plugins: { legend: { display: true }, tooltip: { mode: 'index' } } }
     });
 
-  } catch(e){
+  } catch (e) {
     console.error(e);
     errorDiv.textContent = "Erro ao carregar dados: " + e.message;
   }
