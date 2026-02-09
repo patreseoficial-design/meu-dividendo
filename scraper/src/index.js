@@ -1,19 +1,17 @@
 const { fiis, acoes } = require("./config/ativos");
-const rasparFII = require("./scrapers/fii");
-const rasparAcao = require("./scrapers/acao");
+const { rasparFII } = require("./scrapers/fii");
+const { rasparAcao } = require("./scrapers/acao");
 
-(async () => {
-  console.log("🔄 Iniciando coleta...\n");
-
+async function iniciar() {
   for (const fii of fiis) {
-    const dados = await rasparFII(fii.ticker, fii.url);
-    console.log("FII:", dados);
+    await rasparFII(fii);
   }
 
   for (const acao of acoes) {
-    const dados = await rasparAcao(acao.ticker, acao.url);
-    console.log("AÇÃO:", dados);
+    await rasparAcao(acao);
   }
 
-  console.log("\n✅ Finalizado");
-})();
+  console.log("✅ Scraping finalizado");
+}
+
+iniciar();
