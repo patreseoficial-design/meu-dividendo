@@ -4,7 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalhes do Ativo</title>
+
+  <!-- CSS externo -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CSS interno -->
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
+    header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; }
+    #nomeAtivo { text-align:center; margin:24px 0; font-size:2em; font-weight:bold; }
+    #cards { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:24px; }
+    .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; flex:1 1 120px; text-align:center; min-width:120px; }
+    .section { margin:20px; background:#fff; padding:16px; border-radius:12px; }
+    table { width:100%; border-collapse:collapse; margin-top:12px; }
+    th, td { padding:8px; border:1px solid #ccc; text-align:center; }
+    th { background:#eee; }
+    canvas { max-width:100%; }
+  </style>
 </head>
 <body>
 
@@ -15,55 +34,32 @@
   <div class="profile"></div>
 
   <!-- MENU HAMBÚRGUER -->
-  <nav id="menuLinks" class="menu-links">
+  <nav id="menuLinks" class="menu-links" style="display:none;">
     <ul>
       <li><a href="index.html">🏠 Início</a></li>
       <li><a href="calculadora.html">Calculadora de juros compostos</a></li>
       <li><a href="calculadora-rescisao.html">Calculadora de rescisão</a></li>
-      <li><a href="calculadora-13salario.html">Calvuladora de 13º Salário</a></li>
+      <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
       <li><a href="calculadora-ir.html">Calculadora imposto de renda sobre Investimentos</a></li>
-<li><a href="quanto-investir-por-mes.html">Calculadora de quanto investirdo seu salário por mês</a></li>
-      <li><a href="calculadora-pis.html">Calculadora de recebimento do PIS</a></li>
+      <li><a href="quanto-investir-por-mes.html">Quanto investir por mês</a></li>
+      <li><a href="calculadora-pis.html">Calculadora do PIS</a></li>
       <li><a href="calculadora-quitacao.html">Calculadora de quitação patrimonial</a></li>
     </ul>
   </nav>
 </header>
 
-<!-- SCRIPT -->
+<!-- SCRIPT MENU -->
 <script>
-  // FUNÇÃO PARA TOGGLE DO MENU HAMBÚRGUER
   function toggleMenu() {
     const menu = document.getElementById('menuLinks');
     menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
   }
 </script>
 
-
-
-
-
-
-
-<style>
-<link href="https://cdn.jsdelivr.net/npm/chart.js" rel="stylesheet">
-<style>
-  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
-  header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; }
-  #nomeAtivo { text-align:center; margin:24px 0; font-size:2em; font-weight:bold; }
-  #cards { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:24px; }
-  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; flex:1 1 120px; text-align:center; min-width:120px; }
-  .section { margin:20px; background:#fff; padding:16px; border-radius:12px; }
-  table { width:100%; border-collapse:collapse; margin-top:12px; }
-  th, td { padding:8px; border:1px solid #ccc; text-align:center; }
-  th { background:#eee; }
-  canvas { max-width:100%; }
-</style>
-</head>
-<body>
-
-
+<!-- Nome do ativo -->
 <div id="nomeAtivo">Ativo</div>
 
+<!-- Aqui você vai colocar depois os cards e a imagem clicável -->
 <!-- Cards principais -->
 <div id="cards">
   <!-- Os cards serão preenchidos dinamicamente via JS -->
