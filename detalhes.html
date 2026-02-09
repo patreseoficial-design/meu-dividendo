@@ -16,8 +16,25 @@
     body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
     header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; }
     #nomeAtivo { text-align:center; margin:24px 0; font-size:2em; font-weight:bold; }
-    #cards { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:24px; }
-    .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; flex:1 1 120px; text-align:center; min-width:120px; }
+   #cards {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.card {
+  background: #000;
+  color: #fff;
+  padding: 16px 24px;
+  border-radius: 12px;
+  flex: 1 1 calc(50% - 12px); /* 50% da largura menos gap */
+  text-align: center;
+  min-width: 200px; /* ajusta se quiser cards menores */
+  box-sizing: border-box;
+}
+
     .section { margin:20px; background:#fff; padding:16px; border-radius:12px; }
     table { width:100%; border-collapse:collapse; margin-top:12px; }
     th, td { padding:8px; border:1px solid #ccc; text-align:center; }
