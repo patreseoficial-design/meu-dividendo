@@ -138,25 +138,30 @@ async function carregarMoedas() {
 window.addEventListener('load', carregarMoedas);
 </script>
 
-<!-- BARRA DE PESQUISAS -->
-
+<!-- BARRA DE PESQUISA -->
 <div style="text-align:center; margin:20px 0;">
-  <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: PETR4)" style="padding:8px 12px; width:200px; border-radius:6px; border:1px solid #ccc;">
-  <button id="searchButton" style="padding:8px 12px; border-radius:6px; border:none; background-color:#000; color:#fff; cursor:pointer;">Buscar</button>
+  <form id="searchForm" style="display:inline-block;">
+    <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: MXRF11)" 
+           style="padding:8px 12px; width:200px; border-radius:6px; border:1px solid #ccc;">
+    <button type="submit" 
+            style="padding:8px 12px; border-radius:6px; border:none; background-color:#000; color:#fff; cursor:pointer;">
+      Buscar
+    </button>
+  </form>
 </div>
 
 <script>
-document.getElementById("searchButton").addEventListener("click", function() {
-    const ativo = document.getElementById("searchInput").value.trim().toUpperCase();
-    if(ativo) {
-        // Redireciona para a página de detalhes com o código do ativo
-        window.location.href = `detalhes.html?ativo=${ativo}`;
-    } else {
-        alert("Digite um código de ativo válido!");
-    }
+document.getElementById('searchForm').addEventListener('submit', function(e){
+  e.preventDefault(); // impede o envio padrão do formulário
+  const ticker = document.getElementById('searchInput').value.trim().toUpperCase();
+  if(ticker){
+    // Redireciona para a subpágina passando o ativo
+    window.location.href = `detalhes.html?ativo=${ticker}`;
+  } else {
+    alert("Digite um código de ativo válido!");
+  }
 });
 </script>
-
 
 <!-- RODAPÉ -->
 <footer>
