@@ -174,3 +174,49 @@ footer a {
   line-height: 1.6;
   font-size: 16px;
 }
+/* BOTÃO DO MENU */
+.menu {
+  cursor: pointer;
+  font-size: 24px;
+  padding: 10px;
+  z-index: 1100; /* acima de outros elementos */
+  position: relative;
+}
+
+/* MENU HAMBÚRGUER */
+.menu-links {
+  position: fixed;       /* fixa na tela */
+  top: 0;
+  left: -250px;          /* escondido inicialmente à esquerda */
+  width: 250px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  transition: left 0.3s ease;
+  z-index: 1000;
+  padding-top: 60px;     /* espaço para header */
+}
+
+/* MENU VISÍVEL */
+.menu-links.show {
+  left: 0;               /* aparece na tela */
+}
+
+/* Links do menu */
+.menu-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-links li {
+  margin: 16px 0;
+  text-align: center;
+}
+
+.menu-links a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  display: block;
+}
