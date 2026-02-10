@@ -68,7 +68,13 @@
   background-color: #f0f0f0;
 }
 </style>
-
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  if (!menu) return;
+  menu.classList.toggle('show');
+}
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
