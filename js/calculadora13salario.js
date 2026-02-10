@@ -1,3 +1,4 @@
+let grafico; // variável global do gráfico
 function formatar(valor) {
   return valor.toLocaleString('pt-BR', {
     style: 'currency',
