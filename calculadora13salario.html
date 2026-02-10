@@ -2,79 +2,49 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Calculadora de 13º Salário 2026 | INSS, IR e Planejamento</title>
-  <meta name="description" content="Calcule o 13º salário com descontos de INSS e IR. Veja 1ª e 2ª parcela e planeje investimentos mês a mês.">
+  <title>Calculadora de 13º Salário</title>
 
   <link rel="stylesheet" href="calculadora13salario.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
-<header class="topo">
-  <h1>Calculadora de 13º Salário</h1>
-</header>
+  <div class="container">
+    <h1>Calculadora de 13º Salário</h1>
 
-<main class="container">
+    <label>Salário bruto (R$)</label>
+    <input type="number" id="salario" placeholder="Ex: 2500">
 
-  <!-- ================= CALCULADORA 13º ================= -->
-  <section class="box">
-    <h2>Cálculo do 13º Salário</h2>
+    <label>Meses trabalhados no ano</label>
+    <input type="number" id="meses" min="1" max="12" placeholder="Ex: 12">
 
-    <div class="inputs">
-      <label>Salário Mensal
-        <input type="number" id="salario" value="2000">
-      </label>
+    <button onclick="calcular13()">Calcular</button>
 
-      <label>Meses Trabalhados
-        <input type="number" id="meses" min="1" max="12" value="12">
-      </label>
+    <div class="resultado">
+      <p>13º Bruto: <strong id="resBruto">R$ 0,00</strong></p>
+      <p>INSS: <strong id="resINSS">R$ 0,00</strong></p>
+      <p>IR: <strong id="resIR">R$ 0,00</strong></p>
 
-      <label>Horas Extras (média mensal)
-        <input type="number" id="horasExtras" value="0">
-      </label>
+      <hr>
+
+      <p>1ª Parcela: <strong id="resParcela1">R$ 0,00</strong></p>
+      <p>2ª Parcela: <strong id="resParcela2">R$ 0,00</strong></p>
+
+      <p class="liquido">Total Líquido: <strong id="resLiquido">R$ 0,00</strong></p>
     </div>
 
-    <button onclick="calcular13()">Calcular 13º</button>
+    <h2>Planejamento de Investimento do 13º</h2>
 
-    <div id="resultado13" class="resultado"></div>
-  </section>
+    <label>Dividir o 13º em quantos meses?</label>
+    <input type="number" id="mesesInvestir" placeholder="Ex: 12">
 
-  <!-- ================= PLANEJAMENTO ================= -->
-  <section class="box">
-    <h2>Planejamento de Investimento com o 13º</h2>
+    <button onclick="planejarInvestimento()">Planejar</button>
 
-    <div class="inputs">
-      <label>% do 13º para investir
-        <input type="number" id="percInvest" value="30" min="0" max="100">
-      </label>
+    <div class="resultado">
+      <p>Valor mensal para investir:</p>
+      <strong id="resMensalInvest">R$ 0,00</strong>
     </div>
+  </div>
 
-    <button onclick="planejar13()">Gerar Planejamento</button>
-
-    <div id="resultadoPlanejamento" class="resultado">
-      <table>
-        <thead>
-          <tr>
-            <th>Mês</th>
-            <th>Valor para Investir</th>
-          </tr>
-        </thead>
-        <tbody id="tabelaPlanejamento"></tbody>
-      </table>
-
-      <canvas id="grafico13"></canvas>
-    </div>
-  </section>
-
-</main>
-
-<footer class="rodape">
-  <p>© 2026 Meu Dividendo • Conteúdo educativo</p>
-</footer>
-
-<script src="calculadora13salario.js"></script>
+  <script src="calculadora13salario.js"></script>
 </body>
 </html>
