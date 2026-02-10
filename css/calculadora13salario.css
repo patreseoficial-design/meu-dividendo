@@ -436,3 +436,21 @@ footer {
   text-align: center;
   font-size: 14px;
 }
+.table-wrap {
+  width: 90%;          /* ou um tamanho fixo tipo 800px */
+  max-width: 900px;    /* limita o tamanho máximo */
+  margin: 20px auto;   /* centraliza horizontalmente */
+  overflow-x: auto;    /* deixa responsiva se a tela for pequena */
+  text-align: center;  /* centraliza o texto dentro da tabela */
+}
+
+table {
+  width: 100%;         /* tabela ocupa toda a largura da div */
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;  /* centraliza o texto de cada célula */
+}
