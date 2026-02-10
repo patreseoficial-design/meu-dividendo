@@ -13,37 +13,42 @@
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="menu" onclick="toggleMenu()">☰</div>
-  <h1>Meu Dividendo</h1>
-  <div class="profile"></div>
-
-
+<header style="position: relative; background:#111; color:#fff; height:70px; display:flex; align-items:center; justify-content:space-between; padding:0 20px;">
+  <!-- Botão do menu -->
+  <div id="menuBtn" style="font-size:28px; cursor:pointer; z-index:1100;" onclick="toggleMenu()">☰</div>
+  
+  <!-- Título central -->
+  <h1 style="margin:0; font-size:24px; flex:1; text-align:center;">Meu Dividendo</h1>
+  
+  <!-- Perfil -->
+  <div class="profile" style="width:36px; height:36px; border-radius:50%; background:#555;"></div>
 
   <!-- MENU HAMBÚRGUER -->
-  <nav id="menuLinks" class="menu-links">
-    <ul>
-      <li><a href="index.html">🏠 Início</a></li>
-      <li><a href="calculadora.html">Calculadora de juros compostos</a></li>
-      <li><a href="calculadora-rescisao.html">Calculadora de rescisão</a></li>
-      <li><a href="calculadora-13salario.html">Calvuladora de 13º Salário</a></li>
-      <li><a href="calculadora-ir.html">Calculadora imposto de renda sobre Investimentos</a></li>
-<li><a href="quanto-investir-por-mes.html">Calculadora de quanto investirdo seu salário por mês</a></li>
-      <li><a href="calculadora-pis.html">Calculadora de recebimento do PIS</a></li>
-      <li><a href="calculadora-quitacao.html">Calculadora de quitação patrimonial</a></li>
+  <nav id="menuLinks" style="position:fixed; top:0; left:-250px; width:250px; height:100%; background:#fff; box-shadow:2px 0 5px rgba(0,0,0,0.3); padding-top:70px; transition:left 0.3s; z-index:1000;">
+    <ul style="list-style:none; padding:0; margin:0;">
+      <li><a href="index.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">🏠 Início</a></li>
+      <li><a href="calculadora.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Calculadora de juros compostos</a></li>
+      <li><a href="calculadora-rescisao.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Calculadora de rescisão</a></li>
+      <li><a href="calculadora-13salario.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Calculadora de 13º Salário</a></li>
+      <li><a href="calculadora-ir.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Calculadora imposto de renda sobre Investimentos</a></li>
+      <li><a href="quanto-investir-por-mes.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Quanto investir por mês</a></li>
+      <li><a href="calculadora-pis.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">PIS</a></li>
+      <li><a href="calculadora-quitacao.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Quitação patrimonial</a></li>
     </ul>
   </nav>
-</header>
-<script>
-  
 
-// FUNÇÃO PARA TOGGLE DO MENU HAMBÚRGUER
-  function toggleMenu() {
-    const menu = document.getElementById('menuLinks');
-    menu.classList.toggle('show');
-  }
-</script>
+  <!-- SCRIPT INLINE -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menuLinks');
+      if(menu.style.left === "0px") {
+        menu.style.left = "-250px"; // esconde
+      } else {
+        menu.style.left = "0px"; // mostra
+      }
+    }
+  </script>
+</header>
 
 <!-- Título e Subtítulo centralizados -->
 <div style="text-align:center; margin:40px 0;">
