@@ -110,26 +110,23 @@
   <p id="resTotalJuros"></p>
 </div>
 
-<!-- RESULTADOS -->
-<div id="resultado" class="result" style="display:none">
-  <div id="totalFinal" class="total"></div>
 
-  <div class="table-wrap">
-    <table id="tabela">
-      <thead>
-        <tr>
-          <th>Mês</th>
-          <th>Juros (Reinvestindo)</th>
-          <th>Total (Reinvestindo)</th>
-          <th>Juros (Sem Reinvestir)</th>
-          <th>Total (Sem Reinvestir)</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+<!-- TABELA DE RESULTADOS -->
+
+<div class="table-wrap" style="width:90%; max-width:900px; margin:20px auto; overflow-x:auto; text-align:center;">
+  <table id="tabela" style="width:100%; border-collapse:collapse; text-align:center;">
+    <thead>
+      <tr>
+        <th style="border:1px solid #ccc; padding:10px;">Mês</th>
+        <th style="border:1px solid #ccc; padding:10px;">Juros (Reinvestindo)</th>
+        <th style="border:1px solid #ccc; padding:10px;">Total (Reinvestindo)</th>
+        <th style="border:1px solid #ccc; padding:10px;">Juros (Sem Reinvestir)</th>
+        <th style="border:1px solid #ccc; padding:10px;">Total (Sem Reinvestir)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 </div>
-
 <!-- GRÁFICOS -->
 <div class="chart-box">
   <canvas id="graficoComparativo"></canvas>
