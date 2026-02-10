@@ -73,7 +73,8 @@ document.getElementById('resultado').style.display = 'block';
    
   
     
-    
+    document.getElementById('resultadoResumo').style.display = 'block';
+document.getElementById('tabelaResultado').style.display = 'block';
 
   // ============================
   // ATUALIZA GRÁFICOS
