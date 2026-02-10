@@ -12,19 +12,49 @@ function formatBR(valor) {
     currency: 'BRL'
   });
 }
-// ================= CALCULADORA 13º SALÁRIO =================
 function calcular13() {
   const salario = Number(document.getElementById('salario')?.value) || 0;
-  const meses = Number(document.getElementById('meses')?.value) || 12;
-
-  const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
-  const insalubridadePerc = Number(document.getElementById('insalubridade')?.value) || 0;
-  const periculosidadePerc = Number(document.getElementById('periculosidade')?.value) || 0;
+  const dataAdmissao = document.getElementById('dataAdmissao')?.value;
+  const dataDemissao = document.getElementById('dataDemissao')?.value;
 
   if (salario <= 0) {
     alert('Informe o salário.');
     return;
   }
+
+  if (!dataAdmissao || !dataDemissao) {
+    alert('Informe a data de admissão e demissão.');
+    return;
+  }
+
+  const admissao = new Date(dataAdmissao);
+  const demissao = new Date(dataDemissao);
+
+  // Ano da demissão
+  const anoDemissao = demissao.getFullYear();
+
+  // Calcula o mês inicial e final para o 13º
+  const mesInicio = admissao.getFullYear() === anoDemissao ? admissao.getMonth() + 1 : 1;
+  const mesFim = demissao.getMonth() + 1;
+
+  // Meses trabalhados no ano da demissão
+  const meses13 = mesFim - mesInicio + 1;
+
+  // 13° proporcional
+  const decimoTerceiro = (salario / 12) * meses13;
+
+  // Mostra na tela (exemplo)
+  const resultado13 = document.getElementById('resultado13');
+  if (resultado13) {
+    resultado13.innerHTML = `
+      Meses para 13°: <strong>${meses13} meses</strong><br>
+      13° proporcional: <strong>R$ ${decimoTerceiro.toFixed(2)}</strong>
+    `;
+  }
+
+  console.log(`Meses trabalhados no ano ${anoDemissao}: ${meses13}`);
+  console.log(`13° proporcional: R$ ${decimoTerceiro.toFixed(2)}`);
+}
 
   // 1️⃣ Salário proporcional
   const salarioProporcional = (salario / 12) * meses;
