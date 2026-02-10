@@ -49,3 +49,9 @@ button:hover {
   margin-top: 10px;
   font-size: 18px;
 }
+.ajuda {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #666;
+}
