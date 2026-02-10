@@ -12,10 +12,24 @@
     <h1>Calculadora de 13º Salário</h1>
 
     <label>Salário bruto (R$)</label>
-    <input type="number" id="salario" placeholder="Ex: 2500">
+    <input type="number" id="salario" placeholder="Ex: Salário Bruto">
 
     <label>Meses trabalhados no ano</label>
     <input type="number" id="meses" min="1" max="12" placeholder="Ex: 12">
+    <div class="input-group">
+    <label>Horas extras (média mensal)</label>
+    <input type="number" id="horasExtras" placeholder="Ex: 300">
+</div>
+
+     <div class="input-group">
+     <label>Insalubridade (%)</label>
+     <input type="number" id="insalubridade" placeholder="Ex: 10">
+</div>
+
+     <div class="input-group">
+     <label>Periculosidade (%)</label>
+     <input type="number" id="periculosidade" placeholder="Ex: 30">
+</div>
 
     <button onclick="calcular13()">Calcular</button>
 
