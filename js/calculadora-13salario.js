@@ -1,3 +1,49 @@
+
+patreseoficial-design
+meu-dividendo
+Repository navigation
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+
+ GitHub users are now required to enable two-factor authentication as an additional security measure. Your activity on GitHub includes you in this requirement. You will need to enable two-factor authentication on your account before March 07, 2026, or be restricted from account actions.
+
+Commit 90818de
+patreseoficial-design
+patreseoficial-design
+authored
+4 days ago
+·
+·
+Verified
+Atualizar o calculadora-13salario.js
+main
+1 parent 
+2dd1bab
+ commit 
+90818de
+File tree
+Filter files…
+js
+calculadora-13salario.js
+1 file changed
++25
+-21
+lines changed
+Search within code
+ 
+‎js/calculadora-13salario.js‎
++25
+-21
+Lines changed: 25 additions & 21 deletions
+Original file line number	Diff line number	Diff line change
+@@ -1,167 +1,171 @@
 // ================= MENU HAMBÚRGUER =================
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
@@ -12,57 +58,33 @@ function formatBR(valor) {
     currency: 'BRL'
   });
 }
+// ================= CALCULADORA 13º SALÁRIO =================
 function calcular13() {
   const salario = Number(document.getElementById('salario')?.value) || 0;
-  const dataAdmissao = document.getElementById('dataAdmissao')?.value;
-  const dataDemissao = document.getElementById('dataDemissao')?.value;
+  const meses = Number(document.getElementById('meses')?.value) || 0;
+  const meses = Number(document.getElementById('meses')?.value) || 12;
+
+  const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
+  const insalubridadePerc = Number(document.getElementById('insalubridade')?.value) || 0;
+  const periculosidadePerc = Number(document.getElementById('periculosidade')?.value) || 0;
 
   if (salario <= 0) {
     alert('Informe o salário.');
     return;
   }
 
-  if (!dataAdmissao || !dataDemissao) {
-    alert('Informe a data de admissão e demissão.');
-    return;
-  }
-
-  const admissao = new Date(dataAdmissao);
-  const demissao = new Date(dataDemissao);
-
-  // Ano da demissão
-  const anoDemissao = demissao.getFullYear();
-
-  // Calcula o mês inicial e final para o 13º
-  const mesInicio = admissao.getFullYear() === anoDemissao ? admissao.getMonth() + 1 : 1;
-  const mesFim = demissao.getMonth() + 1;
-
-  // Meses trabalhados no ano da demissão
-  const meses13 = mesFim - mesInicio + 1;
-
-  // 13° proporcional
-  const decimoTerceiro = (salario / 12) * meses13;
-
-  // Mostra na tela (exemplo)
-  const resultado13 = document.getElementById('resultado13');
-  if (resultado13) {
-    resultado13.innerHTML = `
-      Meses para 13°: <strong>${meses13} meses</strong><br>
-      13° proporcional: <strong>R$ ${decimoTerceiro.toFixed(2)}</strong>
-    `;
-  }
-
-  console.log(`Meses trabalhados no ano ${anoDemissao}: ${meses13}`);
-  console.log(`13° proporcional: R$ ${decimoTerceiro.toFixed(2)}`);
-}
-
+  const mesesTrabalhados = meses > 0 ? meses : 12;
+  // Salário proporcional
+  const salarioProporcional = (salario / 12) * mesesTrabalhados;
   // 1️⃣ Salário proporcional
   const salarioProporcional = (salario / 12) * meses;
 
+  // Adicionais
   // 2️⃣ Adicionais proporcionais
   const adicionalInsalubridade = salarioProporcional * (insalubridadePerc / 100);
   const adicionalPericulosidade = salarioProporcional * (periculosidadePerc / 100);
 
+  const salarioComAdicionais =
   // 3️⃣ Total bruto do 13º
   const totalBruto =
     salarioProporcional +
@@ -70,17 +92,23 @@ function calcular13() {
     adicionalInsalubridade +
     adicionalPericulosidade;
 
+  // INSS
   // 4️⃣ Primeira parcela (50% do bruto, SEM descontos)
   const primeiraParcela = totalBruto / 2;
-
   // 5️⃣ INSS (aplicado sobre o total bruto)
   let inss = 0;
+  if (salarioComAdicionais <= 1320) inss = salarioComAdicionais * 0.075;
+  else if (salarioComAdicionais <= 2571.29) inss = salarioComAdicionais * 0.09;
+  else if (salarioComAdicionais <= 3856.94) inss = salarioComAdicionais * 0.12;
+  else if (salarioComAdicionais <= 7507.49) inss = salarioComAdicionais * 0.14;
   if (totalBruto <= 1320) inss = totalBruto * 0.075;
   else if (totalBruto <= 2571.29) inss = totalBruto * 0.09;
   else if (totalBruto <= 3856.94) inss = totalBruto * 0.12;
   else if (totalBruto <= 7507.49) inss = totalBruto * 0.14;
   else inss = 7507.49 * 0.14;
 
+  // IRRF
+  const baseIR = salarioComAdicionais - inss;
   // 6️⃣ IRRF
   const baseIR = totalBruto - inss;
   let ir = 0;
@@ -92,34 +120,32 @@ function calcular13() {
 
   if (ir < 0) ir = 0;
 
+  // Parcelas
+  const primeiraParcela = salarioProporcional / 2;
+  const segundaParcela = salarioComAdicionais - inss - ir;
+  const totalLiquido = primeiraParcela + segundaParcela;
   // 7️⃣ Segunda parcela (restante com descontos)
   const segundaParcela = totalBruto - primeiraParcela - inss - ir;
 
+  let resBox = document.getElementById('resultado13');
   // 8️⃣ Total líquido correto
   const totalLiquido = totalBruto - inss - ir;
-
   const resBox = document.getElementById('resultado13');
   if (!resBox) return;
 
   resBox.style.display = 'block';
   resBox.innerHTML = `
     <h2>Resultado do 13º Salário</h2>
-
     <p><strong>Salário proporcional:</strong> ${formatBR(salarioProporcional)}</p>
     <p><strong>Horas extras:</strong> ${formatBR(horasExtras)}</p>
     <p><strong>Insalubridade:</strong> ${formatBR(adicionalInsalubridade)}</p>
     <p><strong>Periculosidade:</strong> ${formatBR(adicionalPericulosidade)}</p>
-
     <p><strong>Total Bruto:</strong> ${formatBR(totalBruto)}</p>
-
     <p><strong>INSS:</strong> ${formatBR(inss)}</p>
     <p><strong>IRRF:</strong> ${formatBR(ir)}</p>
-
     <hr>
-
     <p><strong>1ª Parcela:</strong> ${formatBR(primeiraParcela)}</p>
     <p><strong>2ª Parcela:</strong> ${formatBR(segundaParcela)}</p>
-
     <h3>Total Líquido do 13º: ${formatBR(totalLiquido)}</h3>
   `;
 }
@@ -199,4 +225,3 @@ function planejar13() {
       }
     }
   });
-}
