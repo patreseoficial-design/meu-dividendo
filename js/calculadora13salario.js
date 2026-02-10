@@ -82,3 +82,23 @@ function planejarInvestimento() {
   const mensal = valorLiquidoGlobal / meses;
   document.getElementById('resMensalInvest').innerText = formatar(mensal);
 }
+let grafico;
+
+function criarGrafico(labels, dados) {
+  const ctx = document.getElementById('graficoMeses');
+
+  if (grafico) {
+    grafico.destroy();
+  }
+
+  grafico = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Valor por mês (R$)',
+        data: dados
+      }]
+    }
+  });
+}
