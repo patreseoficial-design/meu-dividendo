@@ -1,15 +1,55 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Calculadora de 13º Salário</title>
+<!DOCTYPE html> 
+ <html lang="pt-BR">  
+<head>  
 
-  <link rel="stylesheet" href="calculadora13salario.css">
-</head>
-<body>
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Calculadora de 13º Salário 2026 | Valor Líquido, INSS e IR</title>  
+<meta name="description" content="Calcule o valor do seu 13º salário de forma simples e atualizada. Veja parcelas, descontos de INSS e IRRF e simule quanto investir mês a mês.">  
+<meta name="robots" content="index, follow">  
+<link rel="canonical" href="https://meudividendo.online/calculadora13salario">  
+ 
+               <!-- Open Graph -->
+
+  <meta property="og:title" content="Calculadora de 13º Salário 2026">  
+  <meta property="og:description" content="Descubra quanto você vai receber de 13º salário com descontos de INSS e IRRF.">  
+  <meta property="og:type" content="website">  
+  <meta property="og:url" content="https://meudividendo.online/calculadora13salario">  
+  <meta property="og:image" content="https://meudividendo.online/img/calculadora13.jpg">  
+
+                 <!-- CSS --> 
+
+   <link rel="stylesheet" href="calculadora13salario.css">
+
+            
+                <!-- CHART --> 
+ 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  </head>  <body>  <header>  
+  <div class="menu" onclick="toggleMenu()">☰</div>    <h1 class="site-title">  
+    <a href="index.html">Meu Dividendo</a>  
+  </h1>    
+         <!-- MENU HAMBÚRGUER -->  
+
+  <nav id="menuLinks" class="menu-links">  
+    <ul>  
+            <li><a href="index.html">🏠 Início</a></li>  
+      <li><a href="calculadora.html">Calculadora de Juros Compostos</a></li>  
+      <li><a href="calculadora13salario.html">Calculadora de 13º Salário</a></li>  
+      <li><a href="calculadora-pis.html">Calculadora de PIS</a></li>  
+      <li><a href="calculadora-ir.html">calculadora de imposto de renda sobre Investimentos</a></li>  
+      <li><a href="calculadora-rescisao.html">Calculadora de rescisão trabalhista</a></li>  
+      <li><a href="calculadora-quitacao.html">Calculadora de quitação patrimonial</a></li>  
+<li><a href="quanto-investir-por-mes.html">Calculadora de quanto investir por mês do seu salário</a></li>  
+    </ul>  
+  </nav>  
+</header>  <h1 class="page-title">Calculadora de 13° Salário</h1>  Está certo?
+
+  
+ 
+              <!-- Calculadora -->
 
   <div class="container">
-    <h1>Calculadora de 13º Salário</h1>
+    <h2>Calculadora de 13º Salário</h2>
 
     <label>Salário bruto (R$)</label>
     <input type="number" id="salario" placeholder="Ex: Salário Bruto">
@@ -33,6 +73,8 @@
 
     <button onclick="calcular13()">Calcular</button>
 
+     <!-- Resultado da calculadora 13° -->
+
     <div class="resultado">
       <p>13º Bruto: <strong id="resBruto">R$ 0,00</strong></p>
       <p>INSS: <strong id="resINSS">R$ 0,00</strong></p>
@@ -46,6 +88,8 @@
       <p class="liquido">Total Líquido: <strong id="resLiquido">R$ 0,00</strong></p>
     </div>
 
+       <!-- Calculadora de planejamento -->
+
     <h2>Planejamento de Investimento do 13º</h2>
 
     <label>Dividir o 13º em quantos meses?</label>
@@ -53,6 +97,8 @@
 
     <button onclick="planejarInvestimento()">Planejar</button>
 
+
+  <!-- Resultado da calculadora de planejamento -->
     <div class="resultado">
       <p>Valor mensal para investir:</p>
       <strong id="resMensalInvest">R$ 0,00</strong>
@@ -60,5 +106,16 @@
   </div>
 
   <script src="js/calculadora13salario.js"></script>
+
+    <!-- chama menu de hambúrguer -->
+<script>
+
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  if (!menu) return;
+  menu.classList.toggle('show');
+}
+</script>
+
 </body>
 </html>
