@@ -121,3 +121,34 @@ function atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem) {
   document.getElementById('resTotalJuros').innerText = 
     `Total em Juros (reinvestindo): R$ ${jurosReinv.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} | Sem reinvestir: R$ ${jurosSem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
+if (graf1) graf1.destroy();
+if (graf2) graf2.destroy();
+
+graf1 = new Chart(document.getElementById('graficoComparativo'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      { label: 'Reinvestindo', data: dataReinv, borderWidth: 2, borderColor: '#FF69B4', fill: false },
+      { label: 'Sem Reinvestir', data: dataSem, borderWidth: 2, borderColor: '#1E90FF', fill: false }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false
+  }
+});
+
+graf2 = new Chart(document.getElementById('graficoJuros'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [
+      { label: 'Juros recebidos por mês', data: dataJuros, backgroundColor: 'rgba(135, 206, 250, 0.8)' }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false
+  }
+});
