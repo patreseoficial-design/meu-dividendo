@@ -98,3 +98,40 @@ function toggleMenu() {
   menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 window.toggleMenu = toggleMenu;
+
+// ===================== MENU HAMBÚRGUER =====================
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.classList.toggle('show');
+}
+
+// ===================== CARREGAR MOEDAS =====================
+async function carregarMoedas() {
+  try {
+    const res = await fetch(
+      "https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL"
+    );
+    const data = await res.json();
+
+    const dolar = parseFloat(data.USDBRL.ask);
+    const euro = parseFloat(data.EURBRL.ask);
+    const yuan = parseFloat(data.CNYBRL.ask);
+    const bitcoin = parseFloat(data.BTCBRL.ask);
+
+    document.getElementById('dolar-value').innerText = `Dólar R$ ${dolar.toFixed(2)}`;
+    document.getElementById('euro-value').innerText = `Euro R$ ${euro.toFixed(2)}`;
+    document.getElementById('yuans-value').innerText = `Yuan R$ ${yuan.toFixed(2)}`;
+    document.getElementById('bitcoin-value').innerText = `Bitcoin R$ ${bitcoin.toLocaleString('pt-BR')}`;
+  } catch (error) {
+    console.error('Erro ao carregar moedas:', error);
+    document.getElementById('dolar-value').innerText = '--';
+    document.getElementById('euro-value').innerText = '--';
+    document.getElementById('yuans-value').innerText = '--';
+    document.getElementById('bitcoin-value').innerText = '--';
+  }
+}
+
+// Inicializa funções ao carregar a página
+window.addEventListener('DOMContentLoaded', () => {
+  carregarMoedas();
+});
