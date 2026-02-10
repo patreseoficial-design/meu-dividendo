@@ -250,3 +250,40 @@ footer {
 .menu-links.show {
   left: 0; /* aparece na tela */
 }
+/* MENU HAMBÚRGUER */
+.menu-links {
+  position: fixed;        /* fixa na tela */
+  top: 0;
+  left: -250px;           /* inicialmente escondido à esquerda */
+  width: 250px;           /* largura do menu */
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  transition: left 0.3s ease; /* animação suave */
+  z-index: 1000;
+  padding-top: 60px;      /* espaço para header */
+}
+
+/* quando ativo, aparece na tela */
+.menu-links.show {
+  left: 0;
+}
+
+/* Links do menu */
+.menu-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-links li {
+  margin: 16px 0;
+  text-align: center;
+}
+
+.menu-links a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  display: block;
+}
