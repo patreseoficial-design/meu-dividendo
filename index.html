@@ -28,15 +28,14 @@
     </ul>
   </nav>
 </header>
-
-<!-- SCRIPT -->
 <script>
   // FUNÇÃO PARA TOGGLE DO MENU HAMBÚRGUER
   function toggleMenu() {
     const menu = document.getElementById('menuLinks');
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    menu.classList.toggle('show');
   }
 </script>
+
 
 <!-- Título e Subtítulo centralizados -->
 <div style="text-align:center; margin:40px 0;">
@@ -170,12 +169,6 @@ document.getElementById('searchForm').addEventListener('submit', function(e){
 
 <!-- JS -->
 <script>
-// Menu hambúrguer header
-function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
-
 // Exemplo: você mantém suas funções de moedas, tops e pesquisa
 async function carregarMoedas() { /* ... */ }
 async function carregarTop() { /* ... */ }
