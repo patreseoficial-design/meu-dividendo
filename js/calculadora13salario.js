@@ -1,81 +1,70 @@
-let totalLiquido13 = 0;
-let grafico;
-
-/* ================= CÁLCULO 13º ================= */
-function calcular13() {
-  const salario = Number(document.getElementById('salario').value) || 0;
-  const meses = Number(document.getElementById('meses').value) || 12;
-  const horasExtras = Number(document.getElementById('horasExtras').value) || 0;
-
-  const salarioBase = salario + horasExtras;
-  const bruto = (salarioBase / 12) * meses;
-
-  // descontos simplificados
-  const inss = bruto * 0.08;
-  const ir = bruto * 0.075;
-
-  totalLiquido13 = bruto - inss - ir;
-
-  const parcela1 = bruto / 2;
-  const parcela2 = totalLiquido13 - parcela1;
-
-  document.getElementById('resultado13').innerHTML = `
-    <p><strong>Valor Bruto:</strong> R$ ${bruto.toFixed(2)}</p>
-    <p><strong>INSS:</strong> R$ ${inss.toFixed(2)}</p>
-    <p><strong>IR:</strong> R$ ${ir.toFixed(2)}</p>
-    <p><strong>1ª Parcela:</strong> R$ ${parcela1.toFixed(2)}</p>
-    <p><strong>2ª Parcela:</strong> R$ ${parcela2.toFixed(2)}</p>
-    <p><strong>Total Líquido:</strong> R$ ${totalLiquido13.toFixed(2)}</p>
-  `;
+function formatar(valor) {
+  return valor.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
 }
 
-/* ================= PLANEJAMENTO ================= */
-function planejar13() {
-  if (totalLiquido13 <= 0) {
-    alert('Calcule o 13º salário primeiro.');
+function calcularINSS(valor) {
+  // Regra simples aproximada
+  if (valor <= 1412) return valor * 0.075;
+  if (valor <= 2666.68) return valor * 0.09;
+  if (valor <= 4000.03) return valor * 0.12;
+  return valor * 0.14;
+}
+
+function calcularIR(valor) {
+  // Base simplificada
+  if (valor <= 2259.20) return 0;
+  if (valor <= 2826.65) return valor * 0.075;
+  if (valor <= 3751.05) return valor * 0.15;
+  if (valor <= 4664.68) return valor * 0.225;
+  return valor * 0.275;
+}
+
+let valorLiquidoGlobal = 0;
+
+function calcular13() {
+  const salario = Number(document.getElementById('salario').value);
+  const meses = Number(document.getElementById('meses').value);
+
+  if (!salario || !meses) {
+    alert("Preencha salário e meses trabalhados");
     return;
   }
 
-  const percInvest = Number(document.getElementById('percInvest').value) || 0;
-  const valorInvestir = totalLiquido13 * (percInvest / 100);
-  const valorMensal = valorInvestir / 12;
+  const bruto = (salario / 12) * meses;
+  const inss = calcularINSS(bruto);
+  const ir = calcularIR(bruto - inss);
 
-  const tbody = document.getElementById('tabelaPlanejamento');
-  tbody.innerHTML = '';
+  const liquido = bruto - inss - ir;
 
-  const labels = [];
-  const dados = [];
+  const parcela1 = bruto / 2;
+  const parcela2 = liquido - parcela1;
 
-  for (let i = 1; i <= 12; i++) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${i}</td>
-      <td>R$ ${valorMensal.toFixed(2)}</td>
-    `;
-    tbody.appendChild(tr);
+  valorLiquidoGlobal = liquido;
 
-    labels.push(`Mês ${i}`);
-    dados.push(valorMensal.toFixed(2));
+  document.getElementById('resBruto').innerText = formatar(bruto);
+  document.getElementById('resINSS').innerText = formatar(inss);
+  document.getElementById('resIR').innerText = formatar(ir);
+  document.getElementById('resParcela1').innerText = formatar(parcela1);
+  document.getElementById('resParcela2').innerText = formatar(parcela2);
+  document.getElementById('resLiquido').innerText = formatar(liquido);
+}
+
+function planejarInvestimento() {
+  const meses = Number(document.getElementById('mesesInvestir').value);
+
+  if (!valorLiquidoGlobal) {
+    alert("Calcule o 13º primeiro");
+    return;
   }
 
-  const ctx = document.getElementById('grafico13');
+  if (!meses) {
+    alert("Informe em quantos meses deseja investir");
+    return;
+  }
 
-  if (grafico) grafico.destroy();
-
-  grafico = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        data: dados,
-        label: 'Valor investido por mês'
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false }
-      }
-    }
-  });
+  const mensal = valorLiquidoGlobal / meses;
+  document.getElementById('resMensalInvest').innerText = formatar(mensal);
 }
