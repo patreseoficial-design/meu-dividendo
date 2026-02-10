@@ -120,12 +120,3 @@ function atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem) {
   document.getElementById('resTotalJuros').innerText = 
     `Total em Juros (reinvestindo): R$ ${jurosReinv.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} | Sem reinvestir: R$ ${jurosSem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
-// Preenche os resultados...
-// Mostra o resumo e a tabela somente após o cálculo
-document.getElementById('resultadoResumo').style.display = 'block';
-document.getElementById('tabelaResultado').style.display = 'block';
-
-// Preenche os resultados com os valores calculados
-document.getElementById('resTotalFinal').innerText = `R$ ${jurosReinv.toFixed(2)}`;
-document.getElementById('resTotalInvestido').innerText = `R$ ${ini + men * meses}`;
-document.getElementById('resTotalJuros').innerText = `R$ ${jurosReinv.toFixed(2) - (ini + men * meses)}`;
