@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Calculadora de 13º Salário 2026 | INSS, IR e Planejamento</title>
+  <meta name="description" content="Calcule o 13º salário com descontos de INSS e IR. Veja 1ª e 2ª parcela e planeje investimentos mês a mês.">
+
+  <link rel="stylesheet" href="calculadora13salario.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<header class="topo">
+  <h1>Calculadora de 13º Salário</h1>
+</header>
+
+<main class="container">
+
+  <!-- ================= CALCULADORA 13º ================= -->
+  <section class="box">
+    <h2>Cálculo do 13º Salário</h2>
+
+    <div class="inputs">
+      <label>Salário Mensal
+        <input type="number" id="salario" value="2000">
+      </label>
+
+      <label>Meses Trabalhados
+        <input type="number" id="meses" min="1" max="12" value="12">
+      </label>
+
+      <label>Horas Extras (média mensal)
+        <input type="number" id="horasExtras" value="0">
+      </label>
+    </div>
+
+    <button onclick="calcular13()">Calcular 13º</button>
+
+    <div id="resultado13" class="resultado"></div>
+  </section>
+
+  <!-- ================= PLANEJAMENTO ================= -->
+  <section class="box">
+    <h2>Planejamento de Investimento com o 13º</h2>
+
+    <div class="inputs">
+      <label>% do 13º para investir
+        <input type="number" id="percInvest" value="30" min="0" max="100">
+      </label>
+    </div>
+
+    <button onclick="planejar13()">Gerar Planejamento</button>
+
+    <div id="resultadoPlanejamento" class="resultado">
+      <table>
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th>Valor para Investir</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaPlanejamento"></tbody>
+      </table>
+
+      <canvas id="grafico13"></canvas>
+    </div>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <p>© 2026 Meu Dividendo • Conteúdo educativo</p>
+</footer>
+
+<script src="calculadora13salario.js"></script>
+</body>
+</html>
