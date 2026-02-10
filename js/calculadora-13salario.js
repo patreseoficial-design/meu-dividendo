@@ -1,49 +1,4 @@
 
-patreseoficial-design
-meu-dividendo
-Repository navigation
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-
- GitHub users are now required to enable two-factor authentication as an additional security measure. Your activity on GitHub includes you in this requirement. You will need to enable two-factor authentication on your account before March 07, 2026, or be restricted from account actions.
-
-Commit 90818de
-patreseoficial-design
-patreseoficial-design
-authored
-4 days ago
-·
-·
-Verified
-Atualizar o calculadora-13salario.js
-main
-1 parent 
-2dd1bab
- commit 
-90818de
-File tree
-Filter files…
-js
-calculadora-13salario.js
-1 file changed
-+25
--21
-lines changed
-Search within code
- 
-‎js/calculadora-13salario.js‎
-+25
--21
-Lines changed: 25 additions & 21 deletions
-Original file line number	Diff line number	Diff line change
-@@ -1,167 +1,171 @@
 // ================= MENU HAMBÚRGUER =================
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
