@@ -71,8 +71,11 @@ function calcularMeses13(admissao, demissao) {
   const ini = new Date(admissao);
   const fim = new Date(demissao);
 
-
-
+// ================= FUNÇÃO AUXILIAR =================
+// Calcula os meses do 13º salário apenas no ano da demissão
+function calcularMeses13(admissao, demissao) {
+  const ini = new Date(admissao);
+  const fim = new Date(demissao);
 
   const anoDemissao = fim.getFullYear();
 
@@ -90,7 +93,7 @@ function calcularMeses13(admissao, demissao) {
     const inicioMes = inicio > primeiroDia ? inicio : primeiroDia;
     const fimMes = fim < ultimoDia ? fim : ultimoDia;
 
-    const dias = Math.floor((fimMes - inicioMes) / (1000*60*60*24)) + 1;
+    const dias = Math.floor((fimMes - inicioMes) / (1000 * 60 * 60 * 24)) + 1;
     if (dias >= 15) meses13++;
 
     cursor.setMonth(cursor.getMonth() + 1);
@@ -98,6 +101,20 @@ function calcularMeses13(admissao, demissao) {
 
   return meses13 > 12 ? 12 : meses13;
 }
+
+// ================= CÁLCULO DO 13º =================
+const mesesPara13 = calcularMeses13(admissao, demissao);
+
+// Atualiza o span no HTML
+document.getElementById('resMeses13').innerText = mesesPara13;
+
+// Calcula 13º proporcional usando os meses corretos
+const decimoTerceiro = (salarioBase / 12) * mesesPara13;
+
+// Atualiza o valor do 13º no HTML
+document.getElementById('res13').innerText = formatBRL(decimoTerceiro);
+
+
 // Atualiza spans dinâmicos
 document.getElementById('resMeses').innerText = mesesContrato;
 document.getElementById('resMesesFGTS').innerText = mesesFGTS;
