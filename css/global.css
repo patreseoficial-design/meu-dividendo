@@ -183,4 +183,24 @@ footer a {
   z-index: 1100; /* acima de outros elementos */
   position: relative;
 }
+/* 1️⃣ Zerar margens e padding da página */
+html, body {
+  margin: 0;
+  padding: 0;
+}
 
+/* 2️⃣ Estilo do footer */
+footer {
+  background-color: black; /* fundo preto */
+  color: white;           /* texto branco */
+  width: 100%;            /* ocupa toda a largura da tela */
+  text-align: center;     /* centraliza o texto */
+  padding: 20px 0;        /* espaço em cima e embaixo */
+  box-sizing: border-box; /* garante que padding não quebre a largura */
+}
+
+/* 3️⃣ Links do footer */
+footer a {
+  color: white;           /* link branco */
+  text-decoration: underline; /* opcional, sublinha */
+}
