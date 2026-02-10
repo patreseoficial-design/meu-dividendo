@@ -120,3 +120,13 @@ function atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem) {
   document.getElementById('resTotalJuros').innerText = 
     `Total em Juros (reinvestindo): R$ ${jurosReinv.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} | Sem reinvestir: R$ ${jurosSem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
+// Primeiro mostra a tabela e o resumo
+document.getElementById('tabelaResultado').style.display = 'block';
+document.getElementById('resultadoResumo').style.display = 'block';
+
+// Agora cria os gráficos
+if (graf1) graf1.destroy();
+if (graf2) graf2.destroy();
+
+graf1 = new Chart(document.getElementById('graficoComparativo'), { ... });
+graf2 = new Chart(document.getElementById('graficoJuros'), { ... });
