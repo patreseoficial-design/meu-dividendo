@@ -67,27 +67,37 @@ function calcularRescisao() {
 const meses = calcularMesesCLT(admissao, demissao);
 if (!meses) return;
 const { mesesContrato, mesesFGTS } = meses;
+function calcularMeses13(admissao, demissao) {
+  const ini = new Date(admissao);
+  const fim = new Date(demissao);
 
-// Calcula meses para 13º diretamente no ano da demissão
-const dataDemissao = new Date(demissao);
-const anoDemissao = dataDemissao.getFullYear();
-let mesesPara13 = 0;
 
-for (let mes = 0; mes <= dataDemissao.getMonth(); mes++) {
-    const primeiroDia = new Date(anoDemissao, mes, 1);
-    const ultimoDia = new Date(anoDemissao, mes + 1, 0);
 
-    const inicioMes = new Date(admissao) > primeiroDia ? new Date(admissao) : primeiroDia;
-    const fimMes = dataDemissao < ultimoDia ? dataDemissao : ultimoDia;
 
-    if (fimMes >= inicioMes) {
-        const dias = Math.floor((fimMes - inicioMes) / (1000*60*60*24)) + 1;
-        if (dias >= 15) mesesPara13++;
-    }
+  const anoDemissao = fim.getFullYear();
+
+  // início do ano da demissão
+  const inicioAno = new Date(anoDemissao, 0, 1);
+  const inicio = ini > inicioAno ? ini : inicioAno;
+
+  let meses13 = 0;
+  let cursor = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
+
+  while (cursor <= fim) {
+    const primeiroDia = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
+    const ultimoDia = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
+
+    const inicioMes = inicio > primeiroDia ? inicio : primeiroDia;
+    const fimMes = fim < ultimoDia ? fim : ultimoDia;
+
+    const dias = Math.floor((fimMes - inicioMes) / (1000*60*60*24)) + 1;
+    if (dias >= 15) meses13++;
+
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
+
+  return meses13 > 12 ? 12 : meses13;
 }
-
-if (mesesPara13 > 12) mesesPara13 = 12;
-
 // Atualiza spans dinâmicos
 document.getElementById('resMeses').innerText = mesesContrato;
 document.getElementById('resMesesFGTS').innerText = mesesFGTS;
