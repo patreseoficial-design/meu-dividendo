@@ -154,13 +154,3 @@ function planejarInvestimento() {
   const mensal = valorLiquidoGlobal / meses;
   document.getElementById('resMensalInvest').innerText = formatar(mensal);
 }
-// Primeiro mostra a tabela e o resumo
-document.getElementById('tabelaResultado').style.display = 'block';
-document.getElementById('resultadoResumo').style.display = 'block';
-
-// Agora cria os gráficos
-if (graf1) graf1.destroy();
-if (graf2) graf2.destroy();
-
-graf1 = new Chart(document.getElementById('graficoComparativo'), { ... });
-graf2 = new Chart(document.getElementById('graficoJuros'), { ... });
