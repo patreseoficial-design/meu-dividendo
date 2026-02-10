@@ -17,6 +17,59 @@
 
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/calculadora.css">
+
+<style>
+/* ================== MENU HAMBÚRGUER ================== */
+.menu {
+  cursor: pointer;
+  font-size: 28px;
+  padding: 10px;
+  z-index: 1100;
+  position: relative;
+}
+
+.menu-links {
+  position: fixed;
+  top: 0;
+  left: -250px; /* escondido inicialmente */
+  width: 250px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  transition: left 0.3s ease;
+  padding-top: 70px; /* espaço para header */
+  z-index: 1000;
+}
+
+.menu-links.show {
+  left: 0; /* menu visível */
+}
+
+.menu-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-links li {
+  margin: 16px 0;
+  text-align: left;
+}
+
+.menu-links a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  display: block;
+  padding: 12px 15px;
+}
+
+.menu-links a:hover {
+  background-color: #f0f0f0;
+}
+</style>
+
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
