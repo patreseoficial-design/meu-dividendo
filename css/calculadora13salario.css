@@ -330,3 +330,26 @@ footer a {
   z-index: 1100; /* acima de outros elementos */
   position: relative;
 }
+/* CABEÇARIO */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #111;  /* 🔴 aqui é a cor preta do cabeçalho */
+  color: #fff;       /* texto branco */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 4cm;
+}
+
+/* RODAPÉ */
+
+footer {
+  background: #111;  /* 🔴 cor preta do rodapé */
+  color: #fff;       /* texto branco */
+  padding: 30px 15px;
+  text-align: center;
+  font-size: 14px;
+}
