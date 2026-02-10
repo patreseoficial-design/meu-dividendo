@@ -24,31 +24,33 @@
   <div class="profile" style="width:36px; height:36px; border-radius:50%; background:#555;"></div>
 
   <!-- MENU HAMBÚRGUER -->
-  <nav id="menuLinks" style="position:fixed; top:0; left:-250px; width:250px; height:100%; background:#fff; box-shadow:2px 0 5px rgba(0,0,0,0.3); padding-top:70px; transition:left 0.3s; z-index:1000;">
-    <ul style="list-style:none; padding:0; margin:0;">
-      <li><a href="index.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">🏠 Início</a></li>
-      <li><a href="calculadora.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Calculadora de juros compostos</a></li>
-      <li><a href="calculadora-rescisao.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Calculadora de rescisão</a></li>
-      <li><a href="calculadora-13salario.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Calculadora de 13º Salário</a></li>
-      <li><a href="calculadora-ir.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Calculadora imposto de renda sobre Investimentos</a></li>
-      <li><a href="quanto-investir-por-mes.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Quanto investir por mês</a></li>
-      <li><a href="calculadora-pis.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">PIS</a></li>
-      <li><a href="calculadora-quitacao.html" style="display:block; padding:12px 15px; text-decoration:none; color:#111;">Quitação patrimonial</a></li>
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="calculadora.html">Calculadora de juros compostos</a></li>
+      <li><a href="calculadora-rescisao.html">Calculadora de rescisão</a></li>
+      <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
+      <li><a href="calculadora-ir.html">Calculadora imposto de renda sobre Investimentos</a></li>
+      <li><a href="quanto-investir-por-mes.html">Quanto investir por mês</a></li>
+      <li><a href="calculadora-pis.html">PIS</a></li>
+      <li><a href="calculadora-quitacao.html">Quitação patrimonial</a></li>
     </ul>
   </nav>
-
-  <!-- SCRIPT INLINE -->
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('menuLinks');
-      if(menu.style.left === "0px") {
-        menu.style.left = "-250px"; // esconde
-      } else {
-        menu.style.left = "0px"; // mostra
-      }
-    }
-  </script>
 </header>
+
+
+
+</header>
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  if(menu.style.display === "block") {
+    menu.style.display = "none"; // esconde
+  } else {
+    menu.style.display = "block"; // mostra
+  }
+}
+</script>
 
 <!-- Título e Subtítulo centralizados -->
 <div style="text-align:center; margin:40px 0;">
