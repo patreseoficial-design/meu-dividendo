@@ -2,7 +2,7 @@
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
   if (!menu) return;
-  menu.classList.toggle('show'); // ✅ CORRIGIDO: usar classe CSS
+  menu.classList.toggle('show');
 }
 
 // ================= FORMATAÇÃO BR =================
@@ -13,20 +13,21 @@ function formatBR(valor) {
   });
 }
 
-// ================= CALCULADORA 13º SALÁRIO =================
+// ================= CALCULADORA 13º SALÁRIO COM DEPENDENTES =================
 function calcular13() {
   const salario = Number(document.getElementById('salario')?.value) || 0;
-  const meses = Number(document.getElementById('meses')?.value) || 12; // ✅ ÚNICA declaração
+  const meses = Number(document.getElementById('meses')?.value) || 12;
   const horasExtras = Number(document.getElementById('horasExtras')?.value) || 0;
   const insalubridadePerc = Number(document.getElementById('insalubridade')?.value) || 0;
   const periculosidadePerc = Number(document.getElementById('periculosidade')?.value) || 0;
+  const dependentes = Number(document.getElementById('dependentes')?.value) || 0;
 
   if (salario <= 0) {
     alert('Informe o salário.');
     return;
   }
 
-  // ✅ Cálculos únicos e corretos
+  // Cálculos básicos
   const salarioProporcional = (salario / 12) * meses;
   const adicionalInsalubridade = salarioProporcional * (insalubridadePerc / 100);
   const adicionalPericulosidade = salarioProporcional * (periculosidadePerc / 100);
@@ -35,22 +36,28 @@ function calcular13() {
   // INSS 2026 (tabela atualizada)
   let inss = 0;
   if (totalBruto <= 1412) inss = totalBruto * 0.075;
-  else if (totalBruto <= 2750.06) inss = totalBruto * 0.09;
-  else if (totalBruto <= 4127.09) inss = totalBruto * 0.12;
-  else if (totalBruto <= 8035.90) inss = totalBruto * 0.14;
-  else inss = 1125.03; // teto INSS
+  else if (totalBruto <= 2666.68) inss = totalBruto * 0.09;
+  else if (totalBruto <= 4000.03) inss = totalBruto * 0.12;
+  else if (totalBruto <= 7786.02) inss = totalBruto * 0.14;
+  else inss = 908.86; // teto INSS
 
-  // IRRF 2026 (base = bruto - INSS)
-  const baseIR = totalBruto - inss;
+  // IRRF 2026 COM DEDUÇÃO DE DEPENDENTES (R$ 189,59 cada)
+  let baseIR = totalBruto - inss;
+  const deducaoDependentes = dependentes * 189.59;
+  baseIR -= deducaoDependentes;
+  if (baseIR < 0) baseIR = 0;
+
   let ir = 0;
-  if (baseIR <= 2112) ir = 0;
-  else if (baseIR <= 2826.65) ir = (baseIR * 0.075) - 158.40;
-  else if (baseIR <= 3751.05) ir = (baseIR * 0.15) - 370.40;
-  else if (baseIR <= 4664.68) ir = (baseIR * 0.225) - 651.73;
-  else ir = (baseIR * 0.275) - 884.96;
+  if (baseIR <= 2259.20) ir = 0; // isenção
+  else if (baseIR <= 2826.65) ir = (baseIR * 0.075) - 169.54;
+  else if (baseIR <= 3751.05) ir = (baseIR * 0.15) - 381.44;
+  else if (baseIR <= 4664.68) ir = (baseIR * 0.225) - 662.66;
+  else ir = (baseIR * 0.275) - 896.00;
 
-  // ✅ Parcelas corretas
-  const primeiraParcela = totalBruto / 2; // 50% sem desconto
+  if (ir < 0) ir = 0;
+
+  // Parcelas corretas (1ª SEM descontos, 2ª COM descontos)
+  const primeiraParcela = totalBruto / 2;
   const segundaParcela = totalBruto - primeiraParcela - inss - ir;
   const totalLiquido = primeiraParcela + segundaParcela;
 
@@ -59,20 +66,29 @@ function calcular13() {
 
   resBox.style.display = 'block';
   resBox.innerHTML = `
-    <h2>✅ Resultado do 13º Salário 2026</h2>
-    <p><strong>Salário proporcional:</strong> ${formatBR(salarioProporcional)}</p>
-    <p><strong>Horas extras:</strong> ${formatBR(horasExtras)}</p>
-    <p><strong>Insalubridade:</strong> ${formatBR(adicionalInsalubridade)}</p>
-    <p><strong>Periculosidade:</strong> ${formatBR(adicionalPericulosidade)}</p>
-    <hr>
-    <p><strong>Total Bruto:</strong> ${formatBR(totalBruto)}</p>
-    <p><strong>↓ Descontos:</strong></p>
-    <p>INSS: ${formatBR(inss)}</p>
-    <p>IRRF: ${formatBR(ir)}</p>
-    <hr>
-    <p><strong>1ª Parcela (sem desconto):</strong> ${formatBR(primeiraParcela)}</p>
-    <p><strong>2ª Parcela (com descontos):</strong> ${formatBR(segundaParcela)}</p>
-    <h3>💰 Total Líquido: ${formatBR(totalLiquido)}</h3>
+    <h2>✅ 13º Salário 2026 (LEGAL)</h2>
+    <div style="background:#f0f8ff;padding:15px;border-radius:8px;margin:10px 0;">
+      <p><strong>Salário proporcional:</strong> ${formatBR(salarioProporcional)}</p>
+      <p><strong>Horas extras:</strong> ${formatBR(horasExtras)}</p>
+      <p><strong>Insalubridade:</strong> ${formatBR(adicionalInsalubridade)}</p>
+      <p><strong>Periculosidade:</strong> ${formatBR(adicionalPericulosidade)}</p>
+      <p><strong><strong>Total Bruto:</strong> ${formatBR(totalBruto)}</p>
+    </div>
+    
+    <div style="background:#fff3cd;padding:15px;border-radius:8px;margin:10px 0;">
+      <p><strong>INSS:</strong> ${formatBR(inss)}</p>
+      <p><strong>Base IR inicial:</strong> ${formatBR(totalBruto - inss)}</p>
+      <p><strong>${dependentes} dependente(s):</strong> -${formatBR(deducaoDependentes)}</p>
+      <p><strong>Base IR final:</strong> ${formatBR(baseIR)}</p>
+      <p><strong>IRRF:</strong> ${formatBR(ir)}</p>
+    </div>
+    
+    <div style="background:#d4edda;padding:15px;border-radius:8px;">
+      <p><strong>1ª Parcela (sem desconto):</strong> ${formatBR(primeiraParcela)}</p>
+      <p><strong>2ª Parcela (com descontos):</strong> ${formatBR(segundaParcela)}</p>
+      <h3>💰 <strong>Total Líquido:</strong> ${formatBR(totalLiquido)}</h3>
+    </div>
+    <small>📋 Base legal: Lei 4.090/62 + Tabelas INSS/IRRF 2026</small>
   `;
 }
 
@@ -124,7 +140,7 @@ function planejar13() {
 
   document.getElementById('resultadoGraf')?.style.setProperty('display', 'block');
 
-  // Gráfico
+  // Gráfico Chart.js
   const ctx = document.getElementById('graficoMeses')?.getContext('2d');
   if (ctx && grafico13) grafico13.destroy();
 
@@ -148,7 +164,22 @@ function planejar13() {
       },
       options: {
         responsive: true,
-        scales: { y: { beginAtZero: true } }
+        scales: { 
+          y: { 
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return 'R$ ' + value.toLocaleString('pt-BR');
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          }
+        }
       }
     });
   }
