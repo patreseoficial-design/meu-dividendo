@@ -435,3 +435,30 @@ h1, h2 {
   color: #1a202c;
   line-height: 1.3;
 }
+/* Cabeçalho esticado até as bordas */
+header {
+  width: 100vw;          /* 100% da largura da VIEWPORT */
+  margin-left: calc(-50vw + 50%);  /* Tira do container centralizado */
+  position: relative;    /* Mantém no fluxo normal */
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* Rodapé esticado até as bordas */
+footer {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* Remove padding/margin do body só pros extremos */
+header, footer {
+  background: #1a202c;  /* Cor sólida sem transparência */
+  padding: 20px 40px;   /* Padding interno normal */
+}
