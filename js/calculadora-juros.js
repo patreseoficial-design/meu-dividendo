@@ -70,47 +70,40 @@ function calcular() {
   }
 
   // 4️⃣ Atualiza resumo
-  atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem);
+atualizarResumo(ini, men, meses, jurosReinv, jurosSem, reinv, sem);
 
-  // 5️⃣ Mostra tabela e resumo
-  document.getElementById('resultado').style.display = 'block';
-  document.getElementById('resultadoResumo').style.display = 'block';
-  document.getElementById('tabelaResultado').style.display = 'block';
+// 5️⃣ Mostra tabela, resumo e gráficos
+document.getElementById('resultadoResumo').style.display = 'block';
+document.getElementById('tabelaResultado').style.display = 'block';
+document.getElementById('graficoComparativoBox').style.display = 'block';
+document.getElementById('graficoJurosBox').style.display = 'block';
 
-  // 6️⃣ Cria/atualiza gráficos
-  if (graf1) graf1.destroy();
-  if (graf2) graf2.destroy();
+// 6️⃣ Cria/atualiza gráficos
+if (graf1) graf1.destroy();
+if (graf2) graf2.destroy();
 
-  graf1 = new Chart(document.getElementById('graficoComparativo'), {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        { label: 'Reinvestindo', data: dataReinv, borderWidth: 2, borderColor: '#FF69B4', fill: false },
-        { label: 'Sem Reinvestir', data: dataSem, borderWidth: 2, borderColor: '#1E90FF', fill: false }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false
-    }
-  });
+graf1 = new Chart(document.getElementById('graficoComparativo'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      { label: 'Reinvestindo', data: dataReinv, borderWidth: 2, borderColor: '#FF69B4', fill: false },
+      { label: 'Sem Reinvestir', data: dataSem, borderWidth: 2, borderColor: '#1E90FF', fill: false }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false }
+});
 
-  graf2 = new Chart(document.getElementById('graficoJuros'), {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        { label: 'Juros recebidos por mês', data: dataJuros, backgroundColor: 'rgba(135, 206, 250, 0.8)' }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false
-    }
-  });
-}
-
+graf2 = new Chart(document.getElementById('graficoJuros'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [
+      { label: 'Juros recebidos por mês', data: dataJuros, backgroundColor: 'rgba(135, 206, 250, 0.8)' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false }
+});
 // ============================
 // FUNÇÃO DE RESUMO COMPLETO
 // ============================
