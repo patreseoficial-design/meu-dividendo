@@ -161,3 +161,19 @@ header {
 .menu-links li a:hover {
   background: #eee;
 }
+body {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.7;      /* MAIOR que o normal */
+  font-size: 17px;       /* Ligeiramente maior */
+  color: #2d3748;        /* Cinza-azulado específico */
+}
+
+.container {
+  background: #fafbfc;   /* Fundo levemente cinza */
+  border-radius: 12px;   /* Cantos arredondados */
+  padding: 40px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);  /* Sombra sutil */
+}
