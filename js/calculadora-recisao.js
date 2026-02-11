@@ -1,3 +1,5 @@
+// ================= JS COMPLETO - Calculadora Rescisão 2026 ✅ =================
+
 // ================= MENU HAMBÚRGUER =================
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
@@ -13,7 +15,7 @@ function formatBRL(v) {
   });
 }
 
-// ================= TABELAS FISCAIS ATUALIZADAS =================
+// ================= TABELAS FISCAIS 2026 =================
 const TABELA_INSS = [
   { ate: 1412.00, aliquota: 0.075 },
   { ate: 2666.68, aliquota: 0.09 },
@@ -30,16 +32,15 @@ const TABELA_IRRF = [
   { ate: Infinity, aliquota: 0.275, deducao: 896.00 }
 ];
 
-// ================= CÁLCULO INSS PROGRESSIVO =================
+// ================= CÁLCULO INSS PROGRESSIVO ✅ =================
 function calcularINSSProgressivo(base) {
   let inss = 0;
   let anterior = 0;
-  
   for (let i = 0; i < TABELA_INSS.length - 1; i++) {
     const faixa = TABELA_INSS[i];
     const proxima = TABELA_INSS[i + 1].ate;
     const limite = Math.min(base, proxima);
-    if (base > anterior) {
+    if (limite > anterior) {
       inss += (limite - anterior) * faixa.aliquota;
     }
     anterior = proxima;
@@ -48,11 +49,10 @@ function calcularINSSProgressivo(base) {
   return Math.min(inss, TABELA_INSS[4].teto);
 }
 
-// ================= CÁLCULO IRRF =================
+// ================= CÁLCULO IRRF ✅ =================
 function calcularIRRF(baseIR, dependentes = 0) {
   const deducaoDependentes = dependentes * 189.59;
   const baseCalculada = Math.max(0, baseIR - deducaoDependentes);
-  
   let ir = 0;
   for (let faixa of TABELA_IRRF) {
     if (baseCalculada <= faixa.ate) {
@@ -63,7 +63,7 @@ function calcularIRRF(baseIR, dependentes = 0) {
   return Math.max(0, ir);
 }
 
-// ================= MESES CLT - REGRA 15 DIAS =================
+// ================= MESES CLT - REGRA 15 DIAS ✅ =================
 function calcularMesesCLT(admissao, demissao) {
   const ini = new Date(admissao);
   const fim = new Date(demissao);
@@ -71,57 +71,51 @@ function calcularMesesCLT(admissao, demissao) {
 
   let mesesContrato = 0;
   let mesesFGTS = 0;
-  
   let cursor = new Date(ini.getFullYear(), ini.getMonth(), 1);
+  
   while (cursor <= fim) {
     const primeiro = new Date(cursor);
     const ultimo = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
     const inicioMes = ini > primeiro ? ini : primeiro;
     const fimMes = fim < ultimo ? fim : ultimo;
 
-    if (fimMes >= inicioMes) {
-      const dias = Math.floor((fimMes - inicioMes) / (1000 * 60 * 60 * 24)) + 1;
-      mesesContrato++;
-      if (dias >= 15) mesesFGTS++;
-    }
+    const dias = Math.floor((fimMes - inicioMes) / (1000 * 60 * 60 * 24)) + 1;
+    mesesContrato++;
+    if (dias >= 15) mesesFGTS++;
+    
     cursor.setMonth(cursor.getMonth() + 1);
   }
-
   return { mesesContrato, mesesFGTS };
 }
 
-// ================= 13º SÓ ANO DA DEMISSÃO (DINÂMICO) =================
+// ================= 13º SÓ ANO DA DEMISSÃO ✅ =================
 function calcularMeses13(admissao, demissao) {
   const ini = new Date(admissao);
   const fim = new Date(demissao);
-  const anoDemissao = fim.getFullYear(); // ✅ DINÂMICO - pega o ano que usuário inserir
-  
-  // Só conta meses DO ANO DA DEMISSÃO
-  const inicioAno = new Date(anoDemissao, 0, 1); 
+  const anoDemissao = fim.getFullYear();
+  const inicioAno = new Date(anoDemissao, 0, 1);
   const inicio = ini > inicioAno ? ini : inicioAno;
 
   let meses13 = 0;
   let cursor = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
-  
+
   while (cursor <= fim) {
     const primeiroDia = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
     const ultimoDia = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
     const inicioMes = inicio > primeiroDia ? inicio : primeiroDia;
     const fimMes = fim < ultimoDia ? fim : ultimoDia;
-    
+
     const dias = Math.floor((fimMes - inicioMes) / (1000 * 60 * 60 * 24)) + 1;
-    if (dias >= 15) meses13++; // Regra CLT: 15 dias = 1 mês
-    
+    if (dias >= 15) meses13++;
     cursor.setMonth(cursor.getMonth() + 1);
   }
-  
   return Math.min(meses13, 12);
 }
 
-// ================= CALCULADORA RESCISÃO 100% FUNCIONAL =================
+// ================= CALCULADORA RESCISÃO ✅ 100% FUNCIONAL =================
 function calcularRescisao() {
-  // Todos os inputs
-  const salario = Number(document.getElementById('salario').value.replace(/[R$s.]/g, '').replace(',', '.')) || 0;
+  // ✅ INPUTS SIMPLIFICADOS (sem replace complexo)
+  const salario = Number(document.getElementById('salario').value) || 0;
   const admissao = document.getElementById('admissao').value;
   const demissao = document.getElementById('demissao').value;
   const tipoDemissao = document.getElementById('tipoDemissao').value;
@@ -134,57 +128,58 @@ function calcularRescisao() {
 
   // Validações
   if (!salario || !admissao || !demissao) {
-    alert('Preencha salário, admissão e demissão.');
+    alert('❌ Preencha salário, admissão e demissão.');
     return;
   }
 
-  // 🔥 Cálculo de meses (DINÂMICO)
   const mesesCLT = calcularMesesCLT(admissao, demissao);
   if (!mesesCLT) {
-    alert('Data de admissão deve ser anterior à demissão.');
+    alert('❌ Data de admissão deve ser anterior à demissão.');
     return;
   }
-  
-  const mesesPara13 = calcularMeses13(admissao, demissao); // ✅ SÓ ANO QUE USUÁRIO INSERIR
+
+  const mesesPara13 = calcularMeses13(admissao, demissao);
   const { mesesContrato, mesesFGTS } = mesesCLT;
 
   // Salário base + adicionais
-  const periculosidade = salario * (periculosidadePerc / 100);
-  const insalubridade = salario * (insalubridadePerc / 100);
-  const salarioBase = salario + periculosidade + insalubridade + horasExtras;
+  const salarioBase = salario + salario * (periculosidadePerc / 100 + insalubridadePerc / 100) + horasExtras;
 
   // Verbas rescisórias
   const diaDemissao = new Date(demissao).getDate();
   const saldoSalario = (salarioBase / 30) * diaDemissao;
-  const avisoPrevio = tipoDemissao === 'semJusta' && avisoIndenizado ? salarioBase : 0;
+  
+  // ✅ AVISO PRÉVIO CORRIGIDO (30 + 3 dias/ano)
+  const anosTrabalhados = Math.floor(mesesContrato / 12);
+  const diasAvisoTotal = Math.min(30 + 3 * anosTrabalhados, 90);
+  const avisoPrevio = tipoDemissao === 'semJusta' && avisoIndenizado ? (salarioBase / 30) * diasAvisoTotal : 0;
 
-  // Férias
+  // Férias corrigidas
   let feriasVencidas = 0, tercoVencidas = 0;
   if (qtdFeriasVencidas === 1) {
-    feriasVencidas = salarioBase;
-    tercoVencidas = salarioBase / 3;
+    feriasVencidas = salario;
+    tercoVencidas = salario / 3;
   } else if (qtdFeriasVencidas >= 2) {
-    feriasVencidas = salarioBase * 2; // Em dobro
-    tercoVencidas = salarioBase / 3;
+    feriasVencidas = salario * 2;
+    tercoVencidas = (salario * 2) / 3;
   }
 
-  const mesesFeriasProp = mesesContrato % 12;
-  const feriasProporcionais = (salarioBase / 12) * mesesFeriasProp;
+  const mesesFeriasProp = mesesContrato % 12 || 12;
+  const feriasProporcionais = (salario / 12) * mesesFeriasProp;
   const tercoProporcionais = feriasProporcionais / 3;
   const feriasTotal = feriasVencidas + tercoVencidas + feriasProporcionais + tercoProporcionais;
 
-  // 🔥 13º PROPORCIONAL - APENAS ANO DA DEMISSÃO
+  // 13º proporcional (só ano da demissão)
   const decimoTerceiro = (salarioBase / 12) * mesesPara13;
 
   // FGTS completo
-  const fgtsSalario = salario * 0.08 * mesesFGTS; // Só salário base
+  const fgtsSalario = salario * 0.08 * mesesFGTS;
   const fgts13 = decimoTerceiro * 0.08;
   const fgtsFerias = (feriasProporcionais + feriasVencidas) * 0.08;
   const fgtsTotal = fgtsSalario + fgts13 + fgtsFerias;
   const multaFGTS = tipoDemissao === 'semJusta' ? fgtsTotal * 0.4 : 0;
 
-  // Descontos fiscais
-  const baseINSS = saldoSalario + avisoPrevio + decimoTerceiro + tercoVencidas + tercoProporcionais;
+  // Descontos fiscais (sem terço férias)
+  const baseINSS = saldoSalario + avisoPrevio + decimoTerceiro;
   const inss = calcularINSSProgressivo(baseINSS);
   const baseIR = baseINSS - inss;
   const ir = calcularIRRF(baseIR, dependentes);
@@ -195,7 +190,7 @@ function calcularRescisao() {
   // ✅ MOSTRAR TODOS RESULTADOS
   const resultado = document.getElementById('resultadoRescisao');
   const linhaFeriasVencidas = document.getElementById('linhaFeriasVencidas');
-  
+
   linhaFeriasVencidas.style.display = qtdFeriasVencidas > 0 ? 'block' : 'none';
   resultado.style.display = 'block';
 
@@ -205,7 +200,7 @@ function calcularRescisao() {
   document.getElementById('resSaldo').innerText = formatBRL(saldoSalario);
   document.getElementById('resAviso').innerText = formatBRL(avisoPrevio);
   document.getElementById('resFerias').innerText = formatBRL(feriasTotal);
-  document.getElementById('resFeriasVencidas').innerText = formatBRL(tercoVencidas);
+  document.getElementById('resFeriasVencidas').innerText = formatBRL(feriasVencidas + tercoVencidas);
   document.getElementById('res13').innerText = formatBRL(decimoTerceiro);
   document.getElementById('resFGTS').innerText = formatBRL(fgtsTotal);
   document.getElementById('resMulta').innerText = formatBRL(multaFGTS);
