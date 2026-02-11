@@ -3,23 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Calculadora de Rescisão Online 2026 | Meu Dividendo</title>
-<meta name="description" content="Use a calculadora de rescisão online para descobrir quanto você tem a receber em caso de demissão. Inclui saldo, aviso prévio, férias, 13º, FGTS e descontos de INSS e IR.">
-<meta name="keywords" content="calculadora rescisão, rescisão online, calcular rescisão, aviso prévio, FGTS, férias proporcionais, 13º salário, INSS, IR">
-<meta name="author" content="Meu Dividendo">
+<meta name="description" content="Use a calculadora de rescisão online para descobrir quanto você tem a receber em caso de demissão.">
+<meta name="keywords" content="calculadora rescisão, rescisão online, calcular rescisão, FGTS, férias, 13º">
 
-<!-- CSS -->
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/calculadora.css">
-
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 1200px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+header { background: white; padding: 1rem 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.site-title a { color: #28a745; text-decoration: none; font-size: 1.8rem; font-weight: bold; }
+.menu { font-size: 1.5rem; cursor: pointer; color: #28a745; }
+.menu-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 0 0 15px 15px; }
+.menu-links.show { display: block; }
+.menu-links ul { list-style: none; padding: 1rem; }
+.menu-links li { margin: 0.5rem 0; }
+.menu-links a { color: #333; text-decoration: none; display: block; padding: 0.5rem 1rem; border-radius: 8px; transition: background 0.3s; }
+.menu-links a:hover { background: #28a745; color: white; }
+h1 { text-align: center; color: #28a745; margin: 2rem 0; font-size: 2.5rem; }
+.calc-box { background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); margin: 2rem 0; }
+.inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+.input-group { display: flex; flex-direction: column; }
+label { font-weight: 600; margin-bottom: 0.5rem; color: #555; }
+input, select { padding: 12px 15px; border: 2px solid #e1e5e9; border-radius: 10px; font-size: 16px; transition: border-color 0.3s, box-shadow 0.3s; }
+input:focus, select:focus { outline: none; border-color: #28a745; box-shadow: 0 0 0 3px rgba(40,167,69,0.1); }
+.calc-btn { background: linear-gradient(45deg, #28a745, #20c997); color: white; padding: 18px; border: none; border-radius: 15px; font-size: 1.3rem; font-weight: bold; cursor: pointer; width: 100%; transition: transform 0.3s, box-shadow 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+.calc-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(40,167,69,0.4); }
+.result { background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 2.5rem; border-radius: 20px; margin: 2rem 0; box-shadow: 0 20px 40px rgba(40,167,69,0.3); display: none; }
+.result h2 { margin-bottom: 2rem; font-size: 2rem; text-align: center; }
+.result p { background: rgba(255,255,255,0.95); color: #333; margin: 1rem 0; padding: 1.2rem; border-radius: 12px; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.result p strong { color: #28a745; }
+.total { background: rgba(255,255,255,0.95) !important; color: #28a745 !important; font-size: 1.8rem !important; font-weight: bold !important; border-left: 6px solid #28a745 !important; }
+.faq { margin: 3rem 0; }
+.faq h2 { color: #28a745; margin-bottom: 1.5rem; text-align: center; }
+.faq h3 { color: #333; margin: 1.5rem 0 0.5rem 0; }
+.faq p { background: white; padding: 1rem 1.5rem; border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+footer { background: white; padding: 2rem; border-radius: 15px; text-align: center; margin-top: 3rem; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); }
+footer a { color: #28a745; text-decoration: none; margin: 0 0.5rem; }
+@media (max-width: 768px) { .inputs { grid-template-columns: 1fr; } header { flex-direction: column; gap: 1rem; } }
+</style>
 </head>
 <body>
 
-<!-- ====== HEADER ====== -->
+<!-- HEADER COM MENU HAMBÚRGUER -->
 <header>
   <div class="menu" onclick="toggleMenu()">☰</div>
   <h1 class="site-title"><a href="index.html">Meu Dividendo</a></h1>
@@ -29,7 +54,7 @@
       <li><a href="calculadora.html">Calculadora de Juros Compostos</a></li>
       <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
       <li><a href="calculadora-pis.html">Calculadora de PIS</a></li>
-      <li><a href="calculadora-ir.html">Calculadora de IR sobre Investimentos</a></li>
+      <li><a href="calculadora-ir.html">Calculadora de IR</a></li>
       <li><a href="calculadora-rescisao.html">Calculadora de Rescisão</a></li>
       <li><a href="calculadora-quitacao.html">Calculadora de Quitação</a></li>
       <li><a href="quanto-investir-por-mes.html">Quanto investir por mês</a></li>
@@ -38,282 +63,357 @@
 </header>
 
 <main>
-  <h1 class="page-title">Calculadora de Rescisão 2026</h1>
+  <h1>Calculadora de Rescisão 2026</h1>
 
   <!-- EXPLICAÇÃO -->
-  <div style="text-align: left; display: inline-block; max-width: 600px;">
-    <p><strong>O que é a Calculadora de Rescisão?</strong><br>
-    Descubra quanto você tem a receber em caso de demissão de forma simples e rápida. A calculadora inclui:</p>
-</div>
-    
-<div style="text-align: left; display: inline-block; max-width: 600px;">
-      <p>
-      <p>Saldo de salário</p>
-      <p>Aviso prévio indenizado</p>
-      <p>Férias proporcionais + 1/3</p>
-      <p>13º proporcional</p>
-      <p>FGTS e multa de 40%</p>
-      <p>Descontos de INSS e IR</p>
-    <p>Perfeita para empregados que desejam simular sua rescisão e planejar seus recebíveis.</p>
+  <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+    <p style="font-size: 1.2rem; color: #555; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+      <strong>💡 Descubra quanto você tem a receber em caso de demissão!</strong><br><br>
+      Inclui <strong>saldo salário, aviso prévio, férias + 1/3, 13º proporcional, FGTS, multa 40%, INSS e IRRF</strong>.<br>
+      <em>100% atualizado com tabelas fiscais 2026 e regras CLT</em>
+    </p>
   </div>
 
   <!-- CALCULADORA -->
   <div class="calc-box">
     <div class="inputs">
       <div class="input-group">
-        <label>Salário Mensal (R$)</label>
-        <input type="number" id="salario" value="insira o seu salário" min="0">
+        <label>💰 Salário Mensal (R$)</label>
+        <input type="number" id="salario" value="4200" min="0" step="0.01">
       </div>
+      
       <div class="input-group">
-        <label>Data de Admissão</label>
+        <label>📅 Data de Admissão</label>
         <input type="date" id="admissao">
       </div>
+      
       <div class="input-group">
-        <label>Data de Demissão</label>
+        <label>📅 Data de Demissão</label>
         <input type="date" id="demissao">
       </div>
 
       <div class="input-group">
-        <label>Tipo de Demissão</label>
+        <label>⚖️ Tipo de Demissão</label>
         <select id="tipoDemissao">
           <option value="semJusta">Sem Justa Causa</option>
           <option value="comJusta">Com Justa Causa</option>
         </select>
-  <div class="input-group">
-  <label>Aviso Prévio Indenizado</label>
-  <select id="avisoIndenizado">
-    <option value="nao">Não</option>
-    <option value="sim">Sim</option>
-  </select>
-</div>
-   <div class="input-group">
-  <label>Quantos períodos de férias vencidas?</label>
-  <select id="qtdFeriasVencidas">
-    <option value="0">Nenhuma</option>
-    <option value="1">1 período vencido</option>
-    <option value="2">2 períodos ou mais (em dobro)</option>
-  </select>
-</div>
-<div class="input-group">
-  <label>Dependentes para IRRF</label>
-  <input type="number" id="dependentes" value="0" min="0">
-</div>
-
+      </div>
+      
       <div class="input-group">
-        <label>Periculosidade (%)</label>
+        <label>⏰ Aviso Prévio Indenizado</label>
+        <select id="avisoIndenizado">
+          <option value="nao">Não</option>
+          <option value="sim">Sim</option>
+        </select>
+      </div>
+      
+      <div class="input-group">
+        <label>🏖️ Férias Vencidas</label>
+        <select id="qtdFeriasVencidas">
+          <option value="0">Nenhuma</option>
+          <option value="1">1 período vencido</option>
+          <option value="2">2 períodos ou mais (em dobro)</option>
+        </select>
+      </div>
+      
+      <div class="input-group">
+        <label>⚠️ Periculosidade (%)</label>
         <input type="number" id="periculosidade" value="0" min="0" max="100">
       </div>
+      
       <div class="input-group">
-        <label>Insalubridade (%)</label>
+        <label>☣️ Insalubridade (%)</label>
         <input type="number" id="insalubridade" value="0" min="0" max="100">
       </div>
+      
       <div class="input-group">
-        <label>Horas Extras (R$)</label>
-        <input type="number" id="horasExtras" value="0" min="0">
+        <label>⏱️ Horas Extras (R$)</label>
+        <input type="number" id="horasExtras" value="0" min="0" step="0.01">
+      </div>
+      
+      <div class="input-group">
+        <label>👨‍👩‍👧 Dependentes (IRRF)</label>
+        <input type="number" id="dependentes" value="0" min="0">
       </div>
     </div>
 
-    <button class="calc-btn" onclick="calcularRescisao()">Calcular Rescisão</button>
+    <button class="calc-btn" onclick="calcularRescisao()">🚀 Calcular Rescisão Completa</button>
   </div>
 
   <!-- RESULTADO -->
-<div id="resultadoRescisao" class="result" style="display:none; margin-top:20px;">
-  <h2>Resultado da Rescisão</h2>
+  <div id="resultadoRescisao" class="result">
+    <h2>📊 Resultado da Rescisão - CLT 2026</h2>
+    
+    <p><strong>📅 Meses trabalhados:</strong> <span id="resMeses">-</span></p>
+    <p><strong>🏦 Meses para FGTS:</strong> <span id="resMesesFGTS">-</span></p>
+    <p><strong>🎄 Meses para 13º (ano demissão):</strong> <span id="resMeses13">-</span></p>
 
-
-<p><strong>Meses trabalhados:</strong> <span id="resMeses"></span></p>
-<p><strong>Meses para FGTS:</strong> <span id="resMesesFGTS"></span></p>
-<p><strong>Meses para 13°:</strong> <span id="resMeses13"></span></p>
-
-  <p><strong>Saldo de salário:</strong> <span id="resSaldo"></span></p>
-  <p><strong>Aviso prévio:</strong> <span id="resAviso"></span></p>
-
-  <p><strong>Férias proporcionais + 1/3:</strong> <span id="resFerias"></span></p>
-  <p id="linhaFeriasVencidas" style="display:none;">
-    <strong>Férias vencidas + 1/3:</strong> <span id="resFeriasVencidas"></span>
-  </p>
-
-  <p><strong>13º proporcional:</strong> <span id="res13"></span></p>
-  <p><strong>FGTS:</strong> <span id="resFGTS"></span></p>
-  <p><strong>Multa FGTS (40%):</strong> <span id="resMulta"></span></p>
-  <p><strong>INSS:</strong> <span id="resINSS"></span></p>
-  <p><strong>IRRF:</strong> <span id="resIR"></span></p>
-
-  <p id="resTotalLiquido">
-    <strong>Total líquido:</strong> <span id="resTotal"></span>
-  </p>
-
-  <canvas id="graficoRescisao" style="margin-top:20px;"></canvas>
-</div>
+    <p><strong>💵 Saldo de salário:</strong> <span id="resSaldo">-</span></p>
+    <p><strong>⏰ Aviso prévio:</strong> <span id="resAviso">-</span></p>
+    <p><strong>🏖️ Férias proporcionais + 1/3:</strong> <span id="resFerias">-</span></p>
+    <p id="linhaFeriasVencidas" style="display:none;">
+      <strong>🏖️ Férias vencidas + 1/3:</strong> <span id="resFeriasVencidas">-</span>
+    </p>
+    <p><strong>🎄 13º proporcional:</strong> <span id="res13">-</span></p>
+    <p><strong>🏦 FGTS depositado:</strong> <span id="resFGTS">-</span></p>
+    <p><strong>💥 Multa FGTS (40%):</strong> <span id="resMulta">-</span></p>
+    
+    <hr style="border: 2px solid rgba(255,255,255,0.3); margin: 2rem 0;">
+    
+    <p><strong>📉 INSS:</strong> <span id="resINSS">-</span></p>
+    <p><strong>💸 IRRF:</strong> <span id="resIR">-</span></p>
+    
+    <hr style="border: 3px solid rgba(255,255,255,0.5); margin: 2rem 0;">
+    
+    <p id="resTotalLiquido" class="total">
+      💎 <strong>TOTAL LÍQUIDO A RECEBER:</strong> <span id="resTotal">-</span>
+    </p>
+  </div>
 
   <!-- FAQ -->
- <div style="text-align: left; display: inline-block; max-width: 600px;">
-  <p>
-  <h2 style="margin-bottom:30px;">Perguntas Frequentes</h2>
-</p>
-</div>
-
-<div style="text-align: left; display: inline-block; max-width: 600px;">
-    <p>
-    <h3>Quem tem direito à rescisão?</h3>
-    <p>
-      Todo trabalhador com contrato registrado em carteira tem direito às verbas
-      rescisórias, conforme o tipo de desligamento e as regras da CLT.
-    </p>
-    </p>
+  <div class="faq">
+    <h2>❓ Perguntas Frequentes</h2>
+    
+    <div style="max-width: 600px; margin: 0 auto;">
+      <h3>Quem tem direito à rescisão?</h3>
+      <p>Todo trabalhador com contrato registrado em carteira tem direito às verbas rescisórias, conforme o tipo de desligamento e as regras da CLT.</p>
+      
+      <h3>O que é aviso prévio indenizado?</h3>
+      <p>O aviso prévio indenizado ocorre quando a empresa dispensa o funcionário de trabalhar o período do aviso, pagando o valor correspondente na rescisão (30 + 3 dias por ano trabalhado, até 90 dias).</p>
+      
+      <h3>Como são calculadas as férias proporcionais?</h3>
+      <p>As férias proporcionais são calculadas com base nos meses trabalhados no período aquisitivo, acrescidas do adicional constitucional de 1/3. Férias vencidas acima de 1 ano são pagas em dobro.</p>
+      
+      <h3>O que é FGTS e multa de 40%?</h3>
+      <p>O FGTS é o depósito mensal de 8% sobre o salário feito pelo empregador. Na demissão sem justa causa, o trabalhador recebe uma multa de 40% sobre o total depositado durante o contrato.</p>
+    </div>
   </div>
-
-<div style="text-align: left; display: inline-block; max-width: 600px;">
-  <p>
-    <h3>O que é aviso prévio indenizado?</h3>
-    <p>
-      O aviso prévio indenizado ocorre quando a empresa dispensa o funcionário
-      de trabalhar o período do aviso, pagando o valor correspondente na rescisão.
-    </p>
-   </p>
-  </div>
-
-<div style="text-align: left; display: inline-block; max-width: 600px;">
-  <p>
-    <h3>Como são calculadas as férias proporcionais?</h3>
-    <p>
-      As férias proporcionais são calculadas com base nos meses trabalhados
-      no período aquisitivo, acrescidas do adicional constitucional de 1/3.
-    </p>
-</p>
-  </div>
-
-  
-<div style="text-align: left; display: inline-block; max-width: 600px;">
-    <p>
-    <h3>O que é FGTS e multa de 40%?</h3>
-    <p>
-      O FGTS é o depósito mensal feito pelo empregador. Na demissão sem justa causa,
-      o trabalhador também recebe uma multa de 40% sobre o total depositado.
-    </p>
-    </p>
-  </div>
-
-</section>
+</main>
 
 <!-- RODAPÉ -->
 <footer class="rodape">
-  <p>&copy; 2026 Meu Dividendo. Todos os direitos reservados.</p>
+  <p>&copy; 2026 Meu Dividendo. Todos os direitos reservados. | Calculadora atualizada com CLT 2026</p>
   <p>
     <a href="index.html">Início</a> |
     <a href="politica-privacidade.html">Política de Privacidade</a>
   </p>
 </footer>
 
-<!-- SCRIPTS -->
-
+<!-- JS COMPLETO -->
 <script>
-// MENU HAMBÚRGUER
+// ================= MENU HAMBÚRGUER ✅ =================
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  menu.classList.toggle('show');
 }
 
-// FORMATAÇÃO MOEDA
-function formatBRL(valor) {
-  return valor.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  });
+// ================= FORMATADOR BRL ✅ =================
+function formatBRL(v) {
+  return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
-// CALCULA MESES (regra dos 15 dias)
-function calcularMeses(dataInicio, dataFim) {
-  let meses = (dataFim.getFullYear() - dataInicio.getFullYear()) * 12;
-  meses += dataFim.getMonth() - dataInicio.getMonth();
+// ================= TABELAS FISCAIS 2026 ✅ =================
+const TABELA_INSS = [
+  { ate: 1412.00, aliquota: 0.075 },
+  { ate: 2666.68, aliquota: 0.09 },
+  { ate: 4000.03, aliquota: 0.12 },
+  { ate: 7786.02, aliquota: 0.14 },
+  { ate: Infinity, aliquota: 0.14, teto: 908.86 }
+];
 
-  if (dataFim.getDate() >= 15) meses += 1;
-  return meses < 0 ? 0 : meses;
+const TABELA_IRRF = [
+  { ate: 2259.20, aliquota: 0, deducao: 0 },
+  { ate: 2826.65, aliquota: 0.075, deducao: 169.54 },
+  { ate: 3751.05, aliquota: 0.15, deducao: 381.44 },
+  { ate: 4664.68, aliquota: 0.225, deducao: 662.66 },
+  { ate: Infinity, aliquota: 0.275, deducao: 896.00 }
+];
+
+// ================= INSS PROGRESSIVO ✅ =================
+function calcularINSSProgressivo(base) {
+  let inss = 0, anterior = 0;
+  for (let i = 0; i < TABELA_INSS.length - 1; i++) {
+    const faixa = TABELA_INSS[i];
+    const proxima = TABELA_INSS[i + 1].ate;
+    const limite = Math.min(base, proxima);
+    if (limite > anterior) {
+      inss += (limite - anterior) * faixa.aliquota;
+    }
+    anterior = proxima;
+    if (base <= faixa.ate) break;
+  }
+  return Math.min(inss, TABELA_INSS[4].teto);
 }
 
-// CALCULADORA DE RESCISÃO
+// ================= IRRF PROGRESSIVO ✅ =================
+function calcularIRRF(baseIR, dependentes = 0) {
+  const deducaoDependentes = dependentes * 189.59;
+  const baseCalculada = Math.max(0, baseIR - deducaoDependentes);
+  let ir = 0;
+  for (let faixa of TABELA_IRRF) {
+    if (baseCalculada <= faixa.ate) {
+      ir = (baseCalculada * faixa.aliquota) - faixa.deducao;
+      break;
+    }
+  }
+  return Math.max(0, ir);
+}
+
+// ================= MESES CLT (REGRA 15 DIAS) ✅ =================
+function calcularMesesCLT(admissao, demissao) {
+  const ini = new Date(admissao);
+  const fim = new Date(demissao);
+  if (fim <= ini) return null;
+
+  let mesesContrato = 0;
+  let mesesFGTS = 0;
+  let cursor = new Date(ini.getFullYear(), ini.getMonth(), 1);
+  
+  while (cursor <= fim) {
+    const primeiro = new Date(cursor);
+    const ultimo = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
+    const inicioMes = ini > primeiro ? ini : primeiro;
+    const fimMes = fim < ultimo ? fim : ultimo;
+
+    const dias = Math.floor((fimMes - inicioMes) / (1000 * 60 * 60 * 24)) + 1;
+    mesesContrato++;
+    if (dias >= 15) mesesFGTS++;
+    
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
+  return { mesesContrato, mesesFGTS };
+}
+
+// ================= 13º SÓ ANO DA DEMISSÃO ✅ =================
+function calcularMeses13(admissao, demissao) {
+  const ini = new Date(admissao);
+  const fim = new Date(demissao);
+  const anoDemissao = fim.getFullYear();
+  const inicioAno = new Date(anoDemissao, 0, 1);
+  const inicio = ini > inicioAno ? ini : inicioAno;
+
+  let meses13 = 0;
+  let cursor = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
+
+  while (cursor <= fim) {
+    const primeiroDia = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
+    const ultimoDia = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
+    const inicioMes = inicio > primeiroDia ? inicio : primeiroDia;
+    const fimMes = fim < ultimoDia ? fim : ultimoDia;
+
+    const dias = Math.floor((fimMes - inicioMes) / (1000 * 60 * 60 * 24)) + 1;
+    if (dias >= 15) meses13++;
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
+  return Math.min(meses13, 12);
+}
+
+// ================= CALCULADORA PRINCIPAL ✅ =================
 function calcularRescisao() {
-  const salario = Number(document.getElementById('salario').value);
-  const admissao = new Date(document.getElementById('admissao').value);
-  const demissao = new Date(document.getElementById('demissao').value);
+  // Todos os inputs (100% dinâmico)
+  const salario = Number(document.getElementById('salario').value) || 0;
+  const admissao = document.getElementById('admissao').value;
+  const demissao = document.getElementById('demissao').value;
   const tipoDemissao = document.getElementById('tipoDemissao').value;
-  const avisoIndenizado =
-    document.getElementById('avisoIndenizado').value === 'sim';
+  const avisoIndenizado = document.getElementById('avisoIndenizado').value === 'sim';
+  const qtdFeriasVencidas = Number(document.getElementById('qtdFeriasVencidas').value) || 0;
+  const periculosidadePerc = Number(document.getElementById('periculosidade').value) || 0;
+  const insalubridadePerc = Number(document.getElementById('insalubridade').value) || 0;
+  const horasExtras = Number(document.getElementById('horasExtras').value) || 0;
+  const dependentes = Number(document.getElementById('dependentes').value) || 0;
 
-  if (!salario || isNaN(admissao) || isNaN(demissao)) {
-    alert('Preencha salário, admissão e demissão corretamente.');
+  if (!salario || !admissao || !demissao) {
+    alert('❌ Preencha salário, admissão e demissão corretamente.');
     return;
   }
 
-  /* =====================
-     MESES
-  ===================== */
-  const mesesTrabalhados = calcularMeses(admissao, demissao);
-  let mesesFGTS = mesesTrabalhados;
-
-  if (tipoDemissao === 'semJusta' && avisoIndenizado) {
-    mesesFGTS += 1;
+  const mesesCLT = calcularMesesCLT(admissao, demissao);
+  if (!mesesCLT) {
+    alert('❌ Data de admissão deve ser anterior à demissão.');
+    return;
   }
 
-  /* =====================
-     SALDO DE SALÁRIO
-  ===================== */
-  const diasTrabalhados = demissao.getDate();
-  const saldoSalario = (salario / 30) * diasTrabalhados;
+  const mesesPara13 = calcularMeses13(admissao, demissao);
+  const { mesesContrato, mesesFGTS } = mesesCLT;
 
-  /* =====================
-     AVISO PRÉVIO
-  ===================== */
-  const avisoPrevio =
-    tipoDemissao === 'semJusta' && avisoIndenizado ? salario : 0;
+  // Salários
+  const salarioBaseFGTS = salario;
+  const salarioBaseCompleto = salario + salario * (periculosidadePerc/100 + insalubridadePerc/100) + horasExtras;
 
-  /* =====================
-     FÉRIAS
-  ===================== */
-  const ferias = (salario / 12) * mesesTrabalhados;
-  const feriasComTerco = ferias * 1.3333;
+  // Verbas rescisórias
+  const diaDemissao = new Date(demissao).getDate();
+  const saldoSalario = (salarioBaseCompleto / 30) * diaDemissao;
+  
+  const anosTrabalhados = Math.floor(mesesContrato / 12);
+  const diasAvisoTotal = Math.min(30 + 3 * anosTrabalhados, 90);
+  const avisoPrevio = tipoDemissao === 'semJusta' && avisoIndenizado ? (salarioBaseCompleto / 30) * diasAvisoTotal : 0;
 
-  /* =====================
-     13º
-  ===================== */
-  const decimoTerceiro = (salario / 12) * mesesTrabalhados;
+  // Férias
+  let feriasVencidas = 0, tercoVencidas = 0;
+  if (qtdFeriasVencidas === 1) {
+    feriasVencidas = salario;
+    tercoVencidas = salario / 3;
+  } else if (qtdFeriasVencidas >= 2) {
+    feriasVencidas = salario * 2;
+    tercoVencidas = (salario * 2) / 3;
+  }
+  const mesesFeriasProp = mesesContrato % 12 || 12;
+  const feriasProporcionais = (salario / 12) * mesesFeriasProp;
+  const tercoProporcionais = feriasProporcionais / 3;
+  const feriasTotal = feriasVencidas + tercoVencidas + feriasProporcionais + tercoProporcionais;
 
-  /* =====================
-     FGTS
-  ===================== */
-  const fgts = salario * 0.08 * mesesFGTS;
-  const multaFGTS =
-    tipoDemissao === 'semJusta' ? fgts * 0.4 : 0;
+  // 13º (só ano da demissão)
+  const decimoTerceiro = (salarioBaseCompleto / 12) * mesesPara13;
 
-  /* =====================
-     TOTAL
-  ===================== */
-  const totalLiquido =
-    saldoSalario +
-    avisoPrevio +
-    feriasComTerco +
-    decimoTerceiro +
-    multaFGTS;
+  // FGTS
+  const fgtsMensal = salarioBaseFGTS * 0.08 * mesesFGTS;
+  const fgts13 = decimoTerceiro * 0.08;
+  const fgtsFerias = (feriasProporcionais + feriasVencidas) * 0.08;
+  const fgtsTotal = fgtsMensal + fgts13 + fgtsFerias;
+  const multaFGTS = tipoDemissao === 'semJusta' ? fgtsTotal * 0.4 : 0;
 
-  /* =====================
-     MOSTRAR RESULTADO
-  ===================== */
-  document.getElementById('resultadoRescisao').style.display = 'block';
+  // Descontos (sem terço)
+  const baseINSS = saldoSalario + avisoPrevio + decimoTerceiro;
+  const inss = calcularINSSProgressivo(baseINSS);
+  const baseIR = baseINSS - inss;
+  const ir = calcularIRRF(baseIR, dependentes);
 
-  document.getElementById('resMeses').innerText =
-    mesesTrabalhados + ' meses';
+  const totalLiquido = saldoSalario + avisoPrevio + feriasTotal + decimoTerceiro + multaFGTS - inss - ir;
 
-  document.getElementById('resMesesFGTS').innerText =
-    mesesFGTS + ' meses';
-
+  // Mostrar resultados
+  document.getElementById('resMeses').innerText = `${mesesContrato} meses`;
+  document.getElementById('resMesesFGTS').innerText = `${mesesFGTS} meses`;
+  document.getElementById('resMeses13').innerText = `${mesesPara13} meses`;
   document.getElementById('resSaldo').innerText = formatBRL(saldoSalario);
   document.getElementById('resAviso').innerText = formatBRL(avisoPrevio);
-  document.getElementById('resFerias').innerText = formatBRL(feriasComTerco);
+  document.getElementById('resFerias').innerText = formatBRL(feriasProporcionais + tercoProporcionais);
+  document.getElementById('resFeriasVencidas').innerText = formatBRL(feriasVencidas + tercoVencidas);
   document.getElementById('res13').innerText = formatBRL(decimoTerceiro);
-  document.getElementById('resFGTS').innerText = formatBRL(fgts);
+  document.getElementById('resFGTS').innerText = formatBRL(fgtsTotal);
   document.getElementById('resMulta').innerText = formatBRL(multaFGTS);
+  document.getElementById('resINSS').innerText = formatBRL(inss);
+  document.getElementById('resIR').innerText = formatBRL(ir);
   document.getElementById('resTotal').innerText = formatBRL(totalLiquido);
+
+  // Mostrar ou ocultar férias vencidas
+  const linhaFeriasVencidas = document.getElementById('linhaFeriasVencidas');
+  if (feriasVencidas > 0) {
+    linhaFeriasVencidas.style.display = 'block';
+  } else {
+    linhaFeriasVencidas.style.display = 'none';
+  }
+
+  // Exibir resultado
+  document.getElementById('resultadoRescisao').style.display = 'block';
+
+  // Scroll suave até o resultado
+  document.getElementById('resultadoRescisao').scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
 }
 </script>
+
 </body>
 </html>
