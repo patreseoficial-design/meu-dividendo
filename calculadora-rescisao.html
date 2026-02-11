@@ -295,7 +295,12 @@ function calcularRescisao() {
   const multaFGTS = tipoDemissao === 'semJusta' ? fgtsTotal * 0.4 : 0;  
   
   // BASE INSS/IRRF (APENAS VERBAS TRIBUTÁVEIS)  
-  const baseINSS = saldoSalario + avisoPrevio + decimoTerceiro + feriasVenc + feriasProp;  
+  const baseINSS =
+  saldoSalario +
+  avisoPrevio +
+  decimoTerceiro +
+  feriasVenc + tercoVenc +
+  feriasProp + tercoProp; 
   const inss = calcularINSS(baseINSS);  
   const baseIR = baseINSS - inss;  
   const ir = calcularIRRF(baseIR, dependentes);  
