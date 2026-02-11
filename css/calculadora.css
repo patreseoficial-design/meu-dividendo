@@ -614,3 +614,11 @@ text-decoration: underline; / opcional, sublinha */
   width: 100%;
   height: 300px; /* define altura fixa */
 }
+/* Para deixar ainda melhor: */
+.centralizado {
+  display: flex;
+  justify-content: center;
+  text-align: left;
+  max-width: 600px;
+  margin: 0 auto;
+}
