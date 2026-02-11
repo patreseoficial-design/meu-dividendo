@@ -230,3 +230,26 @@ body {
   padding: 40px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);  /* Sombra sutil */
 }
+/* Estilo Investidor Sardinha */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #2d3748;
+  background: #fafbfc;
+  scroll-behavior: smooth;
+}
+
+body {
+  max-width: 850px;      /* Largura igual ao R7 */
+  margin: 0 auto;        /* Centraliza tudo */
+  padding: 30px 20px;    /* Espaçamento lateral */
+}
