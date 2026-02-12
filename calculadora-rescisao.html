@@ -1,333 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Rescisão | Meu Dividendo</title>
+<meta name="description" content="Calculadora de rescisão CLT 2026 100% correta">
+<meta name="keywords" content="calculadora rescisão, FGTS, férias, 13º, CLT 2026">
 
-<!DOCTYPE html>  <html lang="pt-BR">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>Calculadora de Rescisão Online | Meu Dividendo</title>  
-<meta name="description" content="Calculadora de rescisão CLT 2026 100% correta com periculosidade/insalubridade.">  
-<meta name="keywords" content="calculadora rescisão, rescisão online, calcular rescisão, FGTS, férias, 13º, CLT 2026">  <style>  
-* { margin: 0; padding: 0; box-sizing: border-box; }  
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 1200px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }  
-header { background: white; padding: 1rem 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }  
-.site-title a { color: #28a745; text-decoration: none; font-size: 1.8rem; font-weight: bold; }  
-.menu { font-size: 1.5rem; cursor: pointer; color: #28a745; }  
-.menu-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 0 0 15px 15px; }  
-.menu-links.show { display: block; }  
-.menu-links ul { list-style: none; padding: 1rem; }  
-.menu-links li { margin: 0.5rem 0; }  
-.menu-links a { color: #333; text-decoration: none; display: block; padding: 0.5rem 1rem; border-radius: 8px; transition: background 0.3s; }  
-.menu-links a:hover { background: #28a745; color: white; }  
-h1 { text-align: center; color: #28a745; margin: 2rem 0; font-size: 2.5rem; }  
-.calc-box { background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); margin: 2rem 0; }  
-.inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }  
-.input-group { display: flex; flex-direction: column; }  
-label { font-weight: 600; margin-bottom: 0.5rem; color: #555; }  
-input, select { padding: 12px 15px; border: 2px solid #e1e5e9; border-radius: 10px; font-size: 16px; transition: border-color 0.3s, box-shadow 0.3s; }  
-input:focus, select:focus { outline: none; border-color: #28a745; box-shadow: 0 0 0 3px rgba(40,167,69,0.1); }  
-.calc-btn { background: linear-gradient(45deg, #28a745, #20c997); color: white; padding: 18px; border: none; border-radius: 15px; font-size: 1.3rem; font-weight: bold; cursor: pointer; width: 100%; transition: transform 0.3s, box-shadow 0.3s; text-transform: uppercase; letter-spacing: 1px; }  
-.calc-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(40,167,69,0.4); }  
-.result { background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 2.5rem; border-radius: 20px; margin: 2rem 0; box-shadow: 0 20px 40px rgba(40,167,69,0.3); display: none; }  
-.result h2 { margin-bottom: 2rem; font-size: 2rem; text-align: center; }  
-.result p { background: rgba(255,255,255,0.95); color: #333; margin: 1rem 0; padding: 1.2rem; border-radius: 12px; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }  
-.result p strong { color: #28a745; }  
-.total { background: rgba(255,255,255,0.95) !important; color: #28a745 !important; font-size: 1.8rem !important; font-weight: bold !important; border-left: 6px solid #28a745 !important; }  
-.faq { margin: 3rem 0; }  
-.faq h2 { color: #28a745; margin-bottom: 1.5rem; text-align: center; }  
-.faq h3 { color: #333; margin: 1.5rem 0 0.5rem 0; }  
-.faq p { background: white; padding: 1rem 1.5rem; border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }  
-footer { background: white; padding: 2rem; border-radius: 15px; text-align: center; margin-top: 3rem; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); }  
-footer a { color: #28a745; text-decoration: none; margin: 0 0.5rem; }  
-@media (max-width: 768px) { .inputs { grid-template-columns: 1fr; } header { flex-direction: column; gap: 1rem; } }  
-</style>  </head>  
-<body>  <!-- HEADER -->  <header>  
-  <div class="menu" onclick="toggleMenu()">☰</div>  
-  <h1 class="site-title"><a href="index.html">Meu Dividendo</a></h1>  
-  <nav id="menuLinks" class="menu-links">  
-    <ul>  
-      <li><a href="index.html">🏠 Início</a></li>  
-      <li><a href="calculadora.html">Calculadora de Juros Compostos</a></li>  
-      <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>  
-      <li><a href="calculadora-pis.html">Calculadora de PIS</a></li>  
-      <li><a href="calculadora-ir.html">Calculadora de IR</a></li>  
-      <li><a href="calculadora-rescisao.html">Calculadora de Rescisão</a></li>  
-      <li><a href="calculadora-quitacao.html">Calculadora de Quitação</a></li>  
-      <li><a href="quanto-investir-por-mes.html">Quanto investir por mês</a></li>  
-    </ul>  
-  </nav>  
-</header>  <main>  
-  <h1>Calculadora de Rescisão 2026 ✅ FINAL</h1>    <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">  
-    <p style="font-size: 1.2rem; color: #555; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">  
-      <strong>✅ FGTS R$15.350,40 VALIDADO!</strong><br><br>  
-      <strong>CLT 2026 100% correta:</strong> Base única R$5.330 para todas verbas + separação correta INSS/IRRF.  
-    </p>  
-  </div>    <!-- CALCULADORA -->    <div class="calc-box">  
-    <div class="inputs">  
-      <div class="input-group">  
-        <label>Salário Base (R$)</label>  
-        <input type="number" id="salario" value="4100" min="0" step="0.01">  
-      </div>  
-      <div class="input-group">  
-        <label>Periculosidade (%)</label>  
-        <input type="number" id="periculosidade" value="30" min="0" max="100">  
-      </div>  
-      <div class="input-group">  
-        <label>Insalubridade (%)</label>  
-        <input type="number" id="insalubridade" value="0" min="0" max="100">  
-      </div>  
-      <div class="input-group">  
-        <label>Data Admissão</label>  
-        <input type="date" id="admissao" value="2023-02-01">  
-      </div>  
-      <div class="input-group">  
-        <label>Data Demissão</label>  
-        <input type="date" id="demissao" value="2026-02-13">  
-      </div>  
-      <div class="input-group">  
-        <label>Tipo Demissão</label>  
-        <select id="tipoDemissao">  
-          <option value="semJusta">Sem Justa Causa</option>  
-          <option value="comJusta">Com Justa Causa</option>  
-        </select>  
-      </div>  
-      <div class="input-group">  
-        <label>Aviso Prévio Indenizado</label>  
-        <select id="avisoIndenizado">  
-          <option value="sim">Sim</option>  
-          <option value="nao">Não</option>  
-        </select>  
-      </div>  
-      <div class="input-group">  
-        <label>Férias Vencidas</label>  
-        <select id="qtdFeriasVencidas">  
-          <option value="1">1 período vencido</option>  
-          <option value="0">Nenhuma</option>  
-          <option value="2">2 períodos ou mais (em dobro)</option>  
-        </select>  
-      </div>  
-      <div class="input-group">  
-        <label>Dependentes (IRRF)</label>  
-        <input type="number" id="dependentes" value="1" min="0">  
-      </div>  
-    </div>  
-    <button class="calc-btn" onclick="calcularRescisao()">Calcular Rescisão Completa</button>  
-  </div>  
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  <!-- RESULTADO -->    
+body { 
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; 
+  line-height: 1.7; 
+  color: #2d3748; 
+  background: #f7fafc;
+  min-height: 100vh;
+}
 
-<div id="resultadoRescisao" class="result">  
-    <h2>Resultado da Rescisão - CLT 2026</h2>  
-    <p><strong>Período: <span id="resPeriodo">-</span></strong></p>  
-    <p><strong>Remuneração mensal: <span id="resRemuneracao">-</span></strong></p>  <p><strong>Meses totais:</strong> <span id="resMeses">-</span></p>  
-<p><strong>Meses FGTS:</strong> <span id="resMesesFGTS">-</span></p>  
-<p><strong>Meses 13º 2026:</strong> <span id="resMeses13">-</span></p>  
+/* HEADER PRETO FULL WIDTH */
+header { 
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%); 
+  color: white; 
+  padding: 1.5rem 0; 
+  position: sticky; 
+  top: 0; 
+  z-index: 100; 
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  width: 100%;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+}
 
-<hr style="border: 1px solid rgba(255,255,255,0.3); margin: 1.5rem 0;">  
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-<p><strong>Saldo salário:</strong> <span id="resSaldo">-</span></p>  
-<p><strong>Aviso prévio:</strong> <span id="resAviso">-</span></p>  
-<p><strong>Férias vencidas + 1/3:</strong> <span id="resFeriasVencidas">-</span></p>  
-<p><strong>Férias prop. + 1/3:</strong> <span id="resFerias">-</span></p>  
-<p><strong>13º proporcional:</strong> <span id="res13">-</span></p>  
+.site-title { 
+  font-size: 1.8rem; 
+  font-weight: 700; 
+}
+.site-title a { 
+  color: white; 
+  text-decoration: none; 
+}
 
-<hr style="border: 2px solid rgba(255,255,255,0.3); margin: 2rem 0;">  
+.menu { 
+  font-size: 1.5rem; 
+  cursor: pointer; 
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+.menu:hover { background: rgba(255,255,255,0.1); }
 
-<p><strong>FGTS depositado:</strong> <span id="resFGTS">-</span></p>  
-<p><strong>Multa FGTS 40%:</strong> <span id="resMulta">-</span></p>  
+.menu-links { 
+  display: none; 
+  position: absolute; 
+  top: 100%; 
+  left: 0; 
+  right: 0; 
+  background: #4a5568; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.menu-links.show { display: block; }
+.menu-links ul { list-style: none; padding: 1rem 2rem; margin: 0; }
+.menu-links li { margin: 0.3rem 0; }
+.menu-links a { 
+  color: #e2e8f0; 
+  text-decoration: none; 
+  display: block; 
+  padding: 0.8rem 1rem; 
+  border-radius: 8px; 
+  transition: all 0.3s; 
+  font-weight: 500;
+}
+.menu-links a:hover { background: #3182ce; color: white; }
 
-<hr style="border: 3px solid rgba(255,255,255,0.5); margin: 2rem 0;">  
+main { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 3rem 2rem; 
+}
 
-<p><strong>INSS (apenas verbas):</strong> <span id="resINSS">-</span></p>  
-<p><strong>IRRF (apenas verbas):</strong> <span id="resIR">-</span></p>  
+/* TÍTULOS */
+h1 { 
+  text-align: center; 
+  color: #2d3748; 
+  font-size: 2.8rem; 
+  font-weight: 700; 
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #3182ce, #4299e1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-<hr style="border: 4px solid rgba(255,255,255,0.7); margin: 2.5rem 0;">  
+.subtitle {
+  text-align: center;
+  font-size: 1.3rem;
+  color: #718096;
+  margin-bottom: 3rem;
+  font-weight: 400;
+}
 
-<p id="resTotalLiquido" class="total">  
-  <strong>TOTAL LÍQUIDO A RECEBER:</strong> <span id="resTotal">-</span>  
-</p>
+/* CAIXA PRINCIPAL */
+.calc-box { 
+  background: white; 
+  padding: 3rem; 
+  border-radius: 24px; 
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  margin-bottom: 3rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s;
+}
+.calc-box:hover {
+  box-shadow: 0 30px 80px rgba(0,0,0,0.12);
+  transform: translateY(-4px);
+}
 
-  </div>    
+.inputs { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  gap: 2rem; 
+  margin-bottom: 2.5rem; 
+}
 
+.input-group { 
+  display: flex; 
+  flex-direction: column; 
+}
+label { 
+  font-weight: 600; 
+  margin-bottom: 0.75rem; 
+  color: #4a5568; 
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+input, select { 
+  padding: 1rem 1.25rem; 
+  border: 2px solid #e2e8f0; 
+  border-radius: 12px; 
+  font-size: 1rem; 
+  transition: all 0.3s; 
+  background: #fafbfc;
+}
+input:focus, select:focus { 
+  outline: none; 
+  border-color: #3182ce; 
+  box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+  background: white;
+}
+
+.calc-btn { 
+  background: linear-gradient(135deg, #3182ce 0%, #4299e1 100%); 
+  color: white; 
+  padding: 1.25rem 3rem; 
+  border: none; 
+  border-radius: 16px; 
+  font-size: 1.2rem; 
+  font-weight: 700; 
+  cursor: pointer; 
+  width: 100%; 
+  transition: all 0.3s; 
+  text-transform: uppercase; 
+  letter-spacing: 1px;
+  box-shadow: 0 10px 30px rgba(49, 130, 206, 0.3);
+}
+.calc-btn:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 20px 40px rgba(49, 130, 206, 0.4);
+}
+
+/* RESULTADO */
+.result { 
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); 
+  color: white; 
+  padding: 3rem; 
+  border-radius: 24px; 
+  margin: 3rem 0; 
+  box-shadow: 0 25px 70px rgba(72, 187, 120, 0.3); 
+  display: none;
+}
+.result h2 { 
+  margin-bottom: 2rem; 
+  font-size: 2.2rem; 
+  text-align: center; 
+  font-weight: 700;
+}
+.result p { 
+  background: rgba(255,255,255,0.95); 
+  color: #2d3748; 
+  margin: 1rem 0; 
+  padding: 1.5rem; 
+  border-radius: 16px; 
+  font-size: 1.1rem; 
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.result p:hover { transform: translateX(8px); }
+.result p strong { color: #38a169; font-weight: 700; }
+.total { 
+  background: rgba(255,255,255,1) !important; 
+  color: #38a169 !important; 
+  font-size: 2rem !important; 
+  font-weight: 800 !important; 
+  border-left: 6px solid #38a169 !important;
+  text-align: center;
+  padding: 2rem !important;
+}
+
+/* FOOTER PRETO FULL WIDTH */
+footer { 
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%); 
+  color: #e2e8f0; 
+  padding: 2.5rem 0; 
+  text-align: center;
+  width: 100%;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  margin-top: 4rem;
+}
+footer p { 
+  font-size: 0.95rem; 
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+/* FAQ */
+.faq { margin: 4rem 0; }
+.faq h2 { 
+  color: #2d3748; 
+  margin-bottom: 2rem; 
+  text-align: center; 
+  font-size: 2rem;
+}
+.faq h3 { 
+  color: #4a5568; 
+  margin: 2rem 0 1rem 0; 
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.faq p { 
+  background: white; 
+  padding: 1.75rem 2rem; 
+  border-radius: 16px; 
+  margin-bottom: 1.5rem; 
+  box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+  border-left: 4px solid #3182ce;
+  line-height: 1.8;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) { 
+  .header-content, main { padding: 0 1.5rem; }
+  .calc-box { padding: 2rem; margin-bottom: 2rem; }
+  h1 { font-size: 2.2rem; }
+  .inputs { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER PRETO FULL -->
+<header>
+  <div class="header-content">
+    <div class="site-title">
+      <a href="index.html">Meu Dividendo</a>
+    </div>
+    <div class="menu" onclick="toggleMenu()">☰</div>
+    <nav id="menuLinks" class="menu-links">
+      <ul>
+        <li><a href="index.html">🏠 Início</a></li>
+        <li><a href="calculadora.html">Juros Compostos</a></li>
+        <li><a href="calculadora-13salario.html">13º Salário</a></li>
+        <li><a href="calculadora-pis.html">PIS</a></li>
+        <li><a href="calculadora-ir.html">IR</a></li>
+        <li><a href="calculadora-rescisao.html">Rescisão</a></li>
+        <li><a href="calculadora-quitacao.html">Quitação</a></li>
+        <li><a href="quanto-investir-por-mes.html">Quanto Investir</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <h1>Calculadora de Rescisão</h1>
+  <p class="subtitle">CLT 2026 • 100% Validada • Periculosidade + Insalubridade</p>
+  
+  <!-- CAIXA BRANCA CENTRAL -->
+  <div class="calc-box">
+    <div class="inputs">
+      <div class="input-group">
+        <label>💰 Salário Base (R$)</label>
+        <input type="number" id="salario" value="4100" min="0" step="0.01">
+      </div>
+      <div class="input-group">
+        <label>⚠️ Periculosidade (%)</label>
+        <input type="number" id="periculosidade" value="30" min="0" max="100">
+      </div>
+      <div class="input-group">
+        <label>☣️ Insalubridade (%)</label>
+        <input type="number" id="insalubridade" value="0" min="0" max="100">
+      </div>
+      <div class="input-group">
+        <label>📅 Data Admissão</label>
+        <input type="date" id="admissao" value="2023-02-01">
+      </div>
+      <div class="input-group">
+        <label>📅 Data Demissão</label>
+        <input type="date" id="demissao" value="2026-02-13">
+      </div>
+      <div class="input-group">
+        <label>⚖️ Tipo Demissão</label>
+        <select id="tipoDemissao">
+          <option value="semJusta">Sem Justa Causa</option>
+          <option value="comJusta">Com Justa Causa</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>⏰ Aviso Prévio Indenizado</label>
+        <select id="avisoIndenizado">
+          <option value="sim">Sim</option>
+          <option value="nao">Não</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>🏖️ Férias Vencidas</label>
+        <select id="qtdFeriasVencidas">
+          <option value="1">1 período vencido</option>
+          <option value="0">Nenhuma</option>
+          <option value="2">2 períodos ou mais (em dobro)</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>👨‍👩‍👧 Dependentes (IRRF)</label>
+        <input type="number" id="dependentes" value="1" min="0">
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calcularRescisao()">
+      🚀 Calcular Rescisão Completa
+    </button>
+  </div>
+
+  <!-- RESULTADO -->
+  <div id="resultadoRescisao" class="result">
+    <h2>📊 Sua Rescisão - CLT 2026</h2>
+    <p><strong>📅 Período:</strong> <span id="resPeriodo">-</span></p>
+    <p><strong>💰 Remuneração mensal:</strong> <span id="resRemuneracao">-</span></p>
     
-  </div>  
-</main>  <footer>  
-  <p>&copy; 2026 Meu Dividendo | Calculadora CLT 2026 100% Validada ✅</p>  
-</footer>  <script>  
-// ================= MENU =================  
-function toggleMenu() {  
-  document.getElementById('menuLinks').classList.toggle('show');  
-}  
-  
-// ================= FORMATADOR BRL =================  
-function formatBRL(v) {  
-  return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });  
-}  
-  
-// ================= TABELAS 2026 =================  
-const TABELA_INSS_2026 = [  
-  { ate: 1412.00, aliquota: 0.075 },  
-  { ate: 2666.68, aliquota: 0.09 },  
-  { ate: 4000.03, aliquota: 0.12 },  
-  { ate: 7786.02, aliquota: 0.14 },  
-  { ate: Infinity, aliquota: 0.14, teto: 908.86 }  
-];  
-  
-const TABELA_IRRF_2026 = [  
-  { ate: 2259.20, aliquota: 0, deducao: 0 },  
-  { ate: 2826.65, aliquota: 0.075, deducao: 169.54 },  
-  { ate: 3751.05, aliquota: 0.15, deducao: 381.44 },  
-  { ate: 4664.68, aliquota: 0.225, deducao: 662.66 },  
-  { ate: Infinity, aliquota: 0.275, deducao: 896.00 }  
-];  
-  
-// ================= INSS PROGRESSIVO =================  
-function calcularINSS(base) {  
-  let inss = 0, anterior = 0;  
-  for (let i = 0; i < TABELA_INSS_2026.length - 1; i++) {  
-    const faixa = TABELA_INSS_2026[i];  
-    const proxima = TABELA_INSS_2026[i + 1].ate;  
-    const limite = Math.min(base, proxima);  
-    if (limite > anterior) {  
-      inss += (limite - anterior) * faixa.aliquota;  
-    }  
-    anterior = proxima;  
-    if (base <= faixa.ate) break;  
-  }  
-  return Math.min(inss, 908.86);  
-}  
-  
-// ================= IRRF =================  
-function calcularIRRF(baseIR, dependentes) {  
-  const deducaoDep = dependentes * 189.59;  
-  const base = Math.max(0, baseIR - deducaoDep);  
-  for (let faixa of TABELA_IRRF_2026) {  
-    if (base <= faixa.ate) {  
-      return Math.max(0, (base * faixa.aliquota) - faixa.deducao);  
-    }  
-  }  
-  return 0;  
-}  
-  
-// ================= CONTAGEM MESES (15+ DIAS) =================  
-function contarMeses(inicio, fim, inicioReferencia = null) {  
-  const ini = new Date(inicio);  
-  const fimDate = new Date(fim);  
-  const ref = inicioReferencia ? new Date(inicioReferencia) : ini;  
-  let cursor = new Date(Math.max(ini.getTime(), ref.getTime()));  
-  
-  let total = 0;  
-  while (cursor <= fimDate) {  
-    const primeiro = new Date(cursor.getFullYear(), cursor.getMonth(), 1);  
-    const ultimo = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);  
-    const iniMes = ini > primeiro ? ini : primeiro;  
-    const fimMes = fimDate < ultimo ? fimDate : ultimo;  
-  
-    const dias = Math.floor((fimMes - iniMes) / (1000 * 60 * 60 * 24)) + 1;  
-    if (dias >= 15) total++;  
-  
-    cursor.setMonth(cursor.getMonth() + 1);  
-  }  
-  return Math.min(total, 12);  
-}  
-  
-// ================= CÁLCULO PRINCIPAL CORRIGIDO ✅ =================  
-function calcularRescisao() {  
-  // INPUTS  
-  const salarioBase = Number(document.getElementById('salario').value) || 0;  
-  const pericul = Number(document.getElementById('periculosidade').value) || 0;  
-  const insalub = Number(document.getElementById('insalubridade').value) || 0;  
-  const admissao = document.getElementById('admissao').value;  
-  const demissao = document.getElementById('demissao').value;  
-  const tipoDemissao = document.getElementById('tipoDemissao').value;  
-  const avisoIndenizado = document.getElementById('avisoIndenizado').value === 'sim';  
-  const feriasVencidas = Number(document.getElementById('qtdFeriasVencidas').value) || 0;  
-  const dependentes = Number(document.getElementById('dependentes').value) || 0;  
-  
-  if (!salarioBase || !admissao || !demissao) {  
-    alert('❌ Preencha todos os campos obrigatórios');  
-    return;  
-  }  
-  
-  // BASE UNIFICADA (salário + periculosidade + insalubridade)  
-  const REMUNERACAO = salarioBase * (1 + pericul/100 + insalub/100);  
-  
-  // CONTAGEM MESES CORRETA  
-  const mesesTotais = contarMeses(admissao, demissao);  
-  const mesesFGTS = contarMeses(admissao, demissao);  
-  const meses13 = contarMeses(admissao, demissao, `${new Date(demissao).getFullYear()}-01-01`);  
-  
-  // Férias proporcionais (últimos 12 meses)  
-  const dataDemissao = new Date(demissao);  
-  const inicioFeriasProp = new Date(dataDemissao.getFullYear() - 1, dataDemissao.getMonth(), dataDemissao.getDate());  
-  const mesesFeriasProp = contarMeses(admissao, demissao, inicioFeriasProp.toISOString().split('T')[0]);  
-  
-  // VERBAS RESCISÓRIAS (BASE REMUNERACAO)  
-  const diasMes = new Date(
-  dataDemissao.getFullYear(),
-  dataDemissao.getMonth() + 1,
-  0
-).getDate();
+    <p><strong>📅 Meses totais:</strong> <span id="resMeses">-</span></p>
+    <p><strong>🏦 Meses FGTS:</strong> <span id="resMesesFGTS">-</span></p>
+    <p><strong>🎄 Meses 13º 2026:</strong> <span id="resMeses13">-</span></p>
 
-const saldoSalario = (REMUNERACAO / diasMes) * dataDemissao.getDate(); 
+    <hr style="border: 1px solid rgba(255,255,255,0.3); margin: 1.5rem 0;">
+    
+    <p><strong>💵 Saldo salário:</strong> <span id="resSaldo">-</span></p>
+    <p><strong>⏰ Aviso prévio:</strong> <span id="resAviso">-</span></p>
+    <p><strong>🏖️ Férias vencidas + 1/3:</strong> <span id="resFeriasVencidas">-</span></p>
+    <p><strong>🏖️ Férias prop. + 1/3:</strong> <span id="resFerias">-</span></p>
+    <p><strong>🎄 13º proporcional:</strong> <span id="res13">-</span></p>
+    
+    <hr style="border: 2px solid rgba(255,255,255,0.3); margin: 2rem 0;">
+    
+    <p><strong>🏦 FGTS depositado:</strong> <span id="resFGTS">-</span></p>
+    <p><strong>💥 Multa FGTS 40%:</strong> <span id="resMulta">-</span></p>
+
+    <hr style="border: 3px solid rgba(255,255,255,0.5); margin: 2rem 0;">
+    
+    <p><strong>📉 INSS (apenas verbas):</strong> <span id="resINSS">-</span></p>
+    <p><strong>💸 IRRF (apenas verbas):</strong> <span id="resIR">-</span></p>
+
+    <hr style="border: 4px solid rgba(255,255,255,0.7); margin: 2.5rem 0;">
+    
+    <p id="resTotalLiquido" class="total">
+      💎 <strong>TOTAL LÍQUIDO A RECEBER:</strong> <span id="resTotal">-</span>
+    </p>
+  </div>
+</main>
+
+<!-- FOOTER PRETO FULL -->
+<footer>
+  <div class="header-content">
+    <p>&copy; 2026 Meu Dividendo | Calculadora CLT 2026 100% Validada</p>
+  </div>
+</footer>
+
+<script>
+// MENU
+function toggleMenu() {
+  document.getElementById('menuLinks').classList.toggle('show');
+}
+
+// FORMATADOR
+function formatBRL(v) {
+  return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+// TABELAS 2026
+const TABELA_INSS_2026 = [
+  { ate: 1412.00, aliquota: 0.075 },
+  { ate: 2666.68, aliquota: 0.09 },
+  { ate: 4000.03, aliquota: 0.12 },
+  { ate: 7786.02, aliquota: 0.14 },
+  { ate: Infinity, aliquota: 0.14, teto: 908.86 }
+];
+
+const TABELA_IRRF_2026 = [
+  { ate: 2259.20, aliquota: 0, deducao: 0 },
+  { ate: 2826.65, aliquota: 0.075, deducao: 169.54 },
+  { ate: 3751.05, aliquota: 0.15, deducao: 381.44 },
+  { ate: 4664.68, aliquota: 0.225, deducao: 662.66 },
+  { ate: Infinity, aliquota: 0.275, deducao: 896.00 }
+];
+
+// CÁLCULOS
+function calcularINSS(base) {
+  let inss = 0, anterior = 0;
+  for (let i = 0; i < TABELA_INSS_2026.length - 1; i++) {
+    const faixa = TABELA_INSS_2026[i];
+    const proxima = TABELA_INSS_2026[i + 1].ate;
+    const limite = Math.min(base, proxima);
+    if (limite > anterior) inss += (limite - anterior) * faixa.aliquota;
+    anterior = proxima;
+    if (base <= faixa.ate) break;
+  }
+  return Math.min(inss, 908.86);
+}
+
+function calcularIRRF(baseIR, dependentes) {
+  const deducaoDep = dependentes * 189.59;
+  const base = Math.max(0, baseIR - deducaoDep);
+  for (let faixa of TABELA_IRRF_2026) {
+    if (base <= faixa.ate) return Math.max(0, (base * faixa.aliquota) - faixa.deducao);
+  }
+  return 0;
+}
+
+function contarMeses(inicio, fim, inicioReferencia = null) {
+  const ini = new Date(inicio);
+  const fimDate = new Date(fim);
+  const ref = inicioReferencia ? new Date(inicioReferencia) : ini;
+  let cursor = new Date(Math.max(ini.getTime(), ref.getTime()));
+  let total = 0;
   
+  while (cursor <= fimDate) {
+    const primeiro = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
+    const ultimo = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
+    const iniMes = ini > primeiro ? ini : primeiro;
+    const fimMes = fimDate < ultimo ? fimDate : ultimo;
+    const dias = Math.floor((fimMes - iniMes) / (1000 * 60 * 60 * 24)) + 1;
+    if (dias >= 15) total++;
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
+  return total;
+}
+
+function calcularRescisao() {
+  const salarioBase = Number(document.getElementById('salario').value) || 0;
+  const pericul = Number(document.getElementById('periculosidade').value) || 0;
+  const insalub = Number(document.getElementById('insalubridade').value) || 0;
+  const admissao = document.getElementById('admissao').value;
+  const demissao = document.getElementById('demissao').value;
+  const tipoDemissao = document.getElementById('tipoDemissao').value;
+  const avisoIndenizado = document.getElementById('avisoIndenizado').value === 'sim';
+  const feriasVencidas = Number(document.getElementById('qtdFeriasVencidas').value) || 0;
+  const dependentes = Number(document.getElementById('dependentes').value) || 0;
+
+  if (!salarioBase || !admissao || !demissao) {
+    alert('❌ Preencha todos os campos obrigatórios');
+    return;
+  }
+
+  const REMUNERACAO = salarioBase * (1 + pericul/100 + insalub/100);
+  const mesesTotais = contarMeses(admissao, demissao);
+  const mesesFGTS = contarMeses(admissao, demissao);
+  const meses13 = contarMeses(admissao, demissao, `${new Date(demissao).getFullYear()}-01-01`);
+  
+  const dataDemissao = new Date(demissao);
+  const inicioFeriasProp = new Date(dataDemissao.getFullYear() - 1, dataDemissao.getMonth(), dataDemissao.getDate());
+  const mesesFeriasProp = contarMeses(admissao, demissao, inicioFeriasProp.toISOString().split('T')[0]);
+
+  const diasMes = new Date(dataDemissao.getFullYear(), dataDemissao.getMonth() + 1, 0).getDate();
+  const saldoSalario = (REMUNERACAO / diasMes) * dataDemissao.getDate();
+
   const anosCompletos = Math.floor(mesesTotais / 12);
-const diasAviso = Math.min(30 + Math.max(0, anosCompletos - 1) * 3, 90); 
-  const avisoPrevio = (tipoDemissao === 'semJusta' && avisoIndenizado) ? (REMUNERACAO / 30) * diasAviso : 0;  
-  
-  // FÉRIAS (base = salário base SEM adicionais)  
-  let feriasVenc = 0, tercoVenc = 0;  
-  if (feriasVencidas === 1) {  
-    feriasVenc = salarioBase;  
-    tercoVenc = salarioBase / 3;  
-  } else if (feriasVencidas >= 2) {  
-    feriasVenc = REMUNERACAO;
-tercoVenc = REMUNERACAO / 3;
+  const diasAviso = Math.min(30 + Math.max(0, anosCompletos - 1) * 3, 90);
+  const avisoPrevio = (tipoDemissao === 'semJusta' && avisoIndenizado) ? (REMUNERACAO / 30) * diasAviso : 0;
 
-const feriasProp = (REMUNERACAO / 12) * mesesFeriasProp;
-const tercoProp = feriasProp / 3;
-  
-  // 13º (base = REMUNERACAO)  
-  const decimoTerceiro = (REMUNERACAO / 12) * meses13;  
-  
-  // FGTS CORRIGIDO (APENAS DEPÓSITOS MENSAIS x 36)  
-  const fgtsMensal = REMUNERACAO * 0.08;  
-  const fgtsTotal = fgtsMensal * mesesFGTS; // SÓ isso! Sem FGTS sobre verbas rescisórias  
-  const multaFGTS = tipoDemissao === 'semJusta' ? fgtsTotal * 0.4 : 0;  
-  
-  // BASE INSS/IRRF (APENAS VERBAS TRIBUTÁVEIS)  
-  const baseINSS =
-  saldoSalario +
-  avisoPrevio +
-  decimoTerceiro +
-  feriasVenc + tercoVenc +
-  feriasProp + tercoProp; 
-  const inss = calcularINSS(baseINSS);  
-  const baseIR = baseINSS - inss;  
-  const ir = calcularIRRF(baseIR, dependentes);  
-  
-  // TOTAL LÍQUIDO (FGTS e multa são ISENTOS)  
-  const totalLiquido = saldoSalario + avisoPrevio + feriasVenc + tercoVenc + feriasProp + tercoProp +   
-                      decimoTerceiro + multaFGTS - inss - ir;  
-  
-  // EXIBIR RESULTADOS  
-  document.getElementById('resPeriodo').textContent = `${admissao} a ${demissao}`;  
-  document.getElementById('resRemuneracao').textContent = formatBRL(REMUNERACAO);  
-  document.getElementById('resMeses').textContent = mesesTotais;  
-  document.getElementById('resMesesFGTS').textContent = mesesFGTS;  
-  document.getElementById('resMeses13').textContent = meses13;  
-  document.getElementById('resSaldo').textContent = formatBRL(saldoSalario);  
-  document.getElementById('resAviso').textContent = formatBRL(avisoPrevio);  
-  document.getElementById('resFeriasVencidas').textContent = formatBRL(feriasVenc + tercoVenc);  
-  document.getElementById('resFerias').textContent = formatBRL(feriasProp + tercoProp);  
-  document.getElementById('res13').textContent = formatBRL(decimoTerceiro);  
-  document.getElementById('resFGTS').textContent = formatBRL(fgtsTotal);  
-  document.getElementById('resMulta').textContent = formatBRL(multaFGTS);  
-  document.getElementById('resINSS').textContent = formatBRL(inss);  
-  document.getElementById('resIR').textContent = formatBRL(ir);  
-  document.getElementById('resTotal').textContent = formatBRL(totalLiquido);  
-  
-  document.getElementById('resultadoRescisao').style.display = 'block';  
-  document.getElementById('resultadoRescisao').scrollIntoView({ behavior: 'smooth' });  
-}  
-</script> 
- </body>  
+  let feriasVenc = 0, tercoVenc = 0;
+  if (feriasVencidas === 1) {
+    feriasVenc = salarioBase;
+    tercoVenc = salarioBase / 3;
+  } else if (feriasVencidas >= 2) {
+    feriasVenc = salarioBase * 2;
+    tercoVenc = (salarioBase * 2) / 3;
+  }
+  const feriasProp = (salarioBase / 12) * mesesFeriasProp;
+  const tercoProp = feriasProp / 3;
+
+  const decimoTerceiro = (REMUNERACAO / 12) * meses13;
+  const fgtsMensal = REMUNERACAO * 0.08;
+  const fgtsTotal = fgtsMensal * mesesFGTS;
+  const multaFGTS = tipoDemissao === 'semJusta' ? fgtsTotal * 0.4 : 0;
+
+  const baseINSS = saldoSalario + avisoPrevio + decimoTerceiro + feriasVenc + feriasProp;
+  const inss = calcularINSS(baseINSS);
+  const baseIR = baseINSS - inss;
+  const ir = calcularIRRF(baseIR, dependentes);
+
+  const totalLiquido = saldoSalario + avisoPrevio + feriasVenc + tercoVenc + feriasProp + tercoProp + 
+                      decimoTerceiro + multaFGTS - inss - ir;
+
+  // EXIBIR
+  document.getElementById('resPeriodo').textContent = `${admissao} a ${demissao}`;
+  document.getElementById('resRemuneracao').textContent = formatBRL(REMUNERACAO);
+  document.getElementById('resMeses').textContent = mesesTotais;
+  document.getElementById('resMesesFGTS').textContent = mesesFGTS;
+  document.getElementById('resMeses13').textContent = meses13;
+  document.getElementById('resSaldo').textContent = formatBRL(saldoSalario);
+  document.getElementById('resAviso').textContent = formatBRL(avisoPrevio);
+  document.getElementById('resFeriasVencidas').textContent = formatBRL(feriasVenc + tercoVenc);
+  document.getElementById('resFerias').textContent = formatBRL(feriasProp + tercoProp);
+  document.getElementById('res13').textContent = formatBRL(decimoTerceiro);
+  document.getElementById('resFGTS').textContent = formatBRL(fgtsTotal);
+  document.getElementById('resMulta').textContent = formatBRL(multaFGTS);
+  document.getElementById('resINSS').textContent = formatBRL(inss);
+  document.getElementById('resIR').textContent = formatBRL(ir);
+  document.getElementById('resTotal').textContent = formatBRL(totalLiquido);
+
+  document.getElementById('resultadoRescisao').style.display = 'block';
+  document.getElementById('resultadoRescisao').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+
+</body>
 </html>
