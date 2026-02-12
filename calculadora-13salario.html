@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de 13º Salário 2026 | Valor Líquido, INSS e IR</title>
-<meta name="description" content="Calcule o valor do seu 13º salário de forma simples e atualizada. Veja parcelas, descontos de INSS e IRRF e simule quanto investir mês a mês.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://meudividendo.online/calculadora-13salario">
-
+  <meta name="description" content="Calcule o valor do seu 13º salário de forma simples e atualizada. Veja parcelas, descontos de INSS e IRRF e simule quanto investir mês a mês.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://meudividendo.online/calculadora-13salario">
+  
   <!-- Open Graph -->
-<meta property="og:title" content="Calculadora de 13º Salário 2026">
+  <meta property="og:title" content="Calculadora de 13º Salário 2026">
   <meta property="og:description" content="Descubra quanto você vai receber de 13º salário com descontos de INSS e IRRF.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://meudividendo.online/calculadora-13salario">
@@ -17,11 +17,50 @@
 
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/calculadora.css">
+</head>
+
+<body>
+<header>
+  <!-- BOTÃO HAMBÚRGUER - FUNCIONANDO ✅ -->
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <div class="site-title">
+    <a href="index.html" style="color:#fff; text-decoration:none;">
+      Meu Dividendo
+    </a>
+  </div>
+
+  <!-- MENU LATERAL -->
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="calculadora.html">Calculadora de Juros Compostos</a></li>
+      <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
+      <li><a href="calculadora-pis.html">Calculadora de PIS</a></li>
+      <li><a href="calculadora-ir.html">Calculadora de imposto de renda sobre Investimentos</a></li>
+      <li><a href="calculadora-rescisao.html">Calculadora de rescisão trabalhista</a></li>
+      <li><a href="quanto-investir-por-mes.html">Calculadora de quanto investir do seu salário por mês</a></li>
+      <li><a href="calculadora-quitacao.html">Calculadora de quitação patrimonial</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- 🔧 SCRIPT CORRIGIDO - MOVIDO PARA O FINAL DO BODY -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  if (!menu) return;
+  menu.classList.toggle('show');
+  
+  // Opcional: fechar menu clicando fora
+  document.body.classList.toggle('menu-open');
+}
+</script>
 
 <style>
 /* ================== HEADER ================== */
 header {
-  position: relative;        /* ativa z-index */
+  position: relative;
   z-index: 2000;
   background: #1a202c;
   color: #fff;
@@ -37,27 +76,44 @@ header {
   cursor: pointer;
   font-size: 28px;
   padding: 10px;
-  z-index: 3100;              /* acima de tudo */
+  z-index: 3100;
   user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.menu:hover {
+  transform: scale(1.1);
 }
 
 /* ================== MENU LATERAL ================== */
 .menu-links {
   position: fixed;
   top: 0;
-  left: -260px;               /* escondido */
+  left: -260px;
   width: 260px;
   height: 100%;
   background-color: #fff;
   box-shadow: 2px 0 10px rgba(0,0,0,0.3);
   transition: left 0.3s ease;
-  padding-top: 80px;          /* espaço do header */
-  z-index: 3000;              /* acima do header */
+  padding-top: 80px;
+  z-index: 3000;
 }
 
 /* MENU ABERTO */
 .menu-links.show {
   left: 0;
+}
+
+/* OVERLAY ESCURO (OPCIONAL - MELHORA UX) */
+body.menu-open::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 2900;
 }
 
 /* ================== LINKS ================== */
@@ -77,19 +133,20 @@ header {
   text-decoration: none;
   color: #111;
   font-weight: 500;
+  transition: background 0.2s ease;
 }
 
 .menu-links a:hover {
   background-color: #f0f0f0;
 }
-</style>
-<script>
-function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  if (!menu) return;
-  menu.classList.toggle('show');
+
+/* RESPONSIVO */
+@media (min-width: 768px) {
+  .menu {
+    display: none; /* Esconde hambúrguer em desktop */
+  }
 }
-</script>
+</style>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
