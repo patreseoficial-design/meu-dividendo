@@ -35,8 +35,9 @@
   </nav>
 </header>
 
+
 <form id="calcForm">
-  <h2>Calculadora de IR sobre Investimentos 2026</h2>
+  <h2>Calculadora de IR sobre Investimentos 2026 (Avançada)</h2>
 
   <!-- Tipo de Investimento -->
   <label>Tipo de Investimento:</label>
@@ -68,8 +69,8 @@
   <input type="number" id="precoVenda" step="0.01">
 
   <!-- Dividendos -->
-  <label>Dividendos Recebidos (por mês, por empresa):</label>
-  <input type="text" id="dividendos" placeholder="Ex: empresaA:60000, empresaB:30000">
+  <label>Dividendos Recebidos (empresa:mês:valor, separados por vírgula):</label>
+  <input type="text" id="dividendos" placeholder="Ex: empresaA:1:60000, empresaB:2:30000">
 
   <!-- JCP -->
   <label>JCP Recebido:</label>
@@ -90,16 +91,15 @@
   <label>Data de Resgate (título/fundo):</label>
   <input type="date" id="dataResgate">
 
-  <button type="button" onclick="calcularIR()">Calcular IR</button>
+  <!-- Prejuízos acumulados -->
+  <label>Prejuízos Anteriores (ações/FIIs) para compensação:</label>
+  <input type="number" id="prejuizos" step="0.01">
+
+  <button type="button" onclick="calcularIRAvancado()">Calcular IR</button>
 </form>
 
 <h3>Imposto a Recolher:</h3>
 <p id="resultado">R$ 0,00</p>
-
-<!-- Resultado -->
-<h3>Imposto a Recolher:</h3>
-<p id="resultado">R$ 0,00</p>
-
 <!-- BANNER DE PROPAGANDA -->
 <div class="ad">Banner</div>
 
