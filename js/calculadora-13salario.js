@@ -64,7 +64,7 @@ function calcularIRRF(baseIR, dependentes = 0) {
     }
   }
   
-  // 🔥 REDUTOR ADICIONAL 2026
+  // REDUTOR ADICIONAL 2026
   const redutorAdicional = calcularRedutorAdicionalIRRF(baseIR);
   const irFinal = Math.max(0, irCalculado - redutorAdicional);
   
@@ -112,32 +112,32 @@ function calcular13() {
 
   resBox.style.display = 'block';
   resBox.innerHTML = `
-    <h2>✅ 13º Salário 2026 (100% AUTOMÁTICO)</h2>
+    <h2>13º Salário 2026</h2>
     
-    <div style="background:#e3f2fd;padding:15px;border-radius:8px;margin:10px 0;">
-      <p><strong>📊 Salário proporcional:</strong> ${formatBR(salarioProporcional)}</p>
-      <p><strong>⚡ Adicionais:</strong> ${formatBR(horasExtras + adicionalInsalubridade + adicionalPericulosidade)}</p>
-      <p><strong>💼 <strong>Total Bruto:</strong> ${formatBR(totalBruto)}</p>
+    <div>
+      <p><strong>Salário proporcional:</strong> ${formatBR(salarioProporcional)}</p>
+      <p><strong>Adicionais:</strong> ${formatBR(horasExtras + adicionalInsalubridade + adicionalPericulosidade)}</p>
+      <p><strong><strong>Total Bruto:</strong> ${formatBR(totalBruto)}</p>
     </div>
     
-    <div style="background:#fff3e0;padding:15px;border-radius:8px;margin:10px 0;">
-      <p><strong>🛡️ INSS:</strong> ${formatBR(inss)}</p>
-      <p><strong>📋 Base IR:</strong> ${formatBR(baseIR)}</p>
-      <p><strong>👨‍👩‍👧 ${dependentes} dependente(s):</strong> -${formatBR(irrfDetalhes.deducaoDependentes)}</p>
-      <p><strong>🎯 IR tradicional:</strong> ${formatBR(irrfDetalhes.irCalculado)}</p>
-      <p><strong>🔥 Redutor 2026:</strong> -${formatBR(irrfDetalhes.redutorAdicional)}</p>
-      <p><strong>💸 <strong>IRRF Final:</strong> ${formatBR(ir)}</p>
+    <div>
+      <p><strong>INSS:</strong> ${formatBR(inss)}</p>
+      <p><strong>Base IR:</strong> ${formatBR(baseIR)}</p>
+      <p><strong>${dependentes} dependente(s):</strong> -${formatBR(irrfDetalhes.deducaoDependentes)}</p>
+      <p><strong>IR tradicional:</strong> ${formatBR(irrfDetalhes.irCalculado)}</p>
+      <p><strong>Redutor 2026:</strong> -${formatBR(irrfDetalhes.redutorAdicional)}</p>
+      <p><strong><strong>IRRF Final:</strong> ${formatBR(ir)}</p>
     </div>
     
-    <div style="background:#e8f5e8;padding:20px;border-radius:12px;text-align:center;">
-      <p><strong>🎁 1ª Parcela (novembro):</strong> ${formatBR(primeiraParcela)}</p>
-      <p><strong>🎄 2ª Parcela (dezembro):</strong> ${formatBR(segundaParcela)}</p>
-      <h2>💰 <strong>Total Líquido:</strong> ${formatBR(totalLiquido)}</h2>
+    <div>
+      <p><strong>1ª Parcela (novembro):</strong> ${formatBR(primeiraParcela)}</p>
+      <p><strong>2ª Parcela (dezembro):</strong> ${formatBR(segundaParcela)}</p>
+      <h2><strong>Total Líquido:</strong> ${formatBR(totalLiquido)}</h2>
     </div>
     
-    <div style="background:#f5f5f5;padding:10px;border-radius:6px;font-size:12px;">
-      <strong>⚙️ Tabelas fiscais 2026 carregadas automaticamente</strong><br>
-      📅 Válido para fevereiro/2026 | 🔄 Atualiza com novas leis
+    <div>
+      <strong>Tabelas fiscais 2026 carregadas automaticamente</strong><br>
+      Válido para fevereiro/2026 | Atualiza com novas leis
     </div>
   `;
 }
