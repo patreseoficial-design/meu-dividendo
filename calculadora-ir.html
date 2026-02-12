@@ -32,69 +32,60 @@
 </header>
 
 
+<div style="text-align:center; max-width:500px; margin:20px auto; padding:20px; border:2px solid #ccc; border-radius:12px; background:#f9f9f9;">
 
-<div class="form-container" style="text-align: center;">
   <h2>Calculadora de IR Avançada 2026</h2>
 
-  <!-- Tipo de Investimento -->
-  <label>Tipo de Investimento:</label>
-  <select id="tipoInvestimento">
+  <label>Tipo de Investimento:</label><br>
+  <select id="tipoInvestimento" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;">
     <option value="">Selecione</option>
     <option value="acao">Ação</option>
     <option value="fii">FII</option>
     <option value="titulo">CDB / Tesouro / LCI/LCA</option>
     <option value="fundo">Fundo de Investimento</option>
     <option value="jcp">JCP</option>
-  </select>
+  </select><br>
 
-  <!-- Operação (para ações) -->
-  <label>Operação (apenas ações):</label>
-  <select id="tipoOperacao">
+  <label>Operação (apenas ações):</label><br>
+  <select id="tipoOperacao" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;">
     <option value="">Selecione</option>
     <option value="swing">Swing Trade</option>
     <option value="day">Day Trade</option>
-  </select>
+  </select><br>
 
-  <!-- Compra / venda -->
-  <label>Preço de Compra:</label>
-  <input type="number" id="precoCompra" step="0.01">
+  <label>Preço de Compra:</label><br>
+  <input type="number" id="precoCompra" step="0.01" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;"><br>
 
-  <label>Quantidade:</label>
-  <input type="number" id="quantidade" step="1">
+  <label>Quantidade:</label><br>
+  <input type="number" id="quantidade" step="1" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;"><br>
 
-  <label>Preço de Venda:</label>
-  <input type="number" id="precoVenda" step="0.01">
+  <label>Preço de Venda:</label><br>
+  <input type="number" id="precoVenda" step="0.01" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;"><br>
 
-  <!-- Dividendos -->
-  <label>Dividendos Recebidos (empresa:mês:valor):</label>
-  <input type="text" id="dividendos" placeholder="Ex: empresaA:1:60000,empresaB:2:30000">
+  <label>Dividendos Recebidos (empresa:mês:valor):</label><br>
+  <input type="text" id="dividendos" placeholder="Ex: empresaA:1:60000,empresaB:2:30000" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;"><br>
 
-  <!-- JCP -->
-  <label>JCP Recebido:</label>
-  <input type="number" id="jcp" step="0.01">
+  <label>JCP Recebido:</label><br>
+  <input type="number" id="jcp" step="0.01" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;"><br>
 
-  <!-- Juros de títulos / fundos -->
-  <label>Rendimentos / Juros (títulos, fundos):</label>
-  <input type="number" id="juros" step="0.01">
+  <label>Rendimentos / Juros (títulos, fundos):</label><br>
+  <input type="number" id="juros" step="0.01" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;"><br>
 
-  <!-- Custos operacionais -->
-  <label>Custos Operacionais:</label>
-  <input type="number" id="custos" step="0.01">
+  <label>Custos Operacionais:</label><br>
+  <input type="number" id="custos" step="0.01" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;"><br>
 
-  <!-- Datas (para títulos/fundos) -->
-  <label>Data de Compra:</label>
-  <input type="date" id="dataCompra">
+  <label>Data de Compra:</label><br>
+  <input type="date" id="dataCompra" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;"><br>
 
-  <label>Data de Resgate:</label>
-  <input type="date" id="dataResgate">
+  <label>Data de Resgate:</label><br>
+  <input type="date" id="dataResgate" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;"><br>
 
-  <!-- Prejuízos acumulados -->
-  <label>Prejuízos Anteriores (ações/FIIs) para compensação:</label>
-  <input type="number" id="prejuizos" step="0.01">
+  <label>Prejuízos Anteriores (ações/FIIs) para compensação:</label><br>
+  <input type="number" id="prejuizos" step="0.01" style="width:90%; padding:8px; margin:5px 0; border-radius:8px;"><br>
 
-  <button type="button" onclick="calcularIRAvancado()">Calcular IR</button>
+  <button type="button" onclick="calcularIRAvancado()" style="width:50%; padding:12px; margin:15px 0; border-radius:8px; border:none; background:#4a90e2; color:white; font-size:16px; cursor:pointer;">Calcular IR</button>
 
-  <div id="resultado">R$ 0,00</div>
+  <div id="resultado" style="margin-top:15px; font-weight:bold;">R$ 0,00</div>
 </div>
 <!-- BANNER DE PROPAGANDA -->
 <div class="ad">Banner</div>
