@@ -21,6 +21,10 @@
 <style>
 /* ================== MENU HAMBÚRGUER ================== */
 .menu {
+  position: relative;
+  z-index: 2100;
+}
+.menu {
   cursor: pointer;
   font-size: 28px;
   padding: 10px;
@@ -68,11 +72,8 @@
   background-color: #f0f0f0;
 }
 header {
+  position: relative;   /* ESSENCIAL */
   z-index: 2000;
-}
-.menu {
-  position: relative;
-  z-index: 2100;
 }
 </style>
 <script>
