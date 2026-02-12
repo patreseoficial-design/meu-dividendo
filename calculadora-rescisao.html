@@ -285,11 +285,11 @@ const saldoSalario = (REMUNERACAO / diasMes) * dataDemissao.getDate();
     feriasVenc = salarioBase;  
     tercoVenc = salarioBase / 3;  
   } else if (feriasVencidas >= 2) {  
-    feriasVenc = salarioBase * 2;  
-    tercoVenc = (salarioBase * 2) / 3;  
-  }  
-  const feriasProp = (salarioBase / 12) * mesesFeriasProp;  
-  const tercoProp = feriasProp / 3;  
+    feriasVenc = REMUNERACAO;
+tercoVenc = REMUNERACAO / 3;
+
+const feriasProp = (REMUNERACAO / 12) * mesesFeriasProp;
+const tercoProp = feriasProp / 3;
   
   // 13º (base = REMUNERACAO)  
   const decimoTerceiro = (REMUNERACAO / 12) * meses13;  
