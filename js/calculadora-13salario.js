@@ -96,7 +96,7 @@ function calcular13() {
   const adicionalPericulosidade = salarioProporcional * (periculosidadePerc / 100);
   const totalBruto = salarioProporcional + horasExtras + adicionalInsalubridade + adicionalPericulosidade;
 
-  // 🚀 CÁLCULOS AUTOMÁTICOS
+  //  CÁLCULOS AUTOMÁTICOS
   const inss = calcularINSS(totalBruto);
   const baseIR = totalBruto - inss;
   const irrfDetalhes = calcularIRRF(baseIR, dependentes);
