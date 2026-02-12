@@ -134,11 +134,6 @@ function calcular13() {
       <p><strong>2ª Parcela (dezembro):</strong> ${formatBR(segundaParcela)}</p>
       <h2><strong>Total Líquido:</strong> ${formatBR(totalLiquido)}</h2>
     </div>
-    
-    <div>
-      <strong>Tabelas fiscais 2026 carregadas automaticamente</strong><br>
-      Válido para fevereiro/2026 | Atualiza com novas leis
-    </div>
   `;
 }
 
