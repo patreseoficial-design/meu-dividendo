@@ -35,29 +35,60 @@
   </nav>
 </header>
 
-<div class="calc-box">
-  <div class="inputs">
-    <div class="input-group">
-      <label>Valor Recebido (Dividendos/FII)</label>
-      <input type="number" id="valorIR" value="1000">
-    </div>
+<form id="calcForm">
+  <h2>Calculadora de IR sobre Investimentos 2026</h2>
 
-    <div class="input-group">
-      <label>Tipo de Investimento</label>
-      <select id="tipoIR">
-        <option value="acoes">Ações - Dividendos</option>
-        <option value="fii">FIIs</option>
-      </select>
-    </div>
-  </div>
+  <!-- Tipo de Investimento -->
+  <label>Tipo de Investimento:</label>
+  <select id="tipoInvestimento" required>
+    <option value="">Selecione</option>
+    <option value="acao">Ação</option>
+    <option value="fii">FII</option>
+    <option value="titulo">CDB / Tesouro / LCI/LCA</option>
+    <option value="fundo">Fundo de Investimento</option>
+    <option value="jcp">JCP</option>
+  </select>
 
-  <button class="calc-btn" onclick="calcularIR()">Calcular</button>
-</div>
+  <!-- Operação (para ações) -->
+  <label>Operação (apenas ações):</label>
+  <select id="tipoOperacao">
+    <option value="">Selecione</option>
+    <option value="swing">Swing Trade</option>
+    <option value="day">Day Trade</option>
+  </select>
 
-<div id="resultadoIR" class="result" style="display:none">
-  <h2>Resultado</h2>
-  <p id="resTotalIR"></p>
-</div>
+  <!-- Compra / venda -->
+  <label>Preço de Compra:</label>
+  <input type="number" id="precoCompra" step="0.01">
+
+  <label>Quantidade:</label>
+  <input type="number" id="quantidade" step="1">
+
+  <label>Preço de Venda:</label>
+  <input type="number" id="precoVenda" step="0.01">
+
+  <!-- Dividendos -->
+  <label>Dividendos Recebidos (por mês, por empresa):</label>
+  <input type="text" id="dividendos" placeholder="Ex: empresaA:60000, empresaB:30000">
+
+  <!-- JCP -->
+  <label>JCP Recebido:</label>
+  <input type="number" id="jcp" step="0.01">
+
+  <!-- Juros de títulos / fundos -->
+  <label>Juros / Rendimentos:</label>
+  <input type="number" id="juros" step="0.01">
+
+  <!-- Custos operacionais -->
+  <label>Custos Operacionais:</label>
+  <input type="number" id="custos" step="0.01">
+
+  <button type="button" onclick="calcularIR()">Calcular IR</button>
+</form>
+
+<!-- Resultado -->
+<h3>Imposto a Recolher:</h3>
+<p id="resultado">R$ 0,00</p>
 
 <!-- BANNER DE PROPAGANDA -->
 <div class="ad">Banner</div>
