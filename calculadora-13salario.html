@@ -104,6 +104,33 @@
       .menu {
         display: none;
       }
+/* MENU HAMBÚRGUER – CORREÇÃO FINAL */
+.menu-links {
+  position: fixed !important;
+  top: 0;
+  left: -280px;          /* começa fora da tela */
+  width: 280px;
+  height: 100vh;
+  background: #ffffff;
+  padding-top: 90px;
+  box-shadow: 2px 0 15px rgba(0,0,0,0.4);
+  transition: left 0.35s ease;
+  z-index: 10000;        /* acima de TUDO */
+  overflow-y: auto;
+}
+
+.menu-links.show {
+  left: 0 !important;
+}
+
+/* overlay escuro */
+body.menu-open::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 9000;
+}
     }
   </style>
 </head>
