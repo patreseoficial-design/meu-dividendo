@@ -465,9 +465,22 @@ footer {
 
 <script>
 // MENU
+
+<!-- ✅ SCRIPT COMPLETO COM MENU FUNCIONANDO -->
+<script>
 function toggleMenu() {
-  document.getElementById('menuLinks').classList.toggle('show');
+  document.getElementById('menuLinks').classList.toggle('active');
 }
+
+// Fechar menu ao clicar fora
+document.addEventListener('click', function(event) {
+  const menuLinks = document.getElementById('menuLinks');
+  const menuBtn = document.querySelector('.menu');
+  if (!menuBtn.contains(event.target) && !menuLinks.contains(event.target)) {
+    menuLinks.classList.remove('active');
+  }
+});
+
 
 // FORMATADOR
 function formatBRL(v) {
