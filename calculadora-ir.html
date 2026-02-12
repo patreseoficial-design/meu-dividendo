@@ -76,15 +76,25 @@
   <input type="number" id="jcp" step="0.01">
 
   <!-- Juros de títulos / fundos -->
-  <label>Juros / Rendimentos:</label>
+  <label>Rendimentos / Juros (títulos, fundos):</label>
   <input type="number" id="juros" step="0.01">
 
   <!-- Custos operacionais -->
   <label>Custos Operacionais:</label>
   <input type="number" id="custos" step="0.01">
 
+  <!-- Datas (para títulos/fundos) -->
+  <label>Data de Compra (título/fundo):</label>
+  <input type="date" id="dataCompra">
+
+  <label>Data de Resgate (título/fundo):</label>
+  <input type="date" id="dataResgate">
+
   <button type="button" onclick="calcularIR()">Calcular IR</button>
 </form>
+
+<h3>Imposto a Recolher:</h3>
+<p id="resultado">R$ 0,00</p>
 
 <!-- Resultado -->
 <h3>Imposto a Recolher:</h3>
