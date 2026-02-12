@@ -19,61 +19,68 @@
   <link rel="stylesheet" href="css/calculadora.css">
 
 <style>
-/* ================== MENU HAMBÚRGUER ================== */
-.menu {
-  position: relative;
-  z-index: 2100;
+/* ================== HEADER ================== */
+header {
+  position: relative;        /* ativa z-index */
+  z-index: 2000;
+  background: #1a202c;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
 }
+
+/* ================== BOTÃO HAMBÚRGUER ================== */
 .menu {
+  position: absolute;
+  top: 15px;
+  left: 15px;
   cursor: pointer;
   font-size: 28px;
   padding: 10px;
-  z-index: 1100;
-  position: relative;
+  z-index: 3100;              /* acima de tudo */
+  user-select: none;
 }
 
+/* ================== MENU LATERAL ================== */
 .menu-links {
   position: fixed;
   top: 0;
-  left: -250px; /* escondido inicialmente */
-  width: 250px;
+  left: -260px;               /* escondido */
+  width: 260px;
   height: 100%;
   background-color: #fff;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.3);
   transition: left 0.3s ease;
-  padding-top: 70px; /* espaço para header */
-  z-index: 1000;
+  padding-top: 80px;          /* espaço do header */
+  z-index: 3000;              /* acima do header */
 }
 
+/* MENU ABERTO */
 .menu-links.show {
-  left: 0; /* menu visível */
+  left: 0;
 }
 
+/* ================== LINKS ================== */
 .menu-links ul {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .menu-links li {
-  margin: 16px 0;
-  text-align: left;
+  border-bottom: 1px solid #eee;
 }
 
 .menu-links a {
-  text-decoration: none;
-  color: #000;
-  font-weight: 500;
   display: block;
-  padding: 12px 15px;
+  padding: 14px 18px;
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
 }
 
 .menu-links a:hover {
   background-color: #f0f0f0;
-}
-header {
-  position: relative;   /* ESSENCIAL */
-  z-index: 2000;
 }
 </style>
 <script>
