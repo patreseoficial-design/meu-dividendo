@@ -399,6 +399,30 @@ Por que usar o 13º salário no planejamento mês a mês?
   <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
   <p><a href="politica-de-privacidade.html" style="color:#fff; text-decoration:underline;">Política de Privacidade</a></p>
 </footer>
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('menuLinks');
+    document.body.classList.toggle('menu-open');
+    menu.classList.toggle('show');
+  }
 
+  // Impede fechamento ao clicar no botão hambúrguer
+  document.querySelector('.menu').addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+
+  // Impede fechamento ao clicar dentro do menu
+  document.getElementById('menuLinks').addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+
+  // Fecha SOMENTE se clicar fora
+  document.addEventListener('click', function () {
+    const menu = document.getElementById('menuLinks');
+    if (menu.classList.contains('show')) {
+      toggleMenu();
+    }
+  });
+</script>
 </body>
 </html>
