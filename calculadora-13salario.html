@@ -26,9 +26,7 @@
   <link rel="stylesheet" href="css/calculadora.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/calculadora-13salario.js"></script>
-</head>
-
+<head>
 <body>
 
 <header>
@@ -314,18 +312,17 @@ Por que usar o 13º salário no planejamento mês a mês?
     e.stopPropagation();
   });
 
-  // Impede fechamento ao clicar dentro do menu
-  document.getElementById('menuLinks').addEventListener('click', function (e) {
-    e.stopPropagation();
-  });
-
-  // Fecha SOMENTE se clicar fora
-  document.addEventListener('click', function () {
-    const menu = document.getElementById('menuLinks');
-    if (menu.classList.contains('show')) {
-      toggleMenu();
-    }
-  });
+ <!-- SCRIPTS -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
 </script>
+
+<script src="js/calculadora-13salario.js"></script>
+
+
+
 </body>
 </html>
