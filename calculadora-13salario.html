@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Calculadora de 13º Salário 2026 | Valor Líquido, INSS e IR</title>
+
   <meta name="description" content="Calcule o valor do seu 13º salário de forma simples e atualizada. Veja parcelas, descontos de INSS e IRRF e simule quanto investir mês a mês.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://meudividendo.online/calculadora-13salario">
@@ -19,7 +26,6 @@
   <link rel="stylesheet" href="css/calculadora.css">
 
   <style>
-    /* ================== HEADER ================== */
     header {
       position: relative;
       z-index: 2000;
@@ -29,7 +35,6 @@
       text-align: center;
     }
 
-    /* ================== BOTÃO HAMBÚRGUER ================== */
     .menu {
       position: absolute;
       top: 15px;
@@ -38,54 +43,40 @@
       font-size: 28px;
       padding: 10px;
       z-index: 3100;
-      user-select: none;
-      transition: transform 0.2s ease;
       background: rgba(255,255,255,0.1);
       border-radius: 5px;
+      user-select: none;
     }
 
-    .menu:hover {
-      transform: scale(1.1);
-      background: rgba(255,255,255,0.2);
-    }
-
-    /* ================== MENU LATERAL ================== */
     .menu-links {
       position: fixed;
       top: 0;
       left: -260px;
       width: 260px;
       height: 100vh;
-      background-color: #fff;
+      background: #fff;
       box-shadow: 2px 0 10px rgba(0,0,0,0.3);
       transition: left 0.3s ease;
       padding-top: 80px;
       z-index: 3000;
-      overflow-y: auto;
     }
 
-    /* MENU ABERTO */
     .menu-links.show {
       left: 0;
     }
 
-    /* OVERLAY ESCURO */
     body.menu-open::before {
       content: '';
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
       background: rgba(0,0,0,0.5);
       z-index: 2900;
     }
 
-    /* ================== LINKS ================== */
     .menu-links ul {
       list-style: none;
-      margin: 0;
       padding: 0;
+      margin: 0;
     }
 
     .menu-links li {
@@ -97,88 +88,69 @@
       padding: 14px 18px;
       text-decoration: none;
       color: #111;
-      font-weight: 500;
-      transition: background 0.2s ease;
     }
 
-    .menu-links a:hover {
-      background-color: #f0f0f0;
+    .close-menu {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
 
-    /* RESPONSIVO */
     @media (min-width: 768px) {
       .menu {
         display: none;
       }
     }
-
-    /* BOTÃO FECHAR MENU (OPCIONAL) */
-    .menu-links::after {
-      content: '✕';
-      position: absolute;
-      top: 20px;
-      right: 15px;
-      font-size: 24px;
-      cursor: pointer;
-      color: #666;
-    }
   </style>
-  <header>
-    <!-- BOTÃO HAMBÚRGUER -->
-    <div class="menu" onclick="toggleMenu()">☰</div>
+</head>
 
-    <div class="site-title">
-      <a href="index.html" style="color:#fff; text-decoration:none;">
-        Meu Dividendo
-      </a>
-    </div>
+<body>
 
-    <!-- MENU LATERAL -->
-    <nav id="menuLinks" class="menu-links">
-      <ul>
-        <li><a href="index.html">🏠 Início</a></li>
-        <li><a href="calculadora.html">Calculadora de Juros Compostos</a></li>
-        <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
-        <li><a href="calculadora-pis.html">Calculadora de PIS</a></li>
-        <li><a href="calculadora-ir.html">Calculadora de imposto de renda sobre Investimentos</a></li>
-        <li><a href="calculadora-rescisao.html">Calculadora de rescisão trabalhista</a></li>
-        <li><a href="quanto-investir-por-mes.html">Calculadora de quanto investir do seu salário por mês</a></li>
-        <li><a href="calculadora-quitacao.html">Calculadora de quitação patrimonial</a></li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <div class="menu" onclick="event.stopPropagation(); toggleMenu()">☰</div>
 
+  <div class="site-title">
+    <a href="index.html" style="color:#fff; text-decoration:none;">Meu Dividendo</a>
+  </div>
 
-  <!-- SCRIPT NO FINAL (PERFEITO) -->
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('menuLinks');
-      const body = document.body;
-      
-      if (!menu) {
-        console.error('Menu não encontrado!');
-        return;
-      }
-      
-      menu.classList.toggle('show');
-      body.classList.toggle('menu-open');
-    }
+  <nav id="menuLinks" class="menu-links">
+    <button class="close-menu" onclick="toggleMenu()">✕</button>
+    <ul>
+      <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="calculadora.html">Calculadora de Juros Compostos</a></li>
+      <li><a href="calculadora-13salario.html">Calculadora de 13º Salário</a></li>
+      <li><a href="calculadora-pis.html">Calculadora de PIS</a></li>
+      <li><a href="calculadora-ir.html">Calculadora de imposto de renda sobre Investimentos</a></li>
+      <li><a href="calculadora-rescisao.html">Calculadora de rescisão trabalhista</a></li>
+      <li><a href="quanto-investir-por-mes.html">Calculadora de quanto investir do seu salário por mês</a></li>
+      <li><a href="calculadora-quitacao.html">Calculadora de quitação patrimonial</a></li>
+    </ul>
+  </nav>
+</header>
 
-    // Fechar menu clicando fora ou no X
-    document.addEventListener('click', function(event) {
-      const menu = document.getElementById('menuLinks');
-      const hamburger = document.querySelector('.menu');
-      
-      if (menu.classList.contains('show') && 
-          !menu.contains(event.target) && 
-          !hamburger.contains(event.target)) {
-        toggleMenu();
-      }
-    });
-  </script>
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('menuLinks');
+    document.body.classList.toggle('menu-open');
+    menu.classList.toggle('show');
+  }
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="js/calculadora-13salario.js"></script>
+  document.addEventListener('click', function () {
+    const menu = document.getElementById('menuLinks');
+    if (menu.classList.contains('show')) toggleMenu();
+  });
+
+  document.getElementById('menuLinks').addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/calculadora-13salario.js"></script>
 
 <!-- TEXTO: CALCULADORA DE 13 SALARIO-->
 
