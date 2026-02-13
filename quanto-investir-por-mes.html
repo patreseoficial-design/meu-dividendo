@@ -82,10 +82,9 @@ taxa de juros e tempo de investimento, visualizando o crescimento do seu patrim�
 
 
 <!-- CALCULADORA -->
-
-  <section class="calculadora">
+<section class="calculadora-box">
   <h2>Calculadora de Investimento Mensal</h2>
-  
+
   <label for="salario">Salário Mensal (R$):</label>
   <input type="number" id="salario" placeholder="Ex: 4000" />
 
@@ -100,47 +99,122 @@ taxa de juros e tempo de investimento, visualizando o crescimento do seu patrim�
 
   <button id="calcular">Calcular</button>
 
-  <div id="resultado" style="margin-top:20px; font-weight:bold;"></div>
+  <div id="resultado"></div>
+
+  <canvas id="graficoInvest" style="margin-top:20px;"></canvas>
 </section>
-  <button class="calc-btn" onclick="calcularInvestimento()">Calcular Planejamento</button>
-</div>
 
-<!-- RESULTADO -->
-<div id="resultadoInvest" class="result" style="display:none">
-  <h2>Distribuição mensal do seu salário</h2>
+<style>
+.calculadora-box {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #1a202c;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  font-family: Arial, sans-serif;
+}
 
-  <p id="resDespesa"></p>
-  <p id="resInvest"></p>
-  <p id="resReserva"></p>
+.calculadora-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
 
-  <canvas id="graficoInvest"></canvas>
+.calculadora-box label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Categoria</th>
-          <th>Valor Mensal</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Despesas (50%)</td>
-          <td id="tdDespesa"></td>
-        </tr>
-        <tr>
-          <td>Investimento (30%)</td>
-          <td id="tdInvest"></td>
-        </tr>
-        <tr>
-          <td>Reserva / Dívidas (20%)</td>
-          <td id="tdReserva"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+.calculadora-box input {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 4px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 1em;
+}
 
+.calculadora-box button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: #4ade80;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  transition: 0.3s;
+}
+
+.calculadora-box button:hover {
+  background: #22c55e;
+}
+
+#resultado {
+  margin-top: 20px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1em;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let grafico;
+
+document.getElementById('calcular').addEventListener('click', function() {
+  const salario = parseFloat(document.getElementById('salario').value);
+  const objetivo = parseFloat(document.getElementById('objetivo').value);
+  const anos = parseFloat(document.getElementById('tempo').value);
+  const jurosAno = parseFloat(document.getElementById('juros').value);
+
+  if(!salario || !objetivo || !anos || !jurosAno) {
+    alert('Preencha todos os campos corretamente!');
+    return;
+  }
+
+  const meses = anos * 12;
+  const jurosMensal = Math.pow(1 + jurosAno/100, 1/12) - 1;
+  const aporteMensal = objetivo * jurosMensal / (Math.pow(1 + jurosMensal, meses) - 1);
+
+  const despesas = salario * 0.5;
+  const reserva = salario * 0.2;
+  const investimento = Math.min(salario * 0.3, aporteMensal);
+
+  const resultadoDiv = document.getElementById('resultado');
+  resultadoDiv.innerHTML = `
+    Você precisa investir aproximadamente <strong>R$ ${aporteMensal.toFixed(2)}</strong> por mês para atingir <strong>R$ ${objetivo.toLocaleString('pt-BR')}</strong> em ${anos} anos.<br><br>
+    Divisão sugerida do seu salário:<br>
+    Despesas: R$ ${despesas.toFixed(2)}<br>
+    Investimento: R$ ${investimento.toFixed(2)}<br>
+    Reserva / Dívidas: R$ ${reserva.toFixed(2)}
+  `;
+
+  const ctx = document.getElementById('graficoInvest');
+  if (grafico) grafico.destroy();
+
+  grafico = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Despesas', 'Investimento', 'Reserva'],
+      datasets: [{
+        data: [despesas, investimento, reserva],
+        backgroundColor: ['#ff7675', '#74b9ff', '#55efc4']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } }
+    }
+  });
+});
+</script>
 
             <!-- BANNER DE PROPAGANDA -->
              <div class="ad">Banner</div>
