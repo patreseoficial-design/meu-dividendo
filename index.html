@@ -13,22 +13,19 @@
 </head>
 <body>
 
-<header style="position: relative; background:#1a202c; color:#fff; height:70px; display:flex; align-items:center; justify-content:space-between; padding:0 20px;">
-  <!-- Botão do menu -->
-  <div id="menuBtn" style="font-size:28px; cursor:pointer; z-index:1100;" onclick="toggleMenu()">☰</div>
-  
-  <!-- Título central -->
-  <h1 style="margin:0; font-size:24px; flex:1; text-align:center;">Meu Dividendo</h1>
-  
-  <!-- Perfil -->
+<header class="topo">
+  <div id="menuBtn" onclick="toggleMenu()">☰</div>
 
-  <div class="profile" style="width:36px; height:36px; border-radius:50%; background:#555;"></div>
+  <a href="index.html" class="logo">Meu Dividendo</a>
 
-  <!-- MENU HAMBÚRGUER -->
+  <div class="profile"></div>
+
   <nav id="menuLinks" class="menu-links">
     <ul>
       <li><a href="index.html">🏠 Início</a></li>
-                  <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+    </ul>
+  </nav>
 </header>
 
 <script>
