@@ -82,14 +82,26 @@ taxa de juros e tempo de investimento, visualizando o crescimento do seu patrim�
 
 
 <!-- CALCULADORA -->
-<div class="calc-box">
-  <div class="inputs">
-    <div class="input-group">
-      <label>Salário Mensal</label>
-      <input type="number" id="salarioMensal" value="3000">
-    </div>
-  </div>
-   
+
+  <section class="calculadora">
+  <h2>Calculadora de Investimento Mensal</h2>
+  
+  <label for="salario">Salário Mensal (R$):</label>
+  <input type="number" id="salario" placeholder="Ex: 4000" />
+
+  <label for="objetivo">Objetivo Financeiro (R$):</label>
+  <input type="number" id="objetivo" placeholder="Ex: 100000" />
+
+  <label for="tempo">Tempo de Investimento (anos):</label>
+  <input type="number" id="tempo" placeholder="Ex: 10" />
+
+  <label for="juros">Taxa de Retorno Esperada (% ao ano):</label>
+  <input type="number" id="juros" placeholder="Ex: 6" />
+
+  <button id="calcular">Calcular</button>
+
+  <div id="resultado" style="margin-top:20px; font-weight:bold;"></div>
+</section>
   <button class="calc-btn" onclick="calcularInvestimento()">Calcular Planejamento</button>
 </div>
 
