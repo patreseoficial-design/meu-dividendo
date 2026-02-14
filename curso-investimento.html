@@ -3,57 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Curso de Investimento Interativo | Meu Dividendo</title>
 
-  <!-- CSS GLOBAL (manda em cores, header, footer, menu) -->
+  <!-- SEO -->
+  <meta name="description" content="Curso de investimentos gratuito do Meu Dividendo. Aprenda finanças pessoais, juros compostos e estratégias de longo prazo.">
+  <meta name="keywords" content="curso de investimentos, educação financeira, renda passiva">
+  <meta name="author" content="Meu Dividendo">
+
+  <title>Curso de Investimento | Meu Dividendo</title>
+
+  <!-- CSS GLOBAL + BASE -->
   <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
 
-  <!-- CSS LOCAL (APENAS cards do curso) -->
+  <!-- CSS LOCAL (SOMENTE CARDS DO CURSO) -->
   <style>
-    main {
+    .curso-container {
       max-width: 1200px;
       margin: 40px auto;
       padding: 0 20px;
+      text-align: center;
     }
 
-    .cards-container {
+    .curso-container p {
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+    }
+
+    .cards-curso {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
     }
 
-    .card {
+    .card-curso {
       background: #ffffff;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       transition: transform 0.3s, box-shadow 0.3s;
-      cursor: pointer;
+      text-align: left;
     }
 
-    .card:hover {
+    .card-curso:hover {
       transform: translateY(-5px);
       box-shadow: 0 12px 24px rgba(0,0,0,0.15);
     }
 
-    .card h2 {
+    .card-curso h2 {
       margin-top: 0;
       font-size: 1.3em;
     }
 
-    .card p {
-      margin: 10px 0 0 0;
+    .card-curso p {
       font-size: 0.95em;
+      margin: 10px 0 15px 0;
     }
 
-    .card button {
-      margin-top: 15px;
-      padding: 10px;
-      border: none;
+    .card-curso a {
+      display: inline-block;
+      padding: 10px 16px;
       border-radius: 8px;
       font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -71,60 +82,68 @@
     <ul>
       <li><a href="index.html">Início</a></li>
       <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
-      <li><a href="curso-investimento.html">Curso de Investimento</a></li>
+      <li><a href="curso-investimento.html">Curso</a></li>
     </ul>
   </nav>
 </header>
 
-<main>
+<main class="curso-container">
   <h1>Curso de Investimento Interativo</h1>
 
-  <div class="cards-container">
-    <div class="card">
-      <h2>Módulo 1: Fundamentos de Finanças</h2>
-      <p>Aprenda os conceitos básicos de finanças pessoais, orçamento, fluxo de caixa e reserva de emergência.</p>
-      <button onclick="window.location.href='modulo1.html'">Ir para o módulo</button>
+  <p>
+    Curso gratuito para aprender a investir do zero até estratégias avançadas
+    de longo prazo.
+  </p>
+
+  <div class="cards-curso">
+    <div class="card-curso">
+      <h2>Módulo 1 – Fundamentos de Finanças</h2>
+      <p>Controle financeiro, orçamento e reserva de emergência.</p>
+      <a href="modulo1.html">Acessar módulo</a>
     </div>
 
-    <div class="card">
-      <h2>Módulo 2: Como Investir</h2>
-      <p>Tipos de investimentos, renda fixa e variável, como começar investindo pouco.</p>
-      <button onclick="window.location.href='modulo2.html'">Ir para o módulo</button>
+    <div class="card-curso">
+      <h2>Módulo 2 – Como Investir</h2>
+      <p>Renda fixa, renda variável e primeiros investimentos.</p>
+      <a href="modulo2.html">Acessar módulo</a>
     </div>
 
-    <div class="card">
-      <h2>Módulo 3: Juros Compostos</h2>
-      <p>Veja como os juros compostos funcionam mês a mês.</p>
-      <button onclick="window.location.href='modulo3.html'">Ir para o módulo</button>
+    <div class="card-curso">
+      <h2>Módulo 3 – Juros Compostos</h2>
+      <p>O poder dos juros sobre juros no longo prazo.</p>
+      <a href="modulo3.html">Acessar módulo</a>
     </div>
 
-    <div class="card">
-      <h2>Módulo 4: Planejamento de Carteira</h2>
-      <p>Diversificação, risco e objetivos financeiros.</p>
-      <button onclick="window.location.href='modulo4.html'">Ir para o módulo</button>
+    <div class="card-curso">
+      <h2>Módulo 4 – Planejamento de Carteira</h2>
+      <p>Diversificação, risco e alocação de ativos.</p>
+      <a href="modulo4.html">Acessar módulo</a>
     </div>
 
-    <div class="card">
-      <h2>Módulo 5: Estratégias de Longo Prazo</h2>
-      <p>Aposentadoria, independência financeira e disciplina.</p>
-      <button onclick="window.location.href='modulo5.html'">Ir para o módulo</button>
+    <div class="card-curso">
+      <h2>Módulo 5 – Estratégias de Longo Prazo</h2>
+      <p>Independência financeira e aposentadoria.</p>
+      <a href="modulo5.html">Acessar módulo</a>
     </div>
 
-    <div class="card">
-      <h2>Módulo 6: Dicas e Boas Práticas</h2>
-      <p>Evite erros comuns e acompanhe resultados.</p>
-      <button onclick="window.location.href='modulo6.html'">Ir para o módulo</button>
+    <div class="card-curso">
+      <h2>Módulo 6 – Dicas e Boas Práticas</h2>
+      <p>Evite erros comuns e invista com consistência.</p>
+      <a href="modulo6.html">Acessar módulo</a>
     </div>
   </div>
 </main>
 
 <footer>
-  © 2026 Meu Dividendo. Todos os direitos reservados.
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas.</p>
+  <p><a href="politica-de-privacidade.html">Política de Privacidade</a></p>
 </footer>
 
 <script>
 function toggleMenu() {
-  document.getElementById('menuLinks').classList.toggle('show');
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 </script>
 
