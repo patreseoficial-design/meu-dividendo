@@ -5,152 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Módulo 1: Fundamentos de Finanças | Meu Dividendo</title>
 <link rel="stylesheet" href="css/global.css">
-
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f9f9f9;
-  color: #1a1a1a;
-  margin: 0;
-  padding: 0;
-}
+/* MESMO ESTILO DO MÓDULO 1 */
+body { font-family: Arial,sans-serif; background:#f9f9f9; color:#1a1a1a; margin:0; padding:0; }
+header { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:1000; }
+.site-title a { text-decoration:none; font-weight:bold; color:#000; font-size:1.2em; }
+.menu { cursor:pointer; font-size:28px; position:relative; z-index:999; }
+.menu-links { position:fixed; top:0; left:-250px; width:250px; height:100%; background:#fff; box-shadow:2px 0 8px rgba(0,0,0,0.2); transition:left 0.3s; z-index:998; padding-top:60px; }
+.menu-links ul { list-style:none; padding:0 20px; }
+.menu-links li { margin:20px 0; }
+.menu-links a { text-decoration:none; color:#000; font-weight:bold; }
+.menu-links.show { left:0; }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  position: relative;
-  z-index: 1000;
-}
-
-.site-title a {
-  text-decoration: none;
-  font-weight: bold;
-  color: #000;
-  font-size: 1.2em;
-}
-
-.menu {
-  cursor: pointer;
-  font-size: 28px;
-  position: relative;
-  z-index: 999;
-}
-
-.menu-links {
-  position: fixed;
-  top: 0;
-  left: -250px;
-  width: 250px;
-  height: 100%;
-  background: #ffffff;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.2);
-  transition: left 0.3s;
-  z-index: 998;
-  padding-top: 60px;
-}
-
-.menu-links ul {
-  list-style: none;
-  padding: 0 20px;
-}
-
-.menu-links li {
-  margin: 20px 0;
-}
-
-.menu-links a {
-  text-decoration: none;
-  color: #000;
-  font-weight: bold;
-}
-
-.menu-links.show {
-  left: 0;
-}
-
-main {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-h1 {
-  text-align: center;
-  font-size: 2em;
-  margin-bottom: 30px;
-}
-
-section {
-  background: #ffffff;
-  padding: 24px;
-  margin-bottom: 30px;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-}
-
-h2 {
-  margin-top: 0;
-  color: #1a1a1a;
-}
-
-p {
-  line-height: 1.6;
-  color: #333;
-}
-
-.tips {
-  background: #f0fdf4;
-  border-left: 5px solid #22c55e;
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-.exercise-box {
-  background: #fff7e6;
-  border-left: 5px solid #ffa500;
-  padding: 15px;
-  margin: 20px 0;
-  border-radius: 6px;
-}
-
-.breadcrumbs {
-  font-size: 0.9em;
-  margin-bottom: 20px;
-  color: #555;
-}
-
-.breadcrumbs a {
-  text-decoration: none;
-  color: #000;
-  font-weight: bold;
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #ffffff;
-  margin-top: 40px;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
-  font-size: 0.9em;
-  color: #555;
-}
+main { max-width:1000px; margin:40px auto; padding:0 20px; }
+h1 { text-align:center; font-size:2em; margin-bottom:30px; }
+section { background:#fff; padding:24px; margin-bottom:30px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,0.08); }
+h2 { margin-top:0; color:#1a1a1a; }
+p { line-height:1.6; color:#333; }
+.tips { background:#f0fdf4; border-left:5px solid #22c55e; padding:15px; margin:15px 0; border-radius:6px; font-weight:bold; }
+.exercise-box { background:#fff7e6; border-left:5px solid #ffa500; padding:15px; margin:20px 0; border-radius:6px; }
+.breadcrumbs { font-size:0.9em; margin-bottom:20px; color:#555; }
+.breadcrumbs a { text-decoration:none; color:#000; font-weight:bold; }
+footer { text-align:center; padding:20px; background:#fff; margin-top:40px; box-shadow:0 -2px 8px rgba(0,0,0,0.05); font-size:0.9em; color:#555; }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="site-title">
-    <a href="index.html">Meu Dividendo</a>
-  </div>
-
+  <div class="site-title"><a href="index.html">Meu Dividendo</a></div>
   <div class="menu" onclick="toggleMenu()">☰</div>
-
   <nav id="menuLinks" class="menu-links">
     <ul>
       <li><a href="index.html">🏠 Início</a></li>
@@ -163,44 +46,38 @@ footer {
 
 <main>
   <div class="breadcrumbs">
-    <a href="curso-investimento.html">Curso de Investimento</a> &gt; Módulo 1: Fundamentos de Finanças
+    <a href="curso-investimento.html">Curso de Investimento</a> &gt; Módulo 1: Fundamentos
   </div>
-
   <h1>Módulo 1: Fundamentos de Finanças</h1>
 
   <section>
     <h2>1. Conceitos Básicos</h2>
     <p>Finanças pessoais começam com entender <strong>quanto você ganha, quanto gasta e quanto consegue economizar</strong>. Organizar suas receitas e despesas é o primeiro passo para qualquer objetivo financeiro.</p>
-    <div class="tips">Dica: Crie um controle simples no Excel ou Google Sheets com receitas e despesas mensais. Você vai se surpreender com o quanto isso ajuda!</div>
+    <div class="tips">Dica: Crie um controle simples no Excel ou Google Sheets com receitas e despesas mensais.</div>
   </section>
 
   <section>
     <h2>2. Orçamento e Fluxo de Caixa</h2>
-    <p>O orçamento é seu mapa financeiro. Liste todas as entradas (salários, renda extra) e saídas (despesas fixas e variáveis). O <strong>fluxo de caixa</strong> mostra mês a mês se você está economizando ou gastando demais.</p>
-    <div class="exercise-box">
-      <strong>Exercício prático:</strong> Anote todas as suas despesas da última semana e veja quanto sobra para investir.
-    </div>
+    <p>Liste todas as entradas e saídas. O fluxo de caixa mostra se você está economizando ou gastando demais.</p>
+    <div class="exercise-box"><strong>Exercício prático:</strong> Anote todas as suas despesas da última semana e veja quanto sobra para investir.</div>
   </section>
 
   <section>
     <h2>3. Reserva de Emergência</h2>
-    <p>Uma reserva de emergência é essencial. Idealmente, tenha entre <strong>3 a 6 meses de despesas guardados</strong> em uma aplicação segura, como CDB de liquidez diária ou poupança.</p>
-    <div class="tips">Dica: Comece pequeno! Guarde R$50 a R$100 por semana até atingir sua meta.</div>
+    <p>Tenha entre 3 a 6 meses de despesas guardados em aplicações seguras.</p>
+    <div class="tips">Comece pequeno! Guarde R$50 a R$100 por semana até atingir sua meta.</div>
   </section>
 
   <section>
     <h2>4. Controle de Gastos</h2>
-    <p>Revise seus gastos e identifique desperdícios. Pergunte-se: “Preciso mesmo disso agora?” e ajuste seu orçamento para direcionar dinheiro para investimentos e objetivos.</p>
+    <p>Revise gastos e identifique desperdícios. Direcione dinheiro para investimentos.</p>
   </section>
 
   <section>
     <h2>5. Pequenos Hábitos, Grandes Resultados</h2>
-    <p>Economizar e investir de forma constante é mais eficiente do que esperar grandes somas. Os <strong>pequenos hábitos financeiros</strong> constroem disciplina e liberdade financeira a longo prazo.</p>
-    <div class="exercise-box">
-      <strong>Mini-desafio:</strong> Escolha um gasto pequeno que você pode cortar esta semana e invista o equivalente.
-    </div>
+    <p>Economizar e investir de forma constante é mais eficiente do que esperar grandes somas. Pequenhos hábitos constroem disciplina e liberdade financeira.</p>
+    <div class="exercise-box"><strong>Mini-desafio:</strong> Escolha um gasto pequeno que você pode cortar esta semana e invista o equivalente.</div>
   </section>
-
 </main>
 
 <footer>
@@ -213,6 +90,5 @@ function toggleMenu() {
   menu.classList.toggle('show');
 }
 </script>
-
 </body>
 </html>
