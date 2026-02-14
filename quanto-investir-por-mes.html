@@ -106,13 +106,23 @@
   left: 0; /* mostra o menu */
 }
 </style>
-
 <script>
-// função para abrir/fechar menu
-function toggleMenu() {
+document.addEventListener('DOMContentLoaded', function() {
+  const btnMenu = document.querySelector('.menu');
   const menu = document.getElementById('menuLinks');
-  menu.classList.toggle('show');
-}
+
+  btnMenu.addEventListener('click', function(e) {
+    e.stopPropagation(); // evita conflitos
+    menu.classList.toggle('show');
+  });
+
+  // fechar menu se clicar fora
+  document.addEventListener('click', function(e) {
+    if(!menu.contains(e.target) && !btnMenu.contains(e.target)) {
+      menu.classList.remove('show');
+    }
+  });
+});
 </script>
 
 
