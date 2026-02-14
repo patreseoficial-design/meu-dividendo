@@ -47,7 +47,7 @@ header {
   cursor: pointer;
   font-size: 28px;
   position: absolute;
-  left: 20px;
+  left: 20px;   /* agora hambúrguer à esquerda */
   color: #fff;
   z-index: 1002;
 }
@@ -55,17 +55,20 @@ header {
 .menu-links {
   position: fixed;
   top: 0;
-  left: -250px;
+  left: -250px;  /* continua fora da tela à esquerda */
   width: 250px;
   height: 100%;
   background: #1a202c;
   color: #fff;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+  box-shadow: 2px 0 8px rgba(0,0,0,0.2); /* sombra para direita, OK */
   transition: left 0.3s;
   z-index: 998;
   padding-top: 60px;
 }
 
+.menu-links.show {
+  left: 0; /* entra da esquerda */
+}
 .menu-links ul {
   list-style: none;
   padding: 0 20px;
