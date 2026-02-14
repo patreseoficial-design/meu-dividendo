@@ -79,7 +79,6 @@
     Com a <strong>Calculadora de Investimento Mensal</strong>, você descobre exatamente quanto precisa investir todos os meses para atingir o seu objetivo financeiro no tempo que deseja. Basta informar o valor do seu objetivo, o período de investimento e a taxa de retorno esperada, e a calculadora mostra o aporte mensal necessário.
   </p>
 </div>
-
 <!-- CALCULADORA COMPLETA -->
 <section class="calculadora-box">
   <h2>Calculadora de Investimento Mensal</h2>
@@ -98,13 +97,16 @@
 
   <button id="calcular">Calcular</button>
 
-  <div id="resultado"></div>
+  <!-- resultado oculto inicialmente -->
+  <div id="resultado" style="display:none;"></div>
 
-  <!-- Gráfico de barras -->
+  <!-- gráfico de barras -->
   <canvas id="graficoInvest" style="margin-top:20px;"></canvas>
 
-  <!-- Gráfico de linha -->
-  <h3 style="margin-top:40px; text-align:center;">Evolução do investimento</h3>
+  <!-- título gráfico de linha -->
+  <h3 id="tituloGraficoLinha" style="margin-top:40px; text-align:center; display:none;">
+    Evolução do investimento
+  </h3>
   <canvas id="graficoInvestimento" style="margin-top:20px;"></canvas>
 </section>
 
@@ -199,8 +201,10 @@ document.getElementById('calcular').addEventListener('click', function() {
   const reserva = salario * 0.2;
   const investimento = aporteMensal;
 
-  // Atualiza resultado
-  document.getElementById('resultado').innerHTML = `
+  // mostrar resultado após clicar
+  const resultadoDiv = document.getElementById('resultado');
+  resultadoDiv.style.display = 'block';
+  resultadoDiv.innerHTML = `
     Você precisa investir <strong>${aporteMensal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> por mês para atingir <strong>${objetivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> em ${anos} anos.<br><br>
     Divisão sugerida do seu salário:<br>
     Despesas: ${despesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}<br>
@@ -223,14 +227,18 @@ document.getElementById('calcular').addEventListener('click', function() {
     options:{ responsive:true, plugins:{ legend:{ display:false } } }
   });
 
-  // Gráfico de linha: evolução do investimento
+  // gráfico de linha detalhado
   let valores = [];
+  let labels = [];
   let saldo = 0;
   for(let m=1; m<=meses; m++){
     saldo = saldo*(1+jurosMensal) + aporteMensal;
-    if(m%12===0) valores.push(saldo.toFixed(2));
+    valores.push(saldo.toFixed(2));
+    labels.push((m/12).toFixed(1)); // eixo X em anos com 1 decimal
   }
-  let labels = Array.from({length:anos}, (_,k)=> (k+1).toString());
+
+  // mostrar título do gráfico
+  document.getElementById('tituloGraficoLinha').style.display = 'block';
 
   const ctxL = document.getElementById('graficoInvestimento').getContext('2d');
   if(graficoLinha) graficoLinha.destroy();
@@ -244,7 +252,7 @@ document.getElementById('calcular').addEventListener('click', function() {
         borderColor:'#1a1a1a',
         backgroundColor:'rgba(26,26,26,0.1)',
         fill:true,
-        tension:0.4
+        tension:0.3
       }]
     },
     options:{
@@ -253,6 +261,7 @@ document.getElementById('calcular').addEventListener('click', function() {
       scales:{ y:{ beginAtZero:true }, x:{ title:{ display:true, text:'Ano' } } }
     }
   });
+
 });
 </script>
 
