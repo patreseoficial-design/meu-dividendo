@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 4: Planejamento de Carteira | Meu Dividendo</title>
+<link rel="stylesheet" href="css/global.css">
+<style>
+/* MESMO ESTILO DOS MÓDULOS */
+body { font-family: Arial,sans-serif; background:#f9f9f9; color:#1a1a1a; margin:0; padding:0; }
+header { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:1000; }
+.site-title a { text-decoration:none; font-weight:bold; color:#000; font-size:1.2em; }
+.menu { cursor:pointer; font-size:28px; position:relative; z-index:999; }
+.menu-links { position:fixed; top:0; left:-250px; width:250px; height:100%; background:#fff; box-shadow:2px 0 8px rgba(0,0,0,0.2); transition:left 0.3s; z-index:998; padding-top:60px; }
+.menu-links ul { list-style:none; padding:0 20px; }
+.menu-links li { margin:20px 0; }
+.menu-links a { text-decoration:none; color:#000; font-weight:bold; }
+.menu-links.show { left:0; }
+main { max-width:1000px; margin:40px auto; padding:0 20px; }
+h1 { text-align:center; font-size:2em; margin-bottom:30px; }
+section { background:#fff; padding:24px; margin-bottom:30px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,0.08); }
+h2 { margin-top:0; color:#1a1a1a; }
+p { line-height:1.6; color:#333; }
+.tips { background:#f0fdf4; border-left:5px solid #22c55e; padding:15px; margin:15px 0; border-radius:6px; font-weight:bold; }
+.exercise-box { background:#fff7e6; border-left:5px solid #ffa500; padding:15px; margin:20px 0; border-radius:6px; }
+.breadcrumbs { font-size:0.9em; margin-bottom:20px; color:#555; }
+.breadcrumbs a { text-decoration:none; color:#000; font-weight:bold; }
+footer { text-align:center; padding:20px; background:#fff; margin-top:40px; box-shadow:0 -2px 8px rgba(0,0,0,0.05); font-size:0.9em; color:#555; }
+</style>
+</head>
+<body>
+
+<header>
+<div class="site-title"><a href="index.html">Meu Dividendo</a></div>
+<div class="menu" onclick="toggleMenu()">☰</div>
+<nav id="menuLinks" class="menu-links">
+<ul>
+<li><a href="index.html">🏠 Início</a></li>
+<li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+<li><a href="curso-investimento.html">Curso de Investimento</a></li>
+<li><a href="#">Módulo 4: Planejamento de Carteira</a></li>
+</ul>
+</nav>
+</header>
+
+<main>
+<div class="breadcrumbs">
+<a href="curso-investimento.html">Curso de Investimento</a> &gt; Módulo 4: Planejamento de Carteira
+</div>
+
+<h1>Módulo 4: Planejamento de Carteira</h1>
+
+<section>
+<h2>1. Diversificação</h2>
+<p>Distribua seus investimentos entre diferentes ativos para reduzir riscos e aumentar oportunidades de retorno.</p>
+<div class="tips">Dica: Não coloque tudo em um único tipo de investimento.</div>
+</section>
+
+<section>
+<h2>2. Risco x Retorno</h2>
+<p>Entenda seu perfil de investidor e ajuste a carteira para equilibrar segurança e potencial de ganho.</p>
+<div class="exercise-box"><strong>Exercício:</strong> Faça uma lista dos ativos que você possui e classifique-os por risco.</div>
+</section>
+
+<section>
+<h2>3. Objetivos Financeiros</h2>
+<p>Monte sua carteira considerando curto, médio e longo prazo. Cada objetivo pode ter uma estratégia diferente.</p>
+</section>
+
+<section>
+<h2>4. Monitoramento</h2>
+<p>Acompanhe mensalmente sua carteira, rebalanceie quando necessário e registre os resultados.</p>
+<div class="tips">Ferramenta útil: use planilhas ou apps para controle de investimentos.</div>
+</section>
+
+</main>
+
+<footer>
+© 2026 Meu Dividendo. Todos os direitos reservados.
+</footer>
+
+<script>
+function toggleMenu() { document.getElementById('menuLinks').classList.toggle('show'); }
+</script>
+
+</body>
+</html>
