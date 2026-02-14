@@ -64,15 +64,14 @@
     </ul>
   </nav>
 </header>
-
-<style>
 /* MENU HAMBURGUER */
+<style>
 .menu {
   cursor: pointer;
   font-size: 28px;
   padding: 10px;
   position: relative;
-  z-index: 1100;
+  z-index: 9999; /* garantir que o botão fique acima de tudo */
 }
 
 .menu-links {
@@ -84,7 +83,7 @@
   background: #ffffff;
   box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   transition: left 0.3s;
-  z-index: 1000;
+  z-index: 9998; /* abaixo do botão */
 }
 
 .menu-links ul {
