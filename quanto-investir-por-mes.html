@@ -78,8 +78,6 @@ e entender quanto precisa investir por mês para atingir seus objetivos. Com ela
 taxa de juros e tempo de investimento, visualizando o crescimento do seu patrimônio ao longo dos anos.
 </p>
  </div>
-
-
 <!-- CALCULADORA -->
 <section class="calculadora-box">
   <h2>Calculadora de Investimento Mensal</h2>
@@ -108,8 +106,8 @@ taxa de juros e tempo de investimento, visualizando o crescimento do seu patrim�
   max-width: 400px;
   margin: 40px auto;
   padding: 24px;
-  background: #ffffff; /* branco */
-  color: #000000; /* texto preto */
+  background: #ffffff; /* fundo branco */
+  color: #000000;      /* texto preto */
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   font-family: Arial, sans-serif;
@@ -119,7 +117,6 @@ taxa de juros e tempo de investimento, visualizando o crescimento do seu patrim�
   text-align: center;
   margin-bottom: 20px;
   font-size: 1.5em;
-  color: #000000;
 }
 
 .calculadora-box label {
@@ -142,13 +139,13 @@ taxa de juros e tempo de investimento, visualizando o crescimento do seu patrim�
   margin-top: 20px;
   width: 100%;
   padding: 12px;
-  background: #000000; /* botão verde */
+  background: #000000;
   border: none;
   border-radius: 8px;
   font-size: 1em;
   font-weight: bold;
   cursor: pointer;
-  color:#ffffff ;
+  color:#ffffff;
   transition: 0.3s;
 }
 
@@ -182,21 +179,28 @@ document.getElementById('calcular').addEventListener('click', function() {
 
   const meses = anos * 12;
   const jurosMensal = Math.pow(1 + jurosAno/100, 1/12) - 1;
-  const aporteMensal = objetivo * jurosMensal / (Math.pow(1 + jurosMensal, meses) - 1);
+
+  // cálculo do aporte mensal para atingir o objetivo
+  let aporteMensal = objetivo * jurosMensal / (Math.pow(1 + jurosMensal, meses) - 1);
+
+  // limitar investimento máximo a 30% do salário
+  const maxInvestimento = salario * 0.3;
+  if (aporteMensal > maxInvestimento) aporteMensal = maxInvestimento;
 
   const despesas = salario * 0.5;
   const reserva = salario * 0.2;
-  const investimento = Math.min(salario * 0.3, aporteMensal);
+  const investimento = aporteMensal;
 
   const resultadoDiv = document.getElementById('resultado');
   resultadoDiv.innerHTML = `
-    Você precisa investir aproximadamente <strong>R$ ${aporteMensal.toFixed(2)}</strong> por mês para atingir <strong>R$ ${objetivo.toLocaleString('pt-BR')}</strong> em ${anos} anos.<br><br>
+    Você precisa investir aproximadamente <strong>${aporteMensal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> por mês para atingir <strong>${objetivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> em ${anos} anos.<br><br>
     Divisão sugerida do seu salário:<br>
-    Despesas: R$ ${despesas.toFixed(2)}<br>
-    Investimento: R$ ${investimento.toFixed(2)}<br>
-    Reserva / Dívidas: R$ ${reserva.toFixed(2)}
+    Despesas: ${despesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}<br>
+    Investimento: ${investimento.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}<br>
+    Reserva / Dívidas: ${reserva.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
   `;
 
+  // gráfico
   const ctx = document.getElementById('graficoInvest');
   if (grafico) grafico.destroy();
 
@@ -216,7 +220,6 @@ document.getElementById('calcular').addEventListener('click', function() {
   });
 });
 </script>
-
 
             <!-- BANNER DE PROPAGANDA -->
              <div class="ad">Banner</div>
