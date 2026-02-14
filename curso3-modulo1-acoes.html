@@ -2,48 +2,381 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Curso 3 - Ações</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Curso 3 - Pessoas do Mercado</title>
+
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+
+  <!-- CHART -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CSS LOCAL / RESPONSIVO DO CURSO -->
+  <style>
+    /* ===================== RESPONSIVO CURSOS ===================== */
+
+    .curso-conteudo {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .curso-conteudo p,
+    .curso-conteudo li {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .destaque,
+    .atividade,
+    .referencias {
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .pergunta {
+      background: #eef2ff;
+      padding: 12px;
+      border-left: 5px solid #1a202c;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    /* ===================== MOBILE ===================== */
+    @media (max-width: 768px) {
+
+      header {
+        padding: 10px;
+      }
+
+      .site-title a {
+        font-size: 1.2rem;
+      }
+
+      .curso-conteudo {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .destaque ul,
+      .referencias ul {
+        padding-left: 20px;
+      }
+    }
+
+    /* ===================== MOBILE PEQUENO ===================== */
+    @media (max-width: 480px) {
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+      }
+
+      p,
+      li {
+        font-size: 0.95rem;
+      }
+
+      .menu {
+        font-size: 26px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
+
+  <!-- MENU HAMBÚRGUER -->
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+    </ul>
+  </nav>
+</header>
 <section class="curso-conteudo">
   <h1>Ações — Entenda Tudo do Zero</h1>
 
-  <h2>O que são ações?</h2>
-  <p>
-    Ações representam pequenas partes de uma empresa. Ao comprar uma ação,
-    você se torna sócio do negócio.
-  </p>
+  <p>De R$ 1.000 em ITSA4 (2010) para R$ 18.000 (2024). Multiplicação 18x em 14 anos. Esta aula revela como ações constroem fortunas reais vs. mitos da bolsa.</p>
 
-  <h2>Por que as ações foram criadas?</h2>
-  <p>
-    Para que empresas pudessem captar dinheiro sem depender apenas de bancos,
-    permitindo crescimento e expansão.
-  </p>
+  <div class="pergunta">
+    Você quer comprar ações ou ser sócio de negócios excepcionais?
+  </div>
 
-  <h2>Como o investidor ganha dinheiro?</h2>
-  <ul>
-    <li>Valorização das ações</li>
-    <li>Dividendos</li>
-  </ul>
+  <h2>O que é Ser Acionista de Verdade?</h2>
+  <p>Ao comprar 1 ação PETR4 (R$ 35), você vira dono de 0,00001% da Petrobras. Recebe dividendos proporcionais e direito a voto em assembleias.</p>
 
-  <h2>Casos de sucesso</h2>
-  <p>
-    Investidores que mantiveram ações de boas empresas por décadas
-    multiplicaram seu patrimônio.
-  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Você é</th>
+        <th>Sem ações</th>
+        <th>Com 100 ações VALE3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dividendos 2024</td>
+        <td>R$ 0</td>
+        <td>R$ 1.800 (R$ 18/ação)</td>
+      </tr>
+      <tr>
+        <td>Direito voto</td>
+        <td>Nenhum</td>
+        <td>Participa AGE/AGO</td>
+      </tr>
+      <tr>
+        <td>Lucro empresa</td>
+        <td>Não participa</td>
+        <td>0,00005% dos lucros</td>
+      </tr>
+    </tbody>
+  </table>
 
-  <h2>Casos de grandes perdas</h2>
-  <p>
-    Empresas mal geridas, crises e alavancagem excessiva já levaram
-    investidores a perdas significativas.
-  </p>
+  <h2>Por que Empresas Emitem Ações?</h2>
+  <p>Captar R$ 1 bilhão sem pagar 14% juros aos bancos. Em troca, cedem 10% da empresa aos acionistas. Win-win para crescimento acelerado.</p>
 
-  <h2>Riscos</h2>
-  <p>
-    Prejuízo, falência, crises econômicas e má gestão.
-  </p>
+  <h2>Duas Formas de Ganhar Dinheiro (Faça Ambas)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Método</th>
+        <th>Exemplo VALE3 R$ 10k</th>
+        <th>Frequência</th>
+        <th>Imposto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Valorização</td>
+        <td>R$ 60 → R$ 68 (+13%)</td>
+        <td>Trimestral</td>
+        <td>15% longo prazo</td>
+      </tr>
+      <tr>
+        <td>Dividendos</td>
+        <td>R$ 1.800/ano</td>
+        <td>Mensal/trimestral</td>
+        <td>Isento até R$ 20k/mês</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="atividade">
+    ITSA4: R$ 1k (2010) + dividendos reinvestidos = R$ 18k (2024). Retorno anualizado 22%.
+  </div>
+
+  <h2>Casos de Sucesso Épicos (Copie a Estratégia)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Ação</th>
+        <th>Investimento 2010</th>
+        <th>Valor 2024</th>
+        <th>Multiplicação</th>
+        <th>Segredo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ITSA4</td>
+        <td>R$ 10k</td>
+        <td>R$ 180k</td>
+        <td>18x</td>
+        <td>Holding perene</td>
+      </tr>
+      <tr>
+        <td>WEGE3</td>
+        <td>R$ 10k</td>
+        <td>R$ 650k</td>
+        <td>65x</td>
+        <td>Crescimento global</td>
+      </tr>
+      <tr>
+        <td>PRIO3</td>
+        <td>R$ 10k (IPO)</td>
+        <td>R$ 1,2M</td>
+        <td>120x</td>
+        <td>Gestão + commodity</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Desastres que Ensinam (Nunca Repita)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Ação</th>
+        <th>Erro fatal</th>
+        <th>Perda 5 anos</th>
+        <th>Lição</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>MGLU3</td>
+        <td>Valuation insano IPO</td>
+        <td>-90%</td>
+        <td>P/L 100x = bolha</td>
+      </tr>
+      <tr>
+        <td>OGXP3</td>
+        <td>Alavancagem petróleo</td>
+        <td>-100%</td>
+        <td>Dívida/EBITDA 8x</td>
+      </tr>
+      <tr>
+        <td>SUZB3</td>
+        <td>Ciclo açúcar volátil</td>
+        <td>-70%</td>
+        <td>Evite commodities puras</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Riscos Reais da Bolsa (e Defesas)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Risco</th>
+        <th>Probabilidade</th>
+        <th>Defesa comprovada</th>
+        <th>Métrica limite</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Falência</td>
+        <td>1% (blue chips)</td>
+        <td>Lucro 10+ anos</td>
+        <td>ROE > 15%</td>
+      </tr>
+      <tr>
+        <td>Crise mercado</td>
+        <td>100% a cada 7 anos</td>
+        <td>Diversificação 15 ações</td>
+        <td>Max 10% por ação</td>
+      </tr>
+      <tr>
+        <td>Má gestão</td>
+        <td>20%</td>
+        <td>ROIC > WACC</td>
+        <td>Gestor familiar</td>
+      </tr>
+      <tr>
+        <td>Inflação</td>
+        <td>Constante BR</td>
+        <td>Empresas precificadoras</td>
+        <td>Receita líquida + inflação</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Carteira Iniciante Perfeita (R$ 20k)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Setor</th>
+        <th>Ação</th>
+        <th>Alocação</th>
+        <th>Yield + Crescimento</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Bancos</td>
+        <td>ITSA4</td>
+        <td>20%</td>
+        <td>7% + 10%</td>
+      </tr>
+      <tr>
+        <td>Energia</td>
+        <td>TAEE11</td>
+        <td>15%</td>
+        <td>12% + 5%</td>
+      </tr>
+      <tr>
+        <td>Industrial</td>
+        <td>WEGE3</td>
+        <td>15%</td>
+        <td>2% + 25%</td>
+      </tr>
+      <tr>
+        <td>Petro</td>
+        <td>PETR4</td>
+        <td>10%</td>
+        <td>15% + 8%</td>
+      </tr>
+      <tr>
+        <td>Consumo</td>
+        <td>ABEV3</td>
+        <td>10%</td>
+        <td>5% + 8%</td>
+      </tr>
+      <tr>
+        <td>Etc (10 ações)</td>
+        <td>-</td>
+        <td>30%</td>
+        <td>8% médio</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Conclusão: Sócio, Não Apostador</h2>
+  <p>Compre negócios, não gráficos. Foque lucro recorrente + gestão honesta. R$ 1k/mês por 20 anos = R$ 1M (15% anual composto).</p>
+
+  <div class="pergunta">
+    Primeira ação hoje: ITSA4 ou TAEE11. R$ 1k inicial. Reinvestir dividendos sempre.
+  </div>
+
+  
 </section>
 
+    </section>
+<!-- RODAPÉ -->
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
+  <p>
+    <a href="politica-de-privacidade.html">Política de Privacidade</a>
+  </p>
+</footer>
+
+
+<!-- SCRIPTS -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+<script src="js/calculadora-juros.js" defer></script>
+
 </body>
-</html>
