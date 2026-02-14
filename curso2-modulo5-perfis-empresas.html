@@ -2,26 +2,362 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Módulo 5 - Perfis de Empresas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Curso 3 - Pessoas do Mercado</title>
+
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+
+  <!-- CHART -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CSS LOCAL / RESPONSIVO DO CURSO -->
+  <style>
+    /* ===================== RESPONSIVO CURSOS ===================== */
+
+    .curso-conteudo {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .curso-conteudo p,
+    .curso-conteudo li {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .destaque,
+    .atividade,
+    .referencias {
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .pergunta {
+      background: #eef2ff;
+      padding: 12px;
+      border-left: 5px solid #1a202c;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    /* ===================== MOBILE ===================== */
+    @media (max-width: 768px) {
+
+      header {
+        padding: 10px;
+      }
+
+      .site-title a {
+        font-size: 1.2rem;
+      }
+
+      .curso-conteudo {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .destaque ul,
+      .referencias ul {
+        padding-left: 20px;
+      }
+    }
+
+    /* ===================== MOBILE PEQUENO ===================== */
+    @media (max-width: 480px) {
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+      }
+
+      p,
+      li {
+        font-size: 0.95rem;
+      }
+
+      .menu {
+        font-size: 26px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<section class="curso-conteudo">
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
+
+  <!-- MENU HAMBÚRGUER -->
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+    </ul>
+  </nav>
+</header>
+
+   <section class="curso-conteudo">
   <h1>Módulo 5 — Perfis de Empresas</h1>
 
-  <ul>
-    <li>Empresas perenes</li>
-    <li>Empresas perigosas</li>
-    <li>Empresas cíclicas</li>
-    <li>Empresas defensivas</li>
-    <li>Empresas de crescimento</li>
-  </ul>
+  <p>Cada perfil exige estratégia específica. Errar o timing custa 50-90% do patrimônio. Esta aula te ensina identificar + alocar corretamente.</p>
 
+  <div class="pergunta">
+    Qual seu perfil dominante hoje? (Perene 60%? Cíclica 30%?)
+  </div>
+
+  <h2>Empresas Perenes: As Vacas Leiteiras</h2>
+  <p>Lucro todo trimestre há 20+ anos. Negócios essenciais com barreiras altas. Pagam dividendos crescentes eternamente.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Características</th>
+        <th>Exemplos</th>
+        <th>Retorno 15 anos</th>
+        <th>Quando comprar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Lucro 20+ anos, ROE >18%, Debt/EBITDA <2x</td>
+        <td>ITSA4, TAEE11, BBAS3</td>
+        <td>20% anualizado</td>
+        <td>Sempre (P/L <15x)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="atividade">
+    ITSA4: R$ 10k (2009) → R$ 250k + R$ 80k dividendos = 33x total
+  </div>
+
+  <h2>Empresas Perigosas: Fuja a Pé</h2>
+  <p>Queimam caixa crônico ou dívida insustentável. 85% viram penny stocks ou zeram.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Sinais vermelhos</th>
+        <th>Exemplos</th>
+        <th>Resultado típico</th>
+        <th>Regra absoluta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Lucro negativo 3+ anos, Debt/EBITDA >6x</td>
+        <td>CCRO3, CSMG3, MGLU3</td>
+        <td>-90% em 3 anos</td>
+        <td>Nunca compre</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Empresas Cíclicas: Tsunami de Lucro/Prejuízo</h2>
+  <p>Lucro explode em alta commodity/economia, mas zeram em crise. Timing é tudo.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Ciclo</th>
+        <th>Exemplos</th>
+        <th>Alta (2 anos)</th>
+        <th>Baixa (2 anos)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Commodities, construção, siderurgia</td>
+        <td>VALE3, USIM5, RDOR3</td>
+        <td>+150%</td>
+        <td>-60%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="atividade">
+    VALE3: Compre P/L 4x (hoje), venda P/L 12x. Repita ciclo.
+  </div>
+
+  <h2>Empresas Defensivas: Dormem Tranquilo</h2>
+  <p>Estáveis em qualquer crise. Demanda inelástica (água, saúde, saneamento). Baixo crescimento, mas zero volatilidade.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Setor</th>
+        <th>Exemplos</th>
+        <th>Queda 2020 COVID</th>
+        <th>Yield atual</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Utilidades, saúde, consumo básico</td>
+        <td>SABESP, RADL3, ABEV3</td>
+        <td>-15% (vs IBOV -45%)</td>
+        <td>7-12%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Empresas de Crescimento: Foguetes ou Estrelas Cadentes</h2>
+  <p>Reinvestem 100% lucro para crescer 30%+ ao ano. Alto P/L justificado só com lucros dobrando.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Critério</th>
+        <th>Exemplos</th>
+        <th>Retorno 5 anos</th>
+        <th>Quando entrar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Receita +30%/ano, margem crescendo</td>
+        <td>WEGE3, PRIO3, VBBR3</td>
+        <td>10-50x</td>
+        <td>Lucro novo recorde</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Carteira Ideal por Perfil de Risco (R$ 100k)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Perfil</th>
+        <th>Perenes</th>
+        <th>Defensivas</th>
+        <th>Cíclicas</th>
+        <th>Crescimento</th>
+        <th>Perigosas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Conservador</td>
+        <td>50%</td>
+        <td>30%</td>
+        <td>10%</td>
+        <td>10%</td>
+        <td>0%</td>
+      </tr>
+      <tr>
+        <td>Moderado</td>
+        <td>40%</td>
+        <td>20%</td>
+        <td>20%</td>
+        <td>20%</td>
+        <td>0%</td>
+      </tr>
+      <tr>
+        <td>Agressivo</td>
+        <td>20%</td>
+        <td>10%</td>
+        <td>30%</td>
+        <td>40%</td>
+        <td>0%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="atividade">
+    Auditoria portfólio: Quantas % perigosas você tem? Elimine 100% hoje.
+  </div>
+
+  <h2>Resumo Estratégico por Perfil</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Horizonte</th>
+        <th>Alocação máx</th>
+        <th>Métrica compra</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Perenes</td>
+        <td>Eterno</td>
+        <td>50%</td>
+        <td>P/L &lt;15x</td>
+      </tr>
+      <tr>
+        <td>Perigosas</td>
+        <td>Nunca</td>
+        <td>0%</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>Cíclicas</td>
+        <td>2-3 anos</td>
+        <td>20%</td>
+        <td>P/L setor mínimo</td>
+      </tr>
+      <tr>
+        <td>Defensivas</td>
+        <td>10+ anos</td>
+        <td>30%</td>
+        <td>Yield &gt; CDI</td>
+      </tr>
+      <tr>
+        <td>Crescimento</td>
+        <td>5 anos</td>
+        <td>20%</td>
+        <td>Receita +25% tri</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Conclusão: Alocação = 80% do Sucesso</h2>
+  <p>Perenes constroem riqueza. Defensivas protegem. Crescimento acelera. Cíclicas especulam. Perigosas destroem.</p>
+
+  <div class="pergunta">
+    Ação imediata: Liste suas 10 maiores posições por perfil. Rebalance para 50/30/10/10/0.
+  </div>
+
+  
+<!-- RODAPÉ -->
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
   <p>
-    Cada tipo exige uma estratégia diferente do investidor.
+    <a href="politica-de-privacidade.html">Política de Privacidade</a>
   </p>
+</footer>
 
-</section>
+
+<!-- SCRIPTS -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+<script src="js/calculadora-juros.js" defer></script>
 
 </body>
-</html>
