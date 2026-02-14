@@ -2,34 +2,331 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Curso 3 - Renda Fixa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Curso 3 - Pessoas do Mercado</title>
+
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+
+  <!-- CHART -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CSS LOCAL / RESPONSIVO DO CURSO -->
+  <style>
+    /* ===================== RESPONSIVO CURSOS ===================== */
+
+    .curso-conteudo {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .curso-conteudo p,
+    .curso-conteudo li {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .destaque,
+    .atividade,
+    .referencias {
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .pergunta {
+      background: #eef2ff;
+      padding: 12px;
+      border-left: 5px solid #1a202c;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    /* ===================== MOBILE ===================== */
+    @media (max-width: 768px) {
+
+      header {
+        padding: 10px;
+      }
+
+      .site-title a {
+        font-size: 1.2rem;
+      }
+
+      .curso-conteudo {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .destaque ul,
+      .referencias ul {
+        padding-left: 20px;
+      }
+    }
+
+    /* ===================== MOBILE PEQUENO ===================== */
+    @media (max-width: 480px) {
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+      }
+
+      p,
+      li {
+        font-size: 0.95rem;
+      }
+
+      .menu {
+        font-size: 26px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<section class="curso-conteudo">
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
+
+  <!-- MENU HAMBÚRGUER -->
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+    </ul>
+  </nav>
+</header>
+
+   <section class="curso-conteudo">
   <h1>Renda Fixa: CDB, LCI e LCA</h1>
 
-  <h2>O que é renda fixa?</h2>
-  <p>
-    São investimentos com regras de rendimento definidas desde o início.
-  </p>
+  <p>Em 2024, R$ 3 trilhões estão parados na poupança rendendo 6% ao ano enquanto CDBs pagam 14% líquidos. Esta aula mostra como transformar sua reserva de emergência em máquina de juros reais.</p>
 
-  <h2>CDB</h2>
-  <p>
-    Empréstimo que você faz para bancos em troca de juros.
-  </p>
+  <div class="pergunta">
+    Quanto você ganha hoje com sua reserva de emergência? (Poupança? CDB?)
+  </div>
 
-  <h2>LCI e LCA</h2>
-  <p>
-    Investimentos ligados ao setor imobiliário e agrícola,
-    geralmente isentos de imposto de renda.
-  </p>
+  <h2>O que é Renda Fixa de Verdade?</h2>
+  <p>Você empresta dinheiro e recebe de volta principal + juros pré-combinados. Previsibilidade total vs. renda variável (bolsa).</p>
 
-  <h2>Riscos</h2>
-  <p>
-    Baixo risco, mas ainda sujeitos à inflação e à saúde do emissor.
-  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Rendimento Líquido Hoje</th>
+        <th>Segurança FGC</th>
+        <th>Liquidez</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Poupança</td>
+        <td>6,17% a.a.</td>
+        <td>Sim (R$ 250k)</td>
+        <td>Diária</td>
+      </tr>
+      <tr>
+        <td>CDB 100% CDI</td>
+        <td>13,95% a.a.</td>
+        <td>Sim (R$ 250k)</td>
+        <td>Variável</td>
+      </tr>
+      <tr>
+        <td>LCI/LCA 95% CDI</td>
+        <td>13,25% líquido IR</td>
+        <td>Sim (R$ 250k)</td>
+        <td>90+ dias</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>CDB: Seu Dinheiro Trabalhando no Banco</h2>
+  <p>O banco usa seu dinheiro para emprestar e te paga juros. Quanto maior o banco/pequeno, maior o juro (risco compensado).</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Banco</th>
+        <td>% CDI Hoje</td>
+        <th>R$ 100k em 2 anos</th>
+        <th>IR (2 anos)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Grandes (Itaú, Bradesco)</td>
+        <td>90-95%</td>
+        <td>R$ 25.400</td>
+        <td>15%</td>
+      </tr>
+      <tr>
+        <td>Médios (BTG, XP)</td>
+        <td>100-105%</td>
+        <td>R$ 28.200</td>
+        <td>15%</td>
+      </tr>
+      <tr>
+        <td>Pequeños (Cedula, Luiza)</td>
+        <td>110-130%</td>
+        <td>R$ 31.500</td>
+        <td>15%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="atividade">
+    CDB Cedula 120% CDI 2 anos: R$ 10k → R$ 3.150 lucro bruto → R$ 2.677 líquido
+  </div>
+
+  <h2>LCI e LCA: Isentas de IR (O Santo Graal)</h2>
+  <p>Bancos emitem para financiar imóveis (LCI) e agro (LCA). Mesmos rendimentos CDB, zero imposto de renda.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>% CDI</th>
+        <th>Líquido vs CDB</th>
+        <th>Carência típica</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>LCI Imobiliária</td>
+        <td>90-95%</td>
+        <td>+25% melhor</td>
+        <td>90 dias</td>
+      </tr>
+      <tr>
+        <td>LCA Agronegócio</td>
+        <td>92-100%</td>
+        <td>+30% melhor</td>
+        <td>180 dias</td>
+      </tr>
+      <tr>
+        <td>CDB equivalente</td>
+        <td>100%</td>
+        <td>Base</td>
+        <td>Variável</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="atividade">
+    LCI 95% CDI vs CDB 100% CDI (2 anos R$ 100k): LCI rende R$ 25.100 LIQUIDO vs CDB R$ 21.300 líquido
+  </div>
+
+  <h2>Riscos Reais (e Como Mitigar)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Risco</th>
+        <th>Probabilidade</th>
+        <th>Mitigação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Falência banco</td>
+        <td>0,01% (FGC cobre)</td>
+        <td>Diversifique 10 bancos, R$ 250k cada</td>
+      </tr>
+      <tr>
+        <td>Inflação</td>
+        <td>Alta (Selic cai)</td>
+        <td>50% prefixado, 50% pós-fixado</td>
+      </tr>
+      <tr>
+        <td>Marcação a mercado</td>
+        <td>Média</td>
+        <td>Compre com vencimento seu horizonte</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Portfólio Renda Fixa Perfeito (R$ 100k)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Reserva Emergência (6 meses)</th>
+        <th>Alocação</th>
+        <th>Rendimento Esperado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>CDB liquidez DI</td>
+        <td>R$ 30k</td>
+        <td>13,5% líquido</td>
+      </tr>
+      <tr>
+        <td>LCI/LCA 95% CDI</td>
+        <td>R$ 50k</td>
+        <td>13,25% líquido</td>
+      </tr>
+      <tr>
+        <td>CDB 120% CDI 2 anos</td>
+        <td>R$ 20k</td>
+        <td>16% líquido</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="atividade">
+    Rendimento total estimado: R$ 13.600/ano (13,6%) vs poupança R$ 6.200 (6,2%)
+  </div>
+
+  <h2>Conclusão: Execute Hoje</h2>
+  <p>1. Baixe Yubb/MeuTudo para comparar 1000+ títulos. 2. Monte escadinha vencimentos. 3. Nunca mais poupança!</p>
+
+  <div class="pergunta">
+    Ação imediata: Transfira R$ 10k da poupança para LCI 95% CDI esta semana.
+  </div>
+
+  <p>Próxima aula: Tesouro Direto vs Privados.</p>
 </section>
 
+
+    </section>
+<!-- RODAPÉ -->
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
+  <p>
+    <a href="politica-de-privacidade.html">Política de Privacidade</a>
+  </p>
+</footer>
+
+
+<!-- SCRIPTS -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+<script src="js/calculadora-juros.js" defer></script>
+
 </body>
-</html>
