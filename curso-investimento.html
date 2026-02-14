@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curso de Investimento Interativo | Meu Dividendo</title>
+<link rel="stylesheet" href="css/global.css">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  color: #1a1a1a;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 1000;
+}
+
+.site-title a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+  font-size: 1.2em;
+}
+
+.menu {
+  cursor: pointer;
+  font-size: 28px;
+  position: relative;
+  z-index: 999;
+}
+
+.menu-links {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+  transition: left 0.3s;
+  z-index: 998;
+  padding-top: 60px;
+}
+
+.menu-links ul {
+  list-style: none;
+  padding: 0 20px;
+}
+
+.menu-links li {
+  margin: 20px 0;
+}
+
+.menu-links a {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+}
+
+.menu-links.show {
+  left: 0;
+}
+
+/* Main */
+main {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 40px;
+}
+
+/* Cards estilo calculadoras */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 1.3em;
+  color: #1a1a1a;
+}
+
+.card p {
+  margin: 10px 0 0 0;
+  font-size: 0.95em;
+  color: #333;
+  display: none; /* conteúdo escondido inicialmente */
+}
+
+.card button {
+  margin-top: 15px;
+  padding: 10px;
+  background: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.card button:hover {
+  background: #111;
+}
+
+.card.show p {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </div>
+
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+      <li><a href="curso.html">Curso de Investimento</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h1>Curso de Investimento Interativo</h1>
+  <div class="cards-container">
+
+    <div class="card">
+      <h2>Módulo 1: Fundamentos de Finanças</h2>
+      <p>Aprenda os conceitos básicos de finanças pessoais, orçamento, fluxo de caixa, como controlar gastos e a importância da reserva de emergência.</p>
+      <button onclick="toggleCard(this)">Ver mais</button>
+    </div>
+
+    <div class="card">
+      <h2>Módulo 2: Como Investir</h2>
+      <p>Descubra os tipos de investimentos, diferença entre renda fixa e variável, como começar aplicando pouco e estratégias para iniciantes.</p>
+      <button onclick="toggleCard(this)">Ver mais</button>
+    </div>
+
+    <div class="card">
+      <h2>Módulo 3: Juros Compostos</h2>
+      <p>Entenda como os juros compostos funcionam, calculando ganhos mês a mês, e veja como aportes regulares podem gerar grandes resultados.</p>
+      <button onclick="toggleCard(this)">Ver mais</button>
+    </div>
+
+    <div class="card">
+      <h2>Módulo 4: Planejamento de Carteira</h2>
+      <p>Saiba como diversificar investimentos, calcular risco, definir objetivos e montar uma carteira que combine com seu perfil.</p>
+      <button onclick="toggleCard(this)">Ver mais</button>
+    </div>
+
+    <div class="card">
+      <h2>Módulo 5: Estratégias de Longo Prazo</h2>
+      <p>Aprenda técnicas de aposentadoria, independência financeira e disciplina nos investimentos ao longo dos anos.</p>
+      <button onclick="toggleCard(this)">Ver mais</button>
+    </div>
+
+    <div class="card">
+      <h2>Módulo 6: Dicas e Boas Práticas</h2>
+      <p>Dicas rápidas para investir de forma inteligente, evitar erros comuns e acompanhar resultados com eficiência.</p>
+      <button onclick="toggleCard(this)">Ver mais</button>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  © 2026 Meu Dividendo. Todos os direitos reservados.
+</footer>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.classList.toggle('show');
+}
+
+// Função para expandir/contrair card
+function toggleCard(button) {
+  const card = button.parentElement;
+  card.classList.toggle('show');
+  if(card.classList.contains('show')) {
+    button.textContent = "Ver menos";
+  } else {
+    button.textContent = "Ver mais";
+  }
+}
+</script>
+
+</body>
+</html>
