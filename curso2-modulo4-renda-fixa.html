@@ -118,65 +118,72 @@
   </nav>
 </header>
 
-  
-<table style="
-  width:90%;
-  margin: 30px auto;
-  border-collapse: collapse;
-  font-family: Arial, sans-serif;
-  font-size: 15px;
-  text-align: center;
+ <div style="
+  width:100%;
+  overflow-x:auto;
 ">
-  <thead>
-    <tr>
-      <!-- 🔴 TROQUE A COR AQUI PELO HEX DO SEU CABEÇALHO -->
-      <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">Tipo</th>
-      <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">O que é</th>
-      <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">% CDI hoje</th>
-      <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">IR</th>
-      <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">FGC</th>
-      <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">Liquidez</th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <tr style="background:#f8f9fa;">
-      <td style="padding:10px; border:1px solid #ddd;">CDB</td>
-      <td style="padding:10px; border:1px solid #ddd;">Empréstimo a bancos</td>
-      <td style="padding:10px; border:1px solid #ddd;">90–130%</td>
-      <td style="padding:10px; border:1px solid #ddd;">15–22,5%</td>
-      <td style="padding:10px; border:1px solid #ddd;">Sim (R$ 250 mil)</td>
-      <td style="padding:10px; border:1px solid #ddd;">Variável</td>
-    </tr>
+  <table style="
+    width:90%;
+    min-width:720px;
+    margin:30px auto;
+    border-collapse:collapse;
+    font-family:Arial, sans-serif;
+    font-size:15px;
+    text-align:center;
+  ">
+    <thead>
+      <tr>
+        <!-- 🔴 TROQUE A COR PELO HEX DO SEU CABEÇALHO -->
+        <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">Tipo</th>
+        <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">O que é</th>
+        <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">% CDI hoje</th>
+        <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">IR</th>
+        <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">FGC</th>
+        <th style="padding:12px; border:1px solid #ddd; background:#0f2a44; color:#fff;">Liquidez</th>
+      </tr>
+    </thead>
 
-    <tr>
-      <td style="padding:10px; border:1px solid #ddd;">LCI</td>
-      <td style="padding:10px; border:1px solid #ddd;">Imobiliário (isento IR)</td>
-      <td style="padding:10px; border:1px solid #ddd;">85–100%</td>
-      <td style="padding:10px; border:1px solid #ddd;">Isento</td>
-      <td style="padding:10px; border:1px solid #ddd;">Sim (R$ 250 mil)</td>
-      <td style="padding:10px; border:1px solid #ddd;">90+ dias</td>
-    </tr>
+    <tbody>
+      <tr style="background:#f8f9fa;">
+        <td style="padding:10px; border:1px solid #ddd;">CDB</td>
+        <td style="padding:10px; border:1px solid #ddd;">Empréstimo a bancos</td>
+        <td style="padding:10px; border:1px solid #ddd;">90–130%</td>
+        <td style="padding:10px; border:1px solid #ddd;">15–22,5%</td>
+        <td style="padding:10px; border:1px solid #ddd;">Sim (R$ 250 mil)</td>
+        <td style="padding:10px; border:1px solid #ddd;">Variável</td>
+      </tr>
 
-    <tr style="background:#f8f9fa;">
-      <td style="padding:10px; border:1px solid #ddd;">LCA</td>
-      <td style="padding:10px; border:1px solid #ddd;">Agronegócio (isento IR)</td>
-      <td style="padding:10px; border:1px solid #ddd;">90–105%</td>
-      <td style="padding:10px; border:1px solid #ddd;">Isento</td>
-      <td style="padding:10px; border:1px solid #ddd;">Sim (R$ 250 mil)</td>
-      <td style="padding:10px; border:1px solid #ddd;">180+ dias</td>
-    </tr>
+      <tr>
+        <td style="padding:10px; border:1px solid #ddd;">LCI</td>
+        <td style="padding:10px; border:1px solid #ddd;">Imobiliário (isento IR)</td>
+        <td style="padding:10px; border:1px solid #ddd;">85–100%</td>
+        <td style="padding:10px; border:1px solid #ddd;">Isento</td>
+        <td style="padding:10px; border:1px solid #ddd;">Sim (R$ 250 mil)</td>
+        <td style="padding:10px; border:1px solid #ddd;">90+ dias</td>
+      </tr>
 
-    <tr>
-      <td style="padding:10px; border:1px solid #ddd;">Tesouro Selic</td>
-      <td style="padding:10px; border:1px solid #ddd;">Governo (100% CDI diário)</td>
-      <td style="padding:10px; border:1px solid #ddd;">100% CDI</td>
-      <td style="padding:10px; border:1px solid #ddd;">22,5% → 15%</td>
-      <td style="padding:10px; border:1px solid #ddd;">Governo</td>
-      <td style="padding:10px; border:1px solid #ddd;">Diária</td>
-    </tr>
-  </tbody>
-</table>
+      <tr style="background:#f8f9fa;">
+        <td style="padding:10px; border:1px solid #ddd;">LCA</td>
+        <td style="padding:10px; border:1px solid #ddd;">Agronegócio (isento IR)</td>
+        <td style="padding:10px; border:1px solid #ddd;">90–105%</td>
+        <td style="padding:10px; border:1px solid #ddd;">Isento</td>
+        <td style="padding:10px; border:1px solid #ddd;">Sim (R$ 250 mil)</td>
+        <td style="padding:10px; border:1px solid #ddd;">180+ dias</td>
+      </tr>
+
+      <tr>
+        <td style="padding:10px; border:1px solid #ddd;">Tesouro Selic</td>
+        <td style="padding:10px; border:1px solid #ddd;">Governo (100% CDI diário)</td>
+        <td style="padding:10px; border:1px solid #ddd;">100% CDI</td>
+        <td style="padding:10px; border:1px solid #ddd;">22,5% → 15%</td>
+        <td style="padding:10px; border:1px solid #ddd;">Governo</td>
+        <td style="padding:10px; border:1px solid #ddd;">Diária</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
 <!-- RODAPÉ -->
 <footer>
   <p>© 2026 Meu Dividendo</p>
