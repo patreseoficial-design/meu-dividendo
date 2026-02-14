@@ -4,68 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  
+ 
+
+
   <!-- SEO -->
-  <meta name="description" content="Curso de investimentos gratuito do Meu Dividendo. Aprenda finanças pessoais, juros compostos, planejamento de carteira e estratégias de longo prazo.">
-  <meta name="keywords" content="curso de investimentos, educação financeira, juros compostos, renda passiva">
+  <meta name="description" content="Calculadora de juros compostos online gratuita. Simule investimentos com e sem reinvestimento, veja juros ganhos mês a mês e evolução do rendimento.">
+  <meta name="keywords" content="calculadora de juros compostos, juros compostos, investimentos, renda passiva">
   <meta name="author" content="Meu Dividendo">
 
-  <title>Curso de Investimento | Meu Dividendo</title>
-
-  <!-- CSS GLOBAL -->
+  <!-- CSS GLOBAL + ESPECÍFICO -->
   <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
 
-  <!-- CSS LOCAL (APENAS CARDS DO CURSO) -->
-  <style>
-    .curso-container {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-      text-align: center;
-    }
-
-    .curso-container p {
-      max-width: 700px;
-      margin: 0 auto 40px auto;
-    }
-
-    .cards-curso {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .card-curso {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
-      text-align: left;
-    }
-
-    .card-curso:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-    }
-
-    .card-curso h2 {
-      margin-top: 0;
-      font-size: 1.3em;
-    }
-
-    .card-curso p {
-      font-size: 0.95em;
-      margin: 10px 0 15px 0;
-    }
-
-    .card-curso a {
-      display: inline-block;
-      padding: 10px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style>
+  <!-- CHART -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -73,72 +26,344 @@
 <header>
   <div class="menu" onclick="toggleMenu()">☰</div>
 
-  <h1 class="site-title">
-    <a href="index.html">Meu Dividendo</a>
-  </h1>
+     <h1 class="site-title">
+<a href="index.html">Meu Dividendo</a>
 
+
+  <!-- MENU HAMBÚRGUER -->
   <nav id="menuLinks" class="menu-links">
     <ul>
-      <li><a href="index.html">Início</a></li>
-      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
-      <li><a href="curso-investimento.html">Curso de Investimento</a></li>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+      
     </ul>
   </nav>
 </header>
 
-<main class="curso-container">
-  <h1>Curso de Investimento Interativo</h1>
+<div style="max-width: 600px;">
+  <h1 class="page-title">Calculadora de Juros Compostos</h1>
+</div>
 
+
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <p><strong>O que é uma calculadora de juros compostos?</strong><br>
+  A calculadora de juros composto é uma ferramenta que ajuda a estimar, quanto um investimento pode render ao longo do tempo, considerando o efeito dos juros sobre juros.</p>
+</div>
+
+<!-- ANÚNCIO TOPO -->
+<div class="ad">Espaço reservado para anúncio</div>
+
+<!-- CALCULADORA -->
+<div class="calc-box">
+  <div class="inputs">
+
+    <div class="input-group">
+      <label>Valor Inicial</label>
+      <input type="number" id="inicial" value="1000">
+    </div>
+
+    <div class="input-group">
+      <label>Aporte Mensal</label>
+      <input type="number" id="mensal" value="200">
+    </div>
+
+    <div class="input-group">
+      <label>Taxa de Juros (%)</label>
+      <input type="number" id="taxa" value="1">
+    </div>
+
+    <div class="input-group">
+      <label>Tipo da Taxa</label>
+      <select id="tipoTaxa">
+        <option value="mensal">Mensal</option>
+        <option value="anual">Anual</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label>Período</label>
+      <input type="number" id="periodo" value="12">
+    </div>
+
+    <div class="input-group">
+      <label>Meses / Anos</label>
+      <select id="tipoPeriodo">
+        <option value="meses">Meses</option>
+        <option value="anos">Anos</option>
+      </select>
+    </div>
+
+  </div>
+
+  <button class="calc-btn" onclick="calcular()">Calcular</button>
+</div>
+
+<!-- RESULTADO RESUMIDO (INICIALMENTE ESCONDIDO) -->
+<div id="resultadoResumo" class="result" style="display:none; text-align:center;">
+  <h2>Resumo do Investimento</h2>
+  <p id="resTotalFinal"></p>
+  <p id="resTotalInvestido"></p>
+  <p id="resTotalJuros"></p>
+</div>
+
+<!-- TABELA (INICIALMENTE ESCONDIDA) -->
+<div id="tabelaResultado" class="result" style="display:none; text-align:center;">
+  <div class="table-wrap">
+    <table id="tabela">
+      <thead>
+        <tr>
+          <th>Mês</th>
+          <th>Juros (Reinvestindo)</th>
+          <th>Total (Reinvestindo)</th>
+          <th>Juros (Sem Reinvestir)</th>
+          <th>Total (Sem Reinvestir)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- GRÁFICOS (INICIALMENTE ESCONDIDOS) -->
+<div class="chart-box" id="graficoComparativoBox" style="display:none;">
+  <canvas id="graficoComparativo"></canvas>
+</div>
+
+<div class="chart-box" id="graficoJurosBox" style="display:none;">
+  <canvas id="graficoJuros"></canvas>
+</div>
+
+<!-- SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let graf1, graf2;
+
+function calcular() {
+  const ini = +document.getElementById('inicial').value;
+  const men = +document.getElementById('mensal').value;
+  let tx = +document.getElementById('taxa').value / 100;
+  let meses = +document.getElementById('periodo').value;
+  const tipoTaxa = document.getElementById('tipoTaxa').value;
+  const tipoPeriodo = document.getElementById('tipoPeriodo').value;
+
+  if (tipoTaxa === 'anual') tx = Math.pow(1 + tx, 1 / 12) - 1;
+  if (tipoPeriodo === 'anos') meses *= 12;
+
+  let reinv = ini, sem = ini, jurosReinv = 0, jurosSem = 0;
+  const tbody = document.querySelector('#tabela tbody');
+  tbody.innerHTML = '';
+
+  const labels = [], dataReinv = [], dataSem = [], dataJuros = [];
+
+  for (let i = 1; i <= meses; i++) {
+    const jr = reinv * tx;
+    reinv += jr + men;
+    jurosReinv += jr;
+
+    const js = ini * tx;
+    sem += js + men;
+    jurosSem += js;
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${i}</td>
+        <td>R$ ${jr.toFixed(2)}</td>
+        <td>R$ ${reinv.toFixed(2)}</td>
+        <td>R$ ${js.toFixed(2)}</td>
+        <td>R$ ${sem.toFixed(2)}</td>
+      </tr>
+    `;
+
+    labels.push(i);
+    dataReinv.push(reinv);
+    dataSem.push(sem);
+    dataJuros.push(jr);
+  }
+
+  // Atualiza resumo
+  document.getElementById('resTotalFinal').innerText =
+    `Valor Total Final (reinvestindo): R$ ${reinv.toFixed(2)} | Sem reinvestir: R$ ${sem.toFixed(2)}`;
+  document.getElementById('resTotalInvestido').innerText =
+    `Valor Total Investido: R$ ${(ini + men * meses).toFixed(2)}`;
+  document.getElementById('resTotalJuros').innerText =
+    `Total em Juros (reinvestindo): R$ ${jurosReinv.toFixed(2)} | Sem reinvestir: R$ ${jurosSem.toFixed(2)}`;
+
+  // Mostra elementos
+  document.getElementById('resultadoResumo').style.display = 'block';
+  document.getElementById('tabelaResultado').style.display = 'block';
+  document.getElementById('graficoComparativoBox').style.display = 'block';
+  document.getElementById('graficoJurosBox').style.display = 'block';
+
+  // Cria gráficos
+  if (graf1) graf1.destroy();
+  if (graf2) graf2.destroy();
+
+  graf1 = new Chart(document.getElementById('graficoComparativo'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Reinvestindo', data: dataReinv, borderWidth: 2, borderColor: '#FF69B4', fill: false },
+        { label: 'Sem Reinvestir', data: dataSem, borderWidth: 2, borderColor: '#1E90FF', fill: false }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+
+  graf2 = new Chart(document.getElementById('graficoJuros'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Juros recebidos por mês', data: dataJuros, backgroundColor: 'rgba(135,206,250,0.8)' }] },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+}
+</script>
+
+
+<div style="text-align: left; display: inline-block; max-width: 600px;">
   <p>
-    Aprenda a investir do zero com um curso gratuito, prático e direto ao ponto.
-    Do controle financeiro até estratégias de longo prazo para construir patrimônio.
+    Com ela você simula aportes mensais, compara os cenários do investimento, utilizando a técnica de reinvestimento de dividendos. 
+    Comparando diretamente com a opção de não reinvestir os proventos recebidos. Ao utilizar a ferramenta você consegue visualizar o potencial de crescimento do patrimônio mês a mês.
+  </p>
+</div>
+
+
+<!-- PASSO A PASSO -->
+
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <h2 style="color: black;">Passo a passo para usar a calculadora de juros compostos</h2>
+ </div>
+ 
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <p>Usar a calculadora de juros compostos para fazer cálculos financeiros (grátis) é rápido e fácil. Confira o passo a passo:</p>
+</div>
+
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <div>
+    <p><strong>Passo 1:</strong> Preencha o campo “valor inicial” com a quantia que você irá investir inicialmente.</p>
+    <p><strong>Passo 2:</strong> No campo “valor mensal” coloque o quanto você pretende investir por mês.</p>
+    <p><strong>Passo 3:</strong> No campo “taxa de juros” informe qual será a taxa de juros mensal ou anual do investimento.</p>
+    <p><strong>Passo 4:</strong> Preencha o campo “período” com o tempo que você pretende investir.</p>
+    <p><strong>Passo 5:</strong> Clique em “Calcular” para saber o resultado.</p>
+  </div>
+</div>
+
+</div>
+
+
+<!-- ANÚNCIO RODAPÉ -->
+<div class="ad">Espaço reservado para anúncio</div>
+
+<!-- CONTEÚDO EDUCATIVO -->
+
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <h2>Como é o calculo usado para obter o resultado dos juros compostos?</h2>
+  <p>
+    A fórmula é: <strong>M = C × (1 + i)ᵗ</strong>, onde C é o capital inicial,
+    i é a taxa de juros e t o tempo.
   </p>
 
-  <div class="cards-curso">
-    <div class="card-curso">
-      <h2>Módulo 1 – Fundamentos de Finanças</h2>
-      <p>Orçamento, controle de gastos, fluxo de caixa e reserva de emergência.</p>
-      <a href="modulo1.html">Acessar módulo</a>
-    </div>
+  <p>
+    Quando existem aportes mensais, o cálculo é feito mês a mês,
+    permitindo visualizar o efeito bola de neve dos juros compostos.
+  </p>
+</div>
+<!-- EXPLICAÇÃO JUROS SIMPLES X COMPOSTOS -->
 
-    <div class="card-curso">
-      <h2>Módulo 2 – Como Investir</h2>
-      <p>Renda fixa, renda variável, primeiros investimentos e perfil de risco.</p>
-      <a href="modulo2.html">Acessar módulo</a>
-    </div>
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <h2> Qual é a definição de compostos?</h2>
 
-    <div class="card-curso">
-      <h2>Módulo 3 – Juros Compostos</h2>
-      <p>Entenda o poder dos juros sobre juros e o crescimento no longo prazo.</p>
-      <a href="modulo3.html">Acessar módulo</a>
-    </div>
+ <div style="text-align: left; display: inline-block; max-width: 600px;">
+ <p>Os juros compostos são pagos apenas no vencimento;</p>
+ <p>Juros compostos são crescentes em termos reais e nominais, se a taxa for acima da inflação;</p>
+ <p>Tecnicamente, nos juros compostos ocorre a fruição diferida dos juros pelo credor.</p>
+  
+</div>
 
-    <div class="card-curso">
-      <h2>Módulo 4 – Planejamento de Carteira</h2>
-      <p>Diversificação, alocação de ativos e equilíbrio entre risco e retorno.</p>
-      <a href="modulo4.html">Acessar módulo</a>
-    </div>
 
-    <div class="card-curso">
-      <h2>Módulo 5 – Estratégias de Longo Prazo</h2>
-      <p>Independência financeira, aposentadoria e disciplina nos aportes.</p>
-      <a href="modulo5.html">Acessar módulo</a>
-    </div>
+<!-- CONTEÚDO EDUCATIVO SOBRE APLICAÇÕES -->
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <p>
+  <h2>Onde os juros compostos são aplicados?</h2>
 
-    <div class="card-curso">
-      <h2>Módulo 6 – Dicas e Boas Práticas</h2>
-      <p>Erros comuns, acompanhamento de resultados e mentalidade do investidor.</p>
-      <a href="modulo6.html">Acessar módulo</a>
-    </div>
+  <p>
+    Primeiramente, <strong>os juros compostos são conhecidos como juros sobre juros, já que seu cálculo leva em conta não apenas o valor inicial, mas também os juros acrescidos do período.</strong><br>
+    Na prática, eles são usados em várias relações comerciais como, por exemplo, em <strong>empréstimos, investimentos e até mesmo em compras feitas em várias parcelas.</strong><br>
+    No entanto, como os juros compostos oferecem um crescimento exponencial, eles são muito usados no mercado financeiro, para validar empréstimos, financiamentos ou investimentos.<br>
+    Os juros compostos em si, não são bons nem ruins. 
+    A sua experiência com esses juros, como você pode ver na calculadora de juros compostos, vai depender de qual posição e de qual lado vocês está na situação.
+    Se você está do lado de quem paga ou de quem recebe com a aplicação dos juros.
+    Por exemplo:
+  </p>
+
+  <h3>1- Contas</h3>
+  <p>
+    Com o intuito de desestimular atrasos no pagamento de contas,instituições financeiras e empresas privadas podem usar os juros compostos, fazendo com que o pagador apenas aumente sua dívida caso não efetue o pagamento em dia.<br>
+    Dessa forma, <strong>quanto mais a conta demorar para ser quitada, mais alto será o valor em aberto.</strong> Nessa situação, os juros compostos são vantajosos para a empresa, mas é um verdadeiro pesadelo para o cliente, pois a dívida pode virar uma grande bola de neve e destruir a vida financeira do cliente.
+  </p>
+
+  <h3>2- Financiamentos</h3>
+  <p>
+    <strong>O cálculo de juros compostos também incide sobre financiamentos e empréstimos, já que as instituições preferem utilizar o método para garantir maiores rendimentos.</strong> Neste caso, o financiamento pode sair bem caro para o cliente, pois os juros compostos irão aumentar muito o valor final a ser pago.
+  </p>
+
+  <h3>3- Investimentos</h3>
+
+  
+  <p>Por fim, os juros compostos também são muito usados como remuneração em investimentos. Sendo assim, <strong>investir em ativos com juros compostos é uma boa forma de usar os juros compostos a seu favor.</strong> Muitos investimentos de renda fixa remuneram com juros compostos, por exemplo, CDBs, CRIs, Tesouro Direto e etc.<br>
+    Nas ações e fiis você também pode usufruir dos juros compostos. Mas neste caso, você deve reinvestir os dividendos e rendimentos recebidos e desse modo, você terá o efeito dos juros compostos no longo prazo.
+  </p>
+</div>
+ 
+<!-- ANÚNCIO TOPO -->
+<div class="ad">Espaço reservado para anúncio</div>
+
+  <div style="text-align: left; display: inline-block; max-width: 600px;">
+  <p>Agora que você sabe a diferença entre os dois tipos de juros, vamos a um exemplo:</p>
+
+<p>Suponha um investimento inicial de R$ 5.000 por 12 meses com 1% de juros ao mês, sem novos aportes:</p>
+<p>Juros compostos: R$ 5.634,13</p>
+<p>Juros simples: R$ 5.600,00</p>
+</div>
+
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <p>No longo prazo, a diferença aumenta. Considerando 5, 10, 20 e 30 anos:</p>
   </div>
-</main>
+    
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+    <p>5 anos – Juros simples: R$ 8.000,00 | Juros compostos: R$ 9.083,48</p>
+    <p>10 anos – Juros simples: R$ 11.000,00 | Juros compostos: R$ 16.501,93</p>
+    <p>20 anos – Juros simples: R$ 17.000,00 | Juros compostos: R$ 54.462,77</p>
+    <p>30 anos – Juros simples: R$ 23.000,00 | Juros compostos: R$ 179.748,21</p>
+  </div>
+    
+  <!-- TEXTO SOBRE JUROS COMPOSTOS A LONGO PRAZO -->
+<div class="info-aplicacoes" style="text-align:center; max-width:900px; margin:20px 0; background:none; padding:0; border-radius:0; box-shadow:none;">
 
+    <div style="text-align: left; display: inline-block; max-width: 600px;">
+  <p>Com trinta anos, é possível perceber a enorme diferença entre os juros simples e composto no longo prazo. Se você for investindo todos os meses, o valor final será ainda maior.
+  </p>
+
+  <p>Essa bola de neve de rendimento formada pelos juros compostos, é conhecida como a mágica dos juros compostos e pode te ajudar a construir seu patrimônio a longo prazo.
+  </p>
+
+  <p>você já usou a nossa calculadora de juros compostos? O que achou? Compartilhe com todos que vão adorar usar essa ferramenta.
+  </p>
+  </p>
+  </div>
+
+</div>
+
+<!-- RODAPÉ -->
 <footer>
   <p>© 2026 Meu Dividendo</p>
   <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
-  <p><a href="politica-de-privacidade.html">Política de Privacidade</a></p>
+  <p>
+    <a href="politica-de-privacidade.html">Política de Privacidade</a>
+  </p>
 </footer>
 
+
+<!-- SCRIPTS -->
 <script>
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
@@ -146,5 +371,6 @@ function toggleMenu() {
 }
 </script>
 
+<script src="js/calculadora-juros.js" defer></script>
+
 </body>
-</html>
