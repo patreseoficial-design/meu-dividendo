@@ -156,19 +156,29 @@ footer {
 }  
 </style>  </head>  
 <body>  
-<header>  
-  <div class="menu" onclick="toggleMenu()">☰</div>  <h1 class="site-title">
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
 
-<a href="index.html">Meu Dividendo</a>
+  <!-- Título centralizado -->
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
 
-  <!-- MENU HAMBÚRGUER -->    <nav id="menuLinks" class="menu-links">  
-    <ul>  
-            <li><a href="index.html">Início.</a></li>  
-                        <li><a href="paginadecalculadoras.html">Calculadoras</a></li>  
-      <li><a href="curso-investimento.html">curso-investimento.html.</a></li>  </ul>
-
-  </nav>  
+  <!-- MENU HAMBÚRGUER (nav fora do h1) -->
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+      <li><a href="curso-investimento.html">Curso de Investimento</a></li>
+    </ul>
+  </nav>
 </header>
+
+<script>
+function toggleMenu() {
+  document.getElementById("menuLinks").classList.toggle("show");
+}
+</script>
 
 <main>
   <h1>Curso de Investimento Interativo</h1>
