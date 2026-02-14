@@ -2,37 +2,192 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Módulo 4 - Renda Fixa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Curso 3 - Pessoas do Mercado</title>
+
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+
+  <!-- CHART -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CSS LOCAL / RESPONSIVO DO CURSO -->
+  <style>
+    /* ===================== RESPONSIVO CURSOS ===================== */
+
+    .curso-conteudo {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .curso-conteudo p,
+    .curso-conteudo li {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .destaque,
+    .atividade,
+    .referencias {
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .pergunta {
+      background: #eef2ff;
+      padding: 12px;
+      border-left: 5px solid #1a202c;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    /* ===================== MOBILE ===================== */
+    @media (max-width: 768px) {
+
+      header {
+        padding: 10px;
+      }
+
+      .site-title a {
+        font-size: 1.2rem;
+      }
+
+      .curso-conteudo {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .destaque ul,
+      .referencias ul {
+        padding-left: 20px;
+      }
+    }
+
+    /* ===================== MOBILE PEQUENO ===================== */
+    @media (max-width: 480px) {
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+      }
+
+      p,
+      li {
+        font-size: 0.95rem;
+      }
+
+      .menu {
+        font-size: 26px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
+
+  <!-- MENU HAMBÚRGUER -->
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+    </ul>
+  </nav>
+</header>
+
+  
 <section class="curso-conteudo">
   <h1>Módulo 4 — Renda Fixa</h1>
 
-  <h2>O que é renda fixa?</h2>
-  <p>
-    São investimentos com regras de rendimento definidas no momento da aplicação.
-  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>O que é</th>
+        <th>%CDI hoje</th>
+        <th>IR</th>
+        <th>FGC</th>
+        <th>Liquidez</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>CDB</td>
+        <td>Empréstimo a bancos</td>
+        <td>90-130%</td>
+        <td>15-22,5%</td>
+        <td>Sim R$250k</td>
+        <td>Variável</td>
+      </tr>
+      <tr>
+        <td>LCI</td>
+        <td>Imobiliário isento IR</td>
+        <td>85-100%</td>
+        <td>Isento</td>
+        <td>Sim R$250k</td>
+        <td>90+ dias</td>
+      </tr>
+      <tr>
+        <td>LCA</td>
+        <td>Agronegócio isento IR</td>
+        <td>90-105%</td>
+        <td>Isento</td>
+        <td>Sim R$250k</td>
+        <td>180+ dias</td>
+      </tr>
+      <tr>
+        <td>Tesouro Selic</td>
+        <td>Gov. 100% CDI diário</td>
+        <td>100% CDI</td>
+        <td>22,5→15%</td>
+        <td>Governo</td>
+        <td>Diária</td>
+      </tr>
+    </tbody>
+  </table>
 
-  <h2>Principais tipos</h2>
-  <ul>
-    <li>CDB</li>
-    <li>LCI</li>
-    <li>LCA</li>
-    <li>Tesouro Direto</li>
-  </ul>
-
-  <h2>FGC</h2>
-  <p>
-    O Fundo Garantidor de Créditos protege o investidor até um limite por CPF.
-  </p>
-
-  <h2>Tributação</h2>
-  <p>
-    Alguns investimentos pagam imposto, outros são isentos.
-  </p>
-
+  <p>FGC protege R$250k por CPF/instituição (4 bancos = R$1M seguro). LCI/LCA ganham +25% vs CDB tributado.</p>
 </section>
 
+<!-- RODAPÉ -->
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
+  <p>
+    <a href="politica-de-privacidade.html">Política de Privacidade</a>
+  </p>
+</footer>
+
+
+<!-- SCRIPTS -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+<script src="js/calculadora-juros.js" defer></script>
+
 </body>
-</html>
