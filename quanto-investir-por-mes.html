@@ -79,12 +79,12 @@
     Com a <strong>Calculadora de Investimento Mensal</strong>, você descobre exatamente quanto precisa investir todos os meses para atingir o seu objetivo financeiro no tempo que deseja. Basta informar o valor do seu objetivo, o período de investimento e a taxa de retorno esperada, e a calculadora mostra o aporte mensal necessário.
   </p>
 </div>
-<!-- CALCULADORA COMPLETA -->
+<!-- CALCULADORA COMPLETA CORRIGIDA -->
 <section class="calculadora-box">
   <h2>Calculadora de Investimento Mensal</h2>
 
   <label for="salario">Salário Mensal (R$):</label>
-  <input type="number" id="salario" placeholder="Ex: 4000" />
+  <input type="number" id="salario" placeholder="Ex: 4200" />
 
   <label for="objetivo">Objetivo Financeiro (R$):</label>
   <input type="number" id="objetivo" placeholder="Ex: 100000" />
@@ -98,7 +98,7 @@
   <button id="calcular">Calcular</button>
 
   <!-- resultado oculto inicialmente -->
-  <div id="resultado" style="display:none;"></div>
+  <div id="resultado" style="display:none; margin-top:20px;"></div>
 
   <!-- gráfico de barras -->
   <canvas id="graficoInvest" style="margin-top:20px;"></canvas>
@@ -148,22 +148,23 @@
   margin-top: 20px;
   width: 100%;
   padding: 12px;
-  background: #000000;
+  background: #000000;  /* cor padrão */
   border: none;
   border-radius: 8px;
   font-size: 1em;
   font-weight: bold;
   cursor: pointer;
-  color:#ffffff;
+  color: #ffffff;
   transition: 0.3s;
 }
 
-.calculadora-box button:hover {
-  background: #22c55e;
+/* remove cor verde ao clicar para padronizar */
+.calculadora-box button:hover,
+.calculadora-box button:active {
+  background: #000000;
 }
 
 #resultado {
-  margin-top: 20px;
   font-weight: bold;
   text-align: center;
   font-size: 1em;
@@ -190,12 +191,15 @@ document.getElementById('calcular').addEventListener('click', function() {
   const meses = anos * 12;
   const jurosMensal = Math.pow(1 + jurosAno/100, 1/12) - 1;
 
-  // cálculo do aporte mensal
+  // cálculo do aporte mensal necessário
   let aporteMensal = objetivo * jurosMensal / (Math.pow(1 + jurosMensal, meses) - 1);
 
-  // limitar investimento máximo a 30% do salário
-  const maxInvestimento = salario * 0.3;
-  if (aporteMensal > maxInvestimento) aporteMensal = maxInvestimento;
+  const maxInvestimento = salario * 0.3; // limite de 30% do salário
+  let avisoLimite = '';
+  if (aporteMensal > maxInvestimento) {
+    avisoLimite = `<br><span style="color:red;">Aviso: O valor necessário excede 30% do seu salário. Considere aumentar o prazo ou reduzir o objetivo.</span>`;
+    aporteMensal = maxInvestimento;
+  }
 
   const despesas = salario * 0.5;
   const reserva = salario * 0.2;
@@ -205,7 +209,7 @@ document.getElementById('calcular').addEventListener('click', function() {
   const resultadoDiv = document.getElementById('resultado');
   resultadoDiv.style.display = 'block';
   resultadoDiv.innerHTML = `
-    Você precisa investir <strong>${aporteMensal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> por mês para atingir <strong>${objetivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> em ${anos} anos.<br><br>
+    Você precisa investir <strong>${aporteMensal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> por mês para atingir <strong>${objetivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> em ${anos} anos.${avisoLimite}<br><br>
     Divisão sugerida do seu salário:<br>
     Despesas: ${despesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}<br>
     Investimento: ${investimento.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}<br>
@@ -227,14 +231,14 @@ document.getElementById('calcular').addEventListener('click', function() {
     options:{ responsive:true, plugins:{ legend:{ display:false } } }
   });
 
-  // gráfico de linha detalhado
+  // Gráfico de linha detalhado mês a mês
   let valores = [];
   let labels = [];
   let saldo = 0;
   for(let m=1; m<=meses; m++){
     saldo = saldo*(1+jurosMensal) + aporteMensal;
     valores.push(saldo.toFixed(2));
-    labels.push((m/12).toFixed(1)); // eixo X em anos com 1 decimal
+    labels.push((m/12).toFixed(2)); // eixo X em anos, ponto decimal por mês
   }
 
   // mostrar título do gráfico
@@ -258,7 +262,10 @@ document.getElementById('calcular').addEventListener('click', function() {
     options:{
       responsive:true,
       plugins:{ legend:{ display:false } },
-      scales:{ y:{ beginAtZero:true }, x:{ title:{ display:true, text:'Ano' } } }
+      scales:{
+        y:{ beginAtZero:true, title:{ display:true, text:'Saldo acumulado (R$)' } },
+        x:{ title:{ display:true, text:'Ano' } }
+      }
     }
   });
 
@@ -295,23 +302,23 @@ document.getElementById('calcular').addEventListener('click', function() {
 <!-- Benefícios -->
 <h2 style="margin:20px 0; color:#1a1a1a;">Benefícios</h2>
 <div style="text-align:justify; margin:0 15px 30px 15px;">
-  <ul>
-    <li><strong>Planejamento claro:</strong> veja o aporte mensal necessário para seu objetivo.</li>
-    <li><strong>Rápido e simples:</strong> resultado instantâneo sem complicação.</li>
-    <li><strong>Visualização do futuro:</strong> acompanhe o crescimento do patrimônio mês a mês.</li>
-    <li><strong>Flexível:</strong> funciona para diferentes tipos de investimentos.</li>
-  </ul>
+  <p>
+    <p><strong>Planejamento claro:</strong> veja o aporte mensal necessário para seu objetivo.</p>
+    <p><strong>Rápido e simples:</strong> resultado instantâneo sem complicação.</p>
+    <p><strong>Visualização do futuro:</strong> acompanhe o crescimento do patrimônio mês a mês.</p>
+    <p><strong>Flexível:</strong> funciona para diferentes tipos de investimentos.</p>
+  </p>
 </div>
 
 <!-- Seção de Dicas Rápidas -->
 <h2 style="margin:20px 0; color:#1a1a1a;">Dicas rápidas para investir melhor</h2>
 <div style="text-align:justify; margin:0 15px 30px 15px;">
-  <ul>
-    <li>Comece o quanto antes: quanto mais cedo, menor o esforço mensal.</li>
-    <li>Seja constante: aportes regulares geram resultados maiores com o tempo.</li>
-    <li>Reinvista os rendimentos: juros compostos funcionam melhor quando tudo é reinvestido.</li>
-    <li>Revise a taxa de retorno: acompanhe seus investimentos e ajuste o plano se necessário.</li>
-  </ul>
+  <div>
+    <p>Comece o quanto antes: quanto mais cedo, menor o esforço mensal.</p>
+    <p>Seja constante: aportes regulares geram resultados maiores com o tempo.</p>
+    <p>Reinvista os rendimentos: juros compostos funcionam melhor quando tudo é reinvestido.</p>
+    <p>Revise a taxa de retorno: acompanhe seus investimentos e ajuste o plano se necessário.</p>
+  </div>
 </div>
 
 <!-- Perguntas Frequentes -->
