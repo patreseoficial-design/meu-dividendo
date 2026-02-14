@@ -51,107 +51,24 @@
 <body>
 
 <header>
-  <div class="site-title">
-    <a href="index.html">Meu Dividendo</a>
-  </div>
-
   <div class="menu" onclick="toggleMenu()">☰</div>
 
+     <h1 class="site-title">
+<a href="index.html">Meu Dividendo</a>
+
+
+  <!-- MENU HAMBÚRGUER -->
   <nav id="menuLinks" class="menu-links">
     <ul>
-      <li><a href="index.html">🏠 Início</a></li>
-      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+            <li><a href="index.html">Início.</a></li>
+                        <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+
+
     </ul>
   </nav>
 </header>
 
-<style>
-/* MENU HAMBURGUER FUNCIONAL */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  position: relative;
-  z-index: 10000;
-}
 
-.site-title a {
-  text-decoration: none;
-  font-weight: bold;
-  color: #000;
-  font-size: 1.2em;
-}
-
-.menu {
-  cursor: pointer;
-  font-size: 28px;
-  z-index: 9999;
-  position: relative;
-}
-
-.menu-links {
-  position: fixed;
-  top: 0;
-  left: -260px;
-  width: 260px;
-  height: 100%;
-  background: #ffffff;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.2);
-  transition: left 0.3s;
-  z-index: 9998;
-  padding-top: 60px;
-}
-
-.menu-links ul {
-  list-style: none;
-  padding: 0 20px;
-}
-
-.menu-links li {
-  margin: 20px 0;
-}
-
-.menu-links a {
-  text-decoration: none;
-  color: #000;
-  font-weight: bold;
-  font-size: 1em;
-}
-
-.menu-links.show {
-  left: 0;
-}
-
-/* opcional: bloqueia scroll quando menu aberto */
-body.menu-open {
-  overflow: hidden;
-}
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const btnMenu = document.querySelector('.menu');
-  const menu = document.getElementById('menuLinks');
-  const body = document.body;
-
-  btnMenu.addEventListener('click', function(e) {
-    e.stopPropagation();
-    menu.classList.toggle('show');
-    body.classList.toggle('menu-open');
-  });
-
-  // fechar menu ao clicar fora
-  document.addEventListener('click', function(e) {
-    if(!menu.contains(e.target) && !btnMenu.contains(e.target)) {
-      menu.classList.remove('show');
-      body.classList.remove('menu-open');
-    }
-  });
-});
-</script>
 
 
 <!-- Título Principal -->
