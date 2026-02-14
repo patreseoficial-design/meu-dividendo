@@ -2,34 +2,345 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Curso 3 - FIIs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Curso 3 - Pessoas do Mercado</title>
+
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+
+  <!-- CHART -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CSS LOCAL / RESPONSIVO DO CURSO -->
+  <style>
+    /* ===================== RESPONSIVO CURSOS ===================== */
+
+    .curso-conteudo {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .curso-conteudo p,
+    .curso-conteudo li {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .destaque,
+    .atividade,
+    .referencias {
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .pergunta {
+      background: #eef2ff;
+      padding: 12px;
+      border-left: 5px solid #1a202c;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    /* ===================== MOBILE ===================== */
+    @media (max-width: 768px) {
+
+      header {
+        padding: 10px;
+      }
+
+      .site-title a {
+        font-size: 1.2rem;
+      }
+
+      .curso-conteudo {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .destaque ul,
+      .referencias ul {
+        padding-left: 20px;
+      }
+    }
+
+    /* ===================== MOBILE PEQUENO ===================== */
+    @media (max-width: 480px) {
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+      }
+
+      p,
+      li {
+        font-size: 0.95rem;
+      }
+
+      .menu {
+        font-size: 26px;
+      }
+    }
+  </style>
 </head>
+
 <body>
+
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
+
+  <!-- MENU HAMBÚRGUER -->
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+    </ul>
+  </nav>
+</header>
 
 <section class="curso-conteudo">
   <h1>Fundos Imobiliários (FIIs)</h1>
 
-  <h2>O que são FIIs?</h2>
-  <p>
-    São fundos que investem em imóveis ou títulos ligados ao setor imobiliário.
-  </p>
+  <p>R$ 1 cota = fração de shopping inteiro. Em 2024, FIIs pagaram 10,5% rendimento médio enquanto aluguéis subiram 8%. Esta aula te ensina a viver de renda imobiliária com R$ 10k inicial.</p>
 
-  <h2>Por que foram criados?</h2>
-  <p>
-    Para permitir acesso ao mercado imobiliário com pouco dinheiro.
-  </p>
+  <div class="pergunta">
+    Quanto renda mensal você quer dos seus investimentos? (R$ 500? R$ 2k?)
+  </div>
 
-  <h2>Como o cotista ganha dinheiro?</h2>
-  <ul>
-    <li>Renda mensal</li>
-    <li>Valorização das cotas</li>
-  </ul>
+  <h2>O que são FIIs na Prática?</h2>
+  <p>Condomínios de investidores que compram imóveis comerciais (shoppings, escritórios, logística) e distribuem 95% dos aluguéis como dividendos mensais isentos de IR.</p>
 
-  <h2>Riscos dos FIIs</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo FII</th>
+        <th>Exemplo</th>
+        <th>Ativo Principal</th>
+        <th>Yield Médio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tijolo (físico)</td>
+        <td>HGLG11</td>
+        <td>Galpões logísticos</td>
+        <td>9-11%</td>
+      </tr>
+      <tr>
+        <td>Shoppings</td>
+        <td>VISC11</td>
+        <td>Shopping centers</td>
+        <td>8-10%</td>
+      </tr>
+      <tr>
+        <td>Papéis (CRI/LCI)</td>
+        <td>KNRI11</td>
+        <td>Recebíveis imobiliários</td>
+        <td>11-13%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>História: Democratização do Imóvel</h2>
+  <p>2007: Lei 11.196 permitiu pessoa física investir em imóveis corporativos com R$ 100. De R$ 1 bilhão (2010) para R$ 200 bilhões (2024). Acessível + profissionalizado.</p>
+
+  <h2>Duas Formas de Lucro (Escolha Ambas)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Fonte</th>
+        <th>Exemplo R$ 100k</th>
+        <th>Imposto</th>
+        <th>Vantagem</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dividendos mensais</td>
+        <td>R$ 850/mês</td>
+        <td>Isento IR</td>
+        <td>Renda passiva imediata</td>
+      </tr>
+      <tr>
+        <td>Valorização cota</td>
+        <td>+15% em 2 anos</td>
+        <td>20% ganho capital</td>
+        <td>Crescimento patrimônio</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="atividade">
+    R$ 500k em FIIs yield 10% = R$ 4.166/mês LIQUIDO isento IR (equivalente a salário de R$ 7k bruto)
+  </div>
+
+  <h2>Riscos Reais e Como Proteger</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Risco</th>
+        <th>Impacto</th>
+        <th>Proteção</th>
+        <th>Métrica chave</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Vacância</td>
+        <td>Dividendos caem</td>
+        <td>Taxa ocupação > 95%</td>
+        <td>HGLG11: 98%</td>
+      </tr>
+      <tr>
+        <td>Inadimplência inquilino</td>
+        <td>Aluguéis atrasados</td>
+        <td>Big4 inquilinos (Magazine Luiza, GPA)</td>
+        <td>VISC11: 100% AAA</td>
+      </tr>
+      <tr>
+        <td>Selic alta</td>
+        <td>Cota desvaloriza</td>
+        <td>Foco logística (e-commerce)</td>
+        <td>BRCO11: +25% 2023</td>
+      </tr>
+      <tr>
+        <td>Má gestão</td>
+        <td>Distribuição irregular</td>
+        <td>Gestoras top 5 (Vinci, Kinea)</td>
+        <td>XPML11: 12 anos Payout 100%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Carteira FIIs Perfeita (R$ 50k Inicial)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Segmento</th>
+        <th>Ticker</th>
+        <th>Alocação</th>
+        <th>Renda Mensal Esperada</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Logística</td>
+        <td>HGLG11</td>
+        <td>30% (R$ 15k)</td>
+        <td>R$ 112</td>
+      </tr>
+      <tr>
+        <td>Shoppings</td>
+        <td>VISC11</td>
+        <td>25% (R$ 12,5k)</td>
+        <td>R$ 83</td>
+      </tr>
+      <tr>
+        <td>Papéis</td>
+        <td>KNRI11</td>
+        <td>25% (R$ 12,5k)</td>
+        <td>R$ 110</td>
+      </tr>
+      <tr>
+        <td>Híbrido</td>
+        <td>XPML11</td>
+        <td>20% (R$ 10k)</td>
+        <td>R$ 83</td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td>-</td>
+        <td>R$ 50k</td>
+        <td>R$ 388/mês (9,3% anual)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Métricas para Comprar QUALQUER FII</h2>
+  <div class="comparacao">
+    <table>
+      <thead>
+        <tr>
+          <th>Métrica</th>
+          <th>Ótimo</th>
+          <th>Evitar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Dividend Yield</td>
+          <td>9-12%</td>
+          <td>&lt;7% ou &gt;15%</td>
+        </tr>
+        <tr>
+          <td>P/VP</td>
+          <td>0,8-1,1x</td>
+          <td>&gt;1,3x</td>
+        </tr>
+        <tr>
+          <td>Taxa Vacância</td>
+          <td>&lt;5%</td>
+          <td>&gt;15%</td>
+        </tr>
+        <tr>
+          <td>Gestão</td>
+          <td>Vinci/Kinea/XP</td>
+          <td>Desconhecida</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Conclusão: Comece Pequeno, Cresça Rápido</h2>
+  <p>R$ 10k inicial → R$ 77/mês passivo. Reinvestir 5 anos → R$ 600/mês. Escala infinita com aportes mensais.</p>
+
+  <div class="pergunta">
+    Ação hoje: Baixe Funds Explorer. Escolha 3 FIIs com vacância &lt;5% e yield &gt;9%.
+  </div>
+
+  
+
+
+    </section>
+<!-- RODAPÉ -->
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
   <p>
-    Vacância, inadimplência, juros altos e má gestão.
+    <a href="politica-de-privacidade.html">Política de Privacidade</a>
   </p>
-</section>
+</footer>
+
+
+<!-- SCRIPTS -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+<script src="js/calculadora-juros.js" defer></script>
 
 </body>
-</html>
