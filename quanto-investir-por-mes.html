@@ -50,10 +50,7 @@
 </head>
 <body>
 
-
-
 <header>
-
   <div class="site-title">
     <a href="index.html">Meu Dividendo</a>
   </div>
@@ -67,6 +64,57 @@
     </ul>
   </nav>
 </header>
+
+<style>
+/* MENU HAMBURGUER */
+.menu {
+  cursor: pointer;
+  font-size: 28px;
+  padding: 10px;
+  position: relative;
+  z-index: 1100;
+}
+
+.menu-links {
+  position: fixed;
+  top: 0;
+  left: -250px; /* escondido inicialmente */
+  width: 250px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+  transition: left 0.3s;
+  z-index: 1000;
+}
+
+.menu-links ul {
+  list-style: none;
+  padding: 20px;
+}
+
+.menu-links li {
+  margin: 20px 0;
+}
+
+.menu-links a {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+}
+
+.menu-links.show {
+  left: 0; /* mostra o menu */
+}
+</style>
+
+<script>
+// função para abrir/fechar menu
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.classList.toggle('show');
+}
+</script>
+
 
 <!-- Título Principal -->
 <h1 style="text-align:center; margin:35px 0; font-weight:normal; font-size:2.5rem; color:#1a1a1a; line-height:1.2;">
