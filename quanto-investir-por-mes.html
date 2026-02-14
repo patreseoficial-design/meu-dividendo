@@ -50,12 +50,12 @@
 </head>
 <body>
 
-<header>
+<header style="position:relative; z-index:10000;">
   <div class="site-title">
     <a href="index.html">Meu Dividendo</a>
   </div>
 
-  <div class="menu" onclick="toggleMenu()">☰</div>
+  <div class="menu">☰</div>
 
   <nav id="menuLinks" class="menu-links">
     <ul>
@@ -64,31 +64,50 @@
     </ul>
   </nav>
 </header>
-/* MENU HAMBURGUER */
+
 <style>
+/* MENU HAMBURGUER FUNCIONAL */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 10000;
+}
+
+.site-title a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+  font-size: 1.2em;
+}
+
 .menu {
   cursor: pointer;
   font-size: 28px;
-  padding: 10px;
+  z-index: 9999;
   position: relative;
-  z-index: 9999; /* garantir que o botão fique acima de tudo */
 }
 
 .menu-links {
   position: fixed;
   top: 0;
-  left: -250px; /* escondido inicialmente */
-  width: 250px;
+  left: -260px;
+  width: 260px;
   height: 100%;
   background: #ffffff;
   box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   transition: left 0.3s;
-  z-index: 9998; /* abaixo do botão */
+  z-index: 9998;
+  padding-top: 60px;
 }
 
 .menu-links ul {
   list-style: none;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 .menu-links li {
@@ -99,26 +118,36 @@
   text-decoration: none;
   color: #000;
   font-weight: bold;
+  font-size: 1em;
 }
 
 .menu-links.show {
-  left: 0; /* mostra o menu */
+  left: 0;
+}
+
+/* opcional: bloqueia scroll quando menu aberto */
+body.menu-open {
+  overflow: hidden;
 }
 </style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const btnMenu = document.querySelector('.menu');
   const menu = document.getElementById('menuLinks');
+  const body = document.body;
 
   btnMenu.addEventListener('click', function(e) {
-    e.stopPropagation(); // evita conflitos
+    e.stopPropagation();
     menu.classList.toggle('show');
+    body.classList.toggle('menu-open');
   });
 
-  // fechar menu se clicar fora
+  // fechar menu ao clicar fora
   document.addEventListener('click', function(e) {
     if(!menu.contains(e.target) && !btnMenu.contains(e.target)) {
       menu.classList.remove('show');
+      body.classList.remove('menu-open');
     }
   });
 });
