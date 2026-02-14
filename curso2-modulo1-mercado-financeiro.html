@@ -2,11 +2,33 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Módulo 1 - Introdução ao Mercado Financeiro</title>
+  <title>Módulo 1 – Introdução ao Mercado Financeiro | Meu Dividendo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="css/global.css">
 </head>
+
 <body>
 
-<section class="curso-conteudo">
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
+
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+      <li><a href="curso-investimento.html">Cursos</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="curso-container">
+
   <h1>Módulo 1 — Introdução ao Mercado Financeiro</h1>
 
   <p>
@@ -30,24 +52,36 @@
 
   <h2>Onde fica o mercado financeiro?</h2>
   <p>
-    Ele não é um local físico apenas. Hoje o mercado funciona de forma digital,
+    Ele não é apenas um local físico. Hoje o mercado funciona de forma digital,
     através de corretoras, bancos e da bolsa de valores.
   </p>
 
   <h2>Quem regula o mercado financeiro no Brasil?</h2>
   <ul>
     <li>Banco Central</li>
-    <li>CVM (Comissão de Valores Mobiliários)</li>
-    <li>B3 (Bolsa de Valores Brasileira)</li>
+    <li>CVM – Comissão de Valores Mobiliários</li>
+    <li>B3 – Bolsa de Valores Brasileira</li>
   </ul>
 
   <h2>Investir x Especular</h2>
   <p>
-    Investir é pensar no longo prazo. Especular é buscar ganhos rápidos,
-    assumindo riscos maiores.
+    Investir é pensar no longo prazo e na construção de patrimônio.
+    Especular é buscar ganhos rápidos, assumindo riscos maiores.
   </p>
 
-</section>
+</main>
+
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Não é recomendação financeira.</p>
+</footer>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+</script>
 
 </body>
 </html>
