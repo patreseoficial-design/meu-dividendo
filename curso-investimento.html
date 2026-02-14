@@ -1,10 +1,12 @@
-
-<!DOCTYPE html>  <html lang="pt-BR">  
+<!DOCTYPE html>
+<html lang="pt-BR">  
 <head>  
 <meta charset="UTF-8">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0">  
 <title>Curso de Investimento Interativo | Meu Dividendo</title>  
-<link rel="stylesheet" href="css/global.css">  <style>  
+<link rel="stylesheet" href="css/global.css">  
+
+<style>  
 body {  
   font-family: Arial, sans-serif;  
   background: #f9f9f9;  
@@ -12,7 +14,7 @@ body {
   margin: 0;  
   padding: 0;  
 }  
-  
+
 /* Header */  
 header {  
   background: #1a202c;  
@@ -23,7 +25,7 @@ header {
   justify-content: center;  
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);  
 }  
-  
+
 /* Título centralizado branco e clicável */  
 .site-title {  
   position: absolute;  
@@ -32,78 +34,78 @@ header {
   z-index: 1001;  
   text-align: center;  
 }  
-  
+
 .site-title a {  
   text-decoration: none;  
-  color: #ffffff; /* título branco */  
+  color: #ffffff;  
   font-weight: bold;  
   font-size: 1.2em;  
 }  
-  
+
 /* Menu hambúrguer */  
 .menu {  
   cursor: pointer;  
   font-size: 28px;  
   position: absolute;  
-  left: 20px;   /* agora hambúrguer à esquerda */  
+  left: 20px;  
   color: #fff;  
   z-index: 1002;  
 }  
-  
+
 .menu-links {  
   position: fixed;  
   top: 0;  
-  left: -250px;  /* continua fora da tela à esquerda */  
+  left: -250px;  
   width: 250px;  
   height: 100%;  
   background: #1a202c;  
   color: #fff;  
-  box-shadow: 2px 0 8px rgba(0,0,0,0.2); /* sombra para direita, OK */  
-  transition: left 0.3s;  
+  box-shadow: 2px 0 8px rgba(0,0,0,0.2);  
+  transition: left 0.3s ease;  
   z-index: 998;  
   padding-top: 60px;  
 }  
-  
+
 .menu-links.show {  
-  left: 0; /* entra da esquerda */  
+  left: 0;  
 }  
-  
-  
+
+.menu-links ul {  
+  list-style: none;  
+  padding: 0 20px;  
+}  
+
 .menu-links li {  
   margin: 20px 0;  
 }  
-  
+
 .menu-links a {  
   text-decoration: none;  
   color: #fff;  
   font-weight: bold;  
 }  
-  
-.menu-links.show {  
-  left: 0;  
-}  
-  
+
 /* Main */  
 main {  
   max-width: 1200px;  
   margin: 40px auto;  
   padding: 0 20px;  
 }  
-  
+
 h1 {  
   text-align: center;  
   font-size: 2em;  
   margin-bottom: 40px;  
   color: #1a202c;  
 }  
-  
-/* Cards estilo calculadoras */  
+
+/* Cards */  
 .cards-container {  
   display: grid;  
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  
   gap: 20px;  
 }  
-  
+
 .card {  
   background: #ffffff;  
   padding: 20px;  
@@ -112,24 +114,24 @@ h1 {
   transition: transform 0.3s, box-shadow 0.3s;  
   cursor: pointer;  
 }  
-  
+
 .card:hover {  
   transform: translateY(-5px);  
   box-shadow: 0 12px 24px rgba(0,0,0,0.15);  
 }  
-  
+
 .card h2 {  
   margin-top: 0;  
   font-size: 1.3em;  
   color: #1a202c;  
 }  
-  
+
 .card p {  
   margin: 10px 0 0 0;  
   font-size: 0.95em;  
   color: #333;  
 }  
-  
+
 .card button {  
   margin-top: 15px;  
   padding: 10px;  
@@ -141,11 +143,11 @@ h1 {
   cursor: pointer;  
   transition: 0.3s;  
 }  
-  
+
 .card button:hover {  
   background: #2d3748;  
 }  
-  
+
 /* Footer */  
 footer {  
   background: #1a202c;  
@@ -154,17 +156,18 @@ footer {
   padding: 20px;  
   margin-top: 40px;  
 }  
-</style>  </head>  
+</style>  
+</head>  
+
 <body>  
+
 <header>
   <div class="menu" onclick="toggleMenu()">☰</div>
 
-  <!-- Título centralizado -->
   <h1 class="site-title">
     <a href="index.html">Meu Dividendo</a>
   </h1>
 
-  <!-- MENU HAMBÚRGUER (nav fora do h1) -->
   <nav id="menuLinks" class="menu-links">
     <ul>
       <li><a href="index.html">Início</a></li>
@@ -174,61 +177,58 @@ footer {
   </nav>
 </header>
 
-
-
 <main>
   <h1>Curso de Investimento Interativo</h1>
 
   <div class="cards-container">
     <div class="card">
       <h2>Módulo 1: Fundamentos de Finanças</h2>
-      <p>Aprenda os conceitos básicos de finanças pessoais, orçamento, fluxo de caixa, como controlar gastos e a importância da reserva de emergência.</p>
+      <p>Aprenda os conceitos básicos de finanças pessoais, orçamento, fluxo de caixa e reserva de emergência.</p>
       <button onclick="window.location.href='modulo1.html'">Ir para o módulo</button>
     </div>
 
     <div class="card">
       <h2>Módulo 2: Como Investir</h2>
-      <p>Descubra os tipos de investimentos, diferença entre renda fixa e variável, como começar aplicando pouco e estratégias para iniciantes.</p>
+      <p>Tipos de investimentos, renda fixa e variável, como começar investindo pouco.</p>
       <button onclick="window.location.href='modulo2.html'">Ir para o módulo</button>
     </div>
 
     <div class="card">
       <h2>Módulo 3: Juros Compostos</h2>
-      <p>Entenda como os juros compostos funcionam, calculando ganhos mês a mês, e veja como aportes regulares podem gerar grandes resultados.</p>
+      <p>Veja como os juros compostos funcionam mês a mês.</p>
       <button onclick="window.location.href='modulo3.html'">Ir para o módulo</button>
     </div>
 
     <div class="card">
       <h2>Módulo 4: Planejamento de Carteira</h2>
-      <p>Saiba como diversificar investimentos, calcular risco, definir objetivos e montar uma carteira que combine com seu perfil.</p>
+      <p>Diversificação, risco e objetivos financeiros.</p>
       <button onclick="window.location.href='modulo4.html'">Ir para o módulo</button>
     </div>
 
     <div class="card">
       <h2>Módulo 5: Estratégias de Longo Prazo</h2>
-      <p>Aprenda técnicas de aposentadoria, independência financeira e disciplina nos investimentos ao longo dos anos.</p>
+      <p>Aposentadoria, independência financeira e disciplina.</p>
       <button onclick="window.location.href='modulo5.html'">Ir para o módulo</button>
     </div>
 
     <div class="card">
       <h2>Módulo 6: Dicas e Boas Práticas</h2>
-      <p>Dicas rápidas para investir de forma inteligente, evitar erros comuns e acompanhar resultados com eficiência.</p>
+      <p>Evite erros comuns e acompanhe resultados.</p>
       <button onclick="window.location.href='modulo6.html'">Ir para o módulo</button>
     </div>
   </div>
-
 </main>
 
 <footer>
   © 2026 Meu Dividendo. Todos os direitos reservados.
 </footer>
 
- <!-- SCRIPTS -->
+<!-- SCRIPTS -->
 <script>
 function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  document.getElementById('menuLinks').classList.toggle('show');
 }
 </script>
+
 </body>
 </html>
