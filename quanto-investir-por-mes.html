@@ -80,7 +80,7 @@
   </p>
 </div>
 
-<!-- CALCULADORA -->
+<!-- CALCULADORA COMPLETA -->
 <section class="calculadora-box">
   <h2>Calculadora de Investimento Mensal</h2>
 
@@ -100,25 +100,30 @@
 
   <div id="resultado"></div>
 
+  <!-- Gráfico de barras -->
   <canvas id="graficoInvest" style="margin-top:20px;"></canvas>
+
+  <!-- Gráfico de linha -->
+  <h3 style="margin-top:40px; text-align:center;">Evolução do investimento</h3>
+  <canvas id="graficoInvestimento" style="margin-top:20px;"></canvas>
 </section>
 
 <style>
 .calculadora-box {
-  max-width: 400px;
+  max-width: 450px;
   margin: 40px auto;
   padding: 24px;
-  background: #ffffff; /* fundo branco */
-  color: #000000;      /* texto preto */
+  background: #ffffff;
+  color: #000000;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   font-family: Arial, sans-serif;
 }
 
-.calculadora-box h2 {
+.calculadora-box h2, .calculadora-box h3 {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 1.5em;
+  color: #1a1a1a;
 }
 
 .calculadora-box label {
@@ -166,7 +171,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-let grafico;
+let graficoBarras;
+let graficoLinha;
 
 document.getElementById('calcular').addEventListener('click', function() {
   const salario = parseFloat(document.getElementById('salario').value);
@@ -182,7 +188,7 @@ document.getElementById('calcular').addEventListener('click', function() {
   const meses = anos * 12;
   const jurosMensal = Math.pow(1 + jurosAno/100, 1/12) - 1;
 
-  // cálculo do aporte mensal para atingir o objetivo
+  // cálculo do aporte mensal
   let aporteMensal = objetivo * jurosMensal / (Math.pow(1 + jurosMensal, meses) - 1);
 
   // limitar investimento máximo a 30% do salário
@@ -193,70 +199,61 @@ document.getElementById('calcular').addEventListener('click', function() {
   const reserva = salario * 0.2;
   const investimento = aporteMensal;
 
-  const resultadoDiv = document.getElementById('resultado');
-  resultadoDiv.innerHTML = `
-    Você precisa investir aproximadamente <strong>${aporteMensal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> por mês para atingir <strong>${objetivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> em ${anos} anos.<br><br>
+  // Atualiza resultado
+  document.getElementById('resultado').innerHTML = `
+    Você precisa investir <strong>${aporteMensal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> por mês para atingir <strong>${objetivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> em ${anos} anos.<br><br>
     Divisão sugerida do seu salário:<br>
     Despesas: ${despesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}<br>
     Investimento: ${investimento.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}<br>
     Reserva / Dívidas: ${reserva.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
   `;
 
-  // gráfico
-  const ctx = document.getElementById('graficoInvest');
-  if (grafico) grafico.destroy();
-
-  grafico = new Chart(ctx, {
+  // Gráfico de barras
+  const ctxB = document.getElementById('graficoInvest').getContext('2d');
+  if(graficoBarras) graficoBarras.destroy();
+  graficoBarras = new Chart(ctxB, {
     type: 'bar',
     data: {
       labels: ['Despesas', 'Investimento', 'Reserva'],
       datasets: [{
         data: [despesas, investimento, reserva],
-        backgroundColor: ['#ff7675', '#74b9ff', '#55efc4']
+        backgroundColor: ['#ff7675','#74b9ff','#55efc4']
       }]
     },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } }
+    options:{ responsive:true, plugins:{ legend:{ display:false } } }
+  });
+
+  // Gráfico de linha: evolução do investimento
+  let valores = [];
+  let saldo = 0;
+  for(let m=1; m<=meses; m++){
+    saldo = saldo*(1+jurosMensal) + aporteMensal;
+    if(m%12===0) valores.push(saldo.toFixed(2));
+  }
+  let labels = Array.from({length:anos}, (_,k)=> (k+1).toString());
+
+  const ctxL = document.getElementById('graficoInvestimento').getContext('2d');
+  if(graficoLinha) graficoLinha.destroy();
+  graficoLinha = new Chart(ctxL, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets:[{
+        label:'Valor acumulado (R$)',
+        data: valores,
+        borderColor:'#1a1a1a',
+        backgroundColor:'rgba(26,26,26,0.1)',
+        fill:true,
+        tension:0.4
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{ display:false } },
+      scales:{ y:{ beginAtZero:true }, x:{ title:{ display:true, text:'Ano' } } }
     }
   });
 });
-</script>
-<!-- Gráfico de Crescimento (Chart.js) -->
-<h2 style="margin:20px 0; color:#1a1a1a;">Evolução do investimento</h2>
-<div style="width:90%; max-width:600px; margin:0 auto 30px auto;">
-  <canvas id="graficoInvestimento"></canvas>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  const ctx = document.getElementById('graficoInvestimento').getContext('2d');
-  const grafico = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['1','2','3','4','5','6','7','8','9','10'], // anos
-      datasets: [{
-        label: 'Valor acumulado (R$)',
-        data: [7320, 15100, 23200, 31600, 40300, 49300, 58600, 68200, 78000, 88100], // exemplo fictício
-        backgroundColor: 'rgba(26, 26, 26, 0.1)',
-        borderColor: '#1a1a1a',
-        borderWidth: 2,
-        fill: true,
-        tension: 0.4
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: true }
-      },
-      scales: {
-        y: { beginAtZero: true },
-        x: { title: { display:true, text:'Ano' } }
-      }
-    }
-  });
 </script>
 
 
