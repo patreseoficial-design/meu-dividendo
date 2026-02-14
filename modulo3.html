@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 3: Juros Compostos | Meu Dividendo</title>
+<link rel="stylesheet" href="css/global.css">
+<style>
+/* MESMO ESTILO DOS MÓDULOS */
+body { font-family: Arial,sans-serif; background:#f9f9f9; color:#1a1a1a; margin:0; padding:0; }
+header { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:1000; }
+.site-title a { text-decoration:none; font-weight:bold; color:#000; font-size:1.2em; }
+.menu { cursor:pointer; font-size:28px; position:relative; z-index:999; }
+.menu-links { position:fixed; top:0; left:-250px; width:250px; height:100%; background:#fff; box-shadow:2px 0 8px rgba(0,0,0,0.2); transition:left 0.3s; z-index:998; padding-top:60px; }
+.menu-links ul { list-style:none; padding:0 20px; }
+.menu-links li { margin:20px 0; }
+.menu-links a { text-decoration:none; color:#000; font-weight:bold; }
+.menu-links.show { left:0; }
+main { max-width:1000px; margin:40px auto; padding:0 20px; }
+h1 { text-align:center; font-size:2em; margin-bottom:30px; }
+section { background:#fff; padding:24px; margin-bottom:30px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,0.08); }
+h2 { margin-top:0; color:#1a1a1a; }
+p { line-height:1.6; color:#333; }
+.tips { background:#f0fdf4; border-left:5px solid #22c55e; padding:15px; margin:15px 0; border-radius:6px; font-weight:bold; }
+.exercise-box { background:#fff7e6; border-left:5px solid #ffa500; padding:15px; margin:20px 0; border-radius:6px; }
+.breadcrumbs { font-size:0.9em; margin-bottom:20px; color:#555; }
+.breadcrumbs a { text-decoration:none; color:#000; font-weight:bold; }
+footer { text-align:center; padding:20px; background:#fff; margin-top:40px; box-shadow:0 -2px 8px rgba(0,0,0,0.05); font-size:0.9em; color:#555; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title"><a href="index.html">Meu Dividendo</a></div>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+      <li><a href="curso-investimento.html">Curso de Investimento</a></li>
+      <li><a href="#">Módulo 3: Juros Compostos</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+<div class="breadcrumbs">
+  <a href="curso-investimento.html">Curso de Investimento</a> &gt; Módulo 3: Juros Compostos
+</div>
+
+<h1>Módulo 3: Juros Compostos</h1>
+
+<section>
+<h2>1. O Poder dos Juros Compostos</h2>
+<p>Os juros compostos permitem que seu dinheiro cresça sobre ele mesmo. Quanto antes você começar, maior será o efeito.</p>
+<div class="tips">Dica: Comece investindo pequenas quantias regularmente; o tempo é seu maior aliado.</div>
+</section>
+
+<section>
+<h2>2. Exemplos Práticos</h2>
+<p>Investindo R$200/mês a 6% ao ano durante 10 anos, você terá aproximadamente R$32.000 ao final. O mesmo valor investido durante 20 anos pode chegar a R$90.000.</p>
+<div class="exercise-box"><strong>Exercício:</strong> Calcule quanto renderiam R$100/mês a 8% ao ano em 15 anos.</div>
+</section>
+
+<section>
+<h2>3. Crescimento Mês a Mês</h2>
+<p>Com aportes mensais, o crescimento é progressivo. Cada mês você acumula um pouco mais, aproveitando o efeito exponencial.</p>
+</section>
+
+<section>
+<h2>4. Estratégia para Iniciantes</h2>
+<p>Invista cedo, mantenha constância e reinvista os rendimentos. Não tente prever o mercado; foco no longo prazo.</p>
+<div class="tips">Ferramenta útil: use uma calculadora de investimento mensal para visualizar o crescimento real.</div>
+</section>
+
+</main>
+
+<footer>
+© 2026 Meu Dividendo. Todos os direitos reservados.
+</footer>
+
+<script>
+function toggleMenu() { document.getElementById('menuLinks').classList.toggle('show'); }
+</script>
+
+</body>
+</html>
