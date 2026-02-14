@@ -2,24 +2,181 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Módulo 6 - Tipos de Operações</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Curso 3 - Pessoas do Mercado</title>
+
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+
+  <!-- CHART -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CSS LOCAL / RESPONSIVO DO CURSO -->
+  <style>
+    /* ===================== RESPONSIVO CURSOS ===================== */
+
+    .curso-conteudo {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .curso-conteudo p,
+    .curso-conteudo li {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .destaque,
+    .atividade,
+    .referencias {
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .pergunta {
+      background: #eef2ff;
+      padding: 12px;
+      border-left: 5px solid #1a202c;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    /* ===================== MOBILE ===================== */
+    @media (max-width: 768px) {
+
+      header {
+        padding: 10px;
+      }
+
+      .site-title a {
+        font-size: 1.2rem;
+      }
+
+      .curso-conteudo {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .destaque ul,
+      .referencias ul {
+        padding-left: 20px;
+      }
+    }
+
+    /* ===================== MOBILE PEQUENO ===================== */
+    @media (max-width: 480px) {
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+      }
+
+      p,
+      li {
+        font-size: 0.95rem;
+      }
+
+      .menu {
+        font-size: 26px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
+
+  <!-- MENU HAMBÚRGUER -->
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+    </ul>
+  </nav>
+</header>
 <section class="curso-conteudo">
   <h1>Módulo 6 — Tipos de Operações</h1>
 
-  <ul>
-    <li>Day Trade</li>
-    <li>Swing Trade</li>
-    <li>Position Trade</li>
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>O que é</th>
+        <th>Tempo</th>
+        <th>Risco</th>
+        <th>Capital mínimo</th>
+        <th>% vencedores</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Day Trade</td>
+        <td>Compra/vende mesmo dia. Zero overnight</td>
+        <td>Minutos/horas</td>
+        <td>Extremo</td>
+        <td>R$ 25k</td>
+        <td>10%</td>
+      </tr>
+      <tr>
+        <td>Swing Trade</td>
+        <td>Captura movimentos médios de preço</td>
+        <td>2 dias - 3 semanas</td>
+        <td>Alto</td>
+        <td>R$ 10k</td>
+        <td>25%</td>
+      </tr>
+      <tr>
+        <td>Position Trade</td>
+        <td>Investimento baseado em fundamentos</td>
+        <td>3 meses - 10 anos</td>
+        <td>Médio</td>
+        <td>R$ 5k</td>
+        <td>85%</td>
+      </tr>
+    </tbody>
+  </table>
 
-  <p>
-    Operar não é o mesmo que investir. O risco é maior.
-  </p>
-
+  <p>Operar = especulação técnica. Investir = sócio de negócios. 90% operam, 10% investem, 1% ficam ricos.</p>
 </section>
+<!-- RODAPÉ -->
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
+  <p>
+    <a href="politica-de-privacidade.html">Política de Privacidade</a>
+  </p>
+</footer>
+
+
+<!-- SCRIPTS -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+<script src="js/calculadora-juros.js" defer></script>
 
 </body>
-</html>
