@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Teste Yahoo Finance API</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding:20px; background:#f2f2f2; }
+    input, button { padding:10px; font-size:16px; margin-right:5px; }
+    pre { background:#fff; padding:15px; border-radius:5px; overflow-x:auto; }
+  </style>
+</head>
+<body>
+  <h2>Teste Yahoo Finance API</h2>
+  <p>Digite o nome, ticker ou tipo (ação, fundo, FII) e veja tudo que a API retorna:</p>
+
+  <input type="text" id="query" placeholder="Ex: VALE3, BBAS3, BOVA11" />
+  <button onclick="buscar()">Buscar</button>
+
+  <h3>Resultado bruto:</h3>
+  <pre id="resultado">Aqui aparecerá o JSON retornado...</pre>
+
+  <script>
+    async function buscar() {
+      const query = document.getElementById('query').value;
+      const resultadoEl = document.getElementById('resultado');
+      resultadoEl.textContent = 'Carregando...';
+
+      try {
+        const url = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        // Mostra TUDO que a API retorna
+        resultadoEl.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        resultadoEl.textContent = 'Erro ao buscar: ' + err;
+      }
+    }
+  </script>
+</body>
+</html>
