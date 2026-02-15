@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Detalhes do Ativo</title>
 
-  <!-- CSS GLOBAL + ESPECÍFICO -->
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/calculadora.css">
+<!-- CSS GLOBAL + ESPECÍFICO -->
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/calculadora.css">
 
 <link href="https://cdn.jsdelivr.net/npm/chart.js" rel="stylesheet">
 <style>
@@ -35,12 +34,7 @@
 <div id="nomeAtivo">Ativo</div>
 
 <!-- Cards principais -->
-<div id="cards">
-  <!-- Cards serão preenchidos dinamicamente -->
-</div>
-
- 
-
+<div id="cards"></div>
 
 <!-- Gráficos -->
 <div class="section">
@@ -53,7 +47,7 @@
   <h3>Dividendos / Rendimentos</h3>
   <table id="dividendosTable">
     <thead>
-      <tr><th>Data Base</th><th>Data Pagamento</th><th>Rendimento</th></tr>
+      <tr><th>Data</th><th>Valor</th></tr>
     </thead>
     <tbody></tbody>
   </table>
@@ -67,7 +61,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Pega a nomenclatura do ativo na URL
 const params = new URLSearchParams(window.location.search);
 const ativo = params.get("ativo");
 
@@ -76,20 +69,21 @@ if(!ativo) {
 } else {
   document.getElementById("nomeAtivo").textContent = ativo;
 
-  // 1️⃣ Buscar dados do ativo
-  fetch(`https://brapi.dev/api/quote/${ativo}?token=kfWwE93iiUiHTg5V4XjbYR`)
+  // 1️⃣ Buscar dados do ativo na API yahoo-proxy
+  fetch(`https://yahoo-proxy-561p.vercel.app/api/ticker?ticker=${ativo}`)
     .then(res => res.json())
-    .then(data => {
-      const stock = data.results[0];
-      if(!stock) { alert("Ativo não encontrado."); return; }
+    .then(json => {
+      if(json.error) { alert("Erro: " + json.message); return; }
+
+      const data = json.data;
 
       // 2️⃣ Preencher cards principais
       const cardsDiv = document.getElementById("cards");
       const cardsInfo = [
-        {label:"Preço", value:`R$ ${stock.regularMarketPrice}`},
-        {label:"Variação", value:`${stock.regularMarketChangePercent}%`},
-        {label:"Máx/Mín", value:`R$ ${stock.regularMarketDayHigh} / R$ ${stock.regularMarketDayLow}`},
-        {label:"Volume", value:stock.regularMarketVolume || "N/A"}
+        {label:"Preço Atual", value: `R$ ${data.preco.atual || "N/A"}`},
+        {label:"Variação Dia", value: `${data.preco.variacaoDiaPct || 0}%`},
+        {label:"Máx/Mín 52 Sem", value: `R$ ${data.preco.min52sem} / R$ ${data.preco.max52sem}`},
+        {label:"Volume", value: data.indicadores.volume || "N/A"}
       ];
       cardsInfo.forEach(i => {
         const card = document.createElement("div");
@@ -99,53 +93,47 @@ if(!ativo) {
       });
 
       // 3️⃣ Histórico de preços (gráfico)
-      fetch(`https://brapi.dev/api/quote/${ativo}/chart?interval=1d&range=1y&token=kfWwE93iiUiHTg5V4XjbYR`)
-        .then(res => res.json())
-        .then(chartData => {
-          const datas = chartData.results.map(d=>d.date);
-          const precos = chartData.results.map(d=>d.close);
-          const ctx = document.getElementById('precoChart').getContext('2d');
-          new Chart(ctx, {
-            type:'line',
-            data:{ labels: datas, datasets:[{ label:'Preço', data:precos, borderColor:'#007bff', backgroundColor:'rgba(0,123,255,0.1)' }] },
-            options:{ responsive:true, plugins:{ legend:{display:true}, tooltip:{mode:'index'} } }
-          });
+      const hist = data.historicoPrecos || [];
+      if(hist.length > 0){
+        const datas = hist.map(p => p.data);
+        const precos = hist.map(p => p.preco);
+        const ctx = document.getElementById('precoChart').getContext('2d');
+        new Chart(ctx, {
+          type:'line',
+          data:{ labels: datas, datasets:[{ label:'Preço', data:precos, borderColor:'#007bff', backgroundColor:'rgba(0,123,255,0.1)' }] },
+          options:{ responsive:true, plugins:{ legend:{display:true}, tooltip:{mode:'index'} } }
         });
+      }
 
       // 4️⃣ Dividendos
-      fetch(`https://brapi.dev/api/stock/dividends?symbol=${ativo}&token=kfWwE93iiUiHTg5V4XjbYR`)
-        .then(res => res.json())
-        .then(divData => {
-          const tbody = document.querySelector("#dividendosTable tbody");
-          divData.results.forEach(div => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `<td>${div.exDate}</td><td>${div.payDate}</td><td>R$ ${div.amount}</td>`;
-            tbody.appendChild(tr);
-          });
-        });
+      const divs = data.dividendos || [];
+      const tbody = document.querySelector("#dividendosTable tbody");
+      divs.forEach(div => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${div.data}</td><td>R$ ${div.valor}</td>`;
+        tbody.appendChild(tr);
+      });
 
       // 5️⃣ Indicadores financeiros
-      fetch(`https://brapi.dev/api/stock/financials?symbol=${ativo}&token=kfWwE93iiUiHTg5V4XjbYR`)
-        .then(res => res.json())
-        .then(finData => {
-          const indicadoresDiv = document.getElementById("indicadores");
-          if(finData.results && finData.results.length > 0){
-            const f = finData.results[0];
-            const indicadores = [
-              {label:"P/L", value:f.priceEarnings || "N/A"},
-              {label:"P/VP", value:f.priceBook || "N/A"},
-              {label:"Dividend Yield", value:f.dividendYield || "N/A"},
-              {label:"Patrimônio Líquido", value:f.totalEquity || "N/A"},
-              {label:"Valor de Mercado", value:f.marketCap || "N/A"}
-            ];
-            indicadores.forEach(ind => {
-              const card = document.createElement("div");
-              card.className = "card";
-              card.innerHTML = `<strong>${ind.label}</strong><br>${ind.value}`;
-              indicadoresDiv.appendChild(card);
-            });
-          }
-        });
+      const indicadoresDiv = document.getElementById("indicadores");
+      const ind = data.indicadores || {};
+      const indicadores = [
+        {label:"P/L", value: ind.pl || "N/A"},
+        {label:"P/VP", value: ind.pvp || "N/A"},
+        {label:"Dividend Yield", value: ind.dy || "N/A"},
+        {label:"ROE", value: ind.roe || "N/A"},
+        {label:"Margem Líquida", value: ind.margemLiquida || "N/A"},
+        {label:"EBITDA", value: ind.ebitda || "N/A"},
+        {label:"Dívida/EBITDA", value: ind.dividaLiquidaEbitda || "N/A"},
+        {label:"Crescimento Receita 5 anos", value: ind.crescimentoReceita5a || "N/A"},
+        {label:"Crescimento Lucro 5 anos", value: ind.crescimentoLucro5a || "N/A"}
+      ];
+      indicadores.forEach(i => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
+        indicadoresDiv.appendChild(card);
+      });
 
     })
     .catch(err => { console.error(err); alert("Erro ao buscar informações do ativo."); });
@@ -153,3 +141,4 @@ if(!ativo) {
 </script>
 
 </body>
+</html>
