@@ -1,55 +1,84 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Teste Financial Modeling Prep</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding:20px; background:#f2f2f2; }
-    input, button { padding:10px; font-size:16px; margin-right:5px; }
-    pre { background:#fff; padding:15px; border-radius:5px; max-height:450px; overflow:auto; }
-  </style>
+<meta charset="UTF-8">
+<title>Teste FMP Todos Endpoints</title>
+<style>
+  body { font-family: Arial, sans-serif; padding:20px; background:#f2f2f2; }
+  input, button { padding:10px; font-size:16px; margin-right:5px; }
+  pre { background:#fff; padding:15px; border-radius:5px; max-height:450px; overflow:auto; }
+</style>
 </head>
 <body>
 
-  <h2>Teste API – Financial Modeling Prep</h2>
+<h2>Teste Financial Modeling Prep – Todos Endpoints</h2>
+<p>Digite o ticker de ação, ETF ou fundo (Brasil ou EUA):</p>
 
-  <input type="text" id="ticker" placeholder="Ex: AAPL, MSFT" />
-  <button onclick="buscar()">Buscar</button>
+<input type="text" id="ticker" placeholder="Ex: VALE3, BOVA11, AAPL" />
+<button onclick="buscar()">Buscar</button>
 
-  <h3>JSON retornado:</h3>
-  <pre id="resultado">Aguardando busca…</pre>
+<h3>Perfil da empresa:</h3>
+<pre id="perfil">Aqui aparecerá o JSON...</pre>
 
-  <script>
-    // ⚠️ Substitua aqui pela SUA NOVA API KEY, nunca publique online
-    const API_KEY = "O78K51WkaV2DJHslEqkqtw8Tvx24kfm1";
+<h3>Preço rápido:</h3>
+<pre id="preco">Aqui aparecerá o JSON...</pre>
 
-    async function buscar() {
-      const ticker = document.getElementById("ticker").value.toUpperCase();
-      const resultado = document.getElementById("resultado");
+<h3>Dividendos:</h3>
+<pre id="dividendos">Aqui aparecerá o JSON...</pre>
 
-      if (!ticker) {
-        resultado.textContent = "Digite um ticker.";
-        return;
-      }
+<h3>Histórico de preço:</h3>
+<pre id="historico">Aqui aparecerá o JSON...</pre>
 
-      resultado.textContent = "Buscando...";
+<h3>Busca por nome/ticker:</h3>
+<pre id="search">Aqui aparecerá o JSON...</pre>
 
-      try {
-        // Endpoint principal para buscar preço, marketcap, nome etc
-        const url = `https://financialmodelingprep.com/api/v3/quote/${ticker}?apikey=${API_KEY}`;
-        const res = await fetch(url);
-        const data = await res.json();
+<script>
+  const API_KEY = "O78K51WkaV2DJHslEqkqtw8Tvx24kfm1"; // substitua pela sua key
 
-        if (data.length === 0) {
-          resultado.textContent = "Nenhum dado encontrado para este ticker.";
-        } else {
-          resultado.textContent = JSON.stringify(data, null, 2);
-        }
-      } catch (e) {
-        resultado.textContent = "Erro: " + e;
-      }
+  async function buscar() {
+    const ticker = document.getElementById("ticker").value.toUpperCase();
+    if (!ticker) return alert("Digite um ticker.");
+
+    // Seletores de output
+    const perfilEl = document.getElementById("perfil");
+    const precoEl = document.getElementById("preco");
+    const dividendosEl = document.getElementById("dividendos");
+    const historicoEl = document.getElementById("historico");
+    const searchEl = document.getElementById("search");
+
+    perfilEl.textContent = precoEl.textContent = dividendosEl.textContent = historicoEl.textContent = searchEl.textContent = "Carregando...";
+
+    try {
+      // 1️⃣ Perfil da empresa
+      const perfilRes = await fetch(`https://financialmodelingprep.com/api/v4/profile/${ticker}?apikey=${API_KEY}`);
+      const perfilData = await perfilRes.json();
+      perfilEl.textContent = JSON.stringify(perfilData, null, 2);
+
+      // 2️⃣ Preço rápido
+      const precoRes = await fetch(`https://financialmodelingprep.com/api/v4/quote-short/${ticker}?apikey=${API_KEY}`);
+      const precoData = await precoRes.json();
+      precoEl.textContent = JSON.stringify(precoData, null, 2);
+
+      // 3️⃣ Dividendos
+      const divRes = await fetch(`https://financialmodelingprep.com/api/v4/historical-price-full/stock_dividend/${ticker}?apikey=${API_KEY}`);
+      const divData = await divRes.json();
+      dividendosEl.textContent = JSON.stringify(divData, null, 2);
+
+      // 4️⃣ Histórico de preço
+      const histRes = await fetch(`https://financialmodelingprep.com/api/v4/historical-price-full/${ticker}?serietype=line&apikey=${API_KEY}`);
+      const histData = await histRes.json();
+      historicoEl.textContent = JSON.stringify(histData, null, 2);
+
+      // 5️⃣ Busca por nome/ticker (autocomplete)
+      const searchRes = await fetch(`https://financialmodelingprep.com/api/v4/search?query=${ticker}&limit=10&apikey=${API_KEY}`);
+      const searchData = await searchRes.json();
+      searchEl.textContent = JSON.stringify(searchData, null, 2);
+
+    } catch (err) {
+      perfilEl.textContent = precoEl.textContent = dividendosEl.textContent = historicoEl.textContent = searchEl.textContent = "Erro: " + err;
     }
-  </script>
+  }
+</script>
 
 </body>
 </html>
