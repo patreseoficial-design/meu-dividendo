@@ -2,18 +2,18 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Teste Yahoo Finance API</title>
+  <title>Teste Financial Modeling Prep API</title>
   <style>
     body { font-family: Arial, sans-serif; padding:20px; background:#f2f2f2; }
     input, button { padding:10px; font-size:16px; margin-right:5px; }
-    pre { background:#fff; padding:15px; border-radius:5px; overflow-x:auto; }
+    pre { background:#fff; padding:15px; border-radius:5px; overflow-x:auto; max-height:400px; }
   </style>
 </head>
 <body>
-  <h2>Teste Yahoo Finance API</h2>
-  <p>Digite o nome, ticker ou tipo (ação, fundo, FII) e veja tudo que a API retorna:</p>
+  <h2>Teste Financial Modeling Prep API</h2>
+  <p>Digite o ticker de uma ação, FII ou ETF:</p>
 
-  <input type="text" id="query" placeholder="Ex: VALE3, BBAS3, BOVA11" />
+  <input type="text" id="ticker" placeholder="Ex: VALE3, BOVA11, KNRI11" />
   <button onclick="buscar()">Buscar</button>
 
   <h3>Resultado bruto:</h3>
@@ -21,16 +21,22 @@
 
   <script>
     async function buscar() {
-      const query = document.getElementById('query').value;
+      const ticker = document.getElementById('ticker').value.toUpperCase();
       const resultadoEl = document.getElementById('resultado');
       resultadoEl.textContent = 'Carregando...';
 
       try {
-        const url = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}`;
+        // API gratuita (demo) da Financial Modeling Prep
+        const url = `https://financialmodelingprep.com/api/v3/quote/${ticker}?apikey=demo`;
         const res = await fetch(url);
         const data = await res.json();
-        // Mostra TUDO que a API retorna
-        resultadoEl.textContent = JSON.stringify(data, null, 2);
+
+        if (data.length === 0) {
+          resultadoEl.textContent = 'Nenhum dado encontrado para este ticker.';
+        } else {
+          // Mostra TUDO que a API retorna
+          resultadoEl.textContent = JSON.stringify(data, null, 2);
+        }
       } catch (err) {
         resultadoEl.textContent = 'Erro ao buscar: ' + err;
       }
