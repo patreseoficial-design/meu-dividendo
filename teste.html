@@ -2,45 +2,54 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Teste Financial Modeling Prep API</title>
+  <title>Teste Financial Modeling Prep</title>
   <style>
     body { font-family: Arial, sans-serif; padding:20px; background:#f2f2f2; }
     input, button { padding:10px; font-size:16px; margin-right:5px; }
-    pre { background:#fff; padding:15px; border-radius:5px; overflow-x:auto; max-height:400px; }
+    pre { background:#fff; padding:15px; border-radius:5px; max-height:450px; overflow:auto; }
   </style>
 </head>
 <body>
-  <h2>Teste Financial Modeling Prep API</h2>
-  <p>Digite o ticker de uma ação, FII ou ETF:</p>
 
-  <input type="text" id="ticker" placeholder="Ex: VALE3, BOVA11, KNRI11" />
+  <h2>Teste API – Financial Modeling Prep</h2>
+
+  <input type="text" id="ticker" placeholder="Ex: AAPL, MSFT" />
   <button onclick="buscar()">Buscar</button>
 
-  <h3>Resultado bruto:</h3>
-  <pre id="resultado">Aqui aparecerá o JSON retornado...</pre>
+  <h3>JSON retornado:</h3>
+  <pre id="resultado">Aguardando busca…</pre>
 
   <script>
+    // ⚠️ Substitua aqui pela SUA NOVA API KEY, nunca publique online
+    const API_KEY = "O78K51WkaV2DJHslEqkqtw8Tvx24kfm1";
+
     async function buscar() {
-      const ticker = document.getElementById('ticker').value.toUpperCase();
-      const resultadoEl = document.getElementById('resultado');
-      resultadoEl.textContent = 'Carregando...';
+      const ticker = document.getElementById("ticker").value.toUpperCase();
+      const resultado = document.getElementById("resultado");
+
+      if (!ticker) {
+        resultado.textContent = "Digite um ticker.";
+        return;
+      }
+
+      resultado.textContent = "Buscando...";
 
       try {
-        // API gratuita (demo) da Financial Modeling Prep
-        const url = `https://financialmodelingprep.com/api/v3/quote/${ticker}?apikey=demo`;
+        // Endpoint principal para buscar preço, marketcap, nome etc
+        const url = `https://financialmodelingprep.com/api/v3/quote/${ticker}?apikey=${API_KEY}`;
         const res = await fetch(url);
         const data = await res.json();
 
         if (data.length === 0) {
-          resultadoEl.textContent = 'Nenhum dado encontrado para este ticker.';
+          resultado.textContent = "Nenhum dado encontrado para este ticker.";
         } else {
-          // Mostra TUDO que a API retorna
-          resultadoEl.textContent = JSON.stringify(data, null, 2);
+          resultado.textContent = JSON.stringify(data, null, 2);
         }
-      } catch (err) {
-        resultadoEl.textContent = 'Erro ao buscar: ' + err;
+      } catch (e) {
+        resultado.textContent = "Erro: " + e;
       }
     }
   </script>
+
 </body>
 </html>
