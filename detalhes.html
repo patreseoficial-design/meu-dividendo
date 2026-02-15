@@ -3,151 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Detalhes do Ativo</title>
 
-  <!-- CSS GLOBAL + ESPECÍFICO -->
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/calculadora.css">
+<title>Ativo | Cotação, Gráfico e Indicadores | Meu Dividendo</title>
 
-<link href="https://cdn.jsdelivr.net/npm/chart.js" rel="stylesheet">
+<meta name="description" content="Veja cotação, gráfico, dividendos e indicadores financeiros do ativo na B3. Dados atualizados automaticamente.">
+<meta name="robots" content="index, follow">
+
+<link rel="canonical" href="https://meudividendo.online/detalhes.html">
+
+<!-- CSS GLOBAL -->
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/calculadora.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
-  header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; }
-  #nomeAtivo { text-align:center; margin:24px 0; font-size:2em; font-weight:bold; }
-  #cards { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:24px; }
-  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; flex:1 1 120px; text-align:center; min-width:120px; }
-  .section { margin:20px; background:#fff; padding:16px; border-radius:12px; }
-  table { width:100%; border-collapse:collapse; margin-top:12px; }
-  th, td { padding:8px; border:1px solid #ccc; text-align:center; }
-  th { background:#eee; }
-  canvas { max-width:100%; }
+body { font-family: Arial, sans-serif; margin:0; background:#f5f5f5; color:#333; }
+header { background:#000; color:#fff; padding:16px; text-align:center; }
+header a { color:#fff; text-decoration:none; font-size:1.2em; }
+
+.search-box {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.search-box input {
+  padding: 8px;
+  width: 180px;
+}
+
+.search-box button {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+#nomeAtivo { text-align:center; margin:24px 0; font-size:2em; font-weight:bold; }
+
+#cards {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-bottom:24px;
+}
+
+.card {
+  background:#000;
+  color:#fff;
+  padding:16px 24px;
+  border-radius:12px;
+  flex:1 1 140px;
+  text-align:center;
+  min-width:140px;
+}
+
+.section {
+  margin:20px;
+  background:#fff;
+  padding:16px;
+  border-radius:12px;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:12px;
+}
+
+th, td {
+  padding:8px;
+  border:1px solid #ccc;
+  text-align:center;
+}
+
+th { background:#eee; }
+
+canvas { max-width:100%; }
 </style>
 </head>
+
 <body>
 
-<header style="text-align: center;">
-  <a href="/meu-dividendo/" style="text-decoration: none; color: inherit;">
-  <a href="./index.html" style="text-decoration: none; color: inherit;">
-    Meu Dividendo
-  </a>
+<header>
+  <a href="./index.html">Meu Dividendo</a>
+
+  <!-- 🔎 BARRA DE PESQUISA SEO -->
+  <form action="detalhes.html" method="GET" class="search-box">
+    <input type="text" name="ativo" placeholder="Digite o ticker (ex: VALE3)" required>
+    <button type="submit">Buscar</button>
+  </form>
 </header>
 
 <div id="nomeAtivo">Ativo</div>
 
-<!-- Cards principais -->
-<div id="cards">
-  <!-- Cards serão preenchidos dinamicamente -->
+<!-- CARDS -->
+<div id="cards"></div>
+
+<!-- 🔹 ADSENSE TOPO -->
+<div class="section" style="text-align:center;">
+  <!-- Adsense topo -->
 </div>
 
-
-
-
-<!-- Gráficos -->
+<!-- GRÁFICO -->
 <div class="section">
   <h3>Histórico de Preços</h3>
   <canvas id="precoChart"></canvas>
 </div>
 
-<!-- Dividendos -->
+<!-- 🔹 ADSENSE MEIO -->
+<div class="section" style="text-align:center;">
+  <!-- Adsense in-article -->
+</div>
+
+<!-- DIVIDENDOS -->
 <div class="section">
-  <h3>Dividendos / Rendimentos</h3>
+  <h3>Dividendos</h3>
   <table id="dividendosTable">
     <thead>
-      <tr><th>Data Base</th><th>Data Pagamento</th><th>Rendimento</th></tr>
+      <tr>
+        <th>Data Base</th>
+        <th>Data Pagamento</th>
+        <th>Valor</th>
+      </tr>
     </thead>
     <tbody></tbody>
   </table>
 </div>
 
-<!-- Indicadores -->
+<!-- INDICADORES -->
 <div class="section">
   <h3>Indicadores Financeiros</h3>
   <div id="indicadores" style="display:flex; flex-wrap:wrap; gap:12px;"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Pega a nomenclatura do ativo na URL
 const params = new URLSearchParams(window.location.search);
 const ativo = params.get("ativo");
 
-if(!ativo) {
-  alert("Nenhum ativo informado!");
+if (!ativo) {
+  document.getElementById("nomeAtivo").textContent = "Nenhum ativo informado";
 } else {
-  document.getElementById("nomeAtivo").textContent = ativo;
 
-  // 1️⃣ Buscar dados do ativo
-  fetch(`https://brapi.dev/api/quote/${ativo}?token=kfWwE93iiUiHTg5V4XjbYR`)
+  const TICKER = ativo.toUpperCase();
+  const TOKEN = "kfWwE93iiUiHTg5V4XjbYR"; // BRAPI
+
+  document.getElementById("nomeAtivo").textContent = TICKER;
+  document.title = `${TICKER} | Cotação, Gráfico e Indicadores - Meu Dividendo`;
+
+  // ===== COTAÇÃO =====
+  fetch(`https://brapi.dev/api/quote/${TICKER}?token=${TOKEN}`)
     .then(res => res.json())
     .then(data => {
-      const stock = data.results[0];
-      if(!stock) { alert("Ativo não encontrado."); return; }
+      const s = data.results?.[0];
+      if (!s) return;
 
-      // 2️⃣ Preencher cards principais
-      const cardsDiv = document.getElementById("cards");
-      const cardsInfo = [
-        {label:"Preço", value:`R$ ${stock.regularMarketPrice}`},
-        {label:"Variação", value:`${stock.regularMarketChangePercent}%`},
-        {label:"Máx/Mín", value:`R$ ${stock.regularMarketDayHigh} / R$ ${stock.regularMarketDayLow}`},
-        {label:"Volume", value:stock.regularMarketVolume || "N/A"}
+      const cards = [
+        { label: "Preço", value: `R$ ${s.regularMarketPrice}` },
+        { label: "Variação", value: `${s.regularMarketChangePercent}%` },
+        { label: "Máx / Mín", value: `R$ ${s.regularMarketDayHigh} / ${s.regularMarketDayLow}` },
+        { label: "Volume", value: s.regularMarketVolume || "N/A" }
       ];
-      cardsInfo.forEach(i => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<strong>${i.label}</strong><br>${i.value}`;
-        cardsDiv.appendChild(card);
+
+      const cardsDiv = document.getElementById("cards");
+      cardsDiv.innerHTML = "";
+
+      cards.forEach(c => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<strong>${c.label}</strong><br>${c.value}`;
+        cardsDiv.appendChild(div);
       });
+    });
 
-      // 3️⃣ Histórico de preços (gráfico)
-      fetch(`https://brapi.dev/api/quote/${ativo}/chart?interval=1d&range=1y&token=kfWwE93iiUiHTg5V4XjbYR`)
-        .then(res => res.json())
-        .then(chartData => {
-          const datas = chartData.results.map(d=>d.date);
-          const precos = chartData.results.map(d=>d.close);
-          const ctx = document.getElementById('precoChart').getContext('2d');
-          new Chart(ctx, {
-            type:'line',
-            data:{ labels: datas, datasets:[{ label:'Preço', data:precos, borderColor:'#007bff', backgroundColor:'rgba(0,123,255,0.1)' }] },
-            options:{ responsive:true, plugins:{ legend:{display:true}, tooltip:{mode:'index'} } }
-          });
-        });
+  // ===== GRÁFICO =====
+  fetch(`https://brapi.dev/api/quote/${TICKER}/chart?interval=1d&range=1y&token=${TOKEN}`)
+    .then(res => res.json())
+    .then(chart => {
+      const r = chart.results || [];
+      const labels = r.map(i => i.date);
+      const prices = r.map(i => i.close);
 
-      // 4️⃣ Dividendos
-      fetch(`https://brapi.dev/api/stock/dividends?symbol=${ativo}&token=kfWwE93iiUiHTg5V4XjbYR`)
-        .then(res => res.json())
-        .then(divData => {
-          const tbody = document.querySelector("#dividendosTable tbody");
-          divData.results.forEach(div => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `<td>${div.exDate}</td><td>${div.payDate}</td><td>R$ ${div.amount}</td>`;
-            tbody.appendChild(tr);
-          });
-        });
+      new Chart(document.getElementById("precoChart"), {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "Preço",
+            data: prices,
+            borderWidth: 2,
+            fill: true
+          }]
+        },
+        options: { responsive: true }
+      });
+    });
 
-      // 5️⃣ Indicadores financeiros
-      fetch(`https://brapi.dev/api/stock/financials?symbol=${ativo}&token=kfWwE93iiUiHTg5V4XjbYR`)
-        .then(res => res.json())
-        .then(finData => {
-          const indicadoresDiv = document.getElementById("indicadores");
-          if(finData.results && finData.results.length > 0){
-            const f = finData.results[0];
-            const indicadores = [
-              {label:"P/L", value:f.priceEarnings || "N/A"},
-              {label:"P/VP", value:f.priceBook || "N/A"},
-              {label:"Dividend Yield", value:f.dividendYield || "N/A"},
-              {label:"Patrimônio Líquido", value:f.totalEquity || "N/A"},
-              {label:"Valor de Mercado", value:f.marketCap || "N/A"}
-            ];
-            indicadores.forEach(ind => {
-              const card = document.createElement("div");
-              card.className = "card";
-              card.innerHTML = `<strong>${ind.label}</strong><br>${ind.value}`;
-              indicadoresDiv.appendChild(card);
-            });
-          }
-        });
+  // ===== DIVIDENDOS =====
+  fetch(`https://brapi.dev/api/stock/dividends?symbol=${TICKER}&token=${TOKEN}`)
+    .then(res => res.json())
+    .then(div => {
+      const tbody = document.querySelector("#dividendosTable tbody");
+      tbody.innerHTML = "";
+      div.results?.forEach(d => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${d.exDate}</td><td>${d.payDate}</td><td>R$ ${d.amount}</td>`;
+        tbody.appendChild(tr);
+      });
+    });
 
-    })
-    .catch(err => { console.error(err); alert("Erro ao buscar informações do ativo."); });
+  // ===== INDICADORES =====
+  fetch(`https://brapi.dev/api/stock/financials?symbol=${TICKER}&token=${TOKEN}`)
+    .then(res => res.json())
+    .then(fin => {
+      const f = fin.results?.[0];
+      if (!f) return;
+
+      const indicadores = [
+        { label: "P/L", value: f.priceEarnings },
+        { label: "P/VP", value: f.priceBook },
+        { label: "Dividend Yield", value: f.dividendYield },
+        { label: "Valor de Mercado", value: f.marketCap }
+      ];
+
+      const box = document.getElementById("indicadores");
+      box.innerHTML = "";
+
+      indicadores.forEach(i => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<strong>${i.label}</strong><br>${i.value || "N/A"}`;
+        box.appendChild(div);
+      });
+    });
 }
 </script>
+
+</body>
+</html>
