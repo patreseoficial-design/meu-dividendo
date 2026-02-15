@@ -1,7 +1,44 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de 13º Salário 2026 | Valor Líquido, INSS e IR</title>
+  <meta name="description" content="Calcule o valor do seu 13º salário de forma simples e atualizada. Veja parcelas, descontos de INSS e IRRF e simule quanto investir mês a mês.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://meudividendo.online/calculadora-13salario">
+ <!-- DADOS ESTRUTURADOS GOOGLE -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculadora de 13º Salário 2026",
+    "url": "https://meudividendo.online/calculadora-13salario",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "description": "Calculadora online de 13º salário atualizada para 2026, com cálculo de INSS, IRRF, dependentes e parcelas.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "Meu Dividendo",
+      "url": "https://meudividendo.online"
+    }
+  }
+  </script>
+  <!-- Open Graph -->
+  <meta property="og:title" content="Calculadora de 13º Salário 2026">
+  <meta property="og:description" content="Descubra quanto você vai receber de 13º salário com descontos de INSS e IRRF.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://meudividendo.online/calculadora-13salario">
+  <meta property="og:image" content="https://meudividendo.online/img/calculadora-13.jpg">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <title>Teste Yahoo Finance API (com Proxy)</title>
   <style>
     body { font-family: Arial, sans-serif; padding:20px; background:#f2f2f2; }
@@ -10,39 +47,227 @@
   </style>
 </head>
 <body>
-  <h2>Teste Yahoo Finance API</h2>
-  <p>Digite o nome, ticker ou tipo (ação, fundo, FII) e veja todo o JSON retornado:</p>
-
-  <input type="text" id="query" placeholder="Ex: VALE3, BOVA11, KNRI11" />
-  <button onclick="buscar()">Buscar</button>
-
-  <h3>Resultado bruto:</h3>
-  <pre id="resultado">Aqui aparecerá o JSON retornado...</pre>
-
-  <script>
-    async function buscar() {
-      const query = document.getElementById('query').value;
-      const resultadoEl = document.getElementById('resultado');
-      resultadoEl.textContent = 'Carregando...';
-
-      try {
-        // URL da API Yahoo Finance
-        const yahooUrl = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}`;
-        
-        // Usando proxy para contornar CORS
-        const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(yahooUrl)}`;
-        const res = await fetch(proxy);
-        const json = await res.json();
-        
-        // O conteúdo real da API está em json.contents
-        const data = JSON.parse(json.contents);
-        
-        // Mostra TUDO que a API retorna
-        resultadoEl.textContent = JSON.stringify(data, null, 2);
-      } catch (err) {
-        resultadoEl.textContent = 'Erro ao buscar: ' + err;
-      }
-    }
-  </script>
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+     <h1 class="site-title">
+<a href="index.html">Meu Dividendo</a>
+  <!-- MENU HAMBÚRGUER -->
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+            <li><a href="index.html">Início.</a></li>
+                        <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+            <li><a href="curso-investimento.html">Curso de Investimento</a></li>
+            <li><a href="teste.html">teste</a></li
+      
+      
+    </ul>
+  </nav>
+</header>
+<!-- TEXTO: CALCULADORA DE 13 SALARIO-->
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+</p>
+  <h1 class="page-title">
+  Calculadora de 13º Salário 2026
+</h1>
+<div class="texto-explicativo">
+  <p>
+    <strong>O que é a calculadora de 13º salário?</strong><br>
+    A calculadora de 13º salário é uma ferramenta criada para ajudar o trabalhador
+    a estimar quanto vai receber de décimo terceiro, de forma rápida e sem complicação.
+  </p>
+ </p>
+</div>
+<!-- CALCULADORA -->
+<div class="calc-box">
+  <div class="inputs">
+    <div class="input-group">
+      <label>Salário Mensal</label>
+      <input type="number" id="salario" value="2000">
+    </div>
+    <div class="input-group">
+      <label>Meses Trabalhados</label>
+      <input type="number" id="meses" value="12" min="1" max="12">
+    </div>
+    <div class="input-group">
+      <label>Horas Extras</label>
+      <input type="number" id="horasExtras" value="0">
+    </div>
+    <div class="input-group">
+      <label>Insalubridade %</label>
+      <input type="number" id="insalubridade" value="0">
+    </div>
+    <div class="input-group">
+      <label>Periculosidade %</label>
+      <input type="number" id="periculosidade" value="0">
+    </div>
+  <div class="input-group">
+  <label>Dependentes IR</label>
+  <input type="number" id="dependentes" value="0" min="0" max="10">
+</div>
+  </div>
+  <button class="calc-btn" onclick="calcular13()">Calcular</button>
+</div>
+<div id="resultado13" class="result" style="display:none"></div>
+<!-- BANNER DE PROPAGANDA -->
+<div class="ad">Banner</div>
+<!-- COMO USAR A CALCULADORA -->
+ <div style="text-align: left; display: inline-block; max-width: 600px;">
+</p>
+  <h2>Como usar a calculadora</h2>
+  <p>
+    Para estimar seu 13º salário, preencha o seu salário mensal e os meses trabalhados no ano.
+    Opcionalmente, você pode informar:
+  </p>
+  
+    <p>Horas extras recebidas</p>
+    <p>Adicional de insalubridade</p>
+    <p>Adicional de periculosidade</p>
+  
+  <p>
+    Clique em "Calcular" para ver o detalhamento do valor bruto, descontos de INSS e IRRF,
+    1ª e 2ª parcela, e o total líquido do 13º salário.
+  </p>
+ </p> 
+</div>
+ 
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+<h2>Para que serve a calculadora de 13º Salário?</h2>
+  <p> 
+    A calculadora de 13º salário é muito útil para:
+ Planejar despesas de fim de ano.
+ Organizar pagamentos de contas e dívidas.
+ Evitar surpresas com descontos.
+ Ajudar no planejamento financeiro pessoal.
+ Em vez de fazer contas manuais ou ficar em dúvida, o usuário consegue uma estimativa confiável em poucos segundos.
+</p>
+</div>
+<!-- TEXTO: O QUE É 13º SALÁRIO -->
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+ <h2>O que é o 13º Salário?</h2>
+  <p>
+    O 13º salário é um direito trabalhista garantido a todos os trabalhadores com carteira assinada no Brasil.
+    Ele corresponde a um salário extra pago no final do ano, proporcional ao tempo trabalhado durante o ano.
+    Funciona como uma forma de gratificação para auxiliar nas despesas de fim de ano.
+  </p>
+  <p>
+    Ele é calculado com base na remuneração mensal do trabalhador, e depositado ou realocado em uma conta mês a mês, podendo ser reduzido proporcionalmente caso o funcionário não tenha trabalhado o ano completo.
+  </p>
+</div>
+     <section class="faq">
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <h2>Perguntas frequentes sobre o 13º salário</h2>
+  <h3>Quem tem direito ao 13º salário?</h3>
+  <p>Todo trabalhador com carteira assinada, aposentados e pensionistas do INSS.</p>
+  <h3>O 13º salário tem desconto?</h3>
+  <p>Sim. O INSS e o Imposto de Renda incidem principalmente na segunda parcela.</p>
+  <h3>Quem trabalhou menos de um ano recebe 13º salário?</h3>
+  <p>Sim. O valor é proporcional aos meses trabalhados.</p>
+</p>
+</div>
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <h2>Calculadora de planejamento mês a mês do 13° salário </h2>
+  <p>
+Por que usar o 13º salário no planejamento mês a mês?
+    Como acabamos de ler o 13º salário é um dinheiro extra que não faz parte do orçamento mensal,
+    por isso ele é ideal para ser planejado e distribuído ao longo do tempo.
+  </p>
+  <p>
+    Ao organizar o 13º mês a mês, você evita gastar tudo de uma vez para conseguir equilibrar despesas, criar uma reserva e investir parte do valor
+    de forma consciente.
+  </p>
+  <p>
+    Esse planejamento ajuda a ter mais controle financeiro,
+    visualizar melhor para onde o dinheiro vai
+    e transformar o 13º salário em uma ferramenta para o presente e para o futuro.
+    A segui temos a ferramenta ideial para o planejamento mês a mês. 
+    Uma calculadora que informa exatamente quanto voce deve retirar mês a mês de seu 13° para investir, quitar contas, e claro gastar com as festas de fim de ano. 
+  </p>
+</div>
+<!-- PLANEJAMENTO MÊS A MÊS -->
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+<h2>
+  Planejamento mês a mês do 13º salário
+</h2>
+<div class="calc-box">
+  <div class="inputs">
+    <div class="input-group">
+      <label>Salário Mensal</label>
+      <input type="number" id="salarioGraf" value="2000">
+    </div>
+    <div class="input-group">
+      <label>Meses Trabalhados</label>
+      <input type="number" id="mesesGraf" value="12" min="1" max="12">
+    </div>
+    <div class="input-group">
+      <label>% para Investir</label>
+      <input type="number" id="percInvest" value="30" min="0" max="100">
+    </div>
+  </div>
+  <button class="calc-btn" onclick="planejar13()">
+    Gerar Planejamento
+  </button>
+</div>
+<div id="resultadoGraf" class="result" style="display:none">
+  <h2>Distribuição mês a mês</h2>
+  <div class="table-wrap">
+    <table id="tabelaGraf">
+      <thead>
+        <tr>
+          <th>Mês</th>
+          <th>13º Gerado</th>
+          <th>Valor para Investir</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <canvas id="graficoMeses"></canvas>
+</div>
+<!-- BANNER DE PROPAGANDA -->
+<div class="ad">Banner</div>
+<!-- DICAS DE DIVISÃO -->
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  <h2>Como usar seu 13º salário de forma inteligente?</h2>
+  <p>
+    Para equilibrar despesas e investimentos, sugerimos a seguinte divisão:
+  </p>
+  
+    <p>50% para despesas de fim de ano (compras, festas, presentes)</p>
+    <p>30% para investir (poupança, renda fixa, ações)</p>
+    <p>20% para reservas emergenciais ou quitar dívidas</p>
+<div style="text-align: left; display: inline-block; max-width: 600px;">
+  
+  <p>
+    Essa é apenas uma sugestão e pode ser ajustada de acordo com sua situação financeira.
+    O importante é garantir que parte do dinheiro seja destinada para investimentos e poupança,
+    para que o 13º salário se torne mais um potente aliado em sua jornada de economia e desenvolvimento patrimonial.
+  </p>
+</div>
+<!-- BANNER DE PROPAGANDA -->
+<div class="ad">Banner</div>
+<!-- RESULTADOS -->
+<div id="resultadoResumo" class="result" style="display:none">
+  <h2>Resumo do 13º Salário</h2>
+  <p id="resBruto"></p>
+  <p id="resProporcional"></p>
+  <p id="resINSS"></p>
+  <p id="resIR"></p>
+  <p id="resParcela1"></p>
+  <p id="resParcela2"></p>
+  <p id="resTotal"></p>
+</div>
+<!-- SCRIPT -->
+<script src="js/calculadora-13salario.js"></script>
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
+  <p><a href="politica-de-privacidade.html" style="color:#fff; text-decoration:underline;">Política de Privacidade</a></p>
+</footer>
+ <!-- SCRIPTS -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
 </body>
 </html>
