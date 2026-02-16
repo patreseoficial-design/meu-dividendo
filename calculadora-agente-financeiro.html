@@ -7,82 +7,12 @@
 <title>Organizador de Dívidas | Meu Dividendo</title>
 <meta name="description" content="Organize suas dívidas e descubra quais pagar primeiro com base na renda.">
 
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/calculadora.css">
+
 <style>
-/* ===== RESET ===== */
-body{
-  font-family:Arial, sans-serif;
-  background:#f2f2f2;
-  margin:0;
-}
-
-/* ===== HEADER PADRÃO ANTIGO ===== */
-.site-header{
-  background:#000;
-  color:#fff;
-  height:56px;
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
-
-.menu{
-  position:absolute;
-  left:15px;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:26px;
-  cursor:pointer;
-}
-
-.site-title{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%, -50%);
-  margin:0;
-  font-size:20px;
-}
-
-.site-title a{
-  color:#fff;
-  text-decoration:none;
-}
-
-/* ===== MENU LINKS ===== */
-.menu-links{
-  display:none;
-  background:#000;
-  position:absolute;
-  top:56px;
-  left:0;
-  width:100%;
-}
-
-.menu-links ul{
-  list-style:none;
-  margin:0;
-  padding:0;
-  text-align:center;
-}
-
-.menu-links li{
-  border-top:1px solid #222;
-}
-
-.menu-links a{
-  display:block;
-  padding:14px;
-  color:#fff;
-  text-decoration:none;
-}
-
-.menu-links.show{
-  display:block;
-}
-
-/* ===== CONTEÚDO ===== */
-.calc-box,
-.info-box{
+/* ajustes locais apenas do conteúdo */
+.calc-box,.info-box{
   max-width:720px;
   margin:30px auto;
   background:#fff;
@@ -91,17 +21,7 @@ body{
   border:1px solid #ddd;
 }
 
-h2{
-  margin:18px 0 8px;
-  font-size:18px;
-}
-
-label{
-  display:block;
-  font-size:14px;
-  margin-bottom:5px;
-}
-
+label{display:block;font-size:14px;margin-bottom:5px}
 input{
   width:100%;
   padding:12px;
@@ -110,7 +30,6 @@ input{
   margin-bottom:12px;
 }
 
-/* ===== BOTÕES ===== */
 button{
   width:100%;
   padding:14px;
@@ -122,7 +41,6 @@ button{
   margin-top:8px;
 }
 
-/* ===== DÍVIDAS ===== */
 .divida-card{
   background:#f7f7f7;
   padding:15px;
@@ -130,28 +48,19 @@ button{
   margin-bottom:12px;
 }
 
-/* ===== RESULTADO ===== */
 .result{
   margin-top:20px;
   padding:15px;
   background:#f7f7f7;
   border:1px solid #ccc;
 }
-
-/* ===== FOOTER ===== */
-footer{
-  background:#000;
-  color:#fff;
-  text-align:center;
-  padding:20px;
-  margin-top:40px;
-}
 </style>
 </head>
 
 <body>
 
-<header class="site-header">
+<!-- ===== HEADER PADRÃO IGUAL AO 13º ===== -->
+<header>
   <div class="menu" onclick="toggleMenu()">☰</div>
 
   <h1 class="site-title">
@@ -167,43 +76,46 @@ footer{
   </nav>
 </header>
 
+<!-- ===== CONTEÚDO ===== -->
 <div class="calc-box">
 
   <label>Salário mensal (R$)</label>
   <input id="salario" type="number" placeholder="Ex: 3000">
 
-  <h2>Dívidas</h2>
+  <p><strong>Dívidas</strong></p>
   <div id="listaDividas"></div>
 
   <button onclick="adicionarDivida()">Adicionar dívida</button>
   <button onclick="analisar()">Analisar situação</button>
 
   <div id="resultado" class="result"></div>
-
 </div>
 
 <div class="info-box">
-  <h2>O que é?</h2>
+  <p><strong>O que é?</strong></p>
   <p>Ferramenta para organizar dívidas e visualizar o impacto no orçamento.</p>
 
-  <h2>Para que serve?</h2>
+  <p><strong>Para que serve?</strong></p>
   <p>Ajuda a decidir por onde começar a quitação.</p>
 
-  <h2>FAQ</h2>
+  <p><strong>FAQ</strong></p>
   <p><strong>Funciona para qualquer dívida?</strong> Sim.</p>
 </div>
 
 <footer>
-  © 2026 Meu Dividendo
+  <p>© 2026 Meu Dividendo</p>
 </footer>
 
+<!-- ===== JS MENU (IGUAL AO 13º) ===== -->
 <script>
-/* ===== MENU HAMBÚRGUER ===== */
-function toggleMenu(){
-  document.getElementById("menuLinks").classList.toggle("show");
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
+</script>
 
-/* ===== LÓGICA DA CALCULADORA ===== */
+<!-- ===== JS CALCULADORA ===== -->
+<script>
 let id = 0;
 const listaDividas = document.getElementById("listaDividas");
 
@@ -213,40 +125,29 @@ function adicionarDivida(){
   d.className = "divida-card";
   d.innerHTML = `
     <strong>Dívida ${id}</strong>
-
-    <label>Descrição</label>
-    <input type="text" placeholder="Ex: Cartão de crédito">
-
-    <label>Valor total (R$)</label>
-    <input class="valor" type="number">
-
-    <label>Parcela mensal (R$)</label>
-    <input class="parcela" type="number">
-
-    <label>Juros (% a.a)</label>
-    <input class="juros" type="number">
+    <label>Descrição</label><input>
+    <label>Valor total (R$)</label><input class="valor" type="number">
+    <label>Parcela mensal (R$)</label><input class="parcela" type="number">
+    <label>Juros (% a.a)</label><input class="juros" type="number">
   `;
   listaDividas.appendChild(d);
 }
 
 function analisar(){
-  const sal = Number(salario.value);
-  if(!sal){
-    alert("Informe o salário.");
-    return;
-  }
+  const sal = +salario.value || 0;
+  if(!sal){ alert("Informe o salário."); return; }
 
   let total = 0;
-  let jurosLista = [];
+  let juros = [];
 
   document.querySelectorAll(".divida-card").forEach(d=>{
-    const p = Number(d.querySelector(".parcela").value) || 0;
-    const j = Number(d.querySelector(".juros").value) || 0;
+    const p = +d.querySelector(".parcela").value || 0;
+    const j = +d.querySelector(".juros").value || 0;
     total += p;
-    jurosLista.push(j);
+    juros.push(j);
   });
 
-  jurosLista.sort((a,b)=>b-a);
+  juros.sort((a,b)=>b-a);
   const comp = total / sal;
 
   let status = "🟢 Sob controle";
@@ -257,7 +158,7 @@ function analisar(){
     <p><strong>Parcelas mensais:</strong> R$ ${total.toFixed(2)}</p>
     <p><strong>Comprometimento:</strong> ${(comp*100).toFixed(1)}%</p>
     <p><strong>Status:</strong> ${status}</p>
-    <p><strong>Prioridade:</strong> dívida com maior juros (${jurosLista[0] || 0}% a.a)</p>
+    <p><strong>Prioridade:</strong> maior juros (${juros[0] || 0}% a.a)</p>
   `;
 }
 </script>
