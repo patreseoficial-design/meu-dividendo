@@ -4,14 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Organizador de dividas| Meu Dividendo</title>
+<title>Organizador de Dívidas | Meu Dividendo</title>
 <meta name="description" content="Organize suas dívidas e descubra quais pagar primeiro com base na renda.">
 
 <style>
-body{font-family:Arial;background:#f2f2f2;margin:0}
-header{background:#000;color:#fff;padding:15px;text-align:center}
+body{
+  font-family:Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+}
 
-.calc-box,.info-box{
+/* ===== HEADER ===== */
+header{
+  background:#000;
+  color:#fff;
+  padding:15px;
+  text-align:center;
+}
+
+.site-title{
+  margin:0;
+  font-size:22px;
+}
+
+.site-title a{
+  color:#fff;
+  text-decoration:none;
+}
+
+/* ===== BOXES ===== */
+.calc-box,
+.info-box{
   max-width:720px;
   margin:30px auto;
   background:#fff;
@@ -20,9 +43,17 @@ header{background:#000;color:#fff;padding:15px;text-align:center}
   border:1px solid #ddd;
 }
 
-strong{display:block;margin:18px 0 8px}
+/* ===== TEXTOS ===== */
+h2{
+  margin:18px 0 8px;
+  font-size:18px;
+}
 
-label{display:block;font-size:14px;margin-bottom:5px}
+label{
+  display:block;
+  font-size:14px;
+  margin-bottom:5px;
+}
 
 input{
   width:100%;
@@ -32,6 +63,7 @@ input{
   margin-bottom:12px;
 }
 
+/* ===== BOTÕES ===== */
 button{
   width:100%;
   padding:14px;
@@ -43,6 +75,7 @@ button{
   margin-top:8px;
 }
 
+/* ===== DÍVIDAS ===== */
 .divida-card{
   background:#f7f7f7;
   padding:15px;
@@ -50,6 +83,7 @@ button{
   margin-bottom:12px;
 }
 
+/* ===== RESULTADO ===== */
 .result{
   margin-top:20px;
   padding:15px;
@@ -57,11 +91,13 @@ button{
   border:1px solid #ccc;
 }
 
+/* ===== FOOTER ===== */
 footer{
   background:#000;
   color:#fff;
   text-align:center;
   padding:20px;
+  margin-top:40px;
 }
 </style>
 </head>
@@ -69,82 +105,97 @@ footer{
 <body>
 
 <header>
- <h1 class="site-title">
+  <h1 class="site-title">
     <a href="index.html">Meu Dividendo</a>
   </h1>
+</header>
 
 <div class="calc-box">
 
-<label>Salário mensal (R$)</label>
-<input id="salario" type="number">
+  <label>Salário mensal (R$)</label>
+  <input id="salario" type="number" placeholder="Ex: 3000">
 
-<p><strong>Dívidas</strong></p>
-<div id="listaDividas"></div>
+  <h2>Dívidas</h2>
+  <div id="listaDividas"></div>
 
-<button onclick="adicionarDivida()">Adicionar dívida</button>
-<button onclick="analisar()">Analisar situação</button>
+  <button onclick="adicionarDivida()">Adicionar dívida</button>
+  <button onclick="analisar()">Analisar situação</button>
 
-<div id="resultado" class="result"></div>
+  <div id="resultado" class="result"></div>
 
 </div>
 
 <div class="info-box">
-<p><strong>O que é?</strong></p>
-<p>Ferramenta para organizar dívidas e visualizar o impacto no orçamento.</p>
+  <h2>O que é?</h2>
+  <p>Ferramenta para organizar dívidas e visualizar o impacto no orçamento.</p>
 
-<p><strong>Para que serve?</strong></p>
-<p>Ajuda a decidir por onde começar a quitação.</p>
+  <h2>Para que serve?</h2>
+  <p>Ajuda a decidir por onde começar a quitação.</p>
 
-<p><strong>FAQ</strong></p>
-<p><strong>Funciona para qualquer dívida?</strong> Sim.</p>
+  <h2>FAQ</h2>
+  <p><strong>Funciona para qualquer dívida?</strong> Sim.</p>
 </div>
 
-<footer>© 2026 Meu Dividendo</footer>
+<footer>
+  © 2026 Meu Dividendo
+</footer>
 
 <script>
-let id=0;
+let id = 0;
+const listaDividas = document.getElementById("listaDividas");
 
 function adicionarDivida(){
-id++;
-const d=document.createElement("div");
-d.className="divida-card";
-d.innerHTML=`
-<strong>Dívida ${id}</strong>
-<label>Descrição</label><input>
-<label>Valor total (R$)</label><input class="valor" type="number">
-<label>Parcela mensal (R$)</label><input class="parcela" type="number">
-<label>Juros (% a.a)</label><input class="juros" type="number">
-`;
-listaDividas.appendChild(d);
+  id++;
+  const d = document.createElement("div");
+  d.className = "divida-card";
+  d.innerHTML = `
+    <strong>Dívida ${id}</strong>
+
+    <label>Descrição</label>
+    <input type="text" placeholder="Ex: Cartão de crédito">
+
+    <label>Valor total (R$)</label>
+    <input class="valor" type="number">
+
+    <label>Parcela mensal (R$)</label>
+    <input class="parcela" type="number">
+
+    <label>Juros (% a.a)</label>
+    <input class="juros" type="number">
+  `;
+  listaDividas.appendChild(d);
 }
 
 function analisar(){
-const sal=+salario.value||0;
-if(!sal){alert("Informe o salário.");return;}
+  const sal = Number(salario.value);
+  if(!sal){
+    alert("Informe o salário.");
+    return;
+  }
 
-let total=0;
-let divs=[];
+  let total = 0;
+  let jurosLista = [];
 
-document.querySelectorAll(".divida-card").forEach(d=>{
-const p=+d.querySelector(".parcela").value||0;
-const j=+d.querySelector(".juros").value||0;
-total+=p;
-divs.push({j});
-});
+  document.querySelectorAll(".divida-card").forEach(d=>{
+    const p = Number(d.querySelector(".parcela").value) || 0;
+    const j = Number(d.querySelector(".juros").value) || 0;
+    total += p;
+    jurosLista.push(j);
+  });
 
-divs.sort((a,b)=>b.j-a.j);
-const comp=total/sal;
+  jurosLista.sort((a,b)=>b-a);
+  const comp = total / sal;
 
-let status="🟢 Sob controle";
-if(comp>0.5)status="🔴 Situação crítica";
-else if(comp>0.3)status="🟡 Atenção";
+  let status = "🟢 Sob controle";
+  if(comp > 0.5) status = "🔴 Situação crítica";
+  else if(comp > 0.3) status = "🟡 Atenção";
 
-resultado.innerHTML=`
-<p><strong>Parcelas mensais:</strong> R$ ${total.toFixed(2)}</p>
-<p><strong>Comprometimento:</strong> ${(comp*100).toFixed(1)}%</p>
-<p><strong>Status:</strong> ${status}</p>
-<p><strong>Prioridade:</strong> dívida com maior juros (${divs[0]?.j||0}% a.a)</p>
-`;
+  resultado.innerHTML = `
+    <p><strong>Parcelas mensais:</strong> R$ ${total.toFixed(2)}</p>
+    <p><strong>Comprometimento:</strong> ${(comp*100).toFixed(1)}%</p>
+    <p><strong>Status:</strong> ${status}</p>
+    <p><strong>Prioridade:</strong> dívida com maior juros (${jurosLista[0] || 0}% a.a)</p>
+  `;
 }
 </script>
 
