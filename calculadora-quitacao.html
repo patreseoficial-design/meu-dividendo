@@ -7,13 +7,12 @@
 <title>Calculadora de Quitação Patrimonial | Meu Dividendo</title>
 <meta name="description" content="Descubra se vale a pena quitar dívidas ou continuar pagando parcelas. Veja patrimônio líquido e impacto na renda.">
 
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/calculadora.css">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body{font-family:Arial;background:#f2f2f2;margin:0}
-header{background:#000;color:#fff;padding:15px;text-align:center}
-.site-title a{color:#fff;text-decoration:none;font-weight:bold}
-
 .calc-box,.info-box{
   max-width:720px;
   margin:30px auto;
@@ -25,7 +24,7 @@ header{background:#000;color:#fff;padding:15px;text-align:center}
 
 strong{display:block;margin:18px 0 8px;font-size:17px}
 
-label{display:block;margin-bottom:5px;color:#333;font-size:14px}
+label{display:block;margin-bottom:5px;font-size:14px}
 
 input{
   width:100%;
@@ -47,8 +46,6 @@ button{
   cursor:pointer;
 }
 
-button:hover{opacity:0.9}
-
 .result{
   margin-top:20px;
   padding:15px;
@@ -56,23 +53,34 @@ button:hover{opacity:0.9}
   border:1px solid #ccc;
 }
 
-canvas{max-width:600px;margin:30px auto;display:block}
-
-footer{
-  background:#000;
-  color:#fff;
-  text-align:center;
-  padding:20px;
+canvas{
+  max-width:600px;
+  margin:30px auto;
+  display:block;
 }
 </style>
 </head>
 
 <body>
 
+<!-- ===== HEADER PADRÃO (IGUAL AO 13º) ===== -->
 <header>
-  <p class="site-title"><a href="#">Meu Dividendo</a></p>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
+  <h1 class="site-title">
+    <a href="index.html">Meu Dividendo</a>
+  </h1>
+
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+      <li><a href="curso-investimento.html">Curso de Investimento</a></li>
+    </ul>
+  </nav>
 </header>
 
+<!-- ===== CONTEÚDO ===== -->
 <div class="calc-box">
 
 <p><strong>Calculadora de Quitação Patrimonial</strong></p>
@@ -128,44 +136,62 @@ ou se manter as parcelas é mais equilibrado para seu orçamento.
 </div>
 
 <footer>
-© 2026 Meu Dividendo
+  <p>© 2026 Meu Dividendo</p>
 </footer>
 
+<!-- ===== JS MENU (IGUAL AO 13º) ===== -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+<!-- ===== JS CALCULADORA ===== -->
 <script>
 let chart;
+
 function calcular(){
-const vi=+valorImovel.value||0;
-const di=+dividaImovel.value||0;
-const vv=+valorVeiculo.value||0;
-const dv=+dividaVeiculo.value||0;
-const sal=+salario.value||0;
-const par=+parcelas.value||0;
-const j=(+juros.value||0)/100;
+  const vi = +valorImovel.value || 0;
+  const di = +dividaImovel.value || 0;
+  const vv = +valorVeiculo.value || 0;
+  const dv = +dividaVeiculo.value || 0;
+  const sal = +salario.value || 0;
+  const par = +parcelas.value || 0;
+  const j = (+juros.value || 0) / 100;
 
-if(!sal){alert("Informe o salário.");return;}
+  if(!sal){
+    alert("Informe o salário.");
+    return;
+  }
 
-const patrimonio=(vi+vv)-(di+dv);
-const comp=par/sal;
+  const patrimonio = (vi + vv) - (di + dv);
+  const comp = par / sal;
 
-let status="🟢 Situação saudável";
-if(comp>0.5)status="🔴 Endividamento alto";
-else if(comp>0.3)status="🟡 Atenção";
+  let status = "🟢 Situação saudável";
+  if(comp > 0.5) status = "🔴 Endividamento alto";
+  else if(comp > 0.3) status = "🟡 Atenção";
 
-resultado.innerHTML=`
-<p><strong>Patrimônio líquido:</strong> R$ ${patrimonio.toFixed(2)}</p>
-<p><strong>Comprometimento da renda:</strong> ${(comp*100).toFixed(1)}%</p>
-<p><strong>Status:</strong> ${status}</p>
-`;
+  resultado.innerHTML = `
+    <p><strong>Patrimônio líquido:</strong> R$ ${patrimonio.toFixed(2)}</p>
+    <p><strong>Comprometimento da renda:</strong> ${(comp*100).toFixed(1)}%</p>
+    <p><strong>Status:</strong> ${status}</p>
+  `;
 
-const meses=[12,24,36,48,60];
-const eco=meses.map(m=>par*m*j);
-if(chart)chart.destroy();
-chart=new Chart(grafico,{
-type:"bar",
-data:{
-labels:meses.map(m=>m+" meses"),
-datasets:[{label:"Economia estimada de juros (R$)",data:eco}]
-}});
+  const meses = [12,24,36,48,60];
+  const eco = meses.map(m => par * m * j);
+
+  if(chart) chart.destroy();
+  chart = new Chart(grafico, {
+    type: "bar",
+    data: {
+      labels: meses.map(m => m + " meses"),
+      datasets: [{
+        label: "Economia estimada de juros (R$)",
+        data: eco
+      }]
+    }
+  });
 }
 </script>
 
