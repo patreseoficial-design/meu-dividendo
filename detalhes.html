@@ -35,10 +35,13 @@
 <!-- CARDS -->
 <div id="cards"></div>
 
+
+
+
 <!-- TRADINGVIEW FINANCIALS WIDGET -->
-<div class="section">
+<div class="section" style="text-align: center;">
   <h3>Análise Fundamental</h3>
-  <div class="tradingview-widget-container" id="financials-widget-container">
+  <div class="tradingview-widget-container" id="financials-widget-container" style="display: inline-block; margin: 0 auto;">
     <div class="tradingview-widget-container__widget"></div>
     <div class="tradingview-widget-copyright">
       <a href="#" id="financials-link" target="_blank" rel="noopener nofollow">
@@ -75,9 +78,14 @@
   const link = document.getElementById("financials-link");
   link.href = `https://br.tradingview.com/symbols/${prefixo}/financials-overview/`;
 </script>
+
+
+
+
+
 <!-- MINI CHART TRADINGVIEW -->
 <div class="section">
-  <h3>Mini Gráfico</h3>
+  <h3> Gráfico</h3>
   <div id="tv-mini-widget-container">
     <tv-mini-chart
       id="tv-mini-chart"
@@ -101,38 +109,16 @@
   }
 </script>
 
+
+
 <!-- WIDGET -->
 <div class="section">
   <h3>Gráfico em Tempo Real</h3>
   <div id="tv-widget" style="height:420px;"></div>
 </div>
 
-<!-- GRÁFICO HISTÓRICO -->
-<div class="section">
-  <h3>Histórico de Preços</h3>
-  <canvas id="precoChart"></canvas>
-</div>
 
-<!-- DIVIDENDOS -->
-<div class="section">
-  <h3>Dividendos</h3>
-  <table id="dividendosTable">
-    <thead>
-      <tr>
-        <th>Data Base</th>
-        <th>Data Pagamento</th>
-        <th>Valor</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
 
-<!-- INDICADORES -->
-<div class="section">
-  <h3>Indicadores Financeiros</h3>
-  <div id="indicadores" style="display:flex;flex-wrap:wrap;gap:12px;"></div>
-</div>
 
 <script>
 // =================== UTIL ===================
