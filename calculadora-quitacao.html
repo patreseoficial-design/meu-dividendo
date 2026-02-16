@@ -72,7 +72,45 @@ e receba uma recomendação clara do melhor caminho financeiro.
 
 <button onclick="calcular()">Analisar Situação</button>
 
-  
+  <script>
+function calcular() {
+  const valorImovel = Number(valorImovelInput.value || 0);
+  const dividaImovel = Number(dividaImovelInput.value || 0);
+  const valorVeiculo = Number(valorVeiculoInput.value || 0);
+  const dividaVeiculo = Number(dividaVeiculoInput.value || 0);
+  const salario = Number(salarioInput.value || 0);
+  const juros = Number(jurosInput.value || 0) / 100;
+  const parcelas = Number(parcelasInput.value || 0);
+
+  const bens = valorImovel + valorVeiculo;
+  const dividas = dividaImovel + dividaVeiculo;
+  const patrimonioLiquido = bens - dividas;
+
+  const comprometimento = parcelas / salario;
+
+  let semaforo = '';
+  let status = '';
+
+  if (comprometimento > 0.5) {
+    semaforo = '🔴';
+    status = 'Endividamento alto. Quitações estratégicas são urgentes.';
+  } else if (comprometimento > 0.3) {
+    semaforo = '🟡';
+    status = 'Endividamento controlável, mas com risco.';
+  } else {
+    semaforo = '🟢';
+    status = 'Situação financeira saudável.';
+  }
+
+  document.getElementById('resultado').innerHTML = `
+    <h3>${semaforo} Diagnóstico Financeiro</h3>
+    <p><strong>Patrimônio líquido:</strong> R$ ${patrimonioLiquido.toFixed(2)}</p>
+    <p><strong>Status:</strong> ${status}</p>
+  `;
+
+  gerarGraficoEconomia(parcelas, juros);
+}
+</script>
 
   <!-- RESULTADO -->
   <div id="resultadoQuitacao" class="result" style="display:none">
@@ -82,4 +120,29 @@ e receba uma recomendação clara do melhor caminho financeiro.
   </div>
 
 </div>
+
+
+
+<canvas id="grafico"></canvas>
+
+<script>
+function gerarGraficoEconomia(parcelas, juros) {
+  const meses = [0, 12, 24, 36, 48, 60];
+  const economia = meses.map(m => parcelas * m * juros);
+
+  new Chart(document.getElementById('grafico'), {
+    type: 'bar',
+    data: {
+      labels: meses.map(m => m + ' meses'),
+      datasets: [{
+        label: 'Economia acumulada de juros (R$)',
+        data: economia
+      }]
+    }
+  });
+}
+</script>
+
+
+
 
