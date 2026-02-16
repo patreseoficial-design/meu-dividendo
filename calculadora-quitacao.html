@@ -4,11 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de quitação de bens/title>
+  <title>Calculadora de Quitação Patrimonial</title>
+
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/calculadora.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -22,10 +23,8 @@
   <nav id="menuLinks" class="menu-links">
     <ul>
       <li><a href="index.html">Início</a></li>
-                        <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
       <li><a href="curso-investimento.html">Curso de Investimento</a></li>
-
-
     </ul>
   </nav>
 </header>
@@ -38,58 +37,84 @@ Veja seu patrimônio líquido real, a economia de juros ao longo do tempo
 e receba uma recomendação clara do melhor caminho financeiro.
 </p>
 
-<!-- CALCULADORA DE QUITAÇÃO DE BENS -->
+<!-- CALCULADORA -->
 <div class="calc-box">
   <h2>Calculadora de Quitação de Bens</h2>
-  <div class="inputs">
 
-    <h2>Seus Bens</h2>
+  <h3>Seus Bens</h3>
+  <label>Valor do Imóvel (R$)</label>
+  <input type="number" id="valorImovel">
 
-<label>Valor do Imóvel (R$)</label>
-<input type="number" id="valorImovel">
+  <label>Saldo Devedor do Imóvel (R$)</label>
+  <input type="number" id="dividaImovel">
 
-<label>Saldo Devedor do Imóvel (R$)</label>
-<input type="number" id="dividaImovel">
+  <label>Valor do Veículo (R$)</label>
+  <input type="number" id="valorVeiculo">
 
-<label>Valor do Veículo (R$)</label>
-<input type="number" id="valorVeiculo">
+  <label>Saldo Devedor do Veículo (R$)</label>
+  <input type="number" id="dividaVeiculo">
 
-<label>Saldo Devedor do Veículo (R$)</label>
-<input type="number" id="dividaVeiculo">
+  <h3>Sua Renda</h3>
+  <label>Salário Mensal (R$)</label>
+  <input type="number" id="salario">
 
-<h2>Sua Renda</h2>
+  <h3>Dívidas</h3>
+  <label>Taxa Média de Juros (% ao ano)</label>
+  <input type="number" id="juros">
 
-<label>Salário Mensal (R$)</label>
-<input type="number" id="salario">
+  <label>Parcelas Mensais Totais (R$)</label>
+  <input type="number" id="parcelas">
 
-<h2>Dívidas</h2>
+  <button onclick="calcular()">Analisar Situação</button>
 
-<label>Taxa Média de Juros (% ao ano)</label>
-<input type="number" id="juros">
+  <!-- RESULTADO -->
+  <div id="resultado" class="result"></div>
+</div>
 
-<label>Parcelas Mensais Totais (R$)</label>
-<input type="number" id="parcelas">
+<canvas id="grafico" style="max-width:600px;margin:30px auto;"></canvas>
 
-<button onclick="calcular()">Analisar Situação</button>
+<footer>
+  <p>© 2026 Meu Dividendo</p>
+  <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
+  <p>
+    <a href="politica-de-privacidade.html" style="color:#fff; text-decoration:underline;">
+      Política de Privacidade
+    </a>
+  </p>
+</footer>
 
-  <script>
+<!-- MENU -->
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+<!-- CALCULADORA -->
+<script>
+let chart; // evita criar vários gráficos
+
 function calcular() {
-  const valorImovel = Number(valorImovelInput.value || 0);
-  const dividaImovel = Number(dividaImovelInput.value || 0);
-  const valorVeiculo = Number(valorVeiculoInput.value || 0);
-  const dividaVeiculo = Number(dividaVeiculoInput.value || 0);
-  const salario = Number(salarioInput.value || 0);
-  const juros = Number(jurosInput.value || 0) / 100;
-  const parcelas = Number(parcelasInput.value || 0);
+  const valorImovel = Number(document.getElementById('valorImovel').value) || 0;
+  const dividaImovel = Number(document.getElementById('dividaImovel').value) || 0;
+  const valorVeiculo = Number(document.getElementById('valorVeiculo').value) || 0;
+  const dividaVeiculo = Number(document.getElementById('dividaVeiculo').value) || 0;
+  const salario = Number(document.getElementById('salario').value) || 0;
+  const juros = Number(document.getElementById('juros').value) / 100 || 0;
+  const parcelas = Number(document.getElementById('parcelas').value) || 0;
+
+  if (salario === 0) {
+    alert('Informe o salário mensal.');
+    return;
+  }
 
   const bens = valorImovel + valorVeiculo;
   const dividas = dividaImovel + dividaVeiculo;
   const patrimonioLiquido = bens - dividas;
-
   const comprometimento = parcelas / salario;
 
-  let semaforo = '';
-  let status = '';
+  let semaforo, status;
 
   if (comprometimento > 0.5) {
     semaforo = '🔴';
@@ -105,37 +130,25 @@ function calcular() {
   document.getElementById('resultado').innerHTML = `
     <h3>${semaforo} Diagnóstico Financeiro</h3>
     <p><strong>Patrimônio líquido:</strong> R$ ${patrimonioLiquido.toFixed(2)}</p>
+    <p><strong>Comprometimento da renda:</strong> ${(comprometimento * 100).toFixed(1)}%</p>
     <p><strong>Status:</strong> ${status}</p>
   `;
 
   gerarGraficoEconomia(parcelas, juros);
 }
-</script>
 
-  <!-- RESULTADO -->
-  <div id="resultadoQuitacao" class="result" style="display:none">
-    <h3>Resumo da Quitação</h3>
-    <p id="resTotalQuitacao"></p>
-    <p id="resParcelasQuitacao"></p>
-  </div>
-
-</div>
-
-
-
-<canvas id="grafico"></canvas>
-
-<script>
 function gerarGraficoEconomia(parcelas, juros) {
-  const meses = [0, 12, 24, 36, 48, 60];
+  const meses = [12, 24, 36, 48, 60];
   const economia = meses.map(m => parcelas * m * juros);
 
-  new Chart(document.getElementById('grafico'), {
+  if (chart) chart.destroy();
+
+  chart = new Chart(document.getElementById('grafico'), {
     type: 'bar',
     data: {
       labels: meses.map(m => m + ' meses'),
       datasets: [{
-        label: 'Economia acumulada de juros (R$)',
+        label: 'Economia estimada de juros (R$)',
         data: economia
       }]
     }
@@ -143,21 +156,5 @@ function gerarGraficoEconomia(parcelas, juros) {
 }
 </script>
 
-<footer>
-  <p>© 2026 Meu Dividendo</p>
-  <p>Conteúdo educativo. Resultados são estimativas e não recomendação financeira.</p>
-  <p><a href="politica-de-privacidade.html" style="color:#fff; text-decoration:underline;">Política de Privacidade</a></p>
-</footer>
-
- <script>
-function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
-</script>
-
-<script src="js/calculadora-13salario"></script>
 </body>
 </html>
-
-
