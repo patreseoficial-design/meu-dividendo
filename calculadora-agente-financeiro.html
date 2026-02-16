@@ -19,17 +19,56 @@ header{
   background:#000;
   color:#fff;
   padding:15px;
-  text-align:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+/* Menu */
+.menu{
+  font-size:26px;
+  cursor:pointer;
+  position:absolute;
+  left:15px;
+  top:15px;
 }
 
 .site-title{
   margin:0;
+  text-align:center;
   font-size:22px;
 }
 
 .site-title a{
   color:#fff;
   text-decoration:none;
+}
+
+/* Links */
+.menu-links{
+  display:none;
+  margin-top:15px;
+}
+
+.menu-links ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  text-align:center;
+}
+
+.menu-links li{
+  margin:10px 0;
+}
+
+.menu-links a{
+  color:#fff;
+  text-decoration:none;
+  font-size:16px;
+}
+
+.menu-links.show{
+  display:block;
 }
 
 /* ===== BOXES ===== */
@@ -105,9 +144,19 @@ footer{
 <body>
 
 <header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+
   <h1 class="site-title">
     <a href="index.html">Meu Dividendo</a>
   </h1>
+
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+      <li><a href="curso-investimento.html">Curso de Investimento</a></li>
+    </ul>
+  </nav>
 </header>
 
 <div class="calc-box">
@@ -141,6 +190,13 @@ footer{
 </footer>
 
 <script>
+/* ===== MENU HAMBÚRGUER ===== */
+function toggleMenu(){
+  const menu = document.getElementById("menuLinks");
+  menu.classList.toggle("show");
+}
+
+/* ===== CALCULADORA ===== */
 let id = 0;
 const listaDividas = document.getElementById("listaDividas");
 
