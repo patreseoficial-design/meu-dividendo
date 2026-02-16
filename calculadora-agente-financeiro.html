@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agente Financeiro Pessoal</title>
+
+  <title>Organizador de Dívidas | Meu Dividendo</title>
+
+  <meta name="description" content="Organize suas dívidas, entenda o impacto no orçamento e veja qual dívida atacar primeiro.">
+  <meta name="keywords" content="organizador de dívidas, controle financeiro, endividamento, parcelas, planejamento financeiro">
 
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/calculadora.css">
@@ -12,160 +16,88 @@
 
 <header>
   <div class="menu" onclick="toggleMenu()">☰</div>
-
-  <h1 class="site-title">
-    <a href="index.html">Meu Dividendo</a>
-  </h1>
-
-  <nav id="menuLinks" class="menu-links">
-    <ul>
-      <li><a href="index.html">Início</a></li>
-      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
-    </ul>
-  </nav>
+  <p class="site-title"><a href="index.html">Meu Dividendo</a></p>
 </header>
-
-<h1>Agente Financeiro Pessoal</h1>
-
-<p>
-Informe suas dívidas, salário e gastos mensais.
-Esta ferramenta analisa sua situação e indica o melhor caminho
-para sair das dívidas com mais segurança.
-</p>
 
 <div class="calc-box">
 
-  <h3>Renda Mensal</h3>
-  <label>Salário (R$)</label>
+  <p><strong>Organizador de Dívidas</strong></p>
+
+  <p>
+    Visualize todas as suas dívidas em um só lugar,
+    descubra quanto da sua renda está comprometida
+    e saiba por onde começar para sair do vermelho.
+  </p>
+
+  <label>Salário mensal (R$)</label>
   <input type="number" id="salario">
 
-  <h3>Gastos Fixos</h3>
-  <label>Assinaturas (streaming, apps)</label>
-  <input type="number" id="assinaturas">
+  <label>Total de parcelas mensais (R$)</label>
+  <input type="number" id="parcelas">
 
-  <label>Alimentação</label>
-  <input type="number" id="alimentacao">
+  <label>Total das dívidas (R$)</label>
+  <input type="number" id="totalDividas">
 
-  <label>Outros gastos fixos</label>
-  <input type="number" id="fixos">
-
-  <h3>Dívidas</h3>
-  <div id="listaDividas"></div>
-
-  <button onclick="addDivida()">➕ Adicionar Dívida</button>
-  <button onclick="analisar()">Analisar Situação</button>
+  <button onclick="analisar()">Organizar dívidas</button>
 
   <div id="resultado" class="result"></div>
 
 </div>
 
+<div class="info-box">
+  <p><strong>O que é o Organizador de Dívidas?</strong></p>
+  <p>
+    É uma ferramenta simples que ajuda a entender
+    se suas dívidas estão sob controle ou se já representam risco financeiro.
+  </p>
+
+  <p><strong>Para que serve?</strong></p>
+  <p>
+    Serve para mostrar de forma clara o impacto das parcelas na sua renda
+    e ajudar a definir prioridades de pagamento.
+  </p>
+
+  <p><strong>Exemplo</strong></p>
+  <p>
+    Se mais de 50% da sua renda está comprometida com dívidas,
+    o organizador indica situação crítica.
+  </p>
+
+  <p><strong>Perguntas frequentes</strong></p>
+  <p><strong>Funciona para qualquer tipo de dívida?</strong></p>
+  <p>Sim. Cartão, empréstimo, financiamento ou crediário.</p>
+</div>
+
 <footer>
   <p>© 2026 Meu Dividendo</p>
-  <p>Conteúdo educativo. Resultados são estimativas.</p>
 </footer>
 
-<!-- MENU -->
 <script>
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
-</script>
-
-<!-- AGENTE FINANCEIRO -->
-<script>
-let contador = 0;
-
-function addDivida() {
-  contador++;
-
-  const div = document.createElement('div');
-  div.className = 'divida-box';
-  div.innerHTML = `
-    <h4>Dívida ${contador}</h4>
-    <input placeholder="Nome da dívida">
-    <input type="number" placeholder="Valor total (R$)">
-    <input type="number" placeholder="Juros (% ao mês)">
-    <input type="number" placeholder="Parcela mensal (R$)">
-  `;
-  document.getElementById('listaDividas').appendChild(div);
+  if (menu) menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 
 function analisar() {
   const salario = Number(document.getElementById('salario').value) || 0;
-  const assinaturas = Number(document.getElementById('assinaturas').value) || 0;
-  const alimentacao = Number(document.getElementById('alimentacao').value) || 0;
-  const fixos = Number(document.getElementById('fixos').value) || 0;
+  const parcelas = Number(document.getElementById('parcelas').value) || 0;
+  const total = Number(document.getElementById('totalDividas').value) || 0;
 
   if (salario === 0) {
     alert('Informe o salário.');
     return;
   }
 
-  const gastosFixos = assinaturas + alimentacao + fixos;
-  const sobra = salario - gastosFixos;
+  const comprometimento = parcelas / salario;
+  let status = '🟢 Dívidas sob controle';
 
-  const dividasDOM = document.querySelectorAll('.divida-box');
-  let dividas = [];
-
-  dividasDOM.forEach(d => {
-    const inputs = d.querySelectorAll('input');
-    dividas.push({
-      nome: inputs[0].value || 'Dívida',
-      valor: Number(inputs[1].value) || 0,
-      juros: Number(inputs[2].value) || 0,
-      parcela: Number(inputs[3].value) || 0
-    });
-  });
-
-  // Ranking: juros + impacto no caixa
-  dividas.sort((a, b) => {
-    return (b.juros * b.parcela) - (a.juros * a.parcela);
-  });
-
-  const comprometimento = gastosFixos / salario;
-
-  let semaforo, status;
-  if (comprometimento > 0.7) {
-    semaforo = '🔴';
-    status = 'Situação crítica. Cortes imediatos são necessários.';
-  } else if (comprometimento > 0.5) {
-    semaforo = '🟡';
-    status = 'Situação apertada. Atenção aos gastos.';
-  } else {
-    semaforo = '🟢';
-    status = 'Situação controlada.';
-  }
-
-  let recomendacoes = [];
-
-  if (assinaturas > salario * 0.1) {
-    recomendacoes.push('Corte assinaturas pouco utilizadas.');
-  }
-
-  if (alimentacao > salario * 0.3) {
-    recomendacoes.push('Reduza gastos com mercado: marcas alternativas e compras fora do pico.');
-  }
-
-  if (dividas.length > 0) {
-    recomendacoes.push(`Priorize quitar primeiro: <strong>${dividas[0].nome}</strong> (juros mais impactantes).`);
-  }
+  if (comprometimento > 0.5) status = '🔴 Situação crítica';
+  else if (comprometimento > 0.3) status = '🟡 Atenção ao endividamento';
 
   document.getElementById('resultado').innerHTML = `
-    <h3>${semaforo} Diagnóstico Financeiro</h3>
-
-    <p><strong>Sobra mensal:</strong> R$ ${sobra.toFixed(2)}</p>
+    <p><strong>Total das dívidas:</strong> R$ ${total.toFixed(2)}</p>
+    <p><strong>Comprometimento da renda:</strong> ${(comprometimento*100).toFixed(1)}%</p>
     <p><strong>Status:</strong> ${status}</p>
-
-    <h4>Ordem recomendada para quitar dívidas:</h4>
-    <ol>
-      ${dividas.map(d => `<li>${d.nome} – Juros: ${d.juros}%</li>`).join('')}
-    </ol>
-
-    <h4>Plano de ação:</h4>
-    <ul>
-      ${recomendacoes.map(r => `<li>${r}</li>`).join('')}
-    </ul>
   `;
 }
 </script>
