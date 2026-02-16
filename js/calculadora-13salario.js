@@ -1,9 +1,4 @@
-// ================= MENU HAMBÚRGUER =================
-function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  if (!menu) return;
-  menu.classList.toggle('show');
-}
+
 
 // ================= FORMATAÇÃO BR =================
 function formatBR(valor) {
