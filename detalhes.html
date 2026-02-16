@@ -35,37 +35,45 @@
 <!-- CARDS -->
 <div id="cards"></div>
 
-<!-- FUNDAMENTAL ANALYSIS WIDGET -->
+<!-- TRADINGVIEW FINANCIALS WIDGET -->
 <div class="section">
   <h3>Análise Fundamental</h3>
-  <div id="tv-fundamental-widget" style="height:550px;"></div>
+  <div class="tradingview-widget-container" id="financials-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <div class="tradingview-widget-copyright">
+      <a href="#" id="financials-link" target="_blank" rel="noopener nofollow">
+        <span class="blue-text">Track all markets on TradingView</span>
+      </a>
+    </div>
+  </div>
 </div>
 
 <script>
-function carregarFundamentalWidget(symbol) {
-  const el = document.getElementById("tv-fundamental-widget");
-  el.innerHTML = ""; // limpa caso já tenha algo
+  // Símbolo do ativo a partir da URL
+  const params = new URLSearchParams(window.location.search);
+  const ativo = params.get("ativo") || "VALE3F"; // valor padrão se não passar nada
+  const prefixo = ativo.includes(":") ? ativo : "BMFBOVESPA:" + ativo;
 
+  // Cria o widget dinamicamente
   const script = document.createElement("script");
   script.type = "text/javascript";
   script.src = "https://s3.tradingview.com/external-embedding/embed-widget-financials.js";
   script.async = true;
-
   script.innerHTML = JSON.stringify({
-    symbol: symbol.includes(":") ? symbol : "BVMF:" + symbol, // ajusta se não tiver mercado
+    symbol: prefixo,
     colorTheme: "light",
     displayMode: "regular",
     isTransparent: false,
     locale: "br",
-    width: "100%",
+    width: 400,
     height: 550
   });
 
-  el.appendChild(script);
-}
+  document.getElementById("financials-widget-container").appendChild(script);
 
-// Chama a função com o ativo da URL
-carregarFundamentalWidget(ativo);
+  // Atualiza o link de copyright dinamicamente
+  const link = document.getElementById("financials-link");
+  link.href = `https://br.tradingview.com/symbols/${prefixo}/financials-overview/`;
 </script>
 <!-- MINI CHART TRADINGVIEW -->
 <div class="section">
