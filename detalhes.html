@@ -67,7 +67,31 @@ function carregarFundamentalWidget(symbol) {
 // Chama a função com o ativo da URL
 carregarFundamentalWidget(ativo);
 </script>
+<!-- MINI CHART TRADINGVIEW -->
+<div class="section">
+  <h3>Mini Gráfico</h3>
+  <div id="tv-mini-widget-container">
+    <tv-mini-chart
+      id="tv-mini-chart"
+      show-time-range
+      time-frame="60M"
+      show-time-scale
+      transparent
+    ></tv-mini-chart>
+  </div>
+</div>
 
+<script type="module" src="https://widgets.tradingview-widget.com/w/br/tv-mini-chart.js"></script>
+
+<script>
+  // Atualiza o símbolo do mini-chart dinamicamente
+  const miniChart = document.getElementById("tv-mini-chart");
+
+  if (ativo) {
+    // Se o ativo não tiver prefixo, adiciona BVMF: por padrão
+    miniChart.symbol = ativo.includes(":") ? ativo : "BVMF:" + ativo;
+  }
+</script>
 
 <!-- WIDGET -->
 <div class="section">
