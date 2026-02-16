@@ -1,104 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Organizador de Dívidas | Meu Dividendo</title>
+<title>Organizador de Dívidas | Meu Dividendo</title>
+<meta name="description" content="Organize todas as suas dívidas, descubra quais pagar primeiro e veja o impacto no seu salário.">
 
-  <meta name="description" content="Organize suas dívidas, entenda o impacto no orçamento e veja qual dívida atacar primeiro.">
-  <meta name="keywords" content="organizador de dívidas, controle financeiro, endividamento, parcelas, planejamento financeiro">
-
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/calculadora.css">
+<style>
+body{font-family:Arial;background:#f2f2f2;margin:0}
+header{background:#0d1b2a;color:#fff;padding:15px}
+.calc-box{max-width:720px;margin:30px auto;background:#fff;padding:25px;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+strong{display:block;margin:20px 0 10px;font-size:18px}
+label{display:block;margin-bottom:6px}
+input{width:100%;padding:14px;border-radius:10px;border:1px solid #ddd;margin-bottom:14px}
+button{width:100%;padding:15px;border:none;border-radius:12px;background:linear-gradient(135deg,#2e7dff,#00c6ff);color:#fff;font-size:16px;font-weight:bold;margin-top:10px}
+.divida-card{background:#f8f9fb;padding:15px;border-radius:12px;margin-bottom:12px;border:1px solid #e0e0e0}
+.result{margin-top:20px;padding:18px;background:#f5f9ff;border-left:6px solid #2e7dff;border-radius:12px}
+footer{text-align:center;background:#0d1b2a;color:#fff;padding:20px}
+</style>
 </head>
+
 <body>
 
-<header>
-  <div class="menu" onclick="toggleMenu()">☰</div>
-  <p class="site-title"><a href="index.html">Meu Dividendo</a></p>
-</header>
+<header><strong>Organizador de Dívidas</strong></header>
 
 <div class="calc-box">
 
-  <p><strong>Organizador de Dívidas</strong></p>
+<label>Salário mensal (R$)</label>
+<input id="salario" type="number">
 
-  <p>
-    Visualize todas as suas dívidas em um só lugar,
-    descubra quanto da sua renda está comprometida
-    e saiba por onde começar para sair do vermelho.
-  </p>
+<strong>Dívidas</strong>
+<div id="listaDividas"></div>
 
-  <label>Salário mensal (R$)</label>
-  <input type="number" id="salario">
+<button onclick="adicionarDivida()">+ Adicionar dívida</button>
+<button onclick="analisar()">Analisar situação</button>
 
-  <label>Total de parcelas mensais (R$)</label>
-  <input type="number" id="parcelas">
-
-  <label>Total das dívidas (R$)</label>
-  <input type="number" id="totalDividas">
-
-  <button onclick="analisar()">Organizar dívidas</button>
-
-  <div id="resultado" class="result"></div>
+<div id="resultado" class="result"></div>
 
 </div>
 
-<div class="info-box">
-  <p><strong>O que é o Organizador de Dívidas?</strong></p>
-  <p>
-    É uma ferramenta simples que ajuda a entender
-    se suas dívidas estão sob controle ou se já representam risco financeiro.
-  </p>
-
-  <p><strong>Para que serve?</strong></p>
-  <p>
-    Serve para mostrar de forma clara o impacto das parcelas na sua renda
-    e ajudar a definir prioridades de pagamento.
-  </p>
-
-  <p><strong>Exemplo</strong></p>
-  <p>
-    Se mais de 50% da sua renda está comprometida com dívidas,
-    o organizador indica situação crítica.
-  </p>
-
-  <p><strong>Perguntas frequentes</strong></p>
-  <p><strong>Funciona para qualquer tipo de dívida?</strong></p>
-  <p>Sim. Cartão, empréstimo, financiamento ou crediário.</p>
-</div>
-
-<footer>
-  <p>© 2026 Meu Dividendo</p>
-</footer>
+<footer>© 2026 Meu Dividendo</footer>
 
 <script>
-function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  if (menu) menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+let id=0;
+function adicionarDivida(){
+id++;
+const d=document.createElement("div");
+d.className="divida-card";
+d.innerHTML=`
+<strong>Dívida ${id}</strong>
+<label>Tipo</label><input>
+<label>Valor total (R$)</label><input class="valor" type="number">
+<label>Parcela mensal (R$)</label><input class="parcela" type="number">
+<label>Juros (% a.a)</label><input class="juros" type="number">`;
+listaDividas.appendChild(d);
 }
 
-function analisar() {
-  const salario = Number(document.getElementById('salario').value) || 0;
-  const parcelas = Number(document.getElementById('parcelas').value) || 0;
-  const total = Number(document.getElementById('totalDividas').value) || 0;
-
-  if (salario === 0) {
-    alert('Informe o salário.');
-    return;
-  }
-
-  const comprometimento = parcelas / salario;
-  let status = '🟢 Dívidas sob controle';
-
-  if (comprometimento > 0.5) status = '🔴 Situação crítica';
-  else if (comprometimento > 0.3) status = '🟡 Atenção ao endividamento';
-
-  document.getElementById('resultado').innerHTML = `
-    <p><strong>Total das dívidas:</strong> R$ ${total.toFixed(2)}</p>
-    <p><strong>Comprometimento da renda:</strong> ${(comprometimento*100).toFixed(1)}%</p>
-    <p><strong>Status:</strong> ${status}</p>
-  `;
+function analisar(){
+const sal=+salario.value||0;
+if(!sal){alert("Informe o salário");return;}
+let totalParcelas=0,divs=[];
+document.querySelectorAll(".divida-card").forEach(d=>{
+const v=+d.querySelector(".valor").value||0;
+const p=+d.querySelector(".parcela").value||0;
+const j=+d.querySelector(".juros").value||0;
+totalParcelas+=p; divs.push({v,p,j});
+});
+divs.sort((a,b)=>b.j-a.j);
+const comp=totalParcelas/sal;
+let status="🟢 Sob controle";
+if(comp>0.5)status="🔴 Situação crítica";
+else if(comp>0.3)status="🟡 Atenção";
+resultado.innerHTML=`
+<p><strong>Parcelas totais:</strong> R$ ${totalParcelas.toFixed(2)}</p>
+<p><strong>Comprometimento:</strong> ${(comp*100).toFixed(1)}%</p>
+<p><strong>Status:</strong> ${status}</p>
+<p><strong>Prioridade:</strong> Dívida com maior juros (${divs[0]?.j||0}% a.a)</p>`;
 }
 </script>
 
