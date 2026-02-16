@@ -1,4 +1,10 @@
-<!-- CALCULADORA DE QUITAÇÃO DE BENS -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de quitação de bens/title>
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/calculadora.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -23,33 +29,50 @@
     </ul>
   </nav>
 </header>
+
+<p><strong>Calculadora de Quitação Patrimonial</strong></p>
+
+<p>
+Descubra se vale a pena quitar suas dívidas agora ou continuar pagando.
+Veja seu patrimônio líquido real, a economia de juros ao longo do tempo
+e receba uma recomendação clara do melhor caminho financeiro.
+</p>
+
+<!-- CALCULADORA DE QUITAÇÃO DE BENS -->
 <div class="calc-box">
   <h2>Calculadora de Quitação de Bens</h2>
   <div class="inputs">
 
-    <div class="input-group">
-      <label>Valor do Bem</label>
-      <input type="number" id="valorBem" value="30000">
-    </div>
+    <h2>Seus Bens</h2>
 
-    <div class="input-group">
-      <label>Valor da Parcela Mensal</label>
-      <input type="number" id="valorParcela" value="1000">
-    </div>
+<label>Valor do Imóvel (R$)</label>
+<input type="number" id="valorImovel">
 
-    <div class="input-group">
-      <label>Taxa de Juros (%)</label>
-      <input type="number" id="taxaBem" value="1">
-    </div>
+<label>Saldo Devedor do Imóvel (R$)</label>
+<input type="number" id="dividaImovel">
 
-    <div class="input-group">
-      <label>Período (Meses)</label>
-      <input type="number" id="periodoBem" value="36">
-    </div>
+<label>Valor do Veículo (R$)</label>
+<input type="number" id="valorVeiculo">
 
-  </div>
+<label>Saldo Devedor do Veículo (R$)</label>
+<input type="number" id="dividaVeiculo">
 
-  <button class="calc-btn" onclick="calcularQuitacao()">Calcular</button>
+<h2>Sua Renda</h2>
+
+<label>Salário Mensal (R$)</label>
+<input type="number" id="salario">
+
+<h2>Dívidas</h2>
+
+<label>Taxa Média de Juros (% ao ano)</label>
+<input type="number" id="juros">
+
+<label>Parcelas Mensais Totais (R$)</label>
+<input type="number" id="parcelas">
+
+<button onclick="calcular()">Analisar Situação</button>
+
+  
 
   <!-- RESULTADO -->
   <div id="resultadoQuitacao" class="result" style="display:none">
@@ -59,3 +82,4 @@
   </div>
 
 </div>
+
