@@ -1,1 +1,110 @@
-hzksks
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Notícia Financeira | Meu Dividendo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  line-height: 1.7;
+}
+img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+.meta {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.loading {
+  color: #777;
+  font-style: italic;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="titulo"></h1>
+<div class="meta" id="meta"></div>
+<img id="imagem" alt="">
+<p id="conteudo" class="loading">Gerando artigo automaticamente…</p>
+
+<script>
+// ============================
+// CONFIGURAÇÃO (KEY AQUI)
+// ============================
+const HF_TOKEN = "";
+
+// ============================
+// RECUPERA NOTÍCIA DO FEED
+// ============================
+const noticia = JSON.parse(localStorage.getItem("noticia"));
+
+if (!noticia) {
+  document.getElementById("conteudo").innerText =
+    "Erro: nenhuma notícia encontrada. Volte para o feed.";
+  throw new Error("Notícia não encontrada");
+}
+
+// ============================
+// PREENCHE CABEÇALHO
+// ============================
+document.getElementById("titulo").innerText = noticia.headline;
+document.getElementById("imagem").src = noticia.image;
+document.getElementById("meta").innerText =
+  `Fonte: ${noticia.source || "Mercado Financeiro"} · ${new Date(noticia.datetime * 1000).toLocaleDateString("pt-BR")}`;
+
+// ============================
+// CHAMADA HUGGING FACE
+// ============================
+fetch("https://api-inference.huggingface.co/models/google/flan-t5-large", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer " + HF_TOKEN,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    inputs: `
+Crie um artigo financeiro ORIGINAL em português,
+bem estruturado (introdução, desenvolvimento e conclusão),
+baseado na notícia abaixo. Não copie o texto original.
+
+Título: ${noticia.headline}
+
+Resumo: ${noticia.summary}
+`
+  })
+})
+.then(res => res.json())
+.then(data => {
+
+  // Modelo ainda carregando (normal no HF)
+  if (data.error) {
+    document.getElementById("conteudo").innerText =
+      "Modelo carregando… aguarde 20 segundos e recarregue a página.";
+    return;
+  }
+
+  document.getElementById("conteudo").classList.remove("loading");
+  document.getElementById("conteudo").innerText =
+    data[0]?.generated_text || "Não foi possível gerar o artigo.";
+
+})
+.catch(err => {
+  document.getElementById("conteudo").innerText =
+    "Erro ao gerar o artigo.";
+  console.error(err);
+});
+</script>
+
+</body>
+</html>
