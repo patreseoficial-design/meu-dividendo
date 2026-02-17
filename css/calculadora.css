@@ -678,3 +678,32 @@ header, footer {
   background: #1a202c;  /* Cor sólida sem transparência */
   padding: 20px 40px;   /* Padding interno normal */
 }
+h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 24px 0 12px;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 22px 0 10px;
+}
+
+h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 20px 0 8px;
+}p {
+  font-size: 16px;
+  line-height: 1.65;
+  margin-bottom: 14px;
+}label {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+small {
+  font-size: 14px;
+  color: #666;
+}
