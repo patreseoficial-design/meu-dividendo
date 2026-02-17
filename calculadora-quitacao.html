@@ -10,62 +10,82 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-.calc-box,.info-box{
+/* ===== CONTAINER ===== */
+.calc-box, .info-box{
   max-width:720px;
   margin:30px auto;
   background:#fff;
-  padding:25px;
+  padding:22px;
   border-radius:8px;
   border:1px solid #ddd;
 }
 
-/* ===== HIERARQUIA SEMÂNTICA COM VISUAL NORMAL ===== */
-h1, h2 {
+/* ===== RESET H1 / H2 (SEO SEM VISUAL GRANDE) ===== */
+h1, h2{
+  all: unset;
   display:block;
-  margin:18px 0 8px;
-  font-size:17px;
+  font-size:16px;
   font-weight:600;
+  margin:16px 0 6px;
+  color:#000;
 }
 
+/* ===== TEXTO ===== */
 p{
   font-size:15px;
   line-height:1.6;
   color:#333;
+  margin:0 0 12px;
 }
 
+/* ===== LABEL ===== */
 label{
   display:block;
-  margin-bottom:5px;
-  font-size:14px;
+  font-size:13px;
+  margin-bottom:4px;
+  color:#222;
 }
 
+/* ===== INPUTS ===== */
 input{
   width:100%;
-  padding:12px;
+  height:42px;
+  padding:8px 10px;
+  font-size:14px;
   border-radius:6px;
   border:1px solid #ccc;
-  margin-bottom:15px;
-  font-size:15px;
+  margin-bottom:12px;
+  background:#fff;
 }
 
+input:focus{
+  outline:none;
+  border-color:#000;
+}
+
+/* ===== BOTÃO ===== */
 button{
   width:100%;
-  padding:14px;
+  height:44px;
+  margin-top:6px;
   border-radius:6px;
   border:1px solid #000;
   background:#000;
   color:#fff;
-  font-size:15px;
+  font-size:14px;
   cursor:pointer;
 }
 
+/* ===== RESULTADO ===== */
 .result{
-  margin-top:20px;
-  padding:15px;
+  margin-top:18px;
+  padding:14px;
   background:#f7f7f7;
   border:1px solid #ccc;
+  font-size:14px;
 }
 
+/* ===== GRÁFICO ===== */
 canvas{
   max-width:600px;
   margin:30px auto;
@@ -76,12 +96,13 @@ canvas{
 
 <body>
 
+<!-- ===== HEADER PADRÃO ===== -->
 <header>
   <div class="menu" onclick="toggleMenu()">☰</div>
 
-  <p class="site-title">
+  <h1 class="site-title">
     <a href="index.html">Meu Dividendo</a>
-  </p>
+  </h1>
 
   <nav id="menuLinks" class="menu-links">
     <ul>
@@ -137,44 +158,27 @@ ou se manter as parcelas é mais equilibrado para seu orçamento.
 
 <h2>O que é a calculadora de quitação patrimonial?</h2>
 <p>
-Ela é uma ferramenta educativa que ajuda a avaliar se a quitação
-antecipada de dívidas é vantajosa.
+Ferramenta educativa que ajuda a avaliar se quitar dívidas antecipadamente
+realmente melhora sua saúde financeira.
 </p>
 
 <h2>Como funciona?</h2>
 <p>
-Você informa seus bens, dívidas, renda mensal e taxa de juros.
-A ferramenta calcula seu patrimônio líquido,
-o comprometimento da renda e estima a economia em juros.
-</p>
-
-<h2>Qual a vantagem?</h2>
-<p>
-Tomar decisões com base em números reais,
-evitando endividamento excessivo ou uso inadequado da reserva financeira.
-</p>
-
-<h2>Exemplo prático</h2>
-<p>
-Mesmo possuindo bens,
-parcelas elevadas podem comprometer a renda mensal.
-A calculadora mostra quando a quitação melhora o equilíbrio financeiro.
+Você informa bens, dívidas, renda e juros.
+A calculadora mostra seu patrimônio líquido
+e o impacto das parcelas na renda mensal.
 </p>
 
 <h2>Dúvidas frequentes</h2>
-
-<p><strong>Para que serve?</strong><br>
-Para entender o impacto das dívidas no patrimônio e na renda mensal.</p>
-
-<p><strong>Os valores são exatos?</strong><br>
-Não. São estimativas.</p>
+<p><strong>Os valores são exatos?</strong><br>Não. São estimativas.</p>
 
 </section>
 
 <footer>
-  <p>© 2026 Meu Dividendo</p>
+  <p style="text-align:center;font-size:13px;">© 2026 Meu Dividendo</p>
 </footer>
 
+<!-- ===== JS MENU ===== -->
 <script>
 function toggleMenu() {
   const menu = document.getElementById('menuLinks');
@@ -182,6 +186,7 @@ function toggleMenu() {
 }
 </script>
 
+<!-- ===== JS CALCULADORA ===== -->
 <script>
 let chart;
 
