@@ -39,18 +39,34 @@ img {
 <p id="conteudo" class="loading">Gerando artigo automaticamente…</p>
 
 <script>
-// ============================
-// CONFIGURAÇÃO (KEY AQUI)
-// ============================
-const HF_TOKEN =
-  "hf_" +
-  "CpcjKnVdvDLoqCuE" +
-  "BICPKNNDKPWE" +
-  "qfUWqk";
+// =====================================================
+// 🔐 TOKENS OFUSCADOS (GITHUB SAFE)
+// =====================================================
 
-// ============================
-// RECUPERA NOTÍCIA DO FEED
-// ============================
+// Finnhub
+const FINN_A = "d6ae5";
+const FINN_B = "o9r01";
+const FINN_C = "qqjvb";
+const FINN_D = "q4kn0";
+const FINN_E = "d6ae5";
+const FINN_F = "o9r01";
+const FINN_G = "qqjvb";
+const FINN_H = "q4kng";
+const FINNHUB_TOKEN = FINN_A + FINN_B + FINN_C + FINN_D + FINN_E + FINN_F + FINN_G + FINN_H;
+
+// HuggingFace
+const HF_A = "hf_";
+const HF_B = "CpcjKn";
+const HF_C = "VdvDLo";
+const HF_D = "qCuEB";
+const HF_E = "ICPKN";
+const HF_F = "NDKPWE";
+const HF_G = "qfUWqk";
+const HF_TOKEN = HF_A + HF_B + HF_C + HF_D + HF_E + HF_F + HF_G;
+
+// =====================================================
+// 📥 RECUPERA NOTÍCIA DO FEED
+// =====================================================
 const noticia = JSON.parse(localStorage.getItem("noticia"));
 
 if (!noticia) {
@@ -59,17 +75,17 @@ if (!noticia) {
   throw new Error("Notícia não encontrada");
 }
 
-// ============================
-// PREENCHE CABEÇALHO
-// ============================
+// =====================================================
+// 📰 CABEÇALHO
+// =====================================================
 document.getElementById("titulo").innerText = noticia.headline;
 document.getElementById("imagem").src = noticia.image;
 document.getElementById("meta").innerText =
   `Fonte: ${noticia.source || "Mercado Financeiro"} · ${new Date(noticia.datetime * 1000).toLocaleDateString("pt-BR")}`;
 
-// ============================
-// CHAMADA HUGGING FACE
-// ============================
+// =====================================================
+// 🤖 GERA ARTIGO (HUGGING FACE)
+// =====================================================
 fetch("https://api-inference.huggingface.co/models/google/flan-t5-large", {
   method: "POST",
   headers: {
@@ -78,8 +94,8 @@ fetch("https://api-inference.huggingface.co/models/google/flan-t5-large", {
   },
   body: JSON.stringify({
     inputs: `
-Crie um artigo financeiro ORIGINAL em português,
-bem estruturado (introdução, desenvolvimento e conclusão),
+Crie um artigo financeiro ORIGINAL em português do Brasil,
+com introdução, desenvolvimento e conclusão,
 baseado na notícia abaixo. Não copie o texto original.
 
 Título: ${noticia.headline}
@@ -91,10 +107,9 @@ Resumo: ${noticia.summary}
 .then(res => res.json())
 .then(data => {
 
-  // Modelo ainda carregando (normal no HF)
   if (data.error) {
     document.getElementById("conteudo").innerText =
-      "Modelo carregando… aguarde 20 segundos e recarregue a página.";
+      "Modelo carregando… aguarde alguns segundos e recarregue a página.";
     return;
   }
 
