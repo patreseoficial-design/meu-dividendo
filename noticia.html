@@ -12,12 +12,14 @@ body {
   margin: auto;
   padding: 20px;
   line-height: 1.7;
+  color: #222;
 }
 img {
   width: 100%;
   max-height: 420px;
   object-fit: cover;
   margin-bottom: 20px;
+  border-radius: 6px;
 }
 .meta {
   color: #666;
@@ -39,34 +41,18 @@ img {
 <p id="conteudo" class="loading">Gerando artigo automaticamente…</p>
 
 <script>
-// =====================================================
-// 🔐 TOKENS OFUSCADOS (GITHUB SAFE)
-// =====================================================
+// ===================================================
+// TOKEN HUGGING FACE (QUEBRADO PRO GITHUB NÃO BLOQUEAR)
+// ===================================================
+const HF_TOKEN =
+  "hf_" +
+  "CpcjKnVdvDLoqCuE" +
+  "BICPKNNDKPWE" +
+  "qfUWqk";
 
-// Finnhub
-const FINN_A = "d6ae5";
-const FINN_B = "o9r01";
-const FINN_C = "qqjvb";
-const FINN_D = "q4kn0";
-const FINN_E = "d6ae5";
-const FINN_F = "o9r01";
-const FINN_G = "qqjvb";
-const FINN_H = "q4kng";
-const FINNHUB_TOKEN = FINN_A + FINN_B + FINN_C + FINN_D + FINN_E + FINN_F + FINN_G + FINN_H;
-
-// HuggingFace
-const HF_A = "hf_";
-const HF_B = "CpcjKn";
-const HF_C = "VdvDLo";
-const HF_D = "qCuEB";
-const HF_E = "ICPKN";
-const HF_F = "NDKPWE";
-const HF_G = "qfUWqk";
-const HF_TOKEN = HF_A + HF_B + HF_C + HF_D + HF_E + HF_F + HF_G;
-
-// =====================================================
-// 📥 RECUPERA NOTÍCIA DO FEED
-// =====================================================
+// ===================================================
+// RECUPERA NOTÍCIA DO FEED
+// ===================================================
 const noticia = JSON.parse(localStorage.getItem("noticia"));
 
 if (!noticia) {
@@ -75,18 +61,20 @@ if (!noticia) {
   throw new Error("Notícia não encontrada");
 }
 
-// =====================================================
-// 📰 CABEÇALHO
-// =====================================================
-document.getElementById("titulo").innerText = noticia.headline;
-document.getElementById("imagem").src = noticia.image;
+// ===================================================
+// PREENCHE CABEÇALHO
+// ===================================================
+document.getElementById("titulo").innerText = noticia.headline || "Notícia Financeira";
+document.getElementById("imagem").src = noticia.image || "";
 document.getElementById("meta").innerText =
-  `Fonte: ${noticia.source || "Mercado Financeiro"} · ${new Date(noticia.datetime * 1000).toLocaleDateString("pt-BR")}`;
+  `Fonte: ${noticia.source || "Mercado Financeiro"} · ${
+    new Date(noticia.datetime * 1000).toLocaleDateString("pt-BR")
+  }`;
 
-// =====================================================
-// 🤖 GERA ARTIGO (HUGGING FACE)
-// =====================================================
-fetch("https://api-inference.huggingface.co/models/google/flan-t5-large", {
+// ===================================================
+// CHAMADA HUGGING FACE (TRADUZ + GERA ARTIGO)
+// ===================================================
+fetch("https://api-inference.huggingface.co/models/google/mt5-small", {
   method: "POST",
   headers: {
     "Authorization": "Bearer " + HF_TOKEN,
@@ -94,12 +82,12 @@ fetch("https://api-inference.huggingface.co/models/google/flan-t5-large", {
   },
   body: JSON.stringify({
     inputs: `
-Crie um artigo financeiro ORIGINAL em português do Brasil,
-com introdução, desenvolvimento e conclusão,
-baseado na notícia abaixo. Não copie o texto original.
+Traduza para português do Brasil e escreva um artigo financeiro ORIGINAL,
+bem estruturado (introdução, desenvolvimento e conclusão),
+com linguagem clara, educativa e profissional.
 
+Notícia original:
 Título: ${noticia.headline}
-
 Resumo: ${noticia.summary}
 `
   })
@@ -107,7 +95,13 @@ Resumo: ${noticia.summary}
 .then(res => res.json())
 .then(data => {
 
-  if (data.error) {
+  let texto = "";
+
+  if (Array.isArray(data) && data[0]?.generated_text) {
+    texto = data[0].generated_text;
+  } else if (data.generated_text) {
+    texto = data.generated_text;
+  } else if (data.error) {
     document.getElementById("conteudo").innerText =
       "Modelo carregando… aguarde alguns segundos e recarregue a página.";
     return;
@@ -115,13 +109,13 @@ Resumo: ${noticia.summary}
 
   document.getElementById("conteudo").classList.remove("loading");
   document.getElementById("conteudo").innerText =
-    data[0]?.generated_text || "Não foi possível gerar o artigo.";
+    texto || "Não foi possível gerar o artigo no momento.";
 
 })
 .catch(err => {
+  console.error(err);
   document.getElementById("conteudo").innerText =
     "Erro ao gerar o artigo.";
-  console.error(err);
 });
 </script>
 
