@@ -1,128 +1,69 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Calculadora de Quitação Patrimonial | Meu Dividendo</title>
-<meta name="description" content="Descubra se vale a pena quitar dívidas ou continuar pagando parcelas. Veja patrimônio líquido e impacto na renda.">
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-/* ===== CONTAINER ===== */
-.calc-box, .info-box{
-  max-width:720px;
-  margin:30px auto;
-  background:#fff;
-  padding:22px;
-  border-radius:8px;
-  border:1px solid #ddd;
-}
-
-/* ===== RESET H1 / H2 (SEO SEM VISUAL GRANDE) ===== */
-h1, h2{
-  all: unset;
-  display:block;
-  font-size:16px;
-  font-weight:600;
-  margin:16px 0 6px;
-  color:#000;
-}
-
-/* ===== TEXTO ===== */
-p{
-  font-size:15px;
-  line-height:1.6;
-  color:#333;
-  margin:0 0 12px;
-}
-
-/* ===== LABEL ===== */
-label{
-  display:block;
-  font-size:13px;
-  margin-bottom:4px;
-  color:#222;
-}
-
-/* ===== INPUTS ===== */
-input{
-  width:100%;
-  height:42px;
-  padding:8px 10px;
-  font-size:14px;
-  border-radius:6px;
-  border:1px solid #ccc;
-  margin-bottom:12px;
-  background:#fff;
-}
-
-input:focus{
-  outline:none;
-  border-color:#000;
-}
-
-/* ===== BOTÃO ===== */
-button{
-  width:100%;
-  height:44px;
-  margin-top:6px;
-  border-radius:6px;
-  border:1px solid #000;
-  background:#000;
-  color:#fff;
-  font-size:14px;
-  cursor:pointer;
-}
-
-/* ===== RESULTADO ===== */
-.result{
-  margin-top:18px;
-  padding:14px;
-  background:#f7f7f7;
-  border:1px solid #ccc;
-  font-size:14px;
-}
-
-/* ===== GRÁFICO ===== */
-canvas{
-  max-width:600px;
-  margin:30px auto;
-  display:block;
-}
-</style>
-</head>
-
-<body>
-
-<!-- ===== HEADER PADRÃO ===== -->
-<header>
-  <div class="menu" onclick="toggleMenu()">☰</div>
-
-  <h1 class="site-title">
-    <a href="index.html">Meu Dividendo</a>
-  </h1>
-
-  <nav id="menuLinks" class="menu-links">
-    <ul>
-      <li><a href="index.html">Início</a></li>
-      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
-      <li><a href="curso-investimento.html">Curso de Investimento</a></li>
-    </ul>
-  </nav>
-</header>
-
-<!-- ===== CONTEÚDO ===== -->
-<div class="calc-box">
-
-<h1>Calculadora de Quitação Patrimonial</h1>
-<p>
-Analise se quitar suas dívidas agora melhora sua situação financeira
-ou se manter as parcelas é mais equilibrado para seu orçamento.
-</p>
-
-<h2>Seus bens</h2>
+<!DOCTYPE html>  <html lang="pt-BR">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Calculadora de Quitação Patrimonial | Meu Dividendo</title>  
+<meta name="description" content="Descubra se vale a pena quitar dívidas ou continuar pagando parcelas. Veja patrimônio líquido e impacto na renda.">  <link rel="stylesheet" href="css/global.css">  
+<link rel="stylesheet" href="css/calculadora.css">  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <style>  
+.calc-box,.info-box{  
+  max-width:720px;  
+  margin:30px auto;  
+  background:#fff;  
+  padding:25px;  
+  border-radius:8px;  
+  border:1px solid #ddd;  
+}  
+  
+strong{display:block;margin:18px 0 8px;font-size:17px}  
+  
+label{display:block;margin-bottom:5px;font-size:14px}  
+  
+input{  
+  width:100%;  
+  padding:12px;  
+  border-radius:6px;  
+  border:1px solid #ccc;  
+  margin-bottom:15px;  
+  font-size:15px;  
+}  
+  
+button{  
+  width:100%;  
+  padding:14px;  
+  border-radius:6px;  
+  border:1px solid #000;  
+  background:#000;  
+  color:#fff;  
+  font-size:15px;  
+  cursor:pointer;  
+}  
+  
+.result{  
+  margin-top:20px;  
+  padding:15px;  
+  background:#f7f7f7;  
+  border:1px solid #ccc;  
+}  
+  
+canvas{  
+  max-width:600px;  
+  margin:30px auto;  
+  display:block;  
+}  
+</style>  </head>  <body>  <!-- ===== HEADER PADRÃO (IGUAL AO 13º) ===== -->  <header>  
+  <div class="menu" onclick="toggleMenu()">☰</div>    <h1 class="site-title">  
+    <a href="index.html">Meu Dividendo</a>  
+  </h1>    <nav id="menuLinks" class="menu-links">  
+    <ul>  
+      <li><a href="index.html">Início</a></li>  
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>  
+      <li><a href="curso-investimento.html">Curso de Investimento</a></li>  
+    </ul>  
+  </nav>  
+</header>  <!-- ===== CONTEÚDO ===== -->  <div class="calc-box">  <p><strong>Calculadora de Quitação Patrimonial</strong></p>  
+<p>  
+Analise se quitar suas dívidas agora melhora sua situação financeira  
+ou se manter as parcelas é mais equilibrado para seu orçamento.  
+</p>  <strong>Seus bens</strong>
 <label>Valor do imóvel (R$)</label>
 <input id="valorImovel" type="number">
 
@@ -135,11 +76,11 @@ ou se manter as parcelas é mais equilibrado para seu orçamento.
 <label>Saldo devedor do veículo (R$)</label>
 <input id="dividaVeiculo" type="number">
 
-<h2>Sua renda</h2>
+<strong>Sua renda</strong>
 <label>Salário mensal (R$)</label>
 <input id="salario" type="number">
 
-<h2>Dívidas</h2>
+<strong>Dívidas</strong>
 <label>Parcelas mensais totais (R$)</label>
 <input id="parcelas" type="number">
 
@@ -148,91 +89,84 @@ ou se manter as parcelas é mais equilibrado para seu orçamento.
 
 <button onclick="calcular()">Analisar situação</button>
 
-<div id="resultado" class="result"></div>
+<div id="resultado" class="result"></div>  </div>  <canvas id="grafico"></canvas>
 
-</div>
-
-<canvas id="grafico"></canvas>
-
-<section class="info-box">
-
-<h2>O que é a calculadora de quitação patrimonial?</h2>
-<p>
-Ferramenta educativa que ajuda a avaliar se quitar dívidas antecipadamente
-realmente melhora sua saúde financeira.
-</p>
-
-<h2>Como funciona?</h2>
-<p>
-Você informa bens, dívidas, renda e juros.
-A calculadora mostra seu patrimônio líquido
-e o impacto das parcelas na renda mensal.
-</p>
-
-<h2>Dúvidas frequentes</h2>
-<p><strong>Os valores são exatos?</strong><br>Não. São estimativas.</p>
-
-</section>
-
-<footer>
-  <p style="text-align:center;font-size:13px;">© 2026 Meu Dividendo</p>
-</footer>
-
-<!-- ===== JS MENU ===== -->
-<script>
-function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
-</script>
-
-<!-- ===== JS CALCULADORA ===== -->
-<script>
-let chart;
-
-function calcular(){
-  const vi = +valorImovel.value || 0;
-  const di = +dividaImovel.value || 0;
-  const vv = +valorVeiculo.value || 0;
-  const dv = +dividaVeiculo.value || 0;
-  const sal = +salario.value || 0;
-  const par = +parcelas.value || 0;
-  const j = (+juros.value || 0) / 100;
-
-  if(!sal){
-    alert("Informe o salário.");
-    return;
-  }
-
-  const patrimonio = (vi + vv) - (di + dv);
-  const comp = par / sal;
-
-  let status = "🟢 Situação saudável";
-  if(comp > 0.5) status = "🔴 Endividamento alto";
-  else if(comp > 0.3) status = "🟡 Atenção";
-
-  resultado.innerHTML = `
-    <p><strong>Patrimônio líquido:</strong> R$ ${patrimonio.toFixed(2)}</p>
-    <p><strong>Comprometimento da renda:</strong> ${(comp*100).toFixed(1)}%</p>
-    <p><strong>Status:</strong> ${status}</p>
-  `;
-
-  const meses = [12,24,36,48,60];
-  const eco = meses.map(m => par * m * j);
-
-  if(chart) chart.destroy();
-  chart = new Chart(grafico, {
-    type: "bar",
-    data: {
-      labels: meses.map(m => m + " meses"),
-      datasets: [{
-        label: "Economia estimada de juros (R$)",
-        data: eco
-      }]
-    }
-  });
-}
-</script>
-
-</body>
-</html>
+<p><strong>O que é a calculadora de quitação patrimonial?</strong></p>  <p>Ela é uma Flferramenta educativa que ajuda a avaliar se a quitação antecipada de dívidas é vantajosa.</p>  
+<section style="max-width:720px;margin:40px auto;font-size:15px;line-height:1.6;color:#333;">    <p><strong>O que é a Calculadora de Quitação de Dívidas?</strong></p>  
+  <p>  
+    A Calculadora de Quitação de Dívidas ajuda você a avaliar  
+    se quitar uma dívida agora é financeiramente mais vantajoso  
+    ou se manter as parcelas ainda faz sentido para seu orçamento.  
+  </p>    <p><strong>Como funciona?</strong></p>  
+  <p>  
+    Você informa seus bens, dívidas, renda mensal e taxa de juros.  
+    A ferramenta calcula seu patrimônio líquido,  
+    o comprometimento da renda e estima quanto você pode  
+    economizar em juros ao quitar a dívida antecipadamente.  
+  </p>    <p><strong>Qual a vantagem?</strong></p>  
+  <p>  
+    A principal vantagem é tomar decisões com base em números reais,  
+    evitando tanto o endividamento excessivo quanto  
+    o uso desnecessário da reserva financeira.  
+  </p>    <p><strong>Exemplo prático</strong></p>  
+  <p>  
+    Mesmo possuindo um imóvel ou veículo,  
+    parcelas elevadas podem comprometer a renda mensal.  
+    A calculadora mostra quando a quitação pode melhorar  
+    o equilíbrio financeiro.  
+  </p>  <p>Mesmo com bens, parcelas altas podem comprometer sua saúde financeira.</p>  </section>  <p><strong>Dúvidas frequentes</strong></p>  <p><strong>Para que serve?</strong></p>  
+<p>Para entender o impacto das dívidas no patrimônio e na renda mensal.</p>  <p><strong>Os valores são exatos?</strong> Não. São estimativas.</p>  
+</div>  <footer>  
+  <p>© 2026 Meu Dividendo</p>  
+</footer>  <!-- ===== JS MENU (IGUAL AO 13º) ===== -->  <script>  
+function toggleMenu() {  
+  const menu = document.getElementById('menuLinks');  
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';  
+}  
+</script>  <!-- ===== JS CALCULADORA ===== -->  <script>  
+let chart;  
+  
+function calcular(){  
+  const vi = +valorImovel.value || 0;  
+  const di = +dividaImovel.value || 0;  
+  const vv = +valorVeiculo.value || 0;  
+  const dv = +dividaVeiculo.value || 0;  
+  const sal = +salario.value || 0;  
+  const par = +parcelas.value || 0;  
+  const j = (+juros.value || 0) / 100;  
+  
+  if(!sal){  
+    alert("Informe o salário.");  
+    return;  
+  }  
+  
+  const patrimonio = (vi + vv) - (di + dv);  
+  const comp = par / sal;  
+  
+  let status = "🟢 Situação saudável";  
+  if(comp > 0.5) status = "🔴 Endividamento alto";  
+  else if(comp > 0.3) status = "🟡 Atenção";  
+  
+  resultado.innerHTML = `  
+    <p><strong>Patrimônio líquido:</strong> R$ ${patrimonio.toFixed(2)}</p>  
+    <p><strong>Comprometimento da renda:</strong> ${(comp*100).toFixed(1)}%</p>  
+    <p><strong>Status:</strong> ${status}</p>  
+  `;  
+  
+  const meses = [12,24,36,48,60];  
+  const eco = meses.map(m => par * m * j);  
+  
+  if(chart) chart.destroy();  
+  chart = new Chart(grafico, {  
+    type: "bar",  
+    data: {  
+      labels: meses.map(m => m + " meses"),  
+      datasets: [{  
+        label: "Economia estimada de juros (R$)",  
+        data: eco  
+      }]  
+    }  
+  });  
+}  
+</script>  </body>  
+</html>  
