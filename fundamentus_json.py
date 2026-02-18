@@ -1,21 +1,28 @@
 from pyFundamentus.fundamentus import get_result
 import json
 
+# ============================
+# Pega todos os dados do Fundamentus
+# ============================
 df = get_result()
 
-# Renomeia colunas para combinar com HTML
+# ============================
+# Ajusta nomes das colunas para combinar com HTML
+# ============================
 df = df.rename(columns={
-    'Div/Yield': 'Dividend Yield',  # ou como estiver no DataFrame
-    'Preco': 'Preco',
-    'ROE': 'ROE',
+    'Ticker': 'Ticker',
     'P/L': 'P/L',
     'P/VP': 'P/VP',
-    'Ticker': 'Ticker'
+    'Div/Yield': 'Dividend Yield',  # dependendo do pyFundamentus pode vir como 'Div/Yield' ou 'DivYld'
+    'ROE': 'ROE',
+    'Preco': 'Preco'
 })
 
-# Coloca todos os Tickers em maiúsculo
+# Garante que todos os tickers fiquem em maiúsculas
 df['Ticker'] = df['Ticker'].str.upper()
 
-# Salva JSON
+# ============================
+# Salva JSON pronto para o HTML
+# ============================
 df.to_json("fundamentus.json", orient="records", force_ascii=False)
-print("JSON gerado!")
+print("✅ JSON fundamentus.json gerado com sucesso!")
