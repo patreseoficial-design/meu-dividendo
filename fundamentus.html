@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Fundamentus - Busca de Ações</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+input[type="text"] {
+  padding: 8px;
+  width: 200px;
+  margin-bottom: 20px;
+}
+button {
+  padding: 8px 12px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+th { background: #f4f4f4; }
+</style>
+</head>
+<body>
+
+<h1>Busca de Ações - Fundamentus</h1>
+
+<input type="text" id="busca" placeholder="Digite o ticker (ex: PETR4)">
+<button onclick="buscar()">Buscar</button>
+
+<table id="tabela">
+  <tr>
+    <th>Ticker</th>
+    <th>P/L</th>
+    <th>P/VP</th>
+    <th>Dividend Yield</th>
+    <th>ROE</th>
+    <th>Preço</th>
+  </tr>
+</table>
+
+<script>
+let dados = [];
+
+// Carrega o JSON gerado pelo Python
+fetch('fundamentus.json')
+  .then(res => res.json())
+  .then(data => {
+    dados = data;
+  });
+
+// Função de busca
+function buscar() {
+  const ticker = document.getElementById("busca").value.toUpperCase();
+  const tabela = document.getElementById("tabela");
+
+  // Limpa resultados anteriores (mantém cabeçalho)
+  tabela.innerHTML = `
+    <tr>
+      <th>Ticker</th>
+      <th>P/L</th>
+      <th>P/VP</th>
+      <th>Dividend Yield</th>
+      <th>ROE</th>
+      <th>Preço</th>
+    </tr>
+  `;
+
+  // Filtra dados
+  const resultado = dados.filter(a => a.Ticker === ticker);
+
+  if (resultado.length === 0) {
+    tabela.innerHTML += `<tr><td colspan="6">Nenhum resultado encontrado</td></tr>`;
+    return;
+  }
+
+  // Adiciona resultados à tabela
+  resultado.forEach(a => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${a.Ticker}</td>
+      <td>${a["P/L"]}</td>
+      <td>${a["P/VP"]}</td>
+      <td>${a["Dividend Yield"]}</td>
+      <td>${a.ROE}</td>
+      <td>${a.Preco}</td>
+    `;
+    tabela.appendChild(row);
+  });
+}
+</script>
+
+</body>
+</html>
