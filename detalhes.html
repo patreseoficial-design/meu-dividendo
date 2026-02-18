@@ -11,7 +11,7 @@
   #searchInput { padding:8px; font-size:1em; width:220px; }
   #cards { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
   .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; min-width:180px; text-align:left; box-shadow:0 4px 8px rgba(0,0,0,0.2); }
-  .card.fii { background:#2c3e50; } /* cor diferente para FIIs */
+  .card.fii { background:#2c3e50; } 
   .card h3 { margin:0 0 8px 0; font-size:1.1em; text-align:center; }
   .card p { margin:2px 0; font-size:0.9em; }
 </style>
@@ -49,12 +49,14 @@ function buscarAtivo() {
 
   if(!query) return alert("Digite um ativo!");
 
-  // Procura primeiro nas ações, depois nos FIIs
-  let ativo = acoes.find(a => a.papel === query);
+  // Função que normaliza o campo 'papel'
+  const encontrarAtivo = arr => arr.find(a => (a.papel || a.Papel || "").toString().trim().toUpperCase() === query);
+
+  let ativo = encontrarAtivo(acoes);
   let tipo = "Ação";
 
   if(!ativo) {
-    ativo = fiis.find(f => f.papel === query);
+    ativo = encontrarAtivo(fiis);
     tipo = "FII";
   }
 
@@ -62,7 +64,7 @@ function buscarAtivo() {
 
   const div = document.createElement('div');
   div.className = 'card' + (tipo === "FII" ? " fii" : "");
-  div.innerHTML = `<h3>${ativo.papel} (${tipo})</h3>`;
+  div.innerHTML = `<h3>${ativo.papel || ativo.Papel} (${tipo})</h3>`;
 
   Object.keys(ativo).forEach(k => {
     div.innerHTML += `<p><strong>${k}</strong>: ${ativo[k]}</p>`;
