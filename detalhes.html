@@ -3,55 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Consulta de Ativos</title>
+<title>Meu Dividendo - Pesquisa de Ativos</title>
+
 <style>
-body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
-input { padding: 8px; width: 200px; }
-button { padding: 8px 12px; }
-#resultado { margin-top: 20px; }
-.card { background: #000; color: #fff; padding: 12px; margin: 8px 0; border-radius: 8px; }
+  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
+  header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; }
+  #searchContainer { text-align:center; margin:20px; }
+  #searchInput { padding:8px; font-size:1em; width:200px; }
+  #cards { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
+  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; min-width:140px; text-align:center; }
 </style>
 </head>
 <body>
 
-<h2>Consulta de Ativos</h2>
-<input type="text" id="ativoInput" placeholder="Digite o código (VALE3, MXRF11)">
-<button id="buscarBtn">Buscar</button>
+<header>Meu Dividendo</header>
 
-<div id="resultado"></div>
+<div id="searchContainer">
+  <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: VALE3, MXRF11)">
+  <button onclick="buscarAtivo()">Buscar</button>
+</div>
+
+<div id="cards"></div>
 
 <script>
-const buscarBtn = document.getElementById("buscarBtn");
-const input = document.getElementById("ativoInput");
-const resultado = document.getElementById("resultado");
+let acoes = [];
+let fiis = [];
 
-buscarBtn.addEventListener("click", () => {
-    const codigo = input.value.toUpperCase().trim();
-    if(!codigo) return alert("Digite um código válido");
+// Carrega os JSONs online gerados pelo workflow do GitHub
+fetch('https://patreseoficial-design.github.io/fundamentus-dados/data/acoes.json')
+  .then(res => res.json())
+  .then(data => acoes = data)
+  .catch(err => console.error("Erro ao carregar acoes.json:", err));
 
-    // Escolher JSON correto
-    const jsonFile = codigo.endsWith("11") ? "./data/fiis.json" : "./data/acoes.json";
+fetch('https://patreseoficial-design.github.io/fundamentus-dados/data/fiis.json')
+  .then(res => res.json())
+  .then(data => fiis = data)
+  .catch(err => console.error("Erro ao carregar fiis.json:", err));
 
-    fetch(jsonFile)
-        .then(r => r.json())
-        .then(data => {
-            const ativo = data.find(a => a.Papel === codigo);
-            if(!ativo) return resultado.innerHTML = "Ativo não encontrado";
+function buscarAtivo() {
+  const query = document.getElementById('searchInput').value.trim().toUpperCase();
+  const cardsDiv = document.getElementById('cards');
+  cardsDiv.innerHTML = '';
 
-            // Exibir os dados
-            resultado.innerHTML = "";
-            for(const key in ativo){
-                const div = document.createElement("div");
-                div.className = "card";
-                div.innerHTML = `<strong>${key}:</strong> ${ativo[key]}`;
-                resultado.appendChild(div);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            resultado.innerHTML = "Erro ao carregar dados";
-        });
-});
+  if(!query) return alert("Digite um ativo!");
+
+  let ativo = acoes.find(a => a.Papel === query) || fiis.find(f => f.Papel === query);
+
+  if(!ativo) return alert("Ativo não encontrado!");
+
+  // Cria cards para cada campo do JSON
+  Object.keys(ativo).forEach(k => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<strong>${k}</strong><br>${ativo[k]}`;
+    cardsDiv.appendChild(div);
+  });
+}
 </script>
 
 </body>
