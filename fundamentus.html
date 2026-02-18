@@ -2,94 +2,59 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Fundamentus - Busca de Ações</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Dividendo - Pesquisa de Ativos</title>
+
 <style>
-body {
-  font-family: Arial, sans-serif;
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-}
-input[type="text"] {
-  padding: 8px;
-  width: 200px;
-  margin-bottom: 20px;
-}
-button {
-  padding: 8px 12px;
-  margin-left: 5px;
-  cursor: pointer;
-}
-table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-th { background: #f4f4f4; }
+  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
+  header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; }
+  #searchContainer { text-align:center; margin:20px; }
+  #searchInput { padding:8px; font-size:1em; width:200px; }
+  #cards { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
+  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; min-width:140px; text-align:center; }
 </style>
 </head>
 <body>
 
-<h1>Busca de Ações - Fundamentus</h1>
+<header>Meu Dividendo</header>
 
-<input type="text" id="busca" placeholder="Digite o ticker (ex: PETR4)">
-<button onclick="buscar()">Buscar</button>
+<div id="searchContainer">
+  <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: VALE3, MXRF11)">
+  <button onclick="buscarAtivo()">Buscar</button>
+</div>
 
-<table id="tabela">
-  <tr>
-    <th>Ticker</th>
-    <th>P/L</th>
-    <th>P/VP</th>
-    <th>Dividend Yield</th>
-    <th>ROE</th>
-    <th>Preço</th>
-  </tr>
-</table>
+<div id="cards"></div>
 
 <script>
-let dados = [];
+let acoes = [];
+let fiis = [];
 
-// Carrega o JSON gerado pelo Python
-fetch('fundamentus.json')
+// Carrega os JSONs online do GitHub Pages
+fetch('https://patreseoficial.github.io/fundamentus-dados/data/acoes.json')
   .then(res => res.json())
-  .then(data => {
-    dados = data;
-  });
+  .then(data => acoes = data);
 
-// Função de busca
-function buscar() {
-  const ticker = document.getElementById("busca").value.toUpperCase();
-  const tabela = document.getElementById("tabela");
+fetch('https://patreseoficial.github.io/fundamentus-dados/data/fiis.json')
+  .then(res => res.json())
+  .then(data => fiis = data);
 
-  // Limpa resultados anteriores (mantém cabeçalho)
-  tabela.innerHTML = `
-    <tr>
-      <th>Ticker</th>
-      <th>P/L</th>
-      <th>P/VP</th>
-      <th>Dividend Yield</th>
-      <th>ROE</th>
-      <th>Preço</th>
-    </tr>
-  `;
+function buscarAtivo() {
+  const query = document.getElementById('searchInput').value.trim().toUpperCase();
+  const cardsDiv = document.getElementById('cards');
+  cardsDiv.innerHTML = '';
 
-  // Filtra dados
-  const resultado = dados.filter(a => a.Ticker === ticker);
+  if(!query) return alert("Digite um ativo!");
 
-  if (resultado.length === 0) {
-    tabela.innerHTML += `<tr><td colspan="6">Nenhum resultado encontrado</td></tr>`;
-    return;
-  }
+  let ativo = acoes.find(a => a.Papel === query) || fiis.find(f => f.Papel === query);
 
-  // Adiciona resultados à tabela
-  resultado.forEach(a => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${a.Ticker}</td>
-      <td>${a["P/L"]}</td>
-      <td>${a["P/VP"]}</td>
-      <td>${a["Dividend Yield"]}</td>
-      <td>${a.ROE}</td>
-      <td>${a.Preco}</td>
-    `;
-    tabela.appendChild(row);
+  if(!ativo) return alert("Ativo não encontrado!");
+
+  // Cria cards para cada campo do JSON
+  Object.keys(ativo).forEach(k => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<strong>${k}</strong><br>${ativo[k]}`;
+    cardsDiv.appendChild(div);
   });
 }
 </script>
