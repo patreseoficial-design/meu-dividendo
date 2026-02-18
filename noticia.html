@@ -2,121 +2,134 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Notícia Financeira | Meu Dividendo</title>
+<title>TV Online – Estilo Pluto</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <style>
 body {
+  margin: 0;
   font-family: Arial, sans-serif;
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-  line-height: 1.7;
-  color: #222;
+  background: #0f0f0f;
+  color: #fff;
+  display: flex;
+  height: 100vh;
 }
-img {
+#lista {
+  width: 260px;
+  background: #181818;
+  overflow-y: auto;
+  border-right: 1px solid #222;
+}
+#lista h2 {
+  padding: 12px;
+  margin: 0;
+  background: #111;
+  font-size: 16px;
+  text-align: center;
+}
+.canal {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #222;
+}
+.canal:hover {
+  background: #2a2a2a;
+}
+#player {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+video {
   width: 100%;
-  max-height: 420px;
-  object-fit: cover;
-  margin-bottom: 20px;
-  border-radius: 6px;
-}
-.meta {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-.loading {
-  color: #777;
-  font-style: italic;
+  height: 100%;
+  background: #000;
 }
 </style>
 </head>
 
 <body>
 
-<h1 id="titulo"></h1>
-<div class="meta" id="meta"></div>
-<img id="imagem" alt="">
-<p id="conteudo" class="loading">Gerando artigo automaticamente…</p>
+<div id="lista">
+  <h2>Canais</h2>
+
+  <div class="canal" onclick="play('https://rakutenmovies-samsung.amagi.tv/playlist.m3u8')">
+    🎬 Rakuten TV Movies
+  </div>
+
+  <div class="canal" onclick="play('https://runtime-samsung.amagi.tv/playlist.m3u8')">
+    🎞 Runtime TV
+  </div>
+
+  <div class="canal" onclick="play('https://filmrise-samsung.amagi.tv/playlist.m3u8')">
+    🍿 FilmRise Movies
+  </div>
+
+  <div class="canal" onclick="play('https://grjngo-samsung.amagi.tv/playlist.m3u8')">
+    🤠 Grjngo Westerns
+  </div>
+
+  <div class="canal" onclick="play('https://lovenature-samsung.amagi.tv/playlist.m3u8')">
+    🌿 Love Nature
+  </div>
+
+  <div class="canal" onclick="play('https://smithsonian-samsung.amagi.tv/playlist.m3u8')">
+    🧠 Smithsonian Channel
+  </div>
+
+  <div class="canal" onclick="play('https://toongoggles-samsung.amagi.tv/playlist.m3u8')">
+    🧒 Toon Goggles
+  </div>
+
+  <div class="canal" onclick="play('https://happykids-samsung.amagi.tv/playlist.m3u8')">
+    👶 HappyKids
+  </div>
+
+  <div class="canal" onclick="play('https://kidoodletv-samsung.amagi.tv/playlist.m3u8')">
+    🎈 Kidoodle TV
+  </div>
+
+  <div class="canal" onclick="play('https://vevopop-samsung.amagi.tv/playlist.m3u8')">
+    🎵 Vevo Pop
+  </div>
+
+  <div class="canal" onclick="play('https://vevorock-samsung.amagi.tv/playlist.m3u8')">
+    🎸 Vevo Rock
+  </div>
+
+  <div class="canal" onclick="play('https://vevolatino-samsung.amagi.tv/playlist.m3u8')">
+    💃 Vevo Latino
+  </div>
+
+</div>
+
+<div id="player">
+  <video id="video" controls autoplay></video>
+</div>
 
 <script>
-// ===================================================
-// TOKEN HUGGING FACE (QUEBRADO PRO GITHUB NÃO BLOQUEAR)
-// ===================================================
-const HF_TOKEN =
-  "hf_" +
-  "CpcjKnVdvDLoqCuE" +
-  "BICPKNNDKPWE" +
-  "qfUWqk";
+let hls;
+const video = document.getElementById('video');
 
-// ===================================================
-// RECUPERA NOTÍCIA DO FEED
-// ===================================================
-const noticia = JSON.parse(localStorage.getItem("noticia"));
-
-if (!noticia) {
-  document.getElementById("conteudo").innerText =
-    "Erro: nenhuma notícia encontrada. Volte para o feed.";
-  throw new Error("Notícia não encontrada");
-}
-
-// ===================================================
-// PREENCHE CABEÇALHO
-// ===================================================
-document.getElementById("titulo").innerText = noticia.headline || "Notícia Financeira";
-document.getElementById("imagem").src = noticia.image || "";
-document.getElementById("meta").innerText =
-  `Fonte: ${noticia.source || "Mercado Financeiro"} · ${
-    new Date(noticia.datetime * 1000).toLocaleDateString("pt-BR")
-  }`;
-
-// ===================================================
-// CHAMADA HUGGING FACE (TRADUZ + GERA ARTIGO)
-// ===================================================
-fetch("https://api-inference.huggingface.co/models/google/mt5-small", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer " + HF_TOKEN,
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    inputs: `
-Traduza para português do Brasil e escreva um artigo financeiro ORIGINAL,
-bem estruturado (introdução, desenvolvimento e conclusão),
-com linguagem clara, educativa e profissional.
-
-Notícia original:
-Título: ${noticia.headline}
-Resumo: ${noticia.summary}
-`
-  })
-})
-.then(res => res.json())
-.then(data => {
-
-  let texto = "";
-
-  if (Array.isArray(data) && data[0]?.generated_text) {
-    texto = data[0].generated_text;
-  } else if (data.generated_text) {
-    texto = data.generated_text;
-  } else if (data.error) {
-    document.getElementById("conteudo").innerText =
-      "Modelo carregando… aguarde alguns segundos e recarregue a página.";
-    return;
+function play(url) {
+  if (hls) {
+    hls.destroy();
   }
 
-  document.getElementById("conteudo").classList.remove("loading");
-  document.getElementById("conteudo").innerText =
-    texto || "Não foi possível gerar o artigo no momento.";
-
-})
-.catch(err => {
-  console.error(err);
-  document.getElementById("conteudo").innerText =
-    "Erro ao gerar o artigo.";
-});
+  if (Hls.isSupported()) {
+    hls = new Hls();
+    hls.loadSource(url);
+    hls.attachMedia(video);
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = url;
+  } else {
+    alert("Seu navegador não suporta este stream.");
+  }
+}
 </script>
 
 </body>
