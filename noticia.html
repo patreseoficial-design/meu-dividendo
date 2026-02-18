@@ -2,9 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Pluto Animes & Desenhos Clássicos</title>
+<title>Pluto TV Clássico – Desenhos & Animes</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
 body { margin:0; font-family:Arial; display:flex; height:100vh; background:#0f0f0f; color:#fff; }
 #lista { width:300px; background:#181818; overflow-y:auto; border-right:1px solid #222; }
@@ -24,23 +23,13 @@ video { width:100%; height:100%; background:#000; }
   <div class="canal" onclick="play('https://archive.org/download/FelixTheCat/FelixTheCat_512kb.mp4')">🐱 Felix the Cat – Public Domain</div>
   <div class="canal" onclick="play('https://archive.org/download/OswaldTheLuckyRabbit/OswaldTheLuckyRabbit_512kb.mp4')">🐰 Oswald The Lucky Rabbit</div>
   <div class="canal" onclick="play('https://archive.org/download/KrazyKat/KrazyKat_512kb.mp4')">🎩 Krazy Kat</div>
-  <div class="canal" onclick="play('https://archive.org/download/SupermanFleischer/Superman_512kb.mp4')">🦸 Superman – Fleischer Classic</div>
-  
+
   <h2>Animes Clássicos</h2>
   <div class="canal" onclick="play('https://archive.org/download/AstroBoyOriginal/AstroBoy_512kb.mp4')">🤖 Astro Boy – Episódio Clássico</div>
   <div class="canal" onclick="play('https://archive.org/download/KimbaTheWhiteLion/Kimba_512kb.mp4')">🦁 Kimba, o Leão Branco</div>
   <div class="canal" onclick="play('https://archive.org/download/SpeedRacerOriginal/SpeedRacer_512kb.mp4')">🏎 Speed Racer – Episódio Antigo</div>
   <div class="canal" onclick="play('https://archive.org/download/Cyborg009Original/Cyborg009_512kb.mp4')">🤖 Cyborg 009 – Episódio Clássico</div>
   <div class="canal" onclick="play('https://archive.org/download/SazaeSanOriginal/SazaeSan_512kb.mp4')">👨‍👩‍👧‍👦 Sazae-san – Episódio Antigo</div>
-
-  <h2>Infantil / Família</h2>
-  <div class="canal" onclick="play('https://archive.org/download/HappyKids/HappyKids_512kb.mp4')">🧸 HappyKids – Curta Educativo</div>
-  <div class="canal" onclick="play('https://archive.org/download/KidoodleTV/KidoodleTV_512kb.mp4')">🎈 Kidoodle TV – Domínio Público</div>
-  <div class="canal" onclick="play('https://archive.org/download/ToonGoggles/ToonGoggles_512kb.mp4')">🖍 Toon Goggles – Curta</div>
-
-  <h2>Curta Animado / Diversos</h2>
-  <div class="canal" onclick="play('https://archive.org/download/NatGeoWild/NatGeoWild_512kb.mp4')">🌿 Nat Geo Wild – Domínio Público</div>
-  <div class="canal" onclick="play('https://archive.org/download/SmithsonianChannel/Smithsonian_512kb.mp4')">🧠 Smithsonian Channel – Curta</div>
 </div>
 
 <div id="player">
@@ -48,19 +37,10 @@ video { width:100%; height:100%; background:#000; }
 </div>
 
 <script>
-let hls;
 const video = document.getElementById('video');
 function play(url) {
-  if (hls) { hls.destroy(); }
-  if (Hls.isSupported()) {
-    hls = new Hls();
-    hls.loadSource(url);
-    hls.attachMedia(video);
-  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = url;
-  } else {
-    video.src = url; // fallback mp4
-  }
+  video.src = url;
+  video.play();
 }
 </script>
 
