@@ -4,113 +4,138 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meu Dividendo - Alpha Vantage</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
-  header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; position: sticky; top:0; z-index:1000; }
-  nav { display:flex; justify-content:flex-start; align-items:center; padding:0 16px; background:#111; color:#fff; }
-  #menu { font-size:1.5em; cursor:pointer; margin-right:12px; }
+  header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; position: relative; }
+  #menu { position:absolute; left:16px; top:16px; cursor:pointer; font-size:1.5em; }
   #searchContainer { text-align:center; margin:20px; }
   #searchInput { padding:8px; font-size:1em; width:200px; }
   #cards { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
-  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; text-align:center; }
-  .card-horizontal { min-width:300px; }
-  .card-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-top:12px; }
-  canvas { max-width:100%; margin:20px auto; display:block; }
-  footer { text-align:center; padding:16px; background:#000; color:#fff; margin-top:20px; }
+  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; min-width:140px; text-align:center; }
+  .card.wide { min-width:300px; font-size:1.1em; }
+  #historyChart { max-width:800px; margin:20px auto; background:#fff; border-radius:12px; padding:16px; }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <header>
-  <nav>
-    <span id="menu">&#9776;</span> Meu Dividendo
-  </nav>
+  <span id="menu">&#9776;</span>
+  Meu Dividendo - Alpha Vantage
 </header>
 
 <div id="searchContainer">
-  <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: PETR4.SA ou AAPL)">
+  <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: PETR4.SA)">
   <button onclick="buscarAtivo()">Buscar</button>
-  <p style="margin-top:8px; font-size:0.9em; color:#555;">Para ações brasileiras use o sufixo <strong>.SA</strong> no código.</p>
 </div>
 
 <div id="cards"></div>
-
-<canvas id="historicoChart"></canvas>
-
-<footer>Meu Dividendo &copy; 2026</footer>
+<canvas id="historyChart"></canvas>
 
 <script>
-const apiKey = "IV5PKYLN6WQK6FKW";
+const API_KEY = "IV5PKYLN6WQK6FKW"; // sua chave Alpha Vantage
+let chartInstance;
 
-function formatBRL(valor) {
-  if(!valor) return "-";
-  return parseFloat(valor).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-}
+async function buscarAtivo() {
+  const queryInput = document.getElementById('searchInput').value.trim().toUpperCase();
+  if(!queryInput) return alert("Digite um ativo!");
 
-function buscarAtivo() {
-  const query = document.getElementById('searchInput').value.trim().toUpperCase();
+  const symbol = queryInput; // Aqui a pessoa já deve colocar .SA se brasileiro
   const cardsDiv = document.getElementById('cards');
   cardsDiv.innerHTML = '';
-  document.getElementById('historicoChart').getContext('2d').clearRect(0,0,500,300);
 
-  if(!query) return alert("Digite um código de ativo!");
+  // Busca dados intraday/dia atual
+  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${API_KEY}&outputsize=compact`;
+  const res = await fetch(url);
+  const data = await res.json();
 
-  fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${query}&apikey=${apiKey}`)
-    .then(res => res.json())
-    .then(data => {
-      if(!data["Global Quote"] || Object.keys(data["Global Quote"]).length === 0) {
-        return alert("Ativo não encontrado ou não disponível.");
+  if(data["Error Message"] || !data["Time Series (Daily)"]) {
+    return alert("Ativo não encontrado ou dados indisponíveis!");
+  }
+
+  // Pega a data mais recente
+  const dias = Object.keys(data["Time Series (Daily)"]).sort().reverse();
+  const hoje = dias[0];
+  const todayData = data["Time Series (Daily)"][hoje];
+
+  // Formatação números em R$
+  const formatReal = n => parseFloat(n).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
+  const formatNumber = n => parseFloat(n).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 });
+
+  // Calcula indicadores básicos
+  const preco = parseFloat(todayData["4. close"]);
+  const abertura = parseFloat(todayData["1. open"]);
+  const maxima = parseFloat(todayData["2. high"]);
+  const minima = parseFloat(todayData["3. low"]);
+  const volume = parseInt(todayData["6. volume"]);
+
+  const variacao = ((preco - abertura)/abertura*100).toFixed(2) + "%";
+
+  // Cards principais
+  const mainCard = document.createElement('div');
+  mainCard.className = 'card wide';
+  mainCard.innerHTML = `<strong>${symbol}</strong><br>${formatReal(preco)}<br><small>${hoje}</small>`;
+  cardsDiv.appendChild(mainCard);
+
+  // 4 cards secundários
+  const cardData = [
+    ["Abertura", formatReal(abertura)],
+    ["Máxima", formatReal(maxima)],
+    ["Mínima", formatReal(minima)],
+    ["Variação", variacao]
+  ];
+
+  cardData.forEach(([k,v])=>{
+    const c = document.createElement('div');
+    c.className='card';
+    c.innerHTML=`<strong>${k}</strong><br>${v}`;
+    cardsDiv.appendChild(c);
+  });
+
+  // Volume
+  const volCard = document.createElement('div');
+  volCard.className='card';
+  volCard.innerHTML=`<strong>Volume</strong><br>${volume.toLocaleString('pt-BR')}`;
+  cardsDiv.appendChild(volCard);
+
+  // Calcula P/VP e ROE básico a partir do histórico se não houver
+  // Placeholder: não disponível sem dados fundamentalistas
+  const pvp = "N/D"; 
+  const roe = "N/D";
+  const roic = "N/D";
+  const dy = "N/D";
+
+  const indCard = document.createElement('div');
+  indCard.className='card wide';
+  indCard.innerHTML=`<strong>Indicadores</strong><br>P/VP: ${pvp}<br>ROE: ${roe}<br>ROIC: ${roic}<br>DY: ${dy}`;
+  cardsDiv.appendChild(indCard);
+
+  // Histórico: gráfico de preços
+  const labels = dias.reverse();
+  const closes = labels.map(d=>parseFloat(data["Time Series (Daily)"][d]["4. close"]));
+
+  if(chartInstance) chartInstance.destroy();
+  const ctx = document.getElementById('historyChart').getContext('2d');
+  chartInstance = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels,
+      datasets:[{
+        label:`${symbol} - Preço de Fechamento`,
+        data: closes,
+        borderColor:'blue',
+        backgroundColor:'rgba(0,0,255,0.2)',
+        fill:true
+      }]
+    },
+    options:{
+      responsive:true,
+      scales:{
+        x:{ display:true },
+        y:{ display:true, ticks:{ callback: v => formatReal(v) } }
       }
-
-      const ativo = data["Global Quote"];
-      const cards = [
-        { title: "Papel", value: ativo["01. symbol"] },
-        { title: "Data", value: ativo["07. latest trading day"] },
-        { title: "Preço", value: formatBRL(ativo["05. price"]) },
-        { title: "Abertura", value: formatBRL(ativo["02. open"]) },
-        { title: "Máximo", value: formatBRL(ativo["03. high"]) },
-        { title: "Mínimo", value: formatBRL(ativo["04. low"]) },
-        { title: "Volume", value: parseInt(ativo["06. volume"]).toLocaleString('pt-BR') },
-        { title: "Variação", value: parseFloat(ativo["10. change percent"]).toFixed(2) + "%" }
-      ];
-
-      // Card principal horizontal
-      const cardMain = document.createElement('div');
-      cardMain.className = 'card card-horizontal';
-      cardMain.innerHTML = `<strong>${cards[0].title}:</strong> ${cards[0].value}<br><strong>${cards[1].title}:</strong> ${cards[1].value}`;
-      cardsDiv.appendChild(cardMain);
-
-      // Grid de 4 cards
-      const grid = document.createElement('div');
-      grid.className = 'card-grid';
-      cards.slice(2).forEach(c => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `<strong>${c.title}</strong><br>${c.value}`;
-        grid.appendChild(div);
-      });
-      cardsDiv.appendChild(grid);
-
-      // Buscar histórico diário
-      fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${query}&outputsize=compact&apikey=${apiKey}`)
-        .then(res => res.json())
-        .then(hist => {
-          const series = hist["Time Series (Daily)"];
-          if(!series) return;
-
-          const labels = Object.keys(series).slice(0,30).reverse();
-          const dataPoints = labels.map(d => parseFloat(series[d]["4. close"]));
-
-          const ctx = document.getElementById('historicoChart').getContext('2d');
-          new Chart(ctx, {
-            type: 'line',
-            data: { labels, datasets:[{ label:'Fechamento (R$)', data:dataPoints, borderColor:'#000', backgroundColor:'rgba(0,0,0,0.1)'}] },
-            options: { responsive:true, plugins:{ legend:{ display:true } } }
-          });
-        });
-
-    }).catch(err => console.error(err));
+    }
+  });
 }
 </script>
 
