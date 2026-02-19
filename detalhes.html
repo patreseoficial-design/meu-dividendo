@@ -4,15 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meu Dividendo - Alpha Vantage</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
   header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; position: relative; }
   #menu { position:absolute; left:16px; top:16px; cursor:pointer; font-size:1.5em; }
   #searchContainer { text-align:center; margin:20px; }
   #searchInput { padding:8px; font-size:1em; width:200px; }
-  #cards { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
-  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; min-width:140px; text-align:center; }
-  .card.wide { min-width:300px; font-size:1.1em; }
+  
+  /* Card grande topo */
+  #mainCard { background:#000; color:#fff; padding:20px; border-radius:12px; text-align:center; min-width:300px; margin:0 auto 20px auto; }
+  
+  /* Grid 2x2 */
+  #grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; max-width:500px; margin:0 auto 20px auto; }
+  .grid-item { background:#000; color:#fff; padding:16px; border-radius:12px; text-align:center; }
+  
+  /* Caixa clara */
+  #box { background:#fff; padding:20px; border-radius:12px; max-width:600px; margin:0 auto 40px auto; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+  #indicators { display:flex; justify-content:space-around; margin-bottom:20px; font-size:0.95em; }
+  canvas { max-width:100%; }
 </style>
 </head>
 <body>
@@ -25,65 +35,112 @@
 <div id="searchContainer">
   <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: PETR4.SA)">
   <button onclick="buscarAtivo()">Buscar</button>
-  <p style="margin-top:8px; font-size:0.9em; color:#555;">Para ações brasileiras use o sufixo <strong>.SA</strong> no código.</p>
 </div>
 
-<div id="cards"></div>
-
-<footer style="text-align:center; padding:16px; background:#000; color:#fff; margin-top:20px;">Meu Dividendo &copy; 2026</footer>
+<div id="mainCard"></div>
+<div id="grid"></div>
+<div id="box">
+  <div id="indicators"></div>
+  <canvas id="ohlcChart"></canvas>
+</div>
 
 <script>
-const API_KEY = "IV5PKYLN6QK6FKW"; // sua chave Alpha Vantage
+const API_KEY = "IV5PKYLN6WQK6FKW";
+let chartInstance;
 
 function formatBRL(valor) {
   if(!valor) return "-";
-  return parseFloat(valor).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
+  return parseFloat(valor).toLocaleString('pt-BR',{style:'currency', currency:'BRL'});
+}
+
+function formatNumber(valor) {
+  if(!valor) return "-";
+  return parseFloat(valor).toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
 async function buscarAtivo() {
-  const query = document.getElementById('searchInput').value.trim().toUpperCase();
-  if(!query) return alert("Digite um código de ativo!");
-  const cardsDiv = document.getElementById('cards');
-  cardsDiv.innerHTML = '';
+  const symbol = document.getElementById('searchInput').value.trim().toUpperCase();
+  if(!symbol) return alert("Digite um ativo!");
+
+  const mainCardDiv = document.getElementById('mainCard');
+  const gridDiv = document.getElementById('grid');
+  const indicatorsDiv = document.getElementById('indicators');
+
+  mainCardDiv.innerHTML = '';
+  gridDiv.innerHTML = '';
+  indicatorsDiv.innerHTML = '';
+  if(chartInstance) chartInstance.destroy();
 
   try {
-    const res = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${query}&apikey=${API_KEY}`);
+    const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&outputsize=compact&apikey=${API_KEY}`;
+    const res = await fetch(url);
     const data = await res.json();
-    const ativo = data["Global Quote"];
 
-    if(!ativo || Object.keys(ativo).length === 0) {
-      return alert("Ativo não encontrado ou dados indisponíveis.");
-    }
+    if(!data["Time Series (Daily)"]) return alert("Ativo não encontrado ou dados indisponíveis!");
 
-    // Dados principais
-    const cards = [
-      { title: "Papel", value: ativo["01. symbol"] },
-      { title: "Data", value: ativo["07. latest trading day"] },
-      { title: "Preço", value: formatBRL(ativo["05. price"]) },
-      { title: "Abertura", value: formatBRL(ativo["02. open"]) },
-      { title: "Máximo", value: formatBRL(ativo["03. high"]) },
-      { title: "Mínimo", value: formatBRL(ativo["04. low"]) },
-      { title: "Volume", value: parseInt(ativo["06. volume"]).toLocaleString('pt-BR') },
-      { title: "Variação", value: parseFloat(ativo["10. change percent"]).toFixed(2) + "%" }
+    const dias = Object.keys(data["Time Series (Daily)"]).sort().reverse();
+    const hoje = dias[0];
+    const todayData = data["Time Series (Daily)"][hoje];
+
+    const preco = parseFloat(todayData["4. close"]);
+    const abertura = parseFloat(todayData["1. open"]);
+    const maxima = parseFloat(todayData["2. high"]);
+    const minima = parseFloat(todayData["3. low"]);
+    const volume = parseInt(todayData["6. volume"]);
+    const variacao = ((preco - abertura)/abertura*100).toFixed(2) + "%";
+
+    // Card grande topo
+    mainCardDiv.innerHTML = `<strong>${symbol}</strong><br>${hoje}<br>${formatBRL(preco)}`;
+
+    // Grid 2x2
+    const gridData = [
+      ["Abertura", formatBRL(abertura)],
+      ["Máximo", formatBRL(maxima)],
+      ["Mínimo", formatBRL(minima)],
+      ["Fechamento", formatBRL(preco)]
     ];
-
-    // Card principal horizontal
-    const cardMain = document.createElement('div');
-    cardMain.className = 'card wide';
-    cardMain.innerHTML = `<strong>${cards[0].title}:</strong> ${cards[0].value}<br><strong>${cards[1].title}:</strong> ${cards[1].value}`;
-    cardsDiv.appendChild(cardMain);
-
-    // Grid de cards secundários
-    cards.slice(2).forEach(c => {
+    gridData.forEach(([k,v]) => {
       const div = document.createElement('div');
-      div.className = 'card';
-      div.innerHTML = `<strong>${c.title}</strong><br>${c.value}`;
-      cardsDiv.appendChild(div);
+      div.className = 'grid-item';
+      div.innerHTML = `<strong>${k}</strong><br>${v}`;
+      gridDiv.appendChild(div);
+    });
+
+    // Caixa clara: Volume e Variação
+    indicatorsDiv.innerHTML = `
+      <div><strong>Volume:</strong> ${volume.toLocaleString('pt-BR')}</div>
+      <div><strong>Variação:</strong> ${variacao}</div>
+    `;
+
+    // Gráfico OHLC
+    const labels = dias.slice(0,30).reverse(); // últimos 30 dias
+    const opens = labels.map(d=>parseFloat(data["Time Series (Daily)"][d]["1. open"]));
+    const highs = labels.map(d=>parseFloat(data["Time Series (Daily)"][d]["2. high"]));
+    const lows = labels.map(d=>parseFloat(data["Time Series (Daily)"][d]["3. low"]));
+    const closes = labels.map(d=>parseFloat(data["Time Series (Daily)"][d]["4. close"]));
+
+    const ctx = document.getElementById('ohlcChart').getContext('2d');
+    chartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets:[
+          { label:'Abertura', data:opens, borderColor:'green', fill:false },
+          { label:'Máxima', data:highs, borderColor:'red', fill:false },
+          { label:'Mínima', data:lows, borderColor:'orange', fill:false },
+          { label:'Fechamento', data:closes, borderColor:'blue', fill:false }
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{ legend:{ display:true } },
+        scales:{ y:{ ticks:{ callback: v => formatBRL(v) } } }
+      }
     });
 
   } catch(err) {
     console.error(err);
-    alert("Erro ao buscar os dados do ativo.");
+    alert("Erro ao buscar dados do ativo.");
   }
 }
 </script>
