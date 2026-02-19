@@ -1,146 +1,200 @@
-<!DOCTYPE html> 
-<html lang="pt-BR">  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>   
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- CSS GLOBAL + ESPECÍFICO -->
-  <link rel="stylesheet" href="css/global.css">  
-  <link rel="stylesheet" href="css/calculadora.css">  
+<title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>
 
-  <!-- CSS DE OCULTAÇÃO TOTAL (SEM REMOVER HTML) -->
-  <style>
-    header,
-    footer,
-    .topo,
-    nav,
-    #menuLinks,
-    #menuBtn,
-    .profile {
-      display: none !important;
-      visibility: hidden !important;
-      height: 0 !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      overflow: hidden !important;
-    }
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/calculadora.css">
 
-    body {
-      margin: 0;
-      background: #000;
-      font-family: Arial, sans-serif;
-    }
-  </style>
-</head>  
+<style>
+/* OCULTA APENAS O TOPO VISUAL */
+.topo,
+.profile {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
 
-<body>  
+/* MENU HAMBURGUER */
+#menuBtn {
+  display: block !important;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+  font-size: 26px;
+  color: #fff;
+  cursor: pointer;
+}
 
-<header class="topo">  
-  <div id="menuBtn" onclick="toggleMenu()">☰</div>  
-  <a href="index.html" class="logo" style="color:#ffffff; text-decoration:none;">
-    Meu Dividendo
-  </a>
-  <div class="profile"></div>    
-  <nav id="menuLinks" class="menu-links">  
-    <ul>  
-      <li><a href="index.html">🏠 Início</a></li>  
-      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>  
-      <li><a href="curso-investimento.html">Curso de Investimento</a></li>  
-    </ul>  
-  </nav>  
-</header>  
+#menuLinks {
+  display: none;
+  position: fixed;
+  top: 50px;
+  left: 12px;
+  background: #111;
+  padding: 12px;
+  border-radius: 10px;
+  z-index: 9998;
+}
 
-<script>  
-function toggleMenu() {  
-  const menu = document.getElementById('menuLinks');  
-  if(menu.style.display === "block") {  
-    menu.style.display = "none";  
-  } else {  
-    menu.style.display = "block";  
-  }  
-}  
+#menuLinks a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  margin: 6px 0;
+}
+
+/* BODY */
+body {
+  margin: 0;
+  background: #000;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+/* MOEDAS */
+.card {
+  background:#111;
+  padding:12px;
+  border-radius:12px;
+  text-align:center;
+}
+
+/* TICKER */
+.ticker-container {
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  margin-top: 30px;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: scroll 40s linear infinite;
+}
+
+.ticker-item {
+  padding: 10px 22px;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.ticker-item .price {
+  color: #4da3ff;
+  margin-left: 6px;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MENU -->
+<div id="menuBtn" onclick="toggleMenu()">☰</div>
+<nav id="menuLinks">
+  <a href="index.html">🏠 Início</a>
+  <a href="paginadecalculadoras.html">📊 Calculadoras</a>
+  <a href="curso-investimento.html">🎓 Curso</a>
+</nav>
+
+<script>
+function toggleMenu(){
+  const m = document.getElementById("menuLinks");
+  m.style.display = m.style.display === "block" ? "none" : "block";
+}
 </script>
 
-<!-- CONTEÚDO VISÍVEL -->
-<div style="text-align:center; margin:40px 0;">  
-  <h2 style="margin:8px 0 0 0; font-size:20px; font-weight:normal; color:#fff;">
+<!-- TÍTULO -->
+<div style="text-align:center; margin:40px 0;">
+  <h2 style="font-size:20px; font-weight:normal;">
     Cotações Atualizadas
-  </h2> 
-</div> 
+  </h2>
+</div>
 
-<section id="moedas">  
-  <div style="display:flex; justify-content:space-between; gap:8px; padding:0 8px;">  
-
-    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;">
-      <span id="dolar-value">--</span>
-    </div>
-
-    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;">
-      <span id="euro-value">--</span>
-    </div>
-
-    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;">
-      <span id="yuans-value">--</span>
-    </div>
-
-    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;">
-      <span id="bitcoin-value">--</span>
-    </div>
-
+<!-- MOEDAS -->
+<section id="moedas">
+  <div style="display:flex; gap:8px; padding:0 8px;">
+    <div class="card"><span id="dolar-value">--</span></div>
+    <div class="card"><span id="euro-value">--</span></div>
+    <div class="card"><span id="yuans-value">--</span></div>
+    <div class="card"><span id="bitcoin-value">--</span></div>
   </div>
 </section>
 
 <script>
-async function carregarMoedas() {
-  try {
-    const res = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL");
-    const data = await res.json();
-
-    document.getElementById('dolar-value').innerText = `Dólar R$ ${parseFloat(data.USDBRL.ask).toFixed(2)}`;
-    document.getElementById('euro-value').innerText = `Euro R$ ${parseFloat(data.EURBRL.ask).toFixed(2)}`;
-    document.getElementById('yuans-value').innerText = `Yuan R$ ${parseFloat(data.CNYBRL.ask).toFixed(2)}`;
-    document.getElementById('bitcoin-value').innerText = `Bitcoin R$ ${parseFloat(data.BTCBRL.ask).toLocaleString('pt-BR')}`;
-  } catch {
-    document.querySelectorAll('#moedas span').forEach(e => e.innerText = '--');
-  }
+async function carregarMoedas(){
+  try{
+    const r = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL");
+    const d = await r.json();
+    dolar-value.innerText = `Dólar R$ ${(+d.USDBRL.ask).toFixed(2)}`;
+    euro-value.innerText = `Euro R$ ${(+d.EURBRL.ask).toFixed(2)}`;
+    yuans-value.innerText = `Yuan R$ ${(+d.CNYBRL.ask).toFixed(2)}`;
+    bitcoin-value.innerText = `Bitcoin R$ ${(+d.BTCBRL.ask).toLocaleString("pt-BR")}`;
+  }catch{}
 }
-window.addEventListener('load', carregarMoedas);
+carregarMoedas();
 </script>
 
+<!-- TICKER -->
 <div class="ticker-container">
   <div class="ticker-track" id="ticker"></div>
 </div>
 
 <script>
-const tickers = ["CMIG4","BBAS3","CSMG3","PETR4","TAEE11"];
+const tickers = [
+ "CMIG4","BBAS3","CSMG3","PETR4","TAEE11",
+ "SANB11","SBSP3","ELET3","EGIE3","CPLE6",
+ "ENBR3","VIVT3","TIMS3","BBSE3"
+];
 
 async function carregarTicker(){
-  const container = document.getElementById("ticker");
-  container.innerHTML = "";
+  const t = document.getElementById("ticker");
+  t.innerHTML = "";
 
-  const results = await Promise.allSettled(
-    tickers.map(p => fetch(`https://brapi.dev/api/quote/${p}`).then(r=>r.json()))
+  const res = await Promise.allSettled(
+    tickers.map(a =>
+      fetch(`https://brapi.dev/api/quote/${a}`)
+      .then(r=>r.json())
+    )
   );
 
-  results.forEach(r=>{
-    if(r.status==="fulfilled" && r.value?.results?.[0]){
-      const a = r.value.results[0];
-      const div = document.createElement("div");
-      div.className="ticker-item";
-      div.innerHTML = `<strong>${a.symbol}</strong> <span class="price">R$ ${a.regularMarketPrice.toFixed(2)}</span>`;
-      container.appendChild(div);
-    }
+  res.forEach(r=>{
+    const a = r.value?.results?.[0];
+    if(!a) return;
+
+    const preco =
+      a.regularMarketPrice ??
+      a.previousClose ??
+      a.regularMarketPreviousClose ??
+      0;
+
+    const div = document.createElement("div");
+    div.className="ticker-item";
+    div.innerHTML = `<strong>${a.symbol}</strong>
+      <span class="price">R$ ${preco.toFixed(2)}</span>`;
+    t.appendChild(div);
   });
 
-  container.innerHTML += container.innerHTML;
+  t.innerHTML += t.innerHTML;
 }
+
 carregarTicker();
+setInterval(carregarTicker, 60000);
 </script>
 
-<footer>
-  <p>© 2026 Meu Dividendo</p>
+<footer style="text-align:center; padding:20px; font-size:12px; color:#666;">
+  © 2026 Meu Dividendo
 </footer>
 
-</body>  
+</body>
 </html>
