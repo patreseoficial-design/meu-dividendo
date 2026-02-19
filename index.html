@@ -155,6 +155,7 @@ window.addEventListener('load', carregarMoedas);
   </form>
 </div>
 
+
 <script>
 document.getElementById('searchForm').addEventListener('submit', function(e){
   e.preventDefault(); // impede o envio padrão do formulário
@@ -167,6 +168,111 @@ document.getElementById('searchForm').addEventListener('submit', function(e){
   }
 });
 </script>
+
+<!-- Ações Perenes -->
+
+
+<style>
+body {
+  margin: 0;
+  background: #000;
+  font-family: Arial, sans-serif;
+}
+
+.ticker-container {
+  background: #111;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+}
+
+.ticker-track {
+  display: inline-flex;
+  align-items: center;
+  animation: tickerMove 40s linear infinite;
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 14px;
+  border-right: 1px solid #333;
+}
+
+.ticker-item span.price {
+  color: #00ff88;
+  font-weight: bold;
+}
+
+@keyframes tickerMove {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="ticker-container">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<script>
+const tickers = [
+  "CMIG4",
+  "BBAS3",
+  "CSMG3",
+  "PETR4",
+  "TAEE11",
+  "SANB11",
+  "SBSP3",
+  "ELET3",
+  "EGIE3",
+  "CPLE6"
+];
+
+async function carregarTicker() {
+  const container = document.getElementById("ticker");
+  container.innerHTML = "";
+
+  for (const papel of tickers) {
+    try {
+      const res = await fetch(`https://brapi.dev/api/quote/${papel}`);
+      const data = await res.json();
+
+      if (!data.results || !data.results[0]) continue;
+
+      const acao = data.results[0];
+      const preco = acao.regularMarketPrice ?? acao.previousClose;
+
+      const item = document.createElement("div");
+      item.className = "ticker-item";
+      item.innerHTML = `
+        <strong>${acao.symbol}</strong>
+        <span class="price">
+          R$ ${preco.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+        </span>
+      `;
+      container.appendChild(item);
+
+    } catch (e) {
+      console.error("Erro ao carregar", papel);
+    }
+  }
+
+  // Duplica para efeito infinito suave
+  container.innerHTML += container.innerHTML;
+}
+
+// Atualiza a cada 60 segundos
+carregarTicker();
+setInterval(carregarTicker, 60000);
+</script
+
 
 <!-- RODAPÉ -->
 <footer>
