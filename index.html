@@ -3,127 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>
 
 <link rel="stylesheet" href="css/global.css">
 <link rel="stylesheet" href="css/calculadora.css">
 
 <style>
-/* OCULTA APENAS O TOPO VISUAL */
-.topo,
-.profile {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  overflow: hidden !important;
+body{
+  margin:0;
+  background:#000;
+  font-family:Arial,sans-serif;
 }
 
-/* MENU HAMBURGUER */
-#menuBtn {
-  display: block !important;
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  z-index: 9999;
-  font-size: 26px;
-  color: #fff;
-  cursor: pointer;
+/* ===== MOEDAS ===== */
+#moedas > div{
+  display:flex;
+  gap:8px;
+  padding:0 8px;
 }
 
-#menuLinks {
-  display: none;
-  position: fixed;
-  top: 50px;
-  left: 12px;
-  background: #111;
-  padding: 12px;
-  border-radius: 10px;
-  z-index: 9998;
-}
-
-#menuLinks a {
-  color: #fff;
-  text-decoration: none;
-  display: block;
-  margin: 6px 0;
-}
-
-/* BODY */
-body {
-  margin: 0;
-  background: #000;
-  font-family: Arial, sans-serif;
-  color: #fff;
-}
-
-/* MOEDAS */
-.card {
-  background:#111;
-  padding:12px;
+.card{
+  flex:1;
+  min-width:0;
+  background:#000;
+  color:#fff;
+  padding:12px 8px;
   border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   text-align:center;
+  font-size:13px;
 }
 
-/* TICKER */
-.ticker-container {
-  width: 100%;
-  overflow: hidden;
-  background: #000;
-  margin-top: 30px;
+/* ===== TICKER ===== */
+.ticker-container{
+  background:#111;
+  overflow:hidden;
+  white-space:nowrap;
+  border-top:1px solid #222;
+  border-bottom:1px solid #222;
 }
 
-.ticker-track {
-  display: flex;
-  width: max-content;
-  animation: scroll 40s linear infinite;
+.ticker-track{
+  display:flex;
+  width:max-content;
+  animation:tickerMove 45s linear infinite;
 }
 
-.ticker-item {
-  padding: 10px 22px;
-  white-space: nowrap;
-  font-size: 14px;
+.ticker-item{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:10px 20px;
+  color:#fff;
+  border-right:1px solid #333;
+  font-size:14px;
 }
 
-.ticker-item .price {
-  color: #4da3ff;
-  margin-left: 6px;
+.ticker-item .price{
+  color:#00ff88;
+  font-weight:bold;
 }
 
-@keyframes scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+@keyframes tickerMove{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
 }
 </style>
 </head>
 
 <body>
 
-<!-- MENU -->
-<div id="menuBtn" onclick="toggleMenu()">☰</div>
-<nav id="menuLinks">
-  <a href="index.html">🏠 Início</a>
-  <a href="paginadecalculadoras.html">📊 Calculadoras</a>
-  <a href="curso-investimento.html">🎓 Curso</a>
-</nav>
+<header class="topo">
+  <div id="menuBtn" onclick="toggleMenu()">☰</div>
+  <a href="index.html" class="logo" style="color:#fff;text-decoration:none;">Meu Dividendo</a>
+  <div class="profile"></div>
+  <nav id="menuLinks" class="menu-links">
+    <ul>
+      <li><a href="index.html">🏠 Início</a></li>
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
+      <li><a href="curso-investimento.html">Curso de Investimento</a></li>
+    </ul>
+  </nav>
+</header>
 
 <script>
 function toggleMenu(){
-  const m = document.getElementById("menuLinks");
-  m.style.display = m.style.display === "block" ? "none" : "block";
+  const menu=document.getElementById("menuLinks");
+  menu.style.display=menu.style.display==="block"?"none":"block";
 }
 </script>
 
-<!-- TÍTULO -->
-<div style="text-align:center; margin:40px 0;">
-  <h2 style="font-size:20px; font-weight:normal;">
+<div style="text-align:center;margin:40px 0;">
+  <h2 style="margin:8px 0 0 0;font-size:20px;font-weight:normal;">
     Cotações Atualizadas
   </h2>
 </div>
 
-<!-- MOEDAS -->
 <section id="moedas">
-  <div style="display:flex; gap:8px; padding:0 8px;">
+  <div>
     <div class="card"><span id="dolar-value">--</span></div>
     <div class="card"><span id="euro-value">--</span></div>
     <div class="card"><span id="yuans-value">--</span></div>
@@ -134,15 +113,34 @@ function toggleMenu(){
 <script>
 async function carregarMoedas(){
   try{
-    const r = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL");
-    const d = await r.json();
-    dolar-value.innerText = `Dólar R$ ${(+d.USDBRL.ask).toFixed(2)}`;
-    euro-value.innerText = `Euro R$ ${(+d.EURBRL.ask).toFixed(2)}`;
-    yuans-value.innerText = `Yuan R$ ${(+d.CNYBRL.ask).toFixed(2)}`;
-    bitcoin-value.innerText = `Bitcoin R$ ${(+d.BTCBRL.ask).toLocaleString("pt-BR")}`;
+    const res=await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL");
+    const d=await res.json();
+    dolar-value.innerText=`Dólar R$ ${(+d.USDBRL.ask).toFixed(2)}`;
+    euro-value.innerText=`Euro R$ ${(+d.EURBRL.ask).toFixed(2)}`;
+    yuans-value.innerText=`Yuan R$ ${(+d.CNYBRL.ask).toFixed(2)}`;
+    bitcoin-value.innerText=`Bitcoin R$ ${(+d.BTCBRL.ask).toLocaleString("pt-BR")}`;
   }catch{}
 }
-carregarMoedas();
+window.addEventListener("load",carregarMoedas);
+</script>
+
+<!-- BARRA DE PESQUISA -->
+<div style="text-align:center;margin:20px 0;">
+<form id="searchForm">
+<input id="searchInput" placeholder="Digite o código do ativo (ex: MXRF11)"
+style="padding:8px 12px;width:200px;border-radius:6px;border:1px solid #ccc;">
+<button style="padding:8px 12px;border-radius:6px;border:none;background:#000;color:#fff;">
+Buscar
+</button>
+</form>
+</div>
+
+<script>
+searchForm.addEventListener("submit",e=>{
+  e.preventDefault();
+  const t=searchInput.value.trim().toUpperCase();
+  if(t) location.href=`detalhes.html?ativo=${t}`;
+});
 </script>
 
 <!-- TICKER -->
@@ -151,49 +149,34 @@ carregarMoedas();
 </div>
 
 <script>
-const tickers = [
- "CMIG4","BBAS3","CSMG3","PETR4","TAEE11",
- "SANB11","SBSP3","ELET3","EGIE3","CPLE6",
- "ENBR3","VIVT3","TIMS3","BBSE3"
-];
+const tickers=["CMIG4","BBAS3","CSMG3","PETR4","TAEE11","SANB11","SBSP3","ELET3","EGIE3","CPLE6"];
 
 async function carregarTicker(){
-  const t = document.getElementById("ticker");
-  t.innerHTML = "";
-
-  const res = await Promise.allSettled(
-    tickers.map(a =>
-      fetch(`https://brapi.dev/api/quote/${a}`)
-      .then(r=>r.json())
-    )
+  const t=document.getElementById("ticker");
+  t.innerHTML="";
+  const res=await Promise.allSettled(
+    tickers.map(a=>fetch(`https://brapi.dev/api/quote/${a}`).then(r=>r.json()))
   );
 
   res.forEach(r=>{
-    const a = r.value?.results?.[0];
+    const a=r.value?.results?.[0];
     if(!a) return;
-
-    const preco =
-      a.regularMarketPrice ??
-      a.previousClose ??
-      a.regularMarketPreviousClose ??
-      0;
-
-    const div = document.createElement("div");
+    const p=a.regularMarketPrice ?? a.previousClose;
+    const div=document.createElement("div");
     div.className="ticker-item";
-    div.innerHTML = `<strong>${a.symbol}</strong>
-      <span class="price">R$ ${preco.toFixed(2)}</span>`;
+    div.innerHTML=`<strong>${a.symbol}</strong><span class="price">R$ ${p.toFixed(2)}</span>`;
     t.appendChild(div);
   });
 
-  t.innerHTML += t.innerHTML;
+  t.innerHTML+=t.innerHTML;
 }
 
 carregarTicker();
-setInterval(carregarTicker, 60000);
+setInterval(carregarTicker,60000);
 </script>
 
-<footer style="text-align:center; padding:20px; font-size:12px; color:#666;">
-  © 2026 Meu Dividendo
+<footer>
+<p>© 2026 Meu Dividendo — Conteúdo educativo, não é recomendação de investimento.</p>
 </footer>
 
 </body>
