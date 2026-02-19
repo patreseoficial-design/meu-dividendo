@@ -51,7 +51,7 @@ function toggleMenu() {
   <span id="yuans-value">--</span>  
 </div>  
 
-<div class="card" style="flex:1; min-width:90px; max-width:140px; background-color:#000; color:#fff; padding:12px 16px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px;">  
+<div class="card" style="flex:1; min-width:90px; max-width:120px; background-color:#000; color:#fff; padding:12px 16px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px;">  
 
   <span id="bitcoin-value">--</span>  
 </div>
@@ -215,58 +215,45 @@ body {
   <div class="ticker-track" id="ticker"></div>
 </div>
 
- <script>  
-const tickers = [  
-  "CMIG4",  
-  "BBAS3",  
-  "CSMG3",  
-  "PETR4",  
-  "TAEE11",  
-  "SANB11",  
-  "SBSP3",  
-  "ELET3",  
-  "EGIE3",  
-  "CPLE6"  
-];  
-  
-async function carregarTicker() {  
-  const container = document.getElementById("ticker");  
-  container.innerHTML = "";  
-  
-  for (const papel of tickers) {  
-    try {  
-      const res = await fetch(`https://brapi.dev/api/quote/${papel}`);  
-      const data = await res.json();  
-  
-      if (!data.results || !data.results[0]) continue;  
-  
-      const acao = data.results[0];  
-      const preco = acao.regularMarketPrice ?? acao.previousClose;  
-  
-      const item = document.createElement("div");  
-      item.className = "ticker-item";  
-      item.innerHTML = `  
-        <strong>${acao.symbol}</strong>  
-        <span class="price">  
-          R$ ${preco.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}  
-        </span>  
-      `;  
-      container.appendChild(item);  
-  
-    } catch (e) {  
-      console.error("Erro ao carregar", papel);  
-    }  
-  }  
-  
-  // Duplica para efeito infinito suave  
-  container.innerHTML += container.innerHTML;  
-}  
-  
-// Atualiza a cada 60 segundos  
-carregarTicker();  
-setInterval(carregarTicker, 60000);  
-</script  
-  
+ <script>
+const tickers = [
+  "CMIG4","BBAS3","CSMG3","PETR4","TAEE11",
+  "SANB11","SBSP3","ELET3","EGIE3","CPLE6"
+];
+
+async function carregarTicker(){
+  const container = document.getElementById("ticker");
+  container.innerHTML = "";
+
+  const requests = tickers.map(p =>
+    fetch(`https://brapi.dev/api/quote/${p}`)
+      .then(r=>r.json())
+      .catch(()=>null)
+  );
+
+  const results = await Promise.allSettled(requests);
+
+  results.forEach(r=>{
+    if(r.status==="fulfilled" && r.value?.results?.[0]){
+      const a = r.value.results[0];
+      const preco = a.regularMarketPrice ?? a.previousClose;
+
+      const div = document.createElement("div");
+      div.className="ticker-item";
+      div.innerHTML = `
+        <strong>${a.symbol}</strong>
+        <span class="price">R$ ${preco.toFixed(2)}</span>
+      `;
+      container.appendChild(div);
+    }
+  });
+
+  container.innerHTML += container.innerHTML; // loop infinito
+}
+
+carregarTicker();
+setInterval(carregarTicker, 60000);
+</script>
   
 <!-- RODAPÉ -->  
 <footer>  
