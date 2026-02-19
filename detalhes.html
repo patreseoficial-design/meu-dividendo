@@ -25,27 +25,34 @@
 </header>
 
 <div id="searchContainer">
-  <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: PETR4.SA)">
+  <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: PETR4.SA ou AAPL)">
   <button onclick="buscarAtivo()">Buscar</button>
+  <p style="margin-top:8px; font-size:0.9em; color:#555;">
+    Para ações brasileiras use <strong>.SA</strong> no código. Não é feito preenchimento automático.
+  </p>
 </div>
 
 <div id="cards"></div>
 <canvas id="historyChart"></canvas>
 
 <script>
-const API_KEY = "IV5PKYLN6WQK6FKW"; // sua chave Alpha Vantage
+const API_KEY = "IV5PKYLN6WQK6FKW";
 let chartInstance;
 
-async function buscarAtivo() {
-  const queryInput = document.getElementById('searchInput').value.trim().toUpperCase();
-  if(!queryInput) return alert("Digite um ativo!");
+function formatBRL(valor) {
+  if(!valor) return "-";
+  return parseFloat(valor).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
+}
 
-  const symbol = queryInput; // Aqui a pessoa já deve colocar .SA se brasileiro
+async function buscarAtivo() {
+  const query = document.getElementById('searchInput').value.trim().toUpperCase();
+  if(!query) return alert("Digite um ativo!");
+
   const cardsDiv = document.getElementById('cards');
   cardsDiv.innerHTML = '';
 
-  // Busca dados intraday/dia atual
-  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${API_KEY}&outputsize=compact`;
+  // Pega histórico diário
+  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${query}&apikey=${API_KEY}&outputsize=compact`;
   const res = await fetch(url);
   const data = await res.json();
 
@@ -53,38 +60,32 @@ async function buscarAtivo() {
     return alert("Ativo não encontrado ou dados indisponíveis!");
   }
 
-  // Pega a data mais recente
+  // Última data
   const dias = Object.keys(data["Time Series (Daily)"]).sort().reverse();
   const hoje = dias[0];
   const todayData = data["Time Series (Daily)"][hoje];
 
-  // Formatação números em R$
-  const formatReal = n => parseFloat(n).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-  const formatNumber = n => parseFloat(n).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 });
-
-  // Calcula indicadores básicos
+  // Valores
   const preco = parseFloat(todayData["4. close"]);
   const abertura = parseFloat(todayData["1. open"]);
   const maxima = parseFloat(todayData["2. high"]);
   const minima = parseFloat(todayData["3. low"]);
   const volume = parseInt(todayData["6. volume"]);
-
   const variacao = ((preco - abertura)/abertura*100).toFixed(2) + "%";
 
-  // Cards principais
+  // Card principal
   const mainCard = document.createElement('div');
   mainCard.className = 'card wide';
-  mainCard.innerHTML = `<strong>${symbol}</strong><br>${formatReal(preco)}<br><small>${hoje}</small>`;
+  mainCard.innerHTML = `<strong>${query}</strong><br>${formatBRL(preco)}<br><small>${hoje}</small>`;
   cardsDiv.appendChild(mainCard);
 
   // 4 cards secundários
   const cardData = [
-    ["Abertura", formatReal(abertura)],
-    ["Máxima", formatReal(maxima)],
-    ["Mínima", formatReal(minima)],
+    ["Abertura", formatBRL(abertura)],
+    ["Máxima", formatBRL(maxima)],
+    ["Mínima", formatBRL(minima)],
     ["Variação", variacao]
   ];
-
   cardData.forEach(([k,v])=>{
     const c = document.createElement('div');
     c.className='card';
@@ -98,20 +99,14 @@ async function buscarAtivo() {
   volCard.innerHTML=`<strong>Volume</strong><br>${volume.toLocaleString('pt-BR')}`;
   cardsDiv.appendChild(volCard);
 
-  // Calcula P/VP e ROE básico a partir do histórico se não houver
-  // Placeholder: não disponível sem dados fundamentalistas
-  const pvp = "N/D"; 
-  const roe = "N/D";
-  const roic = "N/D";
-  const dy = "N/D";
-
+  // Indicadores placeholder
   const indCard = document.createElement('div');
   indCard.className='card wide';
-  indCard.innerHTML=`<strong>Indicadores</strong><br>P/VP: ${pvp}<br>ROE: ${roe}<br>ROIC: ${roic}<br>DY: ${dy}`;
+  indCard.innerHTML=`<strong>Indicadores</strong><br>P/VP: N/D<br>ROE: N/D<br>ROIC: N/D<br>DY: N/D`;
   cardsDiv.appendChild(indCard);
 
-  // Histórico: gráfico de preços
-  const labels = dias.reverse();
+  // Gráfico histórico últimos 30 dias
+  const labels = dias.slice(0,30).reverse();
   const closes = labels.map(d=>parseFloat(data["Time Series (Daily)"][d]["4. close"]));
 
   if(chartInstance) chartInstance.destroy();
@@ -121,7 +116,7 @@ async function buscarAtivo() {
     data:{
       labels,
       datasets:[{
-        label:`${symbol} - Preço de Fechamento`,
+        label:`${query} - Fechamento`,
         data: closes,
         borderColor:'blue',
         backgroundColor:'rgba(0,0,255,0.2)',
@@ -132,7 +127,7 @@ async function buscarAtivo() {
       responsive:true,
       scales:{
         x:{ display:true },
-        y:{ display:true, ticks:{ callback: v => formatReal(v) } }
+        y:{ display:true, ticks:{ callback: v => formatBRL(v) } }
       }
     }
   });
