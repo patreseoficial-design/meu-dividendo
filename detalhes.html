@@ -3,29 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Dividendo - Pesquisa de Ativos</title>
+<title>Meu Dividendo - Ações & FIIs</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
-header { background:#000; color:#fff; padding:16px; text-align:center; position: relative; }
-#menu { position:absolute; left:16px; top:16px; cursor:pointer; font-size:1.5em; }
-#searchContainer { text-align:center; margin:20px; }
-#searchInput { padding:8px; font-size:1em; width:200px; }
-#resultContainer { margin:20px; }
-.card-horizontal { background:#000; color:#fff; padding:16px 24px; border-radius:12px; text-align:center; min-width:300px; margin-bottom:12px; }
-.grid-2x2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
-.card { background:#000; color:#fff; padding:16px; border-radius:12px; text-align:center; }
-.box { background:#fff; padding:16px; border-radius:12px; margin-bottom:20px; }
-#historyChart { max-width:800px; margin:0 auto; }
-.section-20 { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:40px; }
-.section-20 .card { min-width:120px; font-size:0.9em; }
+  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
+  header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; position: relative; }
+  #menu { position:absolute; left:16px; top:16px; cursor:pointer; font-size:1.5em; }
+  #searchContainer { text-align:center; margin:20px; }
+  #searchInput { padding:8px; font-size:1em; width:200px; }
+  #resultado { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
+  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; min-width:140px; text-align:center; }
+  .card.wide { min-width:300px; font-size:1.1em; }
+  #boxVolumeGrafico { background:#fff; padding:16px; border-radius:12px; margin:20px auto; max-width:800px; }
+  #volumeVar { display:flex; justify-content:space-between; margin-bottom:12px; font-weight:bold; }
+  #historyChart { width:100%; height:300px; }
+  .top20Container { display:flex; justify-content:space-around; margin:20px auto; max-width:900px; gap:12px; }
+  .top20Box { background:#eee; border-radius:12px; padding:12px; flex:1; min-width:200px; max-height:220px; overflow:hidden; }
+  .top20Box h3 { text-align:center; margin:8px 0; }
+  .ticker { white-space:nowrap; overflow:hidden; position:relative; border-top:1px solid #ccc; border-bottom:1px solid #ccc; background:#ddd; padding:8px 0; margin:12px auto; max-width:800px; }
+  .ticker div { display:inline-block; padding:0 24px; animation: tickerMove 40s linear infinite; font-weight:bold; }
+  @keyframes tickerMove { 0% { transform:translateX(100%); } 100% { transform:translateX(-100%); } }
 </style>
 </head>
 <body>
 
 <header>
   <span id="menu">&#9776;</span>
-  Meu Dividendo - Pesquisa de Ativos
+  Meu Dividendo - Ações & FIIs
 </header>
 
 <div id="searchContainer">
@@ -33,149 +37,141 @@ header { background:#000; color:#fff; padding:16px; text-align:center; position:
   <button onclick="buscarAtivo()">Buscar</button>
 </div>
 
-<div id="resultContainer"></div>
+<div id="resultado"></div>
 
-<div>
-  <h3 style="text-align:center;">20 Mais Ações</h3>
-  <div id="topAcoes" class="section-20"></div>
+<div id="boxVolumeGrafico">
+  <div id="volumeVar">
+    <span id="volumeText">Volume: -</span>
+    <span id="variacaoText">Variação: -</span>
+  </div>
+  <canvas id="historyChart"></canvas>
 </div>
 
-<div>
-  <h3 style="text-align:center;">20 Mais FIIs</h3>
-  <div id="topFiis" class="section-20"></div>
+<div class="top20Container">
+  <div class="top20Box" id="topAcoes"><h3>Top 10 Ações</h3><div id="acoesList"></div></div>
+  <div class="top20Box" id="topFiis"><h3>Top 10 FIIs</h3><div id="fiisList"></div></div>
 </div>
+
+<div class="ticker" id="ticker20"></div>
 
 <script>
-const ALPHA_KEY = "IV5PKYLN6WQK6FKW";
-const BRAPI_KEY = "iTFTqSn6W2cyuHNrhcM2rJ";
-
-// Mock 20 mais - exemplo, você pode atualizar via Brapi Github
-const topAcoesLista = ["PETR4.SA","VALE3.SA","ITUB4.SA","BBDC4.SA","ABEV3.SA","BBAS3.SA","WEGE3.SA","MGLU3.SA","LREN3.SA","RENT3.SA","GGBR4.SA","SUZB3.SA","USIM5.SA","RAIL3.SA","VVAR3.SA","HYPE3.SA","COGN3.SA","B3SA3.SA","ELET3.SA","ENBR3.SA"];
-const topFiisLista = ["MXRF11","HGLG11","KNRI11","BCFF11","RBRP11","XPML11","HGRE11","VLOL11","FIIB11","RECT11","KNCR11","HGBS11","HFOF11","VRTA11","ALZR11","GGRC11","BTLG11","HCTR11","IRDM11","GGRC11"];
-
+const API_ALPHA = "IV5PKYLN6WQK6FKW";
+const API_BRAPI_KEY = "iTFTqSn6W2cyuHNrhcM2rJ";
 let chartInstance;
 
-function formatBRL(v){ return parseFloat(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
-function formatNum(v){ return parseFloat(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-
-async function fetchAlpha(symbol){
-  try {
-    const res = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_KEY}`);
-    const data = await res.json();
-    if(data["Global Quote"] && Object.keys(data["Global Quote"]).length) return data["Global Quote"];
-  } catch(e){console.log(e);}
-  return null;
-}
-
-async function fetchBrapi(symbol, key=false){
-  try {
-    const url = key
-      ? `https://brapi.dev/api/quote/${symbol}?token=${BRAPI_KEY}`
-      : `https://brapi.dev/api/quote/${symbol}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    if(data.results && data.results.length) return data.results[0];
-  } catch(e){console.log(e);}
-  return null;
-}
-
-async function buscarAtivo(){
+async function buscarAtivo() {
   const query = document.getElementById('searchInput').value.trim().toUpperCase();
   if(!query) return alert("Digite um ativo!");
-  const resultDiv = document.getElementById('resultContainer');
-  resultDiv.innerHTML = '';
 
-  const isFii = query.endsWith("11");
-  let ativo = null;
-
-  if(!isFii){
-    ativo = await fetchAlpha(query) || await fetchBrapi(query,false) || await fetchBrapi(query,true);
-  } else {
-    ativo = await fetchBrapi(query,true);
-  }
-
-  if(!ativo) return alert("Ativo não encontrado ou indisponível!");
-
-  // Cards layout
-  const symbol = isFii ? ativo.stock ? ativo.stock : query : ativo["01. symbol"] || ativo.symbol;
-  const preco = parseFloat(ativo["05. price"] || ativo.regularMarketPrice || 0);
-  const abertura = parseFloat(ativo["02. open"] || ativo.regularMarketOpen || 0);
-  const maxima = parseFloat(ativo["03. high"] || ativo.regularMarketDayHigh || 0);
-  const minima = parseFloat(ativo["04. low"] || ativo.regularMarketDayLow || 0);
-  const volume = parseInt(ativo["06. volume"] || ativo.regularMarketVolume || 0);
-  const variacao = (ativo["10. change percent"] || ativo.changePercent || "0") ;
-
-  // Card grande horizontal
-  const cardH = document.createElement('div');
-  cardH.className='card-horizontal';
-  cardH.innerHTML=`<strong>${symbol}</strong><br>${formatBRL(preco)}<br><small>${new Date().toLocaleDateString()}</small>`;
-  resultDiv.appendChild(cardH);
-
-  // Grid 2x2
-  const grid = document.createElement('div');
-  grid.className='grid-2x2';
-  [["Abertura",abertura],["Máxima",maxima],["Mínima",minima],["Variação",variacao]].forEach(([k,v])=>{
-    const c = document.createElement('div');
-    c.className='card';
-    c.innerHTML=`<strong>${k}</strong><br>${typeof v==="number"?formatBRL(v):v}`;
-    grid.appendChild(c);
-  });
-  resultDiv.appendChild(grid);
-
-  // Caixa clara volume + gráfico
-  const box = document.createElement('div');
-  box.className='box';
-  box.innerHTML=`<strong>Volume:</strong> ${volume.toLocaleString('pt-BR')}<br>`;
-  const canvas = document.createElement('canvas');
-  canvas.id='chartBox';
-  box.appendChild(canvas);
-  resultDiv.appendChild(box);
-
+  const resultadoDiv = document.getElementById('resultado');
+  resultadoDiv.innerHTML = '';
+  document.getElementById('volumeText').textContent = "Volume: -";
+  document.getElementById('variacaoText').textContent = "Variação: -";
   if(chartInstance) chartInstance.destroy();
-  const ctx = document.getElementById('chartBox').getContext('2d');
-  chartInstance = new Chart(ctx,{
-    type:'line',
-    data:{
-      labels:["Abertura","Máxima","Mínima","Fechamento"],
-      datasets:[{
-        label:`${symbol}`,
-        data:[abertura,maxima,minima,preco],
-        borderColor:'blue',
-        backgroundColor:'rgba(0,0,255,0.2)',
-        fill:true
-      }]
-    },
-    options:{responsive:true, plugins:{legend:{display:false}}}
-  });
 
-  carregarTop("topAcoes",topAcoesLista,false);
-  carregarTop("topFiis",topFiisLista,true);
-}
+  let data = null;
 
-// Função para carregar 20 mais
-async function carregarTop(divId,list,isFii){
-  const container = document.getElementById(divId);
-  container.innerHTML='';
-  for(const s of list){
-    let ativo = null;
-    if(!isFii){
-      ativo = await fetchAlpha(s) || await fetchBrapi(s,false) || await fetchBrapi(s,true);
-    } else {
-      ativo = await fetchBrapi(s,true);
-    }
-    if(!ativo) continue;
-    const symbol = isFii ? ativo.stock ? ativo.stock : s : ativo["01. symbol"] || ativo.symbol;
-    const preco = parseFloat(ativo["05. price"] || ativo.regularMarketPrice || 0);
+  // 1️⃣ Tenta Alpha
+  try {
+    const resAlpha = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${query}&apikey=${API_ALPHA}`);
+    const alphaJson = await resAlpha.json();
+    if(alphaJson["Global Quote"] && Object.keys(alphaJson["Global Quote"]).length) data = alphaJson["Global Quote"];
+  } catch(e){}
+
+  // 2️⃣ Se não veio nada tenta Brapi com key
+  if(!data) {
+    try {
+      const resBrapi = await fetch(`https://brapi.dev/api/quote/${query}?apikey=${API_BRAPI_KEY}`);
+      const brapiJson = await resBrapi.json();
+      if(brapiJson.results && brapiJson.results.length) data = brapiJson.results[0];
+    } catch(e){}
+  }
+
+  if(!data) return alert("Ativo não encontrado ou indisponível!");
+
+  const formatBRL = v => parseFloat(v).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
+  const formatNum = v => parseFloat(v).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 });
+
+  // Cria cards
+  const isFII = query.endsWith("11");
+  const papel = data["01. symbol"] || data["stock"] || data["symbol"];
+  const preco = parseFloat(data["05. price"] || data["regularMarketPrice"] || 0);
+  const abertura = parseFloat(data["02. open"] || data["regularMarketOpen"] || 0);
+  const maxima = parseFloat(data["03. high"] || data["regularMarketDayHigh"] || 0);
+  const minima = parseFloat(data["04. low"] || data["regularMarketDayLow"] || 0);
+  const volume = parseInt(data["06. volume"] || data["regularMarketVolume"] || 0);
+  const variacao = data["10. change percent"] || data["regularMarketChangePercent"] || 0;
+
+  const mainCard = document.createElement('div');
+  mainCard.className='card wide';
+  mainCard.innerHTML = `<strong>${papel}</strong><br>${formatBRL(preco)}<br><small>${data["07. latest trading day"] || data["regularMarketTime"] || "-"}</small>`;
+  resultadoDiv.appendChild(mainCard);
+
+  const cardData = [
+    ["Abertura", formatBRL(abertura)],
+    ["Máxima", formatBRL(maxima)],
+    ["Mínima", formatBRL(minima)],
+    ["Preço atual", formatBRL(preco)]
+  ];
+  cardData.forEach(([k,v])=>{
     const c = document.createElement('div');
     c.className='card';
-    c.innerHTML=`${symbol}<br>${formatBRL(preco)}`;
-    container.appendChild(c);
-  }
+    c.innerHTML=`<strong>${k}</strong><br>${v}`;
+    resultadoDiv.appendChild(c);
+  });
+
+  document.getElementById('volumeText').textContent = `Volume: ${volume.toLocaleString('pt-BR')}`;
+  document.getElementById('variacaoText').textContent = `Variação: ${formatNum(variacao)}%`;
+
+  // Gráfico 📈 só com abertura, máxima, mínima, fechamento
+  const ctx = document.getElementById('historyChart').getContext('2d');
+  const labels = ["Abertura","Máxima","Mínima","Fechamento"];
+  const dataGraf = [abertura,maxima,minima,preco];
+  chartInstance = new Chart(ctx, {
+    type:'line',
+    data:{ labels, datasets:[{label:papel, data:dataGraf, borderColor:'blue', backgroundColor:'rgba(0,0,255,0.2)', fill:true}] },
+    options:{ responsive:true, scales:{ y:{ ticks:{ callback: v => formatBRL(v) } } } }
+  });
 }
 
-// Carrega top fixos ao iniciar
-carregarTop("topAcoes",topAcoesLista,false);
-carregarTop("topFiis",topFiisLista,true);
+// Função top 20 fixos
+async function carregarTop20() {
+  const acoesList = document.getElementById('acoesList');
+  const fiisList = document.getElementById('fiisList');
+  const tickerDiv = document.getElementById('ticker20');
+
+  // 10 Ações fixas (exemplo)
+  const topAcoes = ["VALE3","PETR4","ITUB4","BBDC4","ABEV3","MGLU3","WEGE3","BBAS3","SUZB3","LREN3"];
+  // 10 FIIs fixos (exemplo)
+  const topFiis = ["MXRF11","KNRI11","HGLG11","VISC11","BCFF11","XPML11","FIIB11","HGBS11","RBRP11","RECT11"];
+
+  const promisesAcoes = topAcoes.map(async s=>{
+    try {
+      const res = await fetch(`https://brapi.dev/api/quote/${s}?apikey=${API_BRAPI_KEY}`);
+      const r = await res.json();
+      const stock = r.results[0];
+      return `${stock.symbol}: ${parseFloat(stock.regularMarketPrice).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}`;
+    } catch{return `${s}: -`;}
+  });
+  const promisesFiis = topFiis.map(async s=>{
+    try {
+      const res = await fetch(`https://brapi.dev/api/quote/${s}?apikey=${API_BRAPI_KEY}`);
+      const r = await res.json();
+      const fii = r.results[0];
+      return `${fii.symbol}: ${parseFloat(fii.regularMarketPrice).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}`;
+    } catch{return `${s}: -`;}
+  });
+
+  const resAcoes = await Promise.all(promisesAcoes);
+  const resFiis = await Promise.all(promisesFiis);
+
+  acoesList.innerHTML = resAcoes.map(v=>`<div>${v}</div>`).join('');
+  fiisList.innerHTML = resFiis.map(v=>`<div>${v}</div>`).join('');
+  tickerDiv.innerHTML = resAcoes.concat(resFiis).map(v=>`<div>${v}</div>`).join('');
+}
+
+// Inicializa top20
+carregarTop20();
 </script>
 
 </body>
