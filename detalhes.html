@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Dividendo - Alpha Vantage</title>
+<title>Meu Dividendo - Alpha + BrAPI</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
@@ -11,17 +11,11 @@
   #menu { position:absolute; left:16px; top:16px; cursor:pointer; font-size:1.5em; }
   #searchContainer { text-align:center; margin:20px; }
   #searchInput { padding:8px; font-size:1em; width:200px; }
-  
-  /* Card grande topo */
-  #mainCard { background:#000; color:#fff; padding:20px; border-radius:12px; text-align:center; min-width:300px; margin:0 auto 20px auto; }
-  
-  /* Grid 2x2 */
-  #grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; max-width:500px; margin:0 auto 20px auto; }
-  .grid-item { background:#000; color:#fff; padding:16px; border-radius:12px; text-align:center; }
-  
-  /* Caixa clara */
-  #box { background:#fff; padding:20px; border-radius:12px; max-width:600px; margin:0 auto 40px auto; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-  #indicators { display:flex; justify-content:space-around; margin-bottom:20px; font-size:0.95em; }
+  #cards { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
+  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; min-width:140px; text-align:center; }
+  .card.wide { min-width:300px; font-size:1.1em; }
+  #infoBox { background:#fff; padding:16px; border-radius:12px; margin:20px; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
+  #infoBox .row { display:flex; justify-content:space-around; margin-bottom:16px; }
   canvas { max-width:100%; }
 </style>
 </head>
@@ -29,7 +23,7 @@
 
 <header>
   <span id="menu">&#9776;</span>
-  Meu Dividendo - Alpha Vantage
+  Meu Dividendo - Alpha + BrAPI
 </header>
 
 <div id="searchContainer">
@@ -37,111 +31,127 @@
   <button onclick="buscarAtivo()">Buscar</button>
 </div>
 
-<div id="mainCard"></div>
-<div id="grid"></div>
-<div id="box">
-  <div id="indicators"></div>
-  <canvas id="ohlcChart"></canvas>
+<div id="cards"></div>
+
+<div id="infoBox" style="display:none;">
+  <div class="row">
+    <div><strong>Volume</strong><br><span id="volume"></span></div>
+    <div><strong>Variação</strong><br><span id="variacao"></span></div>
+  </div>
+  <canvas id="chart"></canvas>
 </div>
 
 <script>
-const API_KEY = "IV5PKYLN6WQK6FKW";
+const API_KEY = "IV5PKYLN6WQK6FKW"; // Alpha Vantage
 let chartInstance;
 
 function formatBRL(valor) {
-  if(!valor) return "-";
-  return parseFloat(valor).toLocaleString('pt-BR',{style:'currency', currency:'BRL'});
+  return parseFloat(valor).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
 }
 
 function formatNumber(valor) {
-  if(!valor) return "-";
-  return parseFloat(valor).toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
+  return parseFloat(valor).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 });
 }
 
 async function buscarAtivo() {
-  const symbol = document.getElementById('searchInput').value.trim().toUpperCase();
-  if(!symbol) return alert("Digite um ativo!");
+  const query = document.getElementById('searchInput').value.trim().toUpperCase();
+  if(!query) return alert("Digite um código de ativo!");
+  const cardsDiv = document.getElementById('cards');
+  cardsDiv.innerHTML = '';
+  document.getElementById('infoBox').style.display = 'none';
 
-  const mainCardDiv = document.getElementById('mainCard');
-  const gridDiv = document.getElementById('grid');
-  const indicatorsDiv = document.getElementById('indicators');
+  let ativo = null;
 
-  mainCardDiv.innerHTML = '';
-  gridDiv.innerHTML = '';
-  indicatorsDiv.innerHTML = '';
+  // 1️⃣ Tenta Alpha Vantage
+  try {
+    const resAlpha = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${query}&apikey=${API_KEY}`);
+    const dataAlpha = await resAlpha.json();
+    if(dataAlpha["Global Quote"] && Object.keys(dataAlpha["Global Quote"]).length > 0) {
+      const g = dataAlpha["Global Quote"];
+      ativo = {
+        symbol: g["01. symbol"],
+        date: g["07. latest trading day"],
+        price: parseFloat(g["05. price"]),
+        open: parseFloat(g["02. open"]),
+        high: parseFloat(g["03. high"]),
+        low: parseFloat(g["04. low"]),
+        volume: parseInt(g["06. volume"]),
+        changePercent: g["10. change percent"]
+      };
+    }
+  } catch(e) {
+    console.error("Erro Alpha:", e);
+  }
+
+  // 2️⃣ Fallback: BrAPI
+  if(!ativo) {
+    try {
+      const resBrapi = await fetch(`https://brapi.ga/api/quote/${query}`);
+      const dataBrapi = await resBrapi.json();
+      if(dataBrapi.results && dataBrapi.results.length > 0) {
+        const b = dataBrapi.results[0];
+        ativo = {
+          symbol: b.symbol,
+          date: b.stockExchangeShortName || "-",
+          price: b.regularMarketPrice,
+          open: b.regularMarketOpen,
+          high: b.regularMarketDayHigh,
+          low: b.regularMarketDayLow,
+          volume: b.regularMarketVolume,
+          changePercent: b.regularMarketChangePercent
+        };
+      }
+    } catch(e) {
+      console.error("Erro BrAPI:", e);
+    }
+  }
+
+  if(!ativo) return alert("Ativo não encontrado em nenhuma fonte.");
+
+  // Cards principais
+  const mainCard = document.createElement('div');
+  mainCard.className = 'card wide';
+  mainCard.innerHTML = `<strong>${ativo.symbol}</strong><br>${formatBRL(ativo.price)}<br><small>${ativo.date}</small>`;
+  cardsDiv.appendChild(mainCard);
+
+  const cardData = [
+    ["Abertura", formatBRL(ativo.open)],
+    ["Máxima", formatBRL(ativo.high)],
+    ["Mínima", formatBRL(ativo.low)],
+    ["Preço", formatBRL(ativo.price)]
+  ];
+
+  cardData.forEach(([k,v])=>{
+    const c = document.createElement('div');
+    c.className='card';
+    c.innerHTML=`<strong>${k}</strong><br>${v}`;
+    cardsDiv.appendChild(c);
+  });
+
+  // Caixa clara com volume + variação
+  document.getElementById('volume').innerText = ativo.volume.toLocaleString('pt-BR');
+  document.getElementById('variacao').innerText = ativo.changePercent;
+  document.getElementById('infoBox').style.display = 'block';
+
+  // Gráfico simples OHLC
+  const ctx = document.getElementById('chart').getContext('2d');
   if(chartInstance) chartInstance.destroy();
 
-  try {
-    const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&outputsize=compact&apikey=${API_KEY}`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if(!data["Time Series (Daily)"]) return alert("Ativo não encontrado ou dados indisponíveis!");
-
-    const dias = Object.keys(data["Time Series (Daily)"]).sort().reverse();
-    const hoje = dias[0];
-    const todayData = data["Time Series (Daily)"][hoje];
-
-    const preco = parseFloat(todayData["4. close"]);
-    const abertura = parseFloat(todayData["1. open"]);
-    const maxima = parseFloat(todayData["2. high"]);
-    const minima = parseFloat(todayData["3. low"]);
-    const volume = parseInt(todayData["6. volume"]);
-    const variacao = ((preco - abertura)/abertura*100).toFixed(2) + "%";
-
-    // Card grande topo
-    mainCardDiv.innerHTML = `<strong>${symbol}</strong><br>${hoje}<br>${formatBRL(preco)}`;
-
-    // Grid 2x2
-    const gridData = [
-      ["Abertura", formatBRL(abertura)],
-      ["Máximo", formatBRL(maxima)],
-      ["Mínimo", formatBRL(minima)],
-      ["Fechamento", formatBRL(preco)]
-    ];
-    gridData.forEach(([k,v]) => {
-      const div = document.createElement('div');
-      div.className = 'grid-item';
-      div.innerHTML = `<strong>${k}</strong><br>${v}`;
-      gridDiv.appendChild(div);
-    });
-
-    // Caixa clara: Volume e Variação
-    indicatorsDiv.innerHTML = `
-      <div><strong>Volume:</strong> ${volume.toLocaleString('pt-BR')}</div>
-      <div><strong>Variação:</strong> ${variacao}</div>
-    `;
-
-    // Gráfico OHLC
-    const labels = dias.slice(0,30).reverse(); // últimos 30 dias
-    const opens = labels.map(d=>parseFloat(data["Time Series (Daily)"][d]["1. open"]));
-    const highs = labels.map(d=>parseFloat(data["Time Series (Daily)"][d]["2. high"]));
-    const lows = labels.map(d=>parseFloat(data["Time Series (Daily)"][d]["3. low"]));
-    const closes = labels.map(d=>parseFloat(data["Time Series (Daily)"][d]["4. close"]));
-
-    const ctx = document.getElementById('ohlcChart').getContext('2d');
-    chartInstance = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets:[
-          { label:'Abertura', data:opens, borderColor:'green', fill:false },
-          { label:'Máxima', data:highs, borderColor:'red', fill:false },
-          { label:'Mínima', data:lows, borderColor:'orange', fill:false },
-          { label:'Fechamento', data:closes, borderColor:'blue', fill:false }
-        ]
-      },
-      options:{
-        responsive:true,
-        plugins:{ legend:{ display:true } },
-        scales:{ y:{ ticks:{ callback: v => formatBRL(v) } } }
-      }
-    });
-
-  } catch(err) {
-    console.error(err);
-    alert("Erro ao buscar dados do ativo.");
-  }
+  chartInstance = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels:["Abertura","Máxima","Mínima","Fechamento"],
+      datasets:[{
+        label:`${ativo.symbol} (R$)`,
+        data:[ativo.open, ativo.high, ativo.low, ativo.price],
+        backgroundColor:['#4caf50','#2196f3','#ff9800','#9c27b0']
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{ display:false } }
+    }
+  });
 }
 </script>
 
