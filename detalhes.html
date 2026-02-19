@@ -42,7 +42,6 @@ const API_KEY = "IV5PKYLN6WQK6FKW";
 let chartInstance;
 
 function formatBRL(n) { return parseFloat(n).toLocaleString('pt-BR', { style:'currency', currency:'BRL' }); }
-function formatNumber(n) { return parseFloat(n).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 }); }
 
 async function buscarAtivo() {
   const query = document.getElementById('searchInput').value.trim().toUpperCase();
@@ -68,7 +67,7 @@ async function buscarAtivo() {
     const volume = parseInt(todayData["6. volume"]);
     const variacao = ((preco - abertura)/abertura*100).toFixed(2) + "%";
 
-    // Cards principais
+    // Card principal
     const mainCard = document.createElement('div');
     mainCard.className = 'card wide';
     mainCard.innerHTML = `<strong>${query}</strong><br>${formatBRL(preco)}<br><small>${hoje}</small>`;
@@ -88,20 +87,6 @@ async function buscarAtivo() {
       c.innerHTML = `<strong>${k}</strong><br>${v}`;
       cardsDiv.appendChild(c);
     });
-
-    // Indicadores calculados
-    // P/VP, ROE, DY usando histórico básico
-    const prices = dias.map(d => parseFloat(data["Time Series (Daily)"][d]["4. close"]));
-    const meanPrice = prices.reduce((a,b)=>a+b,0)/prices.length;
-
-    const pvp = "N/D"; // Sem dados fundamentalistas reais
-    const roe = "N/D";
-    const dy = "N/D";
-
-    const indCard = document.createElement('div');
-    indCard.className='card wide';
-    indCard.innerHTML = `<strong>Indicadores</strong><br>P/VP: ${pvp}<br>ROE: ${roe}<br>DY: ${dy}`;
-    cardsDiv.appendChild(indCard);
 
     // Gráfico histórico
     const labels = dias.reverse();
