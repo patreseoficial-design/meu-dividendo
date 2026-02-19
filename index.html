@@ -1,145 +1,292 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>
+<!DOCTYPE html> 
+ <html lang="pt-BR">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>   
 
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/calculadora.css">
 
-<style>
-/* ===== AÇÕES PERENES ===== */
-.ticker-container {
-  background: #111;
-  overflow: hidden;
-  white-space: nowrap;
-  border-top: 1px solid #222;
-  border-bottom: 1px solid #222;
-  margin: 30px 0;
-}
 
-.ticker-track {
-  display: inline-flex;
-  align-items: center;
-  animation: tickerMove 45s linear infinite;
-}
+ <!-- CSS GLOBAL + ESPECÍFICO -->    <link rel="stylesheet" href="css/global.css">  
+  <link rel="stylesheet" href="css/calculadora.css">  </head>  
+<body>  
+<header class="topo">  
+  <div id="menuBtn" onclick="toggleMenu()">☰</div>  <a href="index.html"  
+class="logo"  
+style="color:#ffffff; text-decoration:none;">
+Meu Dividendo
+</a>
 
-.ticker-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 22px;
-  color: #fff;
-  font-size: 14px;
-  border-right: 1px solid #333;
-}
+  <div class="profile"></div>    <nav id="menuLinks" class="menu-links">  
+    <ul>  
+      <li><a href="index.html">🏠 Início</a></li>  
+      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>  
+            <li><a href="curso-investimento.html">Curso de Investimento</a></li>  
+    </ul>  
+  </nav>  
+</header>  <script>  
+function toggleMenu() {  
+  const menu = document.getElementById('menuLinks');  
+  if(menu.style.display === "block") {  
+    menu.style.display = "none"; // esconde  
+  } else {  
+    menu.style.display = "block"; // mostra  
+  }  
+}  
+</script>  <!-- Título e Subtítulo centralizados -->  <div style="text-align:center; margin:40px 0;">  
+  <h2 style="margin:8px 0 0 0; font-size:20px; font-weight:normal;">Cotações Atualizadas</h2>  
+</div>  <!-- MOEDAS -->  <!-- MOEDAS -->  <section id="moedas">  
+  <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:nowrap; padding:0 8px;">  <!-- Card Horizontal -->  
+<div class="card" style="flex:1; min-width:90px; max-width:140px; background-color:#000; color:#fff; padding:12px 16px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px;">  
+  <span id="dolar-value">--</span>  
+</div>  
 
-.ticker-item .price {
-  color: #00ff88;
-  font-weight: bold;
-}
+<div class="card" style="flex:1; min-width:90px; max-width:140px; background-color:#000; color:#fff; padding:12px 16px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px;">  
 
-@keyframes tickerMove {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(-100%); }
-}
-</style>
-</head>
+  <span id="euro-value">--</span>  
+</div>  
 
-<body>
+<div class="card" style="flex:1; min-width:90px; max-width:140px; background-color:#000; color:#fff; padding:12px 16px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px;">  
 
-<header class="topo">
-  <div id="menuBtn" onclick="toggleMenu()">☰</div>
-  <a href="index.html" class="logo" style="color:#fff;text-decoration:none;">Meu Dividendo</a>
-  <div class="profile"></div>
+  <span id="yuans-value">--</span>  
+</div>  
 
-  <nav id="menuLinks" class="menu-links">
-    <ul>
-      <li><a href="index.html">🏠 Início</a></li>
-      <li><a href="paginadecalculadoras.html">Calculadoras</a></li>
-      <li><a href="curso-investimento.html">Curso de Investimento</a></li>
-    </ul>
-  </nav>
-</header>
+<div class="card" style="flex:1; min-width:90px; max-width:140px; background-color:#000; color:#fff; padding:12px 16px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px;">  
 
-<script>
-function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
-</script>
-
-<div style="text-align:center; margin:40px 0;">
-  <h2 style="font-size:20px;font-weight:normal;">Cotações Atualizadas</h2>
+  <span id="bitcoin-value">--</span>  
 </div>
 
-<!-- BARRA DE PESQUISA -->
-<div style="text-align:center; margin:20px 0;">
-<form id="searchForm">
-  <input id="searchInput" placeholder="Digite o código do ativo (ex: MXRF11)"
-    style="padding:8px;width:200px;border-radius:6px;border:1px solid #ccc;">
-  <button style="padding:8px 12px;background:#000;color:#fff;border:none;border-radius:6px;">
-    Buscar
-  </button>
-</form>
-</div>
+  </div>  
+</section>  <!-- JS -->  <script>  
+async function carregarMoedas() {  
+  try {  
+    const res = await fetch(  
+      "https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL"  
+    );  
+    const data = await res.json();  
+  
+    const dolar = parseFloat(data.USDBRL.ask);  
+    const euro = parseFloat(data.EURBRL.ask);  
+    const yuan = parseFloat(data.CNYBRL.ask);  
+    const bitcoin = parseFloat(data.BTCBRL.ask);  
+  
+    document.getElementById('dolar-value').innerText = `R$ ${dolar.toFixed(2)}`;  
+    document.getElementById('euro-value').innerText = `R$ ${euro.toFixed(2)}`;  
+    document.getElementById('yuans-value').innerText = `R$ ${yuan.toFixed(2)}`;  
+    document.getElementById('bitcoin-value').innerText = `R$ ${bitcoin.toLocaleString('pt-BR')}`;  
+  } catch (error) {  
+    console.error('Erro ao carregar moedas:', error);  
+    document.getElementById('dolar-value').innerText = '--';  
+    document.getElementById('euro-value').innerText = '--';  
+    document.getElementById('yuans-value').innerText = '--';  
+    document.getElementById('bitcoin-value').innerText = '--';  
+  }  
+}  
+  
+// Atualiza ao carregar a página  
+window.addEventListener('load', carregarMoedas);  
+</script>  <script>
 
-<script>
-document.getElementById('searchForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const ativo = searchInput.value.trim().toUpperCase();
-  if (ativo) location.href = `detalhes.html?ativo=${ativo}`;
-});
+// ===================== CARREGAR MOEDAS =====================
+async function carregarMoedas() {
+try {
+const res = await fetch(
+"https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL"
+);
+const data = await res.json();
+
+const dolar = parseFloat(data.USDBRL.ask);  
+const euro = parseFloat(data.EURBRL.ask);  
+const yuan = parseFloat(data.CNYBRL.ask);  
+const bitcoin = parseFloat(data.BTCBRL.ask);  
+
+document.getElementById('dolar-value').innerText = `Dólar R$ ${dolar.toFixed(2)}`;  
+document.getElementById('euro-value').innerText = `Euro R$ ${euro.toFixed(2)}`;  
+document.getElementById('yuans-value').innerText = `Yuan R$ ${yuan.toFixed(2)}`;  
+document.getElementById('bitcoin-value').innerText = `Bitcoin R$ ${bitcoin.toLocaleString('pt-BR')}`;
+
+} catch (error) {
+console.error('Erro ao carregar moedas:', error);
+document.getElementById('dolar-value').innerText = '--';
+document.getElementById('euro-value').innerText = '--';
+document.getElementById('yuans-value').innerText = '--';
+document.getElementById('bitcoin-value').innerText = '--';
+}
+}
+
+// Executa ao carregar a página
+window.addEventListener('load', carregarMoedas);
 </script>
 
-<!-- AÇÕES PERENES -->
+<!-- BARRA DE PESQUISA -->  <div style="text-align:center; margin:20px 0;">  
+  <form id="searchForm" style="display:inline-block;">  
+    <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: MXRF11)"   
+           style="padding:8px 12px; width:200px; border-radius:6px; border:1px solid #ccc;">  
+    <button type="submit"   
+            style="padding:8px 12px; border-radius:6px; border:none; background-color:#000; color:#fff; cursor:pointer;">  
+      Buscar  
+    </button>  
+  </form>  
+</div>  <script>  
+document.getElementById('searchForm').addEventListener('submit', function(e){  
+  e.preventDefault(); // impede o envio padrão do formulário  
+  const ticker = document.getElementById('searchInput').value.trim().toUpperCase();  
+  if(ticker){  
+    // Redireciona para a subpágina passando o ativo  
+    window.location.href = `detalhes.html?ativo=${ticker}`;  
+  } else {  
+    alert("Digite um código de ativo válido!");  
+  }  
+});  
+</script>  <!-- Ações Perenes -->  <style>  
+body {  
+  margin: 0;  
+  background: #000;  
+  font-family: Arial, sans-serif;  
+}  
+  
+.ticker-container {  
+  background: #111;  
+  overflow: hidden;  
+  white-space: nowrap;  
+  border-top: 1px solid #222;  
+  border-bottom: 1px solid #222;  
+}  
+  
+.ticker-track {  
+  display: inline-flex;  
+  align-items: center;  
+  animation: tickerMove 40s linear infinite;  
+}  
+  
+.ticker-item {  
+  display: flex;  
+  align-items: center;  
+  gap: 6px;  
+  padding: 10px 20px;  
+  color: #fff;  
+  font-size: 14px;  
+  border-right: 1px solid #333;  
+}  
+  
+.ticker-item span.price {  
+  color: #00ff88;  
+  font-weight: bold;  
+}  
+  
+@keyframes tickerMove {  
+  0%   { transform: translateX(100%); }  
+  100% { transform: translateX(-100%); }  
+}  
+
+
+.ticker-container{
+  background:#111;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.ticker-track{
+  display:flex;
+  animation:tickerMove 45s linear infinite;
+}
+
+.ticker-item{
+  padding:10px 20px;
+  color:#fff;
+  border-right:1px solid #333;
+}
+
+.ticker-item .price{
+  color:#00ff88;
+  font-weight:bold;
+}
+
+@keyframes tickerMove{
+  from{transform:translateX(100%)}
+  to{transform:translateX(-100%)}
+}
+</style> 
+ </head> 
+ <body>  
+
+
 <div class="ticker-container">
   <div class="ticker-track" id="ticker"></div>
 </div>
 
-<script>
-const ativosPerenes = [
-  "CMIG4","BBAS3","CSMG3","PETR4","TAEE11",
-  "SANB11","SBSP3","ELET3","EGIE3","CPLE6"
-];
-
-async function carregarAtivosPerenes() {
-  const track = document.getElementById("ticker");
-  track.innerHTML = "";
-
-  try {
-    const res = await fetch(
-      `https://brapi.dev/api/quote/${ativosPerenes.join(",")}`
-    );
-    const data = await res.json();
-
-    data.results.forEach(a => {
-      const preco = a.regularMarketPrice ?? a.previousClose;
-      const div = document.createElement("div");
-      div.className = "ticker-item";
-      div.innerHTML = `
-        <strong>${a.symbol}</strong>
-        <span class="price">
-          R$ ${preco.toLocaleString("pt-BR",{minimumFractionDigits:2})}
-        </span>`;
-      track.appendChild(div);
-    });
-
-    track.innerHTML += track.innerHTML; // loop contínuo
-
-  } catch (e) {
-    console.error("Erro BRAPI:", e);
-  }
-}
-
-carregarAtivosPerenes();
-setInterval(carregarAtivosPerenes, 60000);
-</script>
-
-<footer>
-<p>© 2026 Meu Dividendo — Conteúdo educativo, não é recomendação de investimento.</p>
-</footer>
-
-</body>
+ <script>  
+const tickers = [  
+  "CMIG4",  
+  "BBAS3",  
+  "CSMG3",  
+  "PETR4",  
+  "TAEE11",  
+  "SANB11",  
+  "SBSP3",  
+  "ELET3",  
+  "EGIE3",  
+  "CPLE6"  
+];  
+  
+async function carregarTicker() {  
+  const container = document.getElementById("ticker");  
+  container.innerHTML = "";  
+  
+  for (const papel of tickers) {  
+    try {  
+      const res = await fetch(`https://brapi.dev/api/quote/${papel}`);  
+      const data = await res.json();  
+  
+      if (!data.results || !data.results[0]) continue;  
+  
+      const acao = data.results[0];  
+      const preco = acao.regularMarketPrice ?? acao.previousClose;  
+  
+      const item = document.createElement("div");  
+      item.className = "ticker-item";  
+      item.innerHTML = `  
+        <strong>${acao.symbol}</strong>  
+        <span class="price">  
+          R$ ${preco.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}  
+        </span>  
+      `;  
+      container.appendChild(item);  
+  
+    } catch (e) {  
+      console.error("Erro ao carregar", papel);  
+    }  
+  }  
+  
+  // Duplica para efeito infinito suave  
+  container.innerHTML += container.innerHTML;  
+}  
+  
+// Atualiza a cada 60 segundos  
+carregarTicker();  
+setInterval(carregarTicker, 60000);  
+</script  
+  
+  
+<!-- RODAPÉ -->  
+<footer>  
+  <p>© 2026 Meu Dividendo — Conteúdo educativo, não é recomendação de investimento.</p>  
+</footer>  
+  
+<!-- JS -->  
+<script>  
+// Exemplo: você mantém suas funções de moedas, tops e pesquisa  
+async function carregarMoedas() { /* ... */ }  
+async function carregarTop() { /* ... */ }  
+async function carregarAtivosPerenes() { /* ... */ }  
+async function buscarAtivo() { /* ... */ }  
+  
+// Inicializa funções  
+window.addEventListener('DOMContentLoaded', () => {  
+  carregarMoedas();  
+  carregarTop();  
+  carregarAtivosPerenes();  
+  setInterval(carregarAtivosPerenes, 60000);  
+});  
+</script>  </body>  
 </html>
