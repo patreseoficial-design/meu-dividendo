@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meu Dividendo - Alpha Vantage</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
   header { background:#000; color:#fff; padding:16px; text-align:center; font-size:1.2em; position: relative; }
@@ -14,7 +13,6 @@
   #cards { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
   .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; min-width:140px; text-align:center; }
   .card.wide { min-width:300px; font-size:1.1em; }
-  #historyChart { max-width:800px; margin:20px auto; background:#fff; border-radius:12px; padding:16px; }
 </style>
 </head>
 <body>
@@ -27,127 +25,65 @@
 <div id="searchContainer">
   <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: PETR4.SA)">
   <button onclick="buscarAtivo()">Buscar</button>
-  <p style="font-size:0.9em; color:#555;">Para ações brasileiras use o sufixo <strong>.SA</strong>. Digite corretamente.</p>
+  <p style="margin-top:8px; font-size:0.9em; color:#555;">Para ações brasileiras use o sufixo <strong>.SA</strong> no código.</p>
 </div>
 
 <div id="cards"></div>
-<canvas id="historyChart"></canvas>
+
+<footer style="text-align:center; padding:16px; background:#000; color:#fff; margin-top:20px;">Meu Dividendo &copy; 2026</footer>
 
 <script>
-const API_KEY = "IV5PKYLN6WQK6FKW";
-let chartInstance;
+const API_KEY = "IV5PKYLN6QK6FKW"; // sua chave Alpha Vantage
 
-// Formata número para reais
-function formatReal(n) {
-  if(!n) return "-";
-  return parseFloat(n).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-}
-
-// Formata número com 2 casas decimais
-function formatNumber(n) {
-  if(!n) return "-";
-  return parseFloat(n).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 });
+function formatBRL(valor) {
+  if(!valor) return "-";
+  return parseFloat(valor).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
 }
 
 async function buscarAtivo() {
-  const queryInput = document.getElementById('searchInput').value.trim().toUpperCase();
-  if(!queryInput) return alert("Digite um ativo!");
-
-  const symbol = queryInput; // sem preenchimento automático
+  const query = document.getElementById('searchInput').value.trim().toUpperCase();
+  if(!query) return alert("Digite um código de ativo!");
   const cardsDiv = document.getElementById('cards');
   cardsDiv.innerHTML = '';
 
-  // Oculta o gráfico inicialmente
-  const chartCanvas = document.getElementById('historyChart');
-  chartCanvas.style.display = 'none';
-
   try {
-    const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${API_KEY}&outputsize=compact`;
-    const res = await fetch(url);
+    const res = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${query}&apikey=${API_KEY}`);
     const data = await res.json();
+    const ativo = data["Global Quote"];
 
-    if(data["Error Message"]) return alert("Ativo não encontrado ou inválido!");
-    if(data["Note"]) return alert("Limite de requisições atingido. Tente novamente em 1 minuto.");
+    if(!ativo || Object.keys(ativo).length === 0) {
+      return alert("Ativo não encontrado ou dados indisponíveis.");
+    }
 
-    const series = data["Time Series (Daily)"];
-    if(!series) return alert("Histórico não disponível para este ativo.");
-
-    const dias = Object.keys(series).sort().reverse();
-    const hoje = dias[0];
-    const todayData = series[hoje];
-
-    // Valores do dia
-    const preco = parseFloat(todayData["4. close"]);
-    const abertura = parseFloat(todayData["1. open"]);
-    const maxima = parseFloat(todayData["2. high"]);
-    const minima = parseFloat(todayData["3. low"]);
-    const volume = parseInt(todayData["6. volume"]);
-    const variacao = ((preco - abertura)/abertura*100).toFixed(2) + "%";
-
-    // Card principal
-    const mainCard = document.createElement('div');
-    mainCard.className = 'card wide';
-    mainCard.innerHTML = `<strong>${symbol}</strong><br>${formatReal(preco)}<br><small>${hoje}</small>`;
-    cardsDiv.appendChild(mainCard);
-
-    // 4 cards secundários
-    const cardData = [
-      ["Abertura", formatReal(abertura)],
-      ["Máxima", formatReal(maxima)],
-      ["Mínima", formatReal(minima)],
-      ["Variação", variacao]
+    // Dados principais
+    const cards = [
+      { title: "Papel", value: ativo["01. symbol"] },
+      { title: "Data", value: ativo["07. latest trading day"] },
+      { title: "Preço", value: formatBRL(ativo["05. price"]) },
+      { title: "Abertura", value: formatBRL(ativo["02. open"]) },
+      { title: "Máximo", value: formatBRL(ativo["03. high"]) },
+      { title: "Mínimo", value: formatBRL(ativo["04. low"]) },
+      { title: "Volume", value: parseInt(ativo["06. volume"]).toLocaleString('pt-BR') },
+      { title: "Variação", value: parseFloat(ativo["10. change percent"]).toFixed(2) + "%" }
     ];
 
-    cardData.forEach(([k,v])=>{
-      const c = document.createElement('div');
-      c.className='card';
-      c.innerHTML=`<strong>${k}</strong><br>${v}`;
-      cardsDiv.appendChild(c);
-    });
+    // Card principal horizontal
+    const cardMain = document.createElement('div');
+    cardMain.className = 'card wide';
+    cardMain.innerHTML = `<strong>${cards[0].title}:</strong> ${cards[0].value}<br><strong>${cards[1].title}:</strong> ${cards[1].value}`;
+    cardsDiv.appendChild(cardMain);
 
-    // Volume
-    const volCard = document.createElement('div');
-    volCard.className='card';
-    volCard.innerHTML=`<strong>Volume</strong><br>${volume.toLocaleString('pt-BR')}`;
-    cardsDiv.appendChild(volCard);
-
-    // Indicadores básicos (placeholder)
-    const indCard = document.createElement('div');
-    indCard.className='card wide';
-    indCard.innerHTML=`<strong>Indicadores</strong><br>P/VP: N/D<br>ROE: N/D<br>ROIC: N/D<br>DY: N/D`;
-    cardsDiv.appendChild(indCard);
-
-    // Histórico: só se houver
-    const labels = dias.reverse();
-    const closes = labels.map(d=>parseFloat(series[d]["4. close"]));
-
-    chartCanvas.style.display = 'block';
-    if(chartInstance) chartInstance.destroy();
-    const ctx = chartCanvas.getContext('2d');
-    chartInstance = new Chart(ctx, {
-      type:'line',
-      data:{
-        labels,
-        datasets:[{
-          label:`${symbol} - Preço de Fechamento`,
-          data: closes,
-          borderColor:'blue',
-          backgroundColor:'rgba(0,0,255,0.2)',
-          fill:true
-        }]
-      },
-      options:{
-        responsive:true,
-        scales:{
-          x:{ display:true },
-          y:{ display:true, ticks:{ callback: v => formatReal(v) } }
-        }
-      }
+    // Grid de cards secundários
+    cards.slice(2).forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `<strong>${c.title}</strong><br>${c.value}`;
+      cardsDiv.appendChild(div);
     });
 
   } catch(err) {
     console.error(err);
-    alert("Erro ao buscar os dados. Verifique o código do ativo ou sua conexão.");
+    alert("Erro ao buscar os dados do ativo.");
   }
 }
 </script>
