@@ -57,35 +57,7 @@ function toggleMenu() {
 </div>
 
   </div>  
-</section>  <!-- JS -->  <script>  
-async function carregarMoedas() {  
-  try {  
-    const res = await fetch(  
-      "https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL"  
-    );  
-    const data = await res.json();  
-  
-    const dolar = parseFloat(data.USDBRL.ask);  
-    const euro = parseFloat(data.EURBRL.ask);  
-    const yuan = parseFloat(data.CNYBRL.ask);  
-    const bitcoin = parseFloat(data.BTCBRL.ask);  
-  
-    document.getElementById('dolar-value').innerText = `R$ ${dolar.toFixed(2)}`;  
-    document.getElementById('euro-value').innerText = `R$ ${euro.toFixed(2)}`;  
-    document.getElementById('yuans-value').innerText = `R$ ${yuan.toFixed(2)}`;  
-    document.getElementById('bitcoin-value').innerText = `R$ ${bitcoin.toLocaleString('pt-BR')}`;  
-  } catch (error) {  
-    console.error('Erro ao carregar moedas:', error);  
-    document.getElementById('dolar-value').innerText = '--';  
-    document.getElementById('euro-value').innerText = '--';  
-    document.getElementById('yuans-value').innerText = '--';  
-    document.getElementById('bitcoin-value').innerText = '--';  
-  }  
-}  
-  
-// Atualiza ao carregar a página  
-window.addEventListener('load', carregarMoedas);  
-</script>  <script>
+</section>  
 
 // ===================== CARREGAR MOEDAS =====================
 async function carregarMoedas() {
