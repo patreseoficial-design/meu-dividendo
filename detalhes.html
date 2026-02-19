@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Dividendo - Alpha + BrAPI</title>
+<title>Meu Dividendo - Painel 20 Mais</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
@@ -11,146 +11,173 @@
   #menu { position:absolute; left:16px; top:16px; cursor:pointer; font-size:1.5em; }
   #searchContainer { text-align:center; margin:20px; }
   #searchInput { padding:8px; font-size:1em; width:200px; }
-  #cards { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
-  .card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; min-width:140px; text-align:center; }
-  .card.wide { min-width:300px; font-size:1.1em; }
-  #infoBox { background:#fff; padding:16px; border-radius:12px; margin:20px; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
-  #infoBox .row { display:flex; justify-content:space-around; margin-bottom:16px; }
-  canvas { max-width:100%; }
+  .section-title { text-align:center; margin:16px 0; font-weight:bold; font-size:1.1em; }
+  .cards-row { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:0 8px 16px 8px; }
+  .card { background:#000; color:#fff; padding:12px 16px; border-radius:8px; min-width:120px; text-align:center; font-size:0.9em; }
+  .card-wide { min-width:240px; font-size:1em; }
+  #userCards { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
+  #chartContainer { max-width:800px; margin:20px auto; background:#fff; border-radius:12px; padding:16px; }
 </style>
 </head>
 <body>
 
 <header>
   <span id="menu">&#9776;</span>
-  Meu Dividendo - Alpha + BrAPI
+  Meu Dividendo - Painel 20 Mais
 </header>
 
 <div id="searchContainer">
-  <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: PETR4.SA)">
+  <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: PETR4.SA ou MXRF11)">
   <button onclick="buscarAtivo()">Buscar</button>
 </div>
 
-<div id="cards"></div>
+<!-- Top 20 Ações -->
+<div class="section-title">20 Ações Mais Negociadas</div>
+<div id="topAcoes" class="cards-row"></div>
 
-<div id="infoBox" style="display:none;">
-  <div class="row">
-    <div><strong>Volume</strong><br><span id="volume"></span></div>
-    <div><strong>Variação</strong><br><span id="variacao"></span></div>
-  </div>
-  <canvas id="chart"></canvas>
+<!-- Top 20 FIIs -->
+<div class="section-title">20 FIIs Mais Negociados</div>
+<div id="topFiis" class="cards-row"></div>
+
+<!-- Busca do usuário -->
+<div id="userCards"></div>
+
+<div id="chartContainer">
+  <canvas id="userChart"></canvas>
 </div>
 
 <script>
-const API_KEY = "IV5PKYLN6WQK6FKW"; // Alpha Vantage
+const ALPHA_KEY = "IV5PKYLN6WQK6FKW";
+const BRAPI_KEY = "iTFTqSn6W2cyuHNrhcM2rJ";
+
+// Listas fixas das 20 mais (apenas código do papel)
+const topAcoesList = ["PETR4.SA","VALE3.SA","ITUB4.SA","BBDC4.SA","ABEV3.SA","BBAS3.SA","WEGE3.SA","LREN3.SA","MGLU3.SA","GGBR4.SA","SUZB3.SA","JBSS3.SA","RENT3.SA","RAIL3.SA","HYPE3.SA","VVAR3.SA","BPAC11.SA","SANB11.SA","EGIE3.SA","COGN3.SA"];
+const topFiisList = ["MXRF11","HGLG11","KNRI11","VISC11","BCFF11","XPLG11","HGRE11","HGBS11","RBRF11","XPML11","FIGS11","TORD11","LVBI11","VRTA11","KNCR11","MFII11","HFOF11","JSRE11","HCTR11","RBRP11"];
+
+// Função para formatar em R$
+function formatBRL(v){return parseFloat(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}
+function formatPerc(v){return parseFloat(v).toFixed(2)+"%";}
+
+// Função para popular uma lista fixa usando Brapi GitHub gratuita
+async function popularLista(codigos, containerId, tipo){
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  for(const c of codigos){
+    try{
+      const res = await fetch(`https://brapi.dev/api/quote/${c}`);
+      const data = await res.json();
+      const quote = data.results[0];
+      if(!quote) continue;
+      const card = document.createElement('div');
+      card.className='card';
+      card.innerHTML = `<strong>${quote.symbol}</strong><br>
+                        ${formatBRL(quote.regularMarketPrice)}<br>
+                        Abertura: ${formatBRL(quote.regularMarketOpen)}<br>
+                        Máx: ${formatBRL(quote.regularMarketDayHigh)}<br>
+                        Mín: ${formatBRL(quote.regularMarketDayLow)}<br>
+                        Variação: ${formatPerc(quote.regularMarketChangePercent)}`;
+      container.appendChild(card);
+    }catch(e){console.log("Erro:",c,e);}
+  }
+}
+
+// Inicializa as 20 mais
+popularLista(topAcoesList,'topAcoes','acoes');
+popularLista(topFiisList,'topFiis','fiis');
+
+// Busca do usuário
 let chartInstance;
-
-function formatBRL(valor) {
-  return parseFloat(valor).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-}
-
-function formatNumber(valor) {
-  return parseFloat(valor).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 });
-}
-
-async function buscarAtivo() {
+async function buscarAtivo(){
   const query = document.getElementById('searchInput').value.trim().toUpperCase();
-  if(!query) return alert("Digite um código de ativo!");
-  const cardsDiv = document.getElementById('cards');
-  cardsDiv.innerHTML = '';
-  document.getElementById('infoBox').style.display = 'none';
+  if(!query) return alert("Digite um ativo!");
+  const userCards = document.getElementById('userCards');
+  userCards.innerHTML = '';
 
-  let ativo = null;
-
-  // 1️⃣ Tenta Alpha Vantage
-  try {
-    const resAlpha = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${query}&apikey=${API_KEY}`);
-    const dataAlpha = await resAlpha.json();
-    if(dataAlpha["Global Quote"] && Object.keys(dataAlpha["Global Quote"]).length > 0) {
-      const g = dataAlpha["Global Quote"];
-      ativo = {
-        symbol: g["01. symbol"],
-        date: g["07. latest trading day"],
-        price: parseFloat(g["05. price"]),
-        open: parseFloat(g["02. open"]),
-        high: parseFloat(g["03. high"]),
-        low: parseFloat(g["04. low"]),
-        volume: parseInt(g["06. volume"]),
-        changePercent: g["10. change percent"]
+  // Função de fallback: Alpha → Brapi GitHub grátis → Brapi com chave
+  async function getQuote(symbol){
+    // 1) Alpha
+    try{
+      const resA = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_KEY}`);
+      const dataA = await resA.json();
+      if(dataA["Global Quote"] && Object.keys(dataA["Global Quote"]).length>0) return {
+        symbol:dataA["Global Quote"]["01. symbol"],
+        price:dataA["Global Quote"]["05. price"],
+        open:dataA["Global Quote"]["02. open"],
+        high:dataA["Global Quote"]["03. high"],
+        low:dataA["Global Quote"]["04. low"],
+        change:dataA["Global Quote"]["10. change percent"]
       };
-    }
-  } catch(e) {
-    console.error("Erro Alpha:", e);
+    }catch(e){}
+    // 2) Brapi GitHub grátis
+    try{
+      const resB = await fetch(`https://brapi.dev/api/quote/${symbol}`);
+      const dataB = await resB.json();
+      const quote = dataB.results[0];
+      if(quote) return {
+        symbol:quote.symbol,
+        price:quote.regularMarketPrice,
+        open:quote.regularMarketOpen,
+        high:quote.regularMarketDayHigh,
+        low:quote.regularMarketDayLow,
+        change:quote.regularMarketChangePercent
+      };
+    }catch(e){}
+    // 3) Brapi com chave
+    try{
+      const resC = await fetch(`https://brapi.dev/api/quote/${symbol}?apikey=${BRAPI_KEY}`);
+      const dataC = await resC.json();
+      const quote = dataC.results[0];
+      if(quote) return {
+        symbol:quote.symbol,
+        price:quote.regularMarketPrice,
+        open:quote.regularMarketOpen,
+        high:quote.regularMarketDayHigh,
+        low:quote.regularMarketDayLow,
+        change:quote.regularMarketChangePercent
+      };
+    }catch(e){}
+    return null;
   }
 
-  // 2️⃣ Fallback: BrAPI
-  if(!ativo) {
-    try {
-      const resBrapi = await fetch(`https://brapi.ga/api/quote/${query}`);
-      const dataBrapi = await resBrapi.json();
-      if(dataBrapi.results && dataBrapi.results.length > 0) {
-        const b = dataBrapi.results[0];
-        ativo = {
-          symbol: b.symbol,
-          date: b.stockExchangeShortName || "-",
-          price: b.regularMarketPrice,
-          open: b.regularMarketOpen,
-          high: b.regularMarketDayHigh,
-          low: b.regularMarketDayLow,
-          volume: b.regularMarketVolume,
-          changePercent: b.regularMarketChangePercent
-        };
-      }
-    } catch(e) {
-      console.error("Erro BrAPI:", e);
-    }
-  }
+  const ativo = await getQuote(query);
+  if(!ativo) return alert("Ativo não encontrado ou dados indisponíveis!");
 
-  if(!ativo) return alert("Ativo não encontrado em nenhuma fonte.");
-
-  // Cards principais
+  // Cards
   const mainCard = document.createElement('div');
-  mainCard.className = 'card wide';
-  mainCard.innerHTML = `<strong>${ativo.symbol}</strong><br>${formatBRL(ativo.price)}<br><small>${ativo.date}</small>`;
-  cardsDiv.appendChild(mainCard);
+  mainCard.className='card card-wide';
+  mainCard.innerHTML=`<strong>${ativo.symbol}</strong><br>${formatBRL(ativo.price)}`;
+  userCards.appendChild(mainCard);
 
   const cardData = [
-    ["Abertura", formatBRL(ativo.open)],
-    ["Máxima", formatBRL(ativo.high)],
-    ["Mínima", formatBRL(ativo.low)],
-    ["Preço", formatBRL(ativo.price)]
+    ["Abertura",formatBRL(ativo.open)],
+    ["Máxima",formatBRL(ativo.high)],
+    ["Mínima",formatBRL(ativo.low)],
+    ["Variação",formatPerc(ativo.change)]
   ];
 
   cardData.forEach(([k,v])=>{
-    const c = document.createElement('div');
+    const c=document.createElement('div');
     c.className='card';
     c.innerHTML=`<strong>${k}</strong><br>${v}`;
-    cardsDiv.appendChild(c);
+    userCards.appendChild(c);
   });
 
-  // Caixa clara com volume + variação
-  document.getElementById('volume').innerText = ativo.volume.toLocaleString('pt-BR');
-  document.getElementById('variacao').innerText = ativo.changePercent;
-  document.getElementById('infoBox').style.display = 'block';
-
-  // Gráfico simples OHLC
-  const ctx = document.getElementById('chart').getContext('2d');
+  // Gráfico simples de linha com abertura, max, min e fechamento (📈)
+  const ctx = document.getElementById('userChart').getContext('2d');
   if(chartInstance) chartInstance.destroy();
-
-  chartInstance = new Chart(ctx, {
-    type:'bar',
+  chartInstance = new Chart(ctx,{
+    type:'line',
     data:{
-      labels:["Abertura","Máxima","Mínima","Fechamento"],
+      labels:['Abertura','Máx','Mín','Fechamento'],
       datasets:[{
-        label:`${ativo.symbol} (R$)`,
-        data:[ativo.open, ativo.high, ativo.low, ativo.price],
-        backgroundColor:['#4caf50','#2196f3','#ff9800','#9c27b0']
+        label:ativo.symbol,
+        data:[ativo.open,ativo.high,ativo.low,ativo.price],
+        borderColor:'green',
+        backgroundColor:'rgba(0,255,0,0.2)',
+        fill:true
       }]
     },
-    options:{
-      responsive:true,
-      plugins:{ legend:{ display:false } }
-    }
+    options:{responsive:true, plugins:{legend:{display:true}}}
   });
 }
 </script>
