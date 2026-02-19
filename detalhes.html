@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meu Dividendo - Pesquisa de Ativos</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 <style>
 body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
 header { background:#000; color:#fff; padding:16px; text-align:center; position: relative; }
@@ -23,10 +25,21 @@ header { background:#000; color:#fff; padding:16px; text-align:center; position:
 </head>
 <body>
 
-<header>
-  <span id="menu">&#9776;</span>
-  Meu Dividendo - Pesquisa de Ativos
-</header>
+ <header>  
+  <div class="menu" onclick="toggleMenu()">☰</div>    <h1 class="site-title">  
+    <a href="index.html">Meu Dividendo</a>  
+  </h1>    <nav id="menuLinks" class="menu-links">  
+    <ul>  
+      <li><a href="index.html">Início</a></li>  
+                        <li><a href="paginadecalculadoras.html">Calculadoras</a></li>  
+      <li><a href="curso-investimento.html">Curso de Investimento</a></li>  </ul>
+
+<li><a href="feeddenoticias.html">Noticias</a></li>  </ul>
+<
+  </nav>  
+</header> 
+
+
 
 <div id="searchContainer">
   <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: PETR4.SA ou MXRF11)">
@@ -51,6 +64,8 @@ const BRAPI_KEY = "iTFTqSn6W2cyuHNrhcM2rJ";
 
 // Mock 20 mais - exemplo, você pode atualizar via Brapi Github
 const topAcoesLista = ["PETR4.SA","VALE3.SA","ITUB4.SA","BBDC4.SA","ABEV3.SA","BBAS3.SA","WEGE3.SA","MGLU3.SA","LREN3.SA","RENT3.SA","GGBR4.SA","SUZB3.SA","USIM5.SA","RAIL3.SA","VVAR3.SA","HYPE3.SA","COGN3.SA","B3SA3.SA","ELET3.SA","ENBR3.SA"];
+
+
 const topFiisLista = ["MXRF11","HGLG11","KNRI11","BCFF11","RBRP11","XPML11","HGRE11","VLOL11","FIIB11","RECT11","KNCR11","HGBS11","HFOF11","VRTA11","ALZR11","GGRC11","BTLG11","HCTR11","IRDM11","GGRC11"];
 
 let chartInstance;
