@@ -118,6 +118,8 @@ document.getElementById('bitcoin-value').innerText = '--';
 window.addEventListener('load', carregarMoedas);
 </script>
 
+
+
 <!-- BARRA DE PESQUISA -->  <div style="text-align:center; margin:20px 0;">  
   <form id="searchForm" style="display:inline-block;">  
     <input type="text" id="searchInput" placeholder="Digite o código do ativo (ex: MXRF11)"   
@@ -127,7 +129,10 @@ window.addEventListener('load', carregarMoedas);
       Buscar  
     </button>  
   </form>  
-</div>  <script>  
+</div> 
+
+
+ <script>  
 document.getElementById('searchForm').addEventListener('submit', function(e){  
   e.preventDefault(); // impede o envio padrão do formulário  
   const ticker = document.getElementById('searchInput').value.trim().toUpperCase();  
@@ -138,7 +143,11 @@ document.getElementById('searchForm').addEventListener('submit', function(e){
     alert("Digite um código de ativo válido!");  
   }  
 });  
-</script>  <!-- Ações Perenes -->  <style>  
+
+
+</script>  <!-- Ações Perenes -->  
+
+<style>  
 body {  
   margin: 0;  
   background: #000;  
@@ -206,14 +215,16 @@ body {
   from{transform:translateX(100%)}
   to{transform:translateX(-100%)}
 }
-</style> 
- </head> 
- <body>  
+</style>
+</script> 
+ 
 
 
 <div class="ticker-container">
   <div class="ticker-track" id="ticker"></div>
 </div>
+
+
 
  <script>
 const tickers = [
@@ -254,11 +265,15 @@ async function carregarTicker(){
 carregarTicker();
 setInterval(carregarTicker, 60000);
 </script>
+
+
   
 <!-- RODAPÉ -->  
 <footer>  
   <p>© 2026 Meu Dividendo — Conteúdo educativo, não é recomendação de investimento.</p>  
 </footer>  
+
+
   
 <!-- JS -->  
 <script>  
@@ -275,5 +290,7 @@ window.addEventListener('DOMContentLoaded', () => {
   carregarAtivosPerenes();  
   setInterval(carregarAtivosPerenes, 60000);  
 });  
-</script>  </body>  
+</script>  
+
+</body>  
 </html>
