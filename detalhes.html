@@ -3,27 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Detalhes do Ativo - Meu Dividendo</title>
+<title>Meu Dividendo - Pesquisa de Ativos</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
-header { background:#000; color:#fff; padding:16px; position:relative; font-size:1.2em; }
+header { background:#000; color:#fff; padding:16px; text-align:center; position: relative; }
 #menu { position:absolute; left:16px; top:16px; cursor:pointer; font-size:1.5em; }
 #searchContainer { text-align:center; margin:20px; }
 #searchInput { padding:8px; font-size:1em; width:200px; }
-#cards { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px; }
-.card { background:#000; color:#fff; padding:16px 24px; border-radius:12px; min-width:140px; text-align:center; }
-.card.wide { min-width:300px; font-size:1.1em; }
-#chartContainer { background:#fff; border-radius:12px; padding:16px; margin:20px; }
-#top20Container { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:20px; }
-.top20Card { background:#ddd; color:#000; padding:8px 12px; border-radius:8px; min-width:100px; text-align:center; }
+#resultContainer { margin:20px; }
+.card-horizontal { background:#000; color:#fff; padding:16px 24px; border-radius:12px; text-align:center; min-width:300px; margin-bottom:12px; }
+.grid-2x2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.card { background:#000; color:#fff; padding:16px; border-radius:12px; text-align:center; }
+.box { background:#fff; padding:16px; border-radius:12px; margin-bottom:20px; }
+#historyChart { max-width:800px; margin:0 auto; }
+.section-20 { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:40px; }
+.section-20 .card { min-width:120px; font-size:0.9em; }
 </style>
 </head>
 <body>
 
 <header>
   <span id="menu">&#9776;</span>
-  Detalhes do Ativo
+  Meu Dividendo - Pesquisa de Ativos
 </header>
 
 <div id="searchContainer">
@@ -31,163 +33,149 @@ header { background:#000; color:#fff; padding:16px; position:relative; font-size
   <button onclick="buscarAtivo()">Buscar</button>
 </div>
 
-<div id="cards"></div>
+<div id="resultContainer"></div>
 
-<div id="chartContainer">
-  <canvas id="historyChart"></canvas>
+<div>
+  <h3 style="text-align:center;">20 Mais Ações</h3>
+  <div id="topAcoes" class="section-20"></div>
 </div>
 
-<h3 style="text-align:center">20 Mais Negociadas - Ações</h3>
-<div id="top20Actions" class="top20Container"></div>
-
-<h3 style="text-align:center">20 Mais Negociadas - FIIs</h3>
-<div id="top20FIIs" class="top20Container"></div>
+<div>
+  <h3 style="text-align:center;">20 Mais FIIs</h3>
+  <div id="topFiis" class="section-20"></div>
+</div>
 
 <script>
 const ALPHA_KEY = "IV5PKYLN6WQK6FKW";
 const BRAPI_KEY = "iTFTqSn6W2cyuHNrhcM2rJ";
+
+// Mock 20 mais - exemplo, você pode atualizar via Brapi Github
+const topAcoesLista = ["PETR4.SA","VALE3.SA","ITUB4.SA","BBDC4.SA","ABEV3.SA","BBAS3.SA","WEGE3.SA","MGLU3.SA","LREN3.SA","RENT3.SA","GGBR4.SA","SUZB3.SA","USIM5.SA","RAIL3.SA","VVAR3.SA","HYPE3.SA","COGN3.SA","B3SA3.SA","ELET3.SA","ENBR3.SA"];
+const topFiisLista = ["MXRF11","HGLG11","KNRI11","BCFF11","RBRP11","XPML11","HGRE11","VLOL11","FIIB11","RECT11","KNCR11","HGBS11","HFOF11","VRTA11","ALZR11","GGRC11","BTLG11","HCTR11","IRDM11","GGRC11"];
+
 let chartInstance;
 
-// Função para pegar query string
-function getQueryParam(name) {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(name);
+function formatBRL(v){ return parseFloat(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
+function formatNum(v){ return parseFloat(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+async function fetchAlpha(symbol){
+  try {
+    const res = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_KEY}`);
+    const data = await res.json();
+    if(data["Global Quote"] && Object.keys(data["Global Quote"]).length) return data["Global Quote"];
+  } catch(e){console.log(e);}
+  return null;
 }
 
-// Formatação
-const formatBRL = n => parseFloat(n).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-const formatPercent = n => parseFloat(n).toFixed(2) + "%";
+async function fetchBrapi(symbol, key=false){
+  try {
+    const url = key
+      ? `https://brapi.dev/api/quote/${symbol}?token=${BRAPI_KEY}`
+      : `https://brapi.dev/api/quote/${symbol}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if(data.results && data.results.length) return data.results[0];
+  } catch(e){console.log(e);}
+  return null;
+}
 
-// Busca do ativo
-async function buscarAtivo() {
-  const input = document.getElementById('searchInput');
-  let symbol = input.value.trim().toUpperCase();
-  if(!symbol) return alert("Digite um ativo!");
-  
-  document.getElementById('cards').innerHTML = '';
-  if(chartInstance) chartInstance.destroy();
+async function buscarAtivo(){
+  const query = document.getElementById('searchInput').value.trim().toUpperCase();
+  if(!query) return alert("Digite um ativo!");
+  const resultDiv = document.getElementById('resultContainer');
+  resultDiv.innerHTML = '';
 
-  // Primeiro tenta Alpha
-  let ativoData = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_KEY}`)
-    .then(r => r.json())
-    .then(d => d["Global Quote"] ? d["Global Quote"] : null)
-    .catch(()=>null);
+  const isFii = query.endsWith("11");
+  let ativo = null;
 
-  // Se não achou Alpha, tenta Brapi com Key
-  if(!ativoData) {
-    ativoData = await fetch(`https://brapi.dev/api/quote/${symbol}?apikey=${BRAPI_KEY}`)
-      .then(r => r.json())
-      .then(d => d.results ? d.results[0] : null)
-      .catch(()=>null);
+  if(!isFii){
+    ativo = await fetchAlpha(query) || await fetchBrapi(query,false) || await fetchBrapi(query,true);
+  } else {
+    ativo = await fetchBrapi(query,true);
   }
 
-  if(!ativoData) return alert("Ativo não encontrado!");
+  if(!ativo) return alert("Ativo não encontrado ou indisponível!");
 
-  // Identifica se é FII
-  const isFII = symbol.includes("FII") || symbol.includes("11");
+  // Cards layout
+  const symbol = isFii ? ativo.stock ? ativo.stock : query : ativo["01. symbol"] || ativo.symbol;
+  const preco = parseFloat(ativo["05. price"] || ativo.regularMarketPrice || 0);
+  const abertura = parseFloat(ativo["02. open"] || ativo.regularMarketOpen || 0);
+  const maxima = parseFloat(ativo["03. high"] || ativo.regularMarketDayHigh || 0);
+  const minima = parseFloat(ativo["04. low"] || ativo.regularMarketDayLow || 0);
+  const volume = parseInt(ativo["06. volume"] || ativo.regularMarketVolume || 0);
+  const variacao = (ativo["10. change percent"] || ativo.changePercent || "0") ;
 
-  // Extrai dados
-  let preco, abertura, maxima, minima, variacao, volume, data;
-  if(ativoData["01. symbol"]) { // Alpha
-    preco = parseFloat(ativoData["05. price"]);
-    abertura = parseFloat(ativoData["02. open"]);
-    maxima = parseFloat(ativoData["03. high"]);
-    minima = parseFloat(ativoData["04. low"]);
-    variacao = ativoData["10. change percent"];
-    volume = parseInt(ativoData["06. volume"]);
-    data = ativoData["07. latest trading day"];
-  } else { // Brapi
-    preco = ativoData.regularMarketPrice;
-    abertura = ativoData.regularMarketOpen;
-    maxima = ativoData.regularMarketDayHigh;
-    minima = ativoData.regularMarketDayLow;
-    variacao = ativoData.regularMarketChangePercent;
-    volume = ativoData.regularMarketVolume;
-    data = ativoData.regularMarketTime ? new Date(ativoData.regularMarketTime*1000).toLocaleDateString('pt-BR') : "";
-  }
+  // Card grande horizontal
+  const cardH = document.createElement('div');
+  cardH.className='card-horizontal';
+  cardH.innerHTML=`<strong>${symbol}</strong><br>${formatBRL(preco)}<br><small>${new Date().toLocaleDateString()}</small>`;
+  resultDiv.appendChild(cardH);
 
-  // Cards principais
-  const cardsDiv = document.getElementById('cards');
-  const mainCard = document.createElement('div');
-  mainCard.className = 'card wide';
-  mainCard.innerHTML = `<strong>${symbol}</strong><br>${formatBRL(preco)}<br><small>${data}</small>`;
-  cardsDiv.appendChild(mainCard);
-
-  const cardData = [
-    ["Abertura", formatBRL(abertura)],
-    ["Máxima", formatBRL(maxima)],
-    ["Mínima", formatBRL(minima)],
-    ["Variação", formatPercent(variacao)]
-  ];
-
-  cardData.forEach(([k,v])=>{
+  // Grid 2x2
+  const grid = document.createElement('div');
+  grid.className='grid-2x2';
+  [["Abertura",abertura],["Máxima",maxima],["Mínima",minima],["Variação",variacao]].forEach(([k,v])=>{
     const c = document.createElement('div');
     c.className='card';
-    c.innerHTML=`<strong>${k}</strong><br>${v}`;
-    cardsDiv.appendChild(c);
+    c.innerHTML=`<strong>${k}</strong><br>${typeof v==="number"?formatBRL(v):v}`;
+    grid.appendChild(c);
   });
+  resultDiv.appendChild(grid);
 
-  const volCard = document.createElement('div');
-  volCard.className='card';
-  volCard.innerHTML=`<strong>Volume</strong><br>${volume ? volume.toLocaleString('pt-BR') : "-"}`;
-  cardsDiv.appendChild(volCard);
+  // Caixa clara volume + gráfico
+  const box = document.createElement('div');
+  box.className='box';
+  box.innerHTML=`<strong>Volume:</strong> ${volume.toLocaleString('pt-BR')}<br>`;
+  const canvas = document.createElement('canvas');
+  canvas.id='chartBox';
+  box.appendChild(canvas);
+  resultDiv.appendChild(box);
 
-  // Gráfico simples: usa abertura, máxima, mínima e fechamento
-  const ctx = document.getElementById('historyChart').getContext('2d');
-  chartInstance = new Chart(ctx, {
+  if(chartInstance) chartInstance.destroy();
+  const ctx = document.getElementById('chartBox').getContext('2d');
+  chartInstance = new Chart(ctx,{
     type:'line',
     data:{
       labels:["Abertura","Máxima","Mínima","Fechamento"],
       datasets:[{
-        label:`${symbol} - Valores do dia`,
+        label:`${symbol}`,
         data:[abertura,maxima,minima,preco],
         borderColor:'blue',
         backgroundColor:'rgba(0,0,255,0.2)',
         fill:true
       }]
     },
-    options:{ responsive:true }
+    options:{responsive:true, plugins:{legend:{display:false}}}
   });
+
+  carregarTop("topAcoes",topAcoesLista,false);
+  carregarTop("topFiis",topFiisLista,true);
 }
 
-// Carrega top20 ações e FIIs do Brapi Github
-async function carregarTop20() {
-  // Ações
-  let actions = await fetch(`https://brapi.dev/api/stock/list`)
-    .then(r=>r.json())
-    .then(d=>d.stocks.slice(0,20))
-    .catch(()=>[]);
-  const top20Actions = document.getElementById('top20Actions');
-  actions.forEach(a=>{
+// Função para carregar 20 mais
+async function carregarTop(divId,list,isFii){
+  const container = document.getElementById(divId);
+  container.innerHTML='';
+  for(const s of list){
+    let ativo = null;
+    if(!isFii){
+      ativo = await fetchAlpha(s) || await fetchBrapi(s,false) || await fetchBrapi(s,true);
+    } else {
+      ativo = await fetchBrapi(s,true);
+    }
+    if(!ativo) continue;
+    const symbol = isFii ? ativo.stock ? ativo.stock : s : ativo["01. symbol"] || ativo.symbol;
+    const preco = parseFloat(ativo["05. price"] || ativo.regularMarketPrice || 0);
     const c = document.createElement('div');
-    c.className='top20Card';
-    c.innerHTML=`${a.stock} <br> ${formatBRL(a.price)}`;
-    top20Actions.appendChild(c);
-  });
-
-  // FIIs
-  let fiis = await fetch(`https://brapi.dev/api/fii/list`)
-    .then(r=>r.json())
-    .then(d=>d.results.slice(0,20))
-    .catch(()=>[]);
-  const top20FIIs = document.getElementById('top20FIIs');
-  fiis.forEach(f=>{
-    const c = document.createElement('div');
-    c.className='top20Card';
-    c.innerHTML=`${f.symbol} <br> ${formatBRL(f.price)}`;
-    top20FIIs.appendChild(c);
-  });
-}
-
-// Inicializa
-window.onload = ()=>{
-  const ativoQuery = getQueryParam("ativo");
-  if(ativoQuery) {
-    document.getElementById('searchInput').value = ativoQuery;
-    buscarAtivo();
+    c.className='card';
+    c.innerHTML=`${symbol}<br>${formatBRL(preco)}`;
+    container.appendChild(c);
   }
-  carregarTop20();
 }
+
+// Carrega top fixos ao iniciar
+carregarTop("topAcoes",topAcoesLista,false);
+carregarTop("topFiis",topFiisLista,true);
 </script>
 
 </body>
