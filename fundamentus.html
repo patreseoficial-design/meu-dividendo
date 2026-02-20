@@ -46,6 +46,11 @@ pre {
 .err {
   color: #ef4444;
 }
+.status {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #93c5fd;
+}
 </style>
 </head>
 <body>
@@ -55,49 +60,79 @@ pre {
 MXRF11 · VGHF11 · VALE3 · CMIG4
 </p>
 
+<div class="status" id="status">Iniciando consultas…</div>
 <div id="resultado"></div>
 
 <script>
 const ativos = ["MXRF11", "VGHF11", "VALE3", "CMIG4"];
 
+// ⏱️ Delay
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// 🔁 Fetch com retry e controle de rate limit
+async function fetchBrapiSeguro(ativo, tentativas = 3) {
+  for (let i = 1; i <= tentativas; i++) {
+    try {
+      const res = await fetch(`https://brapi.dev/api/quote/${ativo}`);
+      const data = await res.json();
+
+      if (data.results && data.results.length) {
+        return data.results[0];
+      }
+    } catch (e) {}
+
+    console.warn(`Tentativa ${i} falhou para ${ativo}`);
+    await sleep(1500);
+  }
+  return null;
+}
+
 async function carregar() {
   const container = document.getElementById("resultado");
+  const status = document.getElementById("status");
 
-  for (const ativo of ativos) {
+  for (let i = 0; i < ativos.length; i++) {
+    const ativo = ativos[i];
+    status.textContent = `Consultando ${ativo} (${i + 1}/${ativos.length})…`;
+
     const div = document.createElement("div");
     div.className = "ativo";
     div.innerHTML = `<h2>${ativo}</h2><p>Consultando...</p>`;
     container.appendChild(div);
 
-    try {
-      const res = await fetch(`https://brapi.dev/api/quote/${ativo}`);
-      const data = await res.json();
+    const obj = await fetchBrapiSeguro(ativo, 3);
 
-      if (!data.results || !data.results.length) {
-        div.innerHTML += `<p class="err">Nenhum dado retornado</p>`;
-        continue;
-      }
-
-      const obj = data.results[0];
-      const keys = Object.keys(obj);
-
+    if (!obj) {
       div.innerHTML = `
-        <h2>${ativo} <span class="ok">✔</span></h2>
-        <p>Total de campos retornados: <strong>${keys.length}</strong></p>
-
-        <h3>📋 Campos entregues</h3>
-        <div class="lista">
-          ${keys.map(k => `<span class="badge">${k}</span>`).join("")}
-        </div>
-
-        <h3>📦 JSON bruto (results[0])</h3>
-        <pre>${JSON.stringify(obj, null, 2)}</pre>
+        <h2>${ativo} <span class="err">✖</span></h2>
+        <p class="err">Falha ao carregar após várias tentativas</p>
       `;
-
-    } catch (e) {
-      div.innerHTML += `<p class="err">Erro: ${e.message}</p>`;
+      await sleep(2000);
+      continue;
     }
+
+    const keys = Object.keys(obj);
+
+    div.innerHTML = `
+      <h2>${ativo} <span class="ok">✔</span></h2>
+      <p>Total de campos retornados: <strong>${keys.length}</strong></p>
+
+      <h3>📋 Campos entregues</h3>
+      <div class="lista">
+        ${keys.map(k => `<span class="badge">${k}</span>`).join("")}
+      </div>
+
+      <h3>📦 JSON bruto (results[0])</h3>
+      <pre>${JSON.stringify(obj, null, 2)}</pre>
+    `;
+
+    // ⏳ pausa antes do próximo ativo
+    await sleep(2000);
   }
+
+  status.textContent = "✔ Consultas finalizadas";
 }
 
 carregar();
