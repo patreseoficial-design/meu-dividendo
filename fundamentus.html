@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Teste BRAPI - Entrega Real de Dados</title>
+<title>Teste BRAPI – Entrega REAL de Dados</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -50,85 +50,49 @@ pre {
   text-align: center;
   margin-bottom: 20px;
   color: #93c5fd;
+  font-size: 14px;
 }
 </style>
 </head>
 <body>
 
 <h1>🔎 Teste BRAPI – Entrega REAL de Dados</h1>
-<p style="text-align:center">
-PETR4 · BBAS3 · VALE3 · CMIG3 ·
 
-ITUB4 ·
-BBDC4 ·
-BBAS3 ·
-SANB11 ·
-BPAC11 ·
-B3SA3 ·
-PETR4 ·
-PETR3 ·
-VALE3 ·
-PRIO3 ·
-CSAN3 ·
-UGPA3 ·
-ELET3 ·
-ELET6  ·
-CMIG4 ·
-CPLE6 ·
-EQTL3  ·
-ENBR3 ·
-ABEV3 ·
-LREN3 ·
-MGLU3 ·
-ASAI3 ·
-NTCO3 ·
-VIVA3 ·
-WEGE3 ·
-RAIL3 ·
-EMBR3 ·
-GGBR4 ·
-USIM5 ·
-KLBN11 ·
-
-HAPV3 ·
-RDOR3 ·
-FLRY3 ·
-COGN3 ·
-YDUQ3 ·
-COGN3
-
-
-
+<p style="text-align:center; font-size:13px;">
+Ações mais líquidas da B3 – teste de confiabilidade da API pública
 </p>
 
 <div class="status" id="status">Iniciando consultas…</div>
 <div id="resultado"></div>
 
 <script>
+// 🔥 Ativos líquidos (ações e units)
 const ativosLiquidos = [
-  "PETR4","PETR3","COGN3","VALE3","ITUB4","BBDC4","BBAS3","ABEV3","WEGE3",
+  "PETR4","PETR3","VALE3","ITUB4","BBDC4","BBAS3","ABEV3","WEGE3",
   "B3SA3","ELET3","ELET6","PRIO3","RAIL3","LREN3","MGLU3","ASAI3",
   "HAPV3","RDOR3","FLRY3","VIVT3","TIMS3","NTCO3","KLBN11","UGPA3",
   "CSAN3","CMIG4","CPLE6","EQTL3","ENBR3","BPAC11","SANB11",
   "GGBR4","USIM5","EMBR3","COGN3","YDUQ3","VIVA3","LWSA3"
 ];
 
-// ⏱️ Delay
+// ⏱️ Sleep / delay
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// 🔁 Fetch com retry e controle de rate limit
+// 🔁 Fetch BRAPI com retry
 async function fetchBrapiSeguro(ativo, tentativas = 3) {
   for (let i = 1; i <= tentativas; i++) {
     try {
       const res = await fetch(`https://brapi.dev/api/quote/${ativo}`);
       const data = await res.json();
 
-      if (data.results && data.results.length) {
+      if (data && data.results && data.results.length) {
         return data.results[0];
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn(`Erro em ${ativo}:`, e);
+    }
 
     console.warn(`Tentativa ${i} falhou para ${ativo}`);
     await sleep(1500);
@@ -136,17 +100,18 @@ async function fetchBrapiSeguro(ativo, tentativas = 3) {
   return null;
 }
 
+// 🚀 Execução principal
 async function carregar() {
   const container = document.getElementById("resultado");
   const status = document.getElementById("status");
 
-  for (let i = 0; i < ativos.length; i++) {
-    const ativo = ativos[i];
-    status.textContent = `Consultando ${ativo} (${i + 1}/${ativos.length})…`;
+  for (let i = 0; i < ativosLiquidos.length; i++) {
+    const ativo = ativosLiquidos[i];
+    status.textContent = `Consultando ${ativo} (${i + 1}/${ativosLiquidos.length})…`;
 
     const div = document.createElement("div");
     div.className = "ativo";
-    div.innerHTML = `<h2>${ativo}</h2><p>Consultando...</p>`;
+    div.innerHTML = `<h2>${ativo}</h2><p>Consultando…</p>`;
     container.appendChild(div);
 
     const obj = await fetchBrapiSeguro(ativo, 3);
@@ -154,7 +119,7 @@ async function carregar() {
     if (!obj) {
       div.innerHTML = `
         <h2>${ativo} <span class="err">✖</span></h2>
-        <p class="err">Falha ao carregar após várias tentativas</p>
+        <p class="err">Falha após múltiplas tentativas</p>
       `;
       await sleep(2000);
       continue;
@@ -175,13 +140,14 @@ async function carregar() {
       <pre>${JSON.stringify(obj, null, 2)}</pre>
     `;
 
-    // ⏳ pausa antes do próximo ativo
+    // ⏳ Pausa para evitar rate limit
     await sleep(2000);
   }
 
   status.textContent = "✔ Consultas finalizadas";
 }
 
+// ▶️ Start
 carregar();
 </script>
 
