@@ -1,86 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>
 
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/calculadora.css">
-
-<style>
-
-body {  
-  margin: 0;  
-  background: #fff;   /* fundo branco */
-  color: #000;        /* texto padrão preto */
-  font-family: Arial, sans-serif;  
-}
-
-/* ===== MOEDAS ===== */
-#moedas > div{
-  display:flex;
-  gap:8px;
-  padding:0 8px;
-}
-
-.card{
-  flex:1;
-  min-width:0;
-  background:#000;
-  color:#fff;
-  padding:12px 8px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-size:13px;
-}
-
-/* ===== TICKER ===== */
-.ticker-container{
-  background:#111;
-  overflow:hidden;
-  white-space:nowrap;
-  border-top:1px solid #222;
-  border-bottom:1px solid #222;
-}
-
-.ticker-track{
-  display:flex;
-  width:max-content;
-  animation:tickerMove 45s linear infinite;
-}
-
-.ticker-item{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  padding:10px 20px;
-  color:#fff;
-  border-right:1px solid #333;
-  font-size:14px;
-}
-
-.ticker-item .price{
-  color:#00ff88;
-  font-weight:bold;
-}
-
-@keyframes tickerMove{
-  from{transform:translateX(0)}
-  to{transform:translateX(-50%)}
-}
-</style>
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/calculadora.css">
 </head>
 
-<body>
+<body style="margin:0; background:#fff; font-family:Arial,sans-serif;">
 
 <header class="topo">
   <div id="menuBtn" onclick="toggleMenu()">☰</div>
-  <a href="index.html" class="logo" style="color:#fff;text-decoration:none;">Meu Dividendo</a>
+  <a href="index.html" class="logo" style="color:#ffffff; text-decoration:none;">Meu Dividendo</a>
   <div class="profile"></div>
+
   <nav id="menuLinks" class="menu-links">
     <ul>
       <li><a href="index.html">🏠 Início</a></li>
@@ -91,94 +27,102 @@ body {
 </header>
 
 <script>
-function toggleMenu(){
-  const menu=document.getElementById("menuLinks");
-  menu.style.display=menu.style.display==="block"?"none":"block";
+function toggleMenu() {
+  const menu = document.getElementById('menuLinks');
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
 </script>
 
-<div style="text-align:center;margin:40px 0;">
-  <h2 style="margin:8px 0 0 0;font-size:20px;font-weight:normal;">
-    Cotações Atualizadas
-  </h2>
+<div style="text-align:center; margin:40px 0;">
+  <h2 style="margin:0; font-size:20px; font-weight:normal;">Cotações Atualizadas</h2>
 </div>
 
+<!-- MOEDAS -->
 <section id="moedas">
-  <div>
-    <div class="card"><span id="dolar-value">--</span></div>
-    <div class="card"><span id="euro-value">--</span></div>
-    <div class="card"><span id="yuans-value">--</span></div>
-    <div class="card"><span id="bitcoin-value">--</span></div>
+  <div style="display:flex; gap:8px; padding:0 8px;">
+    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;"><span id="dolar-value">--</span></div>
+    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;"><span id="euro-value">--</span></div>
+    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;"><span id="yuans-value">--</span></div>
+    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;"><span id="bitcoin-value">--</span></div>
   </div>
 </section>
 
 <script>
-async function carregarMoedas(){
-  try{
-    const res=await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL");
-    const d=await res.json();
-    dolar-value.innerText=`Dólar R$ ${(+d.USDBRL.ask).toFixed(2)}`;
-    euro-value.innerText=`Euro R$ ${(+d.EURBRL.ask).toFixed(2)}`;
-    yuans-value.innerText=`Yuan R$ ${(+d.CNYBRL.ask).toFixed(2)}`;
-    bitcoin-value.innerText=`Bitcoin R$ ${(+d.BTCBRL.ask).toLocaleString("pt-BR")}`;
-  }catch{}
+async function carregarMoedas() {
+  try {
+    const res = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL");
+    const data = await res.json();
+
+    document.getElementById('dolar-value').innerText = `Dólar R$ ${parseFloat(data.USDBRL.ask).toFixed(2)}`;
+    document.getElementById('euro-value').innerText = `Euro R$ ${parseFloat(data.EURBRL.ask).toFixed(2)}`;
+    document.getElementById('yuans-value').innerText = `Yuan R$ ${parseFloat(data.CNYBRL.ask).toFixed(2)}`;
+    document.getElementById('bitcoin-value').innerText =
+      `Bitcoin R$ ${parseFloat(data.BTCBRL.ask).toLocaleString('pt-BR')}`;
+  } catch {
+    document.querySelectorAll('#moedas span').forEach(e => e.innerText = '--');
+  }
 }
-window.addEventListener("load",carregarMoedas);
+
+window.addEventListener('load', carregarMoedas);
 </script>
 
 <!-- BARRA DE PESQUISA -->
-<div style="text-align:center;margin:20px 0;">
-<form id="searchForm">
-<input id="searchInput" placeholder="Digite o código do ativo (ex: MXRF11)"
-style="padding:8px 12px;width:200px;border-radius:6px;border:1px solid #ccc;">
-<button style="padding:8px 12px;border-radius:6px;border:none;background:#000;color:#fff;">
-Buscar
-</button>
-</form>
+<div style="text-align:center; margin:20px 0;">
+  <form id="searchForm">
+    <input id="searchInput" placeholder="Digite o código do ativo (ex: MXRF11)"
+      style="padding:8px; width:200px; border-radius:6px; border:1px solid #ccc;">
+    <button style="padding:8px 12px; border-radius:6px; background:#000; color:#fff; border:none;">Buscar</button>
+  </form>
 </div>
 
 <script>
-searchForm.addEventListener("submit",e=>{
+document.getElementById('searchForm').addEventListener('submit', e => {
   e.preventDefault();
-  const t=searchInput.value.trim().toUpperCase();
-  if(t) location.href=`detalhes.html?ativo=${t}`;
+  const t = searchInput.value.trim().toUpperCase();
+  if (t) location.href = `detalhes.html?ativo=${t}`;
 });
 </script>
 
 <!-- TICKER -->
+<style>
+.ticker-container{background:#111;overflow:hidden}
+.ticker-track{display:flex;animation:tickerMove 45s linear infinite}
+.ticker-item{padding:10px 20px;color:#fff;border-right:1px solid #333}
+.ticker-item .price{color:#00ff88;font-weight:bold}
+@keyframes tickerMove{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+</style>
+
 <div class="ticker-container">
   <div class="ticker-track" id="ticker"></div>
 </div>
 
 <script>
-const tickers=["CMIG4","BBAS3","CSMG3","PETR4","TAEE11","SANB11","SBSP3","ELET3","EGIE3","CPLE6"];
+const tickers = ["CMIG4","BBAS3","CSMG3","PETR4","TAEE11","SANB11","SBSP3","ELET3","EGIE3","CPLE6"];
 
 async function carregarTicker(){
-  const t=document.getElementById("ticker");
-  t.innerHTML="";
-  const res=await Promise.allSettled(
-    tickers.map(a=>fetch(`https://brapi.dev/api/quote/${a}`).then(r=>r.json()))
+  const el = document.getElementById("ticker");
+  el.innerHTML = "";
+
+  const res = await Promise.allSettled(
+    tickers.map(t => fetch(`https://brapi.dev/api/quote/${t}`).then(r=>r.json()))
   );
 
   res.forEach(r=>{
-    const a=r.value?.results?.[0];
-    if(!a) return;
-    const p=a.regularMarketPrice ?? a.previousClose;
-    const div=document.createElement("div");
-    div.className="ticker-item";
-    div.innerHTML=`<strong>${a.symbol}</strong><span class="price">R$ ${p.toFixed(2)}</span>`;
-    t.appendChild(div);
+    if(r.status==="fulfilled" && r.value?.results?.[0]){
+      const a=r.value.results[0];
+      const p=a.regularMarketPrice ?? a.previousClose;
+      el.innerHTML += `<div class="ticker-item"><strong>${a.symbol}</strong> <span class="price">R$ ${p.toFixed(2)}</span></div>`;
+    }
   });
 
-  t.innerHTML+=t.innerHTML;
+  el.innerHTML += el.innerHTML;
 }
-
 carregarTicker();
 setInterval(carregarTicker,60000);
 </script>
 
 <footer>
-<p>© 2026 Meu Dividendo — Conteúdo educativo, não é recomendação de investimento.</p>
+  <p>© 2026 Meu Dividendo — Conteúdo educativo.</p>
 </footer>
 
 </body>
