@@ -1,22 +1,61 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Dividendo | Ações, FIIs e Calculadora Financeira</title>
 
-  <!-- CSS GLOBAL -->
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/calculadora.css">
+<!-- CSS GLOBAL -->
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/calculadora.css">
+
+<style>
+  body { margin:0; background:#000; font-family:Arial,sans-serif; color:#fff; }
+  
+  /* MOEDAS */
+  #moedas { margin:20px 8px; }
+  #moedas .card {
+    flex:1; min-width:60px; max-width:calc(25% - 8px);
+    background:#000; color:#fff; padding:12px; border-radius:12px;
+    display:flex; justify-content:center; align-items:center;
+  }
+  #moedas div { text-align:center; }
+
+  /* TICKER */
+  .ticker-container {
+    background:#111; overflow:hidden; white-space:nowrap;
+    border-top:1px solid #222; border-bottom:1px solid #222;
+    margin:20px 0;
+  }
+  .ticker-track {
+    display:flex;
+    animation:tickerMove 45s linear infinite;
+  }
+  .ticker-item {
+    display:flex; align-items:center; gap:6px;
+    padding:10px 20px; border-right:1px solid #333; color:#fff;
+  }
+  .ticker-item .price { color:#00ff88; font-weight:bold; }
+  @keyframes tickerMove { from {transform:translateX(100%)} to {transform:translateX(-100%)} }
+
+  /* BARRA DE PESQUISA */
+  #searchForm input {
+    padding:8px; width:200px; border-radius:6px; border:1px solid #ccc;
+  }
+  #searchForm button {
+    padding:8px 12px; border-radius:6px; border:none;
+    background:#000; color:#fff; cursor:pointer;
+  }
+</style>
 </head>
 
-<body style="margin:0; background:#fff; font-family:Arial,sans-serif;">
+<body>
 
+<!-- HEADER -->
 <header class="topo">
   <div id="menuBtn" onclick="toggleMenu()">☰</div>
   <a href="index.html" class="logo" style="color:#ffffff; text-decoration:none;">Meu Dividendo</a>
   <div class="profile"></div>
-
   <nav id="menuLinks" class="menu-links">
     <ul>
       <li><a href="index.html">🏠 Início</a></li>
@@ -33,17 +72,18 @@ function toggleMenu() {
 }
 </script>
 
+<!-- TÍTULO -->
 <div style="text-align:center; margin:40px 0;">
   <h2 style="margin:0; font-size:20px; font-weight:normal;">Cotações Atualizadas</h2>
 </div>
 
 <!-- MOEDAS -->
 <section id="moedas">
-  <div style="display:flex; gap:8px; padding:0 8px;">
-    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;"><span id="dolar-value">--</span></div>
-    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;"><span id="euro-value">--</span></div>
-    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;"><span id="yuans-value">--</span></div>
-    <div class="card" style="flex:1; background:#000; color:#fff; padding:12px; border-radius:12px;"><span id="bitcoin-value">--</span></div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+    <div class="card"><span id="dolar-value">--</span></div>
+    <div class="card"><span id="euro-value">--</span></div>
+    <div class="card"><span id="yuans-value">--</span></div>
+    <div class="card"><span id="bitcoin-value">--</span></div>
   </div>
 </section>
 
@@ -52,26 +92,22 @@ async function carregarMoedas() {
   try {
     const res = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL");
     const data = await res.json();
-
     document.getElementById('dolar-value').innerText = `Dólar R$ ${parseFloat(data.USDBRL.ask).toFixed(2)}`;
     document.getElementById('euro-value').innerText = `Euro R$ ${parseFloat(data.EURBRL.ask).toFixed(2)}`;
     document.getElementById('yuans-value').innerText = `Yuan R$ ${parseFloat(data.CNYBRL.ask).toFixed(2)}`;
-    document.getElementById('bitcoin-value').innerText =
-      `Bitcoin R$ ${parseFloat(data.BTCBRL.ask).toLocaleString('pt-BR')}`;
+    document.getElementById('bitcoin-value').innerText = `Bitcoin R$ ${parseFloat(data.BTCBRL.ask).toLocaleString('pt-BR')}`;
   } catch {
     document.querySelectorAll('#moedas span').forEach(e => e.innerText = '--');
   }
 }
-
 window.addEventListener('load', carregarMoedas);
 </script>
 
 <!-- BARRA DE PESQUISA -->
 <div style="text-align:center; margin:20px 0;">
   <form id="searchForm">
-    <input id="searchInput" placeholder="Digite o código do ativo (ex: MXRF11)"
-      style="padding:8px; width:200px; border-radius:6px; border:1px solid #ccc;">
-    <button style="padding:8px 12px; border-radius:6px; background:#000; color:#fff; border:none;">Buscar</button>
+    <input id="searchInput" placeholder="Digite o código do ativo (ex: MXRF11)">
+    <button>Buscar</button>
   </form>
 </div>
 
@@ -79,75 +115,52 @@ window.addEventListener('load', carregarMoedas);
 document.getElementById('searchForm').addEventListener('submit', e => {
   e.preventDefault();
   const t = searchInput.value.trim().toUpperCase();
-  if (t) location.href = `detalhes.html?ativo=${t}`;
+  if(t) location.href = `detalhes.html?ativo=${t}`;
 });
 </script>
 
 <!-- TICKER -->
+<div class="ticker-container">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
-  const tickers = [
-    "VALE3","ITUB4","MGLU3","PETR4",
-  ];
-
+  const tickers = ["VALE3","ITUB4","MGLU3","PETR4","CMIG4","BBAS3","CSMG3","TAEE11","SANB11","SBSP3","ELET3","EGIE3","CPLE6"];
   const container = document.getElementById("ticker");
-  if (!container) return;
-
   async function carregarTickerSeguro() {
     container.innerHTML = "";
-
-    for (const ativo of tickers) {
+    for(const ativo of tickers) {
       try {
         const res = await fetch(`https://brapi.dev/api/quote/${ativo}`);
         const data = await res.json();
-
         let preco = "--";
-
-        if (data?.results?.length) {
+        if(data?.results?.length) {
           const a = data.results[0];
-          preco =
-            a.regularMarketPrice ??
-            a.previousClose ??
-            a.close ??
-            "--";
+          preco = a.regularMarketPrice ?? a.previousClose ?? a.close ?? "--";
         }
-
         const div = document.createElement("div");
         div.className = "ticker-item";
-        div.innerHTML = `
-          <strong>${ativo}</strong>
-          <span class="price">R$ ${preco !== "--" ? Number(preco).toFixed(2) : "--"}</span>
-        `;
-
+        div.innerHTML = `<strong>${ativo}</strong> <span class="price">R$ ${preco !== "--" ? Number(preco).toFixed(2) : "--"}</span>`;
         container.appendChild(div);
-
-        // atraso proposital para não estourar rate limit
-        await new Promise(r => setTimeout(r, 800));
-
+        await new Promise(r=>setTimeout(r,500)); // carrega devagar
       } catch {
-        // mesmo com erro, renderiza o ativo
         const div = document.createElement("div");
         div.className = "ticker-item";
-        div.innerHTML = `
-          <strong>${ativo}</strong>
-          <span class="price">R$ --</span>
-        `;
+        div.innerHTML = `<strong>${ativo}</strong> <span class="price">R$ --</span>`;
         container.appendChild(div);
       }
     }
-
-    // duplica só depois de TODOS renderizados
-    container.innerHTML += container.innerHTML;
+    container.innerHTML += container.innerHTML; // loop infinito
   }
-
   carregarTickerSeguro();
   setInterval(carregarTickerSeguro, 90000);
-
 });
 </script>
-<footer>
-  <p>© 2026 Meu Dividendo — Conteúdo educativo.</p>
+
+<!-- RODAPÉ -->
+<footer style="text-align:center; margin:20px 0;">
+  <p>© 2026 Meu Dividendo — Conteúdo educativo, não é recomendação de investimento.</p>
 </footer>
 
 </body>
