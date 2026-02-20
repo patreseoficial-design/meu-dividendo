@@ -57,14 +57,61 @@ pre {
 
 <h1>🔎 Teste BRAPI – Entrega REAL de Dados</h1>
 <p style="text-align:center">
-PETR4 · BBAS3 · VALE3 · CMIG3
+PETR4 · BBAS3 · VALE3 · CMIG3 ·
+
+ITUB4 ·
+BBDC4 ·
+BBAS3 ·
+SANB11 ·
+BPAC11 ·
+B3SA3 ·
+PETR4 ·
+PETR3 ·
+VALE3 ·
+PRIO3 ·
+CSAN3 ·
+UGPA3 ·
+ELET3 ·
+ELET6  ·
+CMIG4 ·
+CPLE6 ·
+EQTL3  ·
+ENBR3 ·
+ABEV3 ·
+LREN3 ·
+MGLU3 ·
+ASAI3 ·
+NTCO3 ·
+VIVA3 ·
+WEGE3 ·
+RAIL3 ·
+EMBR3 ·
+GGBR4 ·
+USIM5 ·
+KLBN11 ·
+
+HAPV3 ·
+RDOR3 ·
+FLRY3 ·
+COGN3 ·
+YDUQ3 ·
+COGN3
+
+
+
 </p>
 
 <div class="status" id="status">Iniciando consultas…</div>
 <div id="resultado"></div>
 
 <script>
-const ativos = ["PETR4", "BBAS3", "VALE3", "CMIG3"];
+const ativosLiquidos = [
+  "PETR4","PETR3","COGN3","VALE3","ITUB4","BBDC4","BBAS3","ABEV3","WEGE3",
+  "B3SA3","ELET3","ELET6","PRIO3","RAIL3","LREN3","MGLU3","ASAI3",
+  "HAPV3","RDOR3","FLRY3","VIVT3","TIMS3","NTCO3","KLBN11","UGPA3",
+  "CSAN3","CMIG4","CPLE6","EQTL3","ENBR3","BPAC11","SANB11",
+  "GGBR4","USIM5","EMBR3","COGN3","YDUQ3","VIVA3","LWSA3"
+];
 
 // ⏱️ Delay
 function sleep(ms) {
