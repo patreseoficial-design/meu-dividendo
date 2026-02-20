@@ -84,43 +84,61 @@ document.getElementById('searchForm').addEventListener('submit', e => {
 </script>
 
 <!-- TICKER -->
-<style>
-.ticker-container{background:#111;overflow:hidden}
-.ticker-track{display:flex;animation:tickerMove 45s linear infinite}
-.ticker-item{padding:10px 20px;color:#fff;border-right:1px solid #333}
-.ticker-item .price{color:#00ff88;font-weight:bold}
-@keyframes tickerMove{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
-</style>
-
-<div class="ticker-container">
-  <div class="ticker-track" id="ticker"></div>
-</div>
 
 <script>
-const tickers = ["CMIG4","BBAS3","CSMG3","PETR4","TAEE11","SANB11","SBSP3","ELET3","EGIE3","CPLE6"];
+const tickers = [
+  "CMIG4","BBAS3","CSMG3","PETR4","TAEE11",
+  "SANB11","SBSP3","ELET3","EGIE3","CPLE6"
+];
 
-async function carregarTicker(){
-  const el = document.getElementById("ticker");
-  el.innerHTML = "";
+const container = document.getElementById("ticker");
+let index = 0;
 
-  const res = await Promise.allSettled(
-    tickers.map(t => fetch(`https://brapi.dev/api/quote/${t}`).then(r=>r.json()))
-  );
+async function carregarUmPorUm() {
+  if (index >= tickers.length) {
+    // quando terminar todos, duplica uma única vez para loop infinito
+    container.innerHTML += container.innerHTML;
+    return;
+  }
 
-  res.forEach(r=>{
-    if(r.status==="fulfilled" && r.value?.results?.[0]){
-      const a=r.value.results[0];
-      const p=a.regularMarketPrice ?? a.previousClose;
-      el.innerHTML += `<div class="ticker-item"><strong>${a.symbol}</strong> <span class="price">R$ ${p.toFixed(2)}</span></div>`;
+  const ativo = tickers[index];
+
+  try {
+    const res = await fetch(`https://brapi.dev/api/quote/${ativo}`);
+    const data = await res.json();
+
+    if (data?.results?.[0]) {
+      const a = data.results[0];
+      const preco = a.regularMarketPrice ?? a.previousClose;
+
+      const div = document.createElement("div");
+      div.className = "ticker-item";
+      div.innerHTML = `
+        <strong>${a.symbol}</strong>
+        <span class="price">R$ ${preco.toFixed(2)}</span>
+      `;
+
+      container.appendChild(div);
     }
-  });
+  } catch (e) {
+    console.warn("Falhou:", ativo);
+  }
 
-  el.innerHTML += el.innerHTML;
+  index++;
+  setTimeout(carregarUmPorUm, 1200); // ⏱️ carrega devagar, como você pediu
 }
-carregarTicker();
-setInterval(carregarTicker,60000);
-</script>
 
+// limpa e inicia
+container.innerHTML = "";
+carregarUmPorUm();
+
+// atualiza preços a cada 1 minuto sem quebrar animação
+setInterval(() => {
+  index = 0;
+  container.innerHTML = "";
+  carregarUmPorUm();
+}, 60000);
+</script>
 <footer>
   <p>© 2026 Meu Dividendo — Conteúdo educativo.</p>
 </footer>
