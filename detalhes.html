@@ -54,24 +54,24 @@ header { background:#1a202c; color:#fff; padding:16px; text-align:center; positi
 <div id="resultContainer"></div>
 
 <div>
-  <h3 style="text-align:center;">20 Mais Ações</h3>
-  <div id="topAcoes" class="section-20"></div>
+  <h3 style="text-align:center;">10 Mais Ações</h3>
+  <div id="topAcoes" class="section-10"></div>
 </div>
 
 <div>
-  <h3 style="text-align:center;">20 Mais FIIs</h3>
-  <div id="topFiis" class="section-20"></div>
+  <h3 style="text-align:center;">10 Mais FIIs</h3>
+  <div id="topFiis" class="section-10"></div>
 </div>
 
 <script>
 const ALPHA_KEY = "IV5PKYLN6WQK6FKW";
 const BRAPI_KEY = "iTFTqSn6W2cyuHNrhcM2rJ";
 
-// Mock 20 mais - exemplo, você pode atualizar via Brapi Github
-const topAcoesLista = ["PETR4.SA","VALE3.SA","ITUB4.SA","BBDC4.SA","ABEV3.SA","BBAS3.SA","WEGE3.SA","MGLU3.SA","LREN3.SA","RENT3.SA","GGBR4.SA","SUZB3.SA","USIM5.SA","RAIL3.SA","VVAR3.SA","HYPE3.SA","COGN3.SA","B3SA3.SA","ELET3.SA","ENBR3.SA"];
+// Mock 10 mais - exemplo, você pode atualizar via Brapi Github
+const topAcoesLista = ["PETR4.SA","VALE3.SA","ITUB4.SA","BBDC4.SA","ABEV3.SA","BBAS3.SA","WEGE3.SA","MGLU3.SA","SUZB3.SA","USIM5.SA",];
 
 
-const topFiisLista = ["MXRF11","HGLG11","KNRI11","BCFF11","RBRP11","XPML11","HGRE11","VLOL11","FIIB11","RECT11","KNCR11","HGBS11","HFOF11","VRTA11","ALZR11","GGRC11","BTLG11","HCTR11","IRDM11","GGRC11"];
+const topFiisLista = ["MXRF11","HGLG11","KNRI11","XPML11","HGRE11","KNCR11","HGBS11","HFOF11","BTLG11","HCTR11",];
 
 let chartInstance;
 
@@ -212,7 +212,20 @@ function toggleMenu() {
 </script>  
 
 <script src="js/calculadora-13salario.js"></script> 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const ativo = params.get("ativo");
 
+  if (ativo) {
+    const input = document.getElementById("searchInput");
+    if (input) input.value = ativo.toUpperCase();
+
+    // chama a busca automaticamente
+    buscarAtivo();
+  }
+});
+</script>
 </body>
 </html>
 
