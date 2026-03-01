@@ -707,3 +707,52 @@ small {
   font-size: 14px;
   color: #666;
 }
+
+
+
+
+  /* MOEDAS */  
+  #moedas { margin:20px 8px; }  
+  #moedas .card {  
+    flex:1; min-width:60px; max-width:calc(25% - 8px);  
+    background:#000; color:#fff; padding:12px; border-radius:12px;  
+    display:flex; justify-content:center; align-items:center;  
+  }  
+  #moedas div { text-align:center; }  
+
+  /* TICKER */  
+  .ticker-container {  
+    background:#111; overflow:hidden; white-space:nowrap;  
+    border-top:1px solid #222; border-bottom:1px solid #222;  
+    margin:20px 0;  
+  }  
+  .ticker-track {  
+    display:flex;  
+    animation:tickerMove 45s linear infinite;  
+  }  
+  .ticker-item {  
+    display:flex; align-items:center; gap:6px;  
+    padding:10px 20px; border-right:1px solid #333; color:#fff;  
+  }  
+  .ticker-item .price { color:#00ff88; font-weight:bold; }  
+  @keyframes tickerMove { from {transform:translateX(100%)} to {transform:translateX(-100%)} }  
+
+  /* BARRA DE PESQUISA */  
+  #searchForm input {  
+    padding:8px; width:200px; border-radius:6px; border:1px solid #ccc;  
+  }  
+  #searchForm button {  
+    padding:8px 12px; border-radius:6px; border:none;  
+    background:  background:#000; color:  background:#ffff; 
+  }  
+* {  
+  box-sizing: border-box;  
+}  
+
+body {  
+  margin: 0;  
+  padding: 0;  
+}  
+.topo {  
+  margin-top: 0;  
+}  
