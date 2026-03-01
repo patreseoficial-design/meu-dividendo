@@ -715,7 +715,7 @@ small {
   #moedas { margin:20px 8px; }  
   #moedas .card {  
     flex:1; min-width:60px; max-width:calc(25% - 8px);  
-    background:#000; color:#fff; padding:12px; border-radius:12px;  
+    background:#1a202c; color:#fff; padding:12px; border-radius:12px;  
     display:flex; justify-content:center; align-items:center;  
   }  
   #moedas div { text-align:center; }  
@@ -743,7 +743,7 @@ small {
   }  
   #searchForm button {  
     padding:8px 12px; border-radius:6px; border:none;  
-    background:  background:#000; color:  background:#ffff; 
+    background:  background:#1a202c; color:  background:#ffff; 
   }  
 * {  
   box-sizing: border-box;  
