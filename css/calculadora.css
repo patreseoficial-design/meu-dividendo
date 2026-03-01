@@ -385,7 +385,7 @@ font-weight: 600;
 }
 / ===== HEADER ===== */
 .topo {
-background: #000;
+background: #1a202c;
 color: #fff;
 display: flex;
 align-items: center;
@@ -480,7 +480,7 @@ color: #111;
 
 /* ===== HEADER ===== */
 .topo {
-background: #111;
+background:#1a202c;
 color: #fff;
 height: 60px;
 display: flex;
